@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Buttoms</title>
+	<script src="https://use.ty:pekit.net/ssw8dft.js"></script>
+	<script>try{Typekit.load({ async: true });}catch(e){}</script>	
+	<style>
+		html {height:100%}
+		body {
+			height:100%;
+			font-family: "museo-sans",sans-serif;
+			font-style: normal;
+			font-weight: 100;	
+			background: radial-gradient(circle, #FFF3D7, #E9C699);
+		}
+		.checkbox-button {
+			cursor: pointer;
+			padding: 15px;
+			font-size: 22px;
+			background-color: #009993;
+			border: 0px solid;
+			color: rgba(250,250,250,0.7);
+			padding-left: 30px;
+			transition: all 300ms;
+		}
+		.checkbox-button:focus {
+			outline: none;
+		}
+		.checkbox-button:hover {
+			color: #FFFFFF;
+		}
+		.checkbox-button.unselected{
+			opacity: 0.7;
+		}
+		.checkbox-button input[type="checkbox"] {
+			margin: -5px 10px -7px 30px;
+			-webkit-appearance: none;
+			background: white;
+			width: 30px;
+			height: 30px;
+			border-radius: 3px;
+		}
+		.checkbox-button input[type="checkbox"]:focus {
+			box-shadow: none;
+			border: 0px;
+			outline: none;
+		}
+		.checkbox-button input[type="checkbox"]:checked {
+			background-color: white;
+			background-image: url(check.png);
+			background-size: 60%;
+			background-repeat: no-repeat;
+			background-position: center center;
+		}
+
+		
+		.searchButton {
+			font-size: 22px;
+			padding: 10px 40px;
+			border-radius: 5px;
+			border: 0px;
+			background-color: #E7334C;
+			color: white;
+			font-style: italic;
+			cursor: pointer;
+		}
+		.searchButton:focus {
+			outline: none;
+		}
+		.consoleButton {
+			cursor: pointer;
+			background-color: #009993;
+			width: 300px;
+			height: 150px;
+			border: 0px;
+			outline: none;
+			font-size: 22px;
+			color: rgba(250,250,250,0.7);
+			padding: 0;
+			margin: 0;
+			text-transform: uppercase;
+			transition: all 300ms;
+		}
+		.consoleButton > .consoleLogo{
+			width:100%;
+			height:60%;
+			display: block;
+			background-size: 100px auto;
+			background-repeat: no-repeat;
+			background-position: center 20px;
+			opacity: 0.7;
+		}
+		.consoleButton.ps4 > .consoleLogo {
+			background-image: url(ps4.png);
+		}
+		.consoleButton.ps42 > .consoleLogo {
+			background-image: url(ps42.png);
+		}
+		.consoleButton > .consoleName{
+			width:100%;
+			height: 40%;
+			display: block;
+		}
+		.consoleButton:hover {
+			color: rgba(250,250,250,1);
+		}
+		.consoleButton > .consoleLogo{
+			transition: all 300ms;
+		}
+		.consoleButton:hover > .consoleLogo{
+			opacity: 1;
+		}
+		.consoleButton.unselected{
+			opacity : 0.5;
+		}
+	</style>
+</head>
+<body>
+	<h1>Buttons for Trueque Gamer</h1>
+	<h2>Checkbox buttons (for the index)</h2>
+	<button class="checkbox-button unselected">
+		Trueque
+		<input type="checkbox">
+	</button>
+	<button class="checkbox-button unselected">
+		Trueque
+		<input type="checkbox">
+	</button>
+	<button class="checkbox-button unselected">
+		Trueque
+		<input type="checkbox">
+	</button>
+	<h2>Buscar button</h2>
+	<button class="searchButton">Buscar</button>
+	<h2>Example of playstation 4 button</h2>
+	<button class="consoleButton ps4 unselected">
+		<div class="consoleLogo"></div>
+		<div class="consoleName">Play Station 4</div>
+	</button>
+	<button class="consoleButton ps42 unselected">
+		<div class="consoleLogo"></div>
+		<div class="consoleName">Play station 4</div>
+	</button>
+	<button class="consoleButton ps4 unselected">
+		<div class="consoleLogo"></div>
+		<div class="consoleName">Play Station 4</div>
+	</button>
+	<button class="consoleButton ps4 unselected">
+		<div class="consoleLogo"></div>
+		<div class="consoleName">Play Station 4</div>
+	</button>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script>
+	$('.checkbox-button').on('click', function(e){
+		e.preventDefault();
+		if($(e.target).children('input').attr('checked')){
+			$(e.target).children('input').attr('checked', false);
+			$(e.target).addClass('unselected');
+		}else{
+			$(e.target).children('input').attr('checked', true);
+			$(e.target).removeClass('unselected');
+		}
+	});
+	$('.consoleButton').on('click', function(e){
+		e.preventDefault();
+		if($(e.target).parent().hasClass('unselected')) $(e.target).parent().removeClass('unselected');
+		else $(e.target).parent().addClass('unselected');
+	});
+</script>
+</html>

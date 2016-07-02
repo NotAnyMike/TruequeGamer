@@ -1,0 +1,106 @@
+{
+	"IcoMoonType": "selection",
+	"icons": [
+		{
+			"icon": {
+				"paths": [
+					"M973.824 512c0 255.147-206.848 461.824-461.824 461.824-255.147 0-461.995-206.677-461.995-461.824s206.848-461.824 461.995-461.824c254.976 0 461.824 206.677 461.824 461.824z"
+				],
+				"attrs": [
+					{
+						"fill": "rgb(242, 147, 37)"
+					}
+				],
+				"isMulticolor": false,
+				"isMulticolor2": false,
+				"grid": 0,
+				"tags": [
+					"dot"
+				]
+			},
+			"attrs": [
+				{
+					"fill": "rgb(242, 147, 37)"
+				}
+			],
+			"properties": {
+				"order": 2,
+				"id": 1,
+				"prevSize": 32,
+				"code": 59648,
+				"name": "dot"
+			},
+			"setIdx": 0,
+			"setId": 2,
+			"iconIdx": 0
+		},
+		{
+			"icon": {
+				"paths": [
+					"M141.198 981.22v-938.553l757.077 526.222z"
+				],
+				"attrs": [
+					{
+						"fill": "rgb(242, 147, 37)"
+					}
+				],
+				"isMulticolor": false,
+				"isMulticolor2": false,
+				"grid": 0,
+				"tags": [
+					"Untitled-12"
+				]
+			},
+			"attrs": [
+				{
+					"fill": "rgb(242, 147, 37)"
+				}
+			],
+			"properties": {
+				"order": 3,
+				"id": 0,
+				"prevSize": 32,
+				"code": 59649,
+				"name": "arrow"
+			},
+			"setIdx": 0,
+			"setId": 2,
+			"iconIdx": 1
+		}
+	],
+	"height": 1024,
+	"metadata": {
+		"name": "TruequeGamer"
+	},
+	"preferences": {
+		"showGlyphs": true,
+		"showQuickUse": true,
+		"showQuickUse2": true,
+		"showSVGs": true,
+		"fontPref": {
+			"prefix": "icon-",
+			"metadata": {
+				"fontFamily": "TruequeGamer",
+				"majorVersion": 1,
+				"minorVersion": 0
+			},
+			"metrics": {
+				"emSize": 1024,
+				"baseline": 6.25,
+				"whitespace": 50
+			},
+			"embed": false
+		},
+		"imagePref": {
+			"prefix": "icon-",
+			"png": true,
+			"useClassSelector": true,
+			"color": 0,
+			"bgColor": 16777215,
+			"classSelector": ".icon"
+		},
+		"historySize": 100,
+		"showCodes": true,
+		"gridSize": 16
+	}
+}

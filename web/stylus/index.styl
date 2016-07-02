@@ -1,0 +1,99 @@
+header, .mainContainer, footer, .decoration
+	width 100%
+	display block
+
+header
+	height 100px
+	
+	.isotypeContainer
+		width: 100%
+		display: flex
+		flex-direction: column
+		position: relative
+		background-image: url(./img/header-background.png)
+		background-repeat: no-repeat
+		background-position: center left
+
+		figure, .sloganContainer
+			display: flex
+			justify-content: center
+			font-size: 17px
+			margin: 0
+
+		figure
+			margin-top: 50px
+
+		.sloganContainer
+			margin-top: 30px
+
+			span
+				padding: 2px
+				
+			span:nth-child(2)
+				position: relative
+
+				img
+					position: absolute
+					left: -5px
+					z-index: 1
+			
+	.login
+		display: inline-block
+		position: absolute
+		width: 210px
+		top: 80px
+		right: calc( 50% - 240px - 210px )
+
+	.searchButtonContainer
+		width: 75px
+		position: absolute
+		top: 0px
+		left: calc( 50% - 450px + 70px )
+	
+		div:first-child
+			height: 100px
+			width: 100%
+			background-color: #98CEB7
+			position: absolute
+			display: flex
+			justify-content: center
+			align-items: flex-end
+		
+			.searchButtonSubContainer
+				position: relative
+				bottom: 0
+				border-top: 1px solid #009992
+				height: 70px
+				width: 50px
+		
+		div:nth-child(2)
+			position absolute
+			top: 100px
+			height: 20px
+			width:100%
+			box-sizing: border-box
+			border: 37.5px transparent solid
+			border-top: 20px solid #98CEB7
+
+
+		.searchButton
+			cursor: pointer
+			width: 40px
+			height: 40px
+			position: relative
+			bottom: 0px
+			border-radius: 20px
+			border: none
+			background-color: #009992
+			background-image: url(./img/search.png)
+			background-repeat: no-repeat
+			background-position: center center
+
+.decoration
+	position absolute
+	bottom 0
+	background #98CEB7
+	height 50px
+	background-image url(./img/footer-background-decorator.png)
+	background-repeat repeat-x
+	background-position center

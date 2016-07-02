@@ -1,0 +1,184 @@
+@import 'stylus/normalize.css';
+@import 'font/style.css';
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  margin: 0;
+  background: -webkit-radial-gradient(circle, #fff3d7, #e9c699);
+  background: -moz-radial-gradient(circle, #fff3d7, #e9c699);
+  background: -o-radial-gradient(circle, #fff3d7, #e9c699);
+  background: -ms-radial-gradient(circle, #fff3d7, #e9c699);
+  background: radial-gradient(circle, #fff3d7, #e9c699);
+  font-family: 'Lato', sans-serif;
+  color: #009992;
+}
+a {
+  font-style: italic;
+  color: #009992;
+  text-decoration: none;
+  font-size: 20px;
+}
+.arrow-decorator:after,
+.dot-decorator:after,
+.arrow-decorator:before,
+.dot-decorator:before {
+  font-size: 7px;
+  position: relative;
+  bottom: 4px;
+  font-family: TruequeGamer;
+  font-style: normal;
+  color: #f29224;
+}
+.arrow-decorator:after {
+  padding-left: 5px;
+  content: "\e901";
+  font-size: 10px;
+  bottom: 2px;
+}
+.dot-decorator:before {
+  padding-right: 5px;
+  content: "\e900";
+}
+header,
+.mainContainer,
+footer,
+.decoration {
+  width: 100%;
+  display: block;
+}
+header {
+  height: 100px;
+}
+header .isotypeContainer {
+  width: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  background-image: url("./img/header-background.png");
+  background-repeat: no-repeat;
+  background-position: center left;
+}
+header .isotypeContainer figure,
+header .isotypeContainer .sloganContainer {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  font-size: 17px;
+  margin: 0;
+}
+header .isotypeContainer figure {
+  margin-top: 50px;
+}
+header .isotypeContainer .sloganContainer {
+  margin-top: 30px;
+}
+header .isotypeContainer .sloganContainer span {
+  padding: 2px;
+}
+header .isotypeContainer .sloganContainer span:nth-child(2) {
+  position: relative;
+}
+header .isotypeContainer .sloganContainer span:nth-child(2) img {
+  position: absolute;
+  left: -5px;
+  z-index: 1;
+}
+header .login {
+  display: inline-block;
+  position: absolute;
+  width: 210px;
+  top: 80px;
+  right: calc(50% - 240px - 210px);
+}
+header .searchButtonContainer {
+  width: 75px;
+  position: absolute;
+  top: 0px;
+  left: calc(50% - 450px + 70px);
+}
+header .searchButtonContainer div:first-child {
+  height: 100px;
+  width: 100%;
+  background-color: #98ceb7;
+  position: absolute;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: end;
+  -moz-box-align: end;
+  -o-box-align: end;
+  -ms-flex-align: end;
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+}
+header .searchButtonContainer div:first-child .searchButtonSubContainer {
+  position: relative;
+  bottom: 0;
+  border-top: 1px solid #009992;
+  height: 70px;
+  width: 50px;
+}
+header .searchButtonContainer div:nth-child(2) {
+  position: absolute;
+  top: 100px;
+  height: 20px;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 37.5px transparent solid;
+  border-top: 20px solid #98ceb7;
+}
+header .searchButtonContainer .searchButton {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  bottom: 0px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #009992;
+  background-image: url("./img/search.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.decoration {
+  position: absolute;
+  bottom: 0;
+  background: #98ceb7;
+  height: 50px;
+  background-image: url("./img/footer-background-decorator.png");
+  background-repeat: repeat-x;
+  background-position: center;
+}

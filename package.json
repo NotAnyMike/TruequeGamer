@@ -1,0 +1,28 @@
+{
+  "name": "trueque-gamer",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "stylus": "^0.54.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-stylus": "^2.5.0",
+    "nib": "^1.1.0",
+    "stylus": "^0.54.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NotAnyMike/TruequeGamer.git"
+  },
+  "author": "@NotAnyMike",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NotAnyMike/TruequeGamer/issues"
+  },
+  "homepage": "https://github.com/NotAnyMike/TruequeGamer#readme"
+}

@@ -3,28 +3,27 @@ header, .mainContainer, footer, .decoration
 	display block
 
 header
-	height 100px
+	display: flex
+	justify-content: center
+	flex-direction: row
+	background-image: url(./img/header-background.png)
+	background-repeat: no-repeat
+	background-position: center left
 	
 	.isotypeContainer
-		width: 100%
+		margin-top: 50px
+		width: 470px
 		display: flex
 		flex-direction: column
-		position: relative
-		background-image: url(./img/header-background.png)
-		background-repeat: no-repeat
-		background-position: center left
 
 		figure, .sloganContainer
 			display: flex
 			justify-content: center
 			font-size: 17px
-			margin: 0
-
-		figure
-			margin-top: 50px
+			margin: 0 0 15px 0
 
 		.sloganContainer
-			margin-top: 30px
+			margin-top: 15px
 
 			span
 				padding: 2px
@@ -38,21 +37,18 @@ header
 					z-index: 1
 			
 	.login
+		margin-top: 80px
 		display: inline-block
-		position: absolute
-		width: 210px
+		width: 215px
 		top: 80px
-		right: calc( 50% - 240px - 210px )
 
 	.searchButtonContainer
-		width: 75px
-		position: absolute
+		width: 215px
 		top: 0px
-		left: calc( 50% - 450px + 70px )
 	
 		div:first-child
 			height: 100px
-			width: 100%
+			width: 75px
 			background-color: #98CEB7
 			position: absolute
 			display: flex
@@ -70,7 +66,7 @@ header
 			position absolute
 			top: 100px
 			height: 20px
-			width:100%
+			width:75px
 			box-sizing: border-box
 			border: 37.5px transparent solid
 			border-top: 20px solid #98CEB7
@@ -88,6 +84,56 @@ header
 			background-image: url(./img/search.png)
 			background-repeat: no-repeat
 			background-position: center center
+
+.mainContainer
+	display: flex
+	flex-direction: column
+	justify-content: space-between
+	align-items: center
+	
+	div
+		display: inline-block
+	
+	.searchFieldContainer
+		margin: 15px
+
+		input[type="text"]
+			width: 350px
+			border-radius: 3px	
+			border: 1px solid #009992
+			height: 30px
+
+	.filterMainContainer
+		width: 900px
+
+		.consoleContainer
+			width: 100%
+			display: flex
+			flex-direction: row
+			justify-content: space-between
+			margin: 25px 0
+			
+			button.consoleCheckbox
+				width: 222px
+				height: 110px	
+				border: 0px
+				background-color: #00605B
+				display: flex
+				flex-direciton: column
+				justify-content: center
+				align-items: center
+
+		.extraFilterContainer
+			margin: 10px 0
+	
+	.searchButton
+		width:120px
+		height: 40px
+		background-color: #E6334C
+		border: 0px
+		border-radius: 5px
+		font-size: 22px
+		color: white
 
 .decoration
 	position absolute

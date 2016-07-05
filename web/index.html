@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Trueque Gamer</title>
-	<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,400i" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="app.css">
 </head>
 <body>
@@ -34,46 +34,62 @@
 	<div class="mainContainer">
 		<div class="searchFieldContainer"><input type="text"></div>
 		<div class="filterMainContainer">
-			<div class="consoleContainer">
+			<section class="consoleContainer">
 				<button class="consoleCheckbox">
 					<div>
 					</div>
-					<span class="consoleNameContainer">
-						<span class="consoleNameTitle"></span>
-						<input type="checkbox">
-					</span>
+					<span class="consoleNameTitle"></span>
 				</button>
 				<button class="consoleCheckbox">
-					<div></div>
-					<span class="consoleNameContainer">
-						<span class="consoleNameTitle"></span>
-						<input type="checkbox">
-					</span>
+					<div>
+					</div>
+					<span class="consoleNameTitle"></span>
 				</button>
 				<button class="consoleCheckbox">
-					<div></div>
-					<span class="consoleNameContainer">
-						<span class="consoleNameTitle"></span>
-						<input type="checkbox">
-					</span>
+					<div>
+					</div>
+					<span class="consoleNameTitle"></span>
 				</button>
 				<button class="consoleCheckbox">
-					<div></div>
-					<span class="consoleNameContainer">
-						<span class="consoleNameTitle"></span>
-						<input type="checkbox">
-					</span>
+					<div>
+					</div>
+					<span class="consoleNameTitle"></span>
 				</button>
-			</div>
+			</section>
 			<div class="extraFilterContainer">
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
+				<section>
+					<button class="extraFilterButton">
+						<span>Nuevo</span>
+						<input id="c1" type="checkbox">
+						<label for="c1"></label>
+					</button>
+					<button class="extraFilterButton">
+						<span>Usado</span>
+						<input id="c1" type="checkbox">
+						<label for="c1"></label>
+					</button>
+				</section>
+				<div class="listDecorator"></div>
+				<section>
+					<button class="extraFilterButton">
+						<span>Trueque</span>
+						<input id="c1" type="checkbox">
+						<label for="c1"></label>
+					</button>
+					<button class="extraFilterButton">
+						<span>Venta</span>
+						<input id="c1" type="checkbox">
+						<label for="c1"></label>
+					</button>
+				</section>
+				<div class="listDecorator"></div>
+				<section class="locationSection">
+					<figure><img src="" alt=""></figure>
+					<button class="cityButton">Bogotá</button>
+				</section>
 			</div>
 		</div>
-		<div class="dot-decorator arrow-decorator"><button class="searchButton">Buscar</button></div>
+		<div class="dot-decorator arrow-decorator searchButtonSection"><button class="searchButton">Buscar</button></div>
 	</div>
 	<footer>
 	</footer>

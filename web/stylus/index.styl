@@ -125,8 +125,84 @@ header
 
 		.extraFilterContainer
 			margin: 10px 0
+			display: flex
+			flex-direction: row
+			justify-content: space-between
+			align-items: center
+			
+			section
+				width: 312px
+				display: flex
+				flex-direction: row
+				justify-content: space-between
+
+				&.locationSection
+					width: 178px
+					display: flex
+					flex-direction: row
+					justify-content: space-between
+					align-items: center
+
+					figure
+						border: solid 3px white
+						border-radius: 14px
+						margin: 0
+						padding: 0
+						width: 23px
+						height: 23px
+						background: red
+
+			button.extraFilterButton
+				width: 150px
+				height: 40px
+				background-color: #009992
+				border: 0px
+				font-size: 15px
+				display: flex
+				justify-content: space-between
+				flex-direction: row
+				padding: 0 13px
+				align-items: center
+
+				span
+					color: white
+					font-size: 15px
+					margin-left: 13px
+
+				input[type="checkbox"]
+					display: none
+
+				input[type="checkbox"] 
+					& + label
+						cursor: pointer
+						width: 24px
+						display: inline-block
+						height: 24px
+						border-radius: 0px
+						background-color: #00605B
+						border: 0
+						margin: 0
+						overflow: hidden
+
+					& + label:before, &:checked + label:before
+						margin: 0
+						width: 24px
+						height: 24px
+						position: relative
+						top: -24px
+						left: 0
+						content: '\e902'
+						font-family: TruequeGamer
+						font-size: 22px
+						color: white
+
+					&:checked + label:before
+						top: 0
 	
-	.searchButton
+.searchButtonSection
+	margin: 40px 0px
+
+.searchButton
 		width:120px
 		height: 40px
 		background-color: #E6334C
@@ -143,3 +219,20 @@ header
 	background-image url(./img/footer-background-decorator.png)
 	background-repeat repeat-x
 	background-position center
+
+
+.listDecorator
+	width: 25px
+	height: 28px
+	background-image: url(img/listDecorator.png) 
+	background-repeat: no-repeat 
+	background-position: center center
+
+.cityButton
+	width: 135px
+	height: 40px
+	background-color: #F29224
+	border: 0
+	border-radius: 0
+	color: white
+	font-size: 15px

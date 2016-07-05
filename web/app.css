@@ -426,6 +426,37 @@ header .searchButtonContainer .searchButton {
 .mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton input[type="checkbox"]:checked + label:before {
   top: 0;
 }
+footer {
+  border: 0px;
+  border-top: 1px solid #009992;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -o-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: top;
+  -moz-box-align: top;
+  -o-box-align: top;
+  -ms-flex-align: top;
+  -webkit-align-items: top;
+  align-items: top;
+  width: auto;
+  max-width: 1090px;
+  margin: 0 auto;
+}
 .searchButtonSection {
   margin: 40px 0px;
 }
@@ -440,7 +471,7 @@ header .searchButtonContainer .searchButton {
   color: #fff;
 }
 .decoration {
-  position: absolute;
+  position: relative;
   bottom: 0;
   background: #98ceb7;
   height: 50px;

@@ -259,7 +259,12 @@ header .searchButtonContainer .searchButton {
   display: -ms-flexbox;
   display: box;
   display: flex;
-  flex-direciton: column;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: center;
   -moz-box-pack: center;
   -o-box-pack: center;
@@ -272,6 +277,85 @@ header .searchButtonContainer .searchButton {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  -o-transition: all 300ms;
+  -ms-transition: all 300ms;
+  transition: all 300ms;
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox:hover .isotype:before {
+  color: #fff;
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox:hover .consoleNameTitle:before {
+  color: #fff;
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox .consoleNameTitle:before {
+  text-transform: uppercase;
+  color: #009992;
+  font-size: 15px;
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  -o-transition: all 300ms;
+  -ms-transition: all 300ms;
+  transition: all 300ms;
+  padding: 10px 0;
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.ps4 .isotype:before {
+  content: '\e905';
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.ps4 .consoleNameTitle:before {
+  content: 'play station 4';
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.ps3 .isotype:before {
+  content: '\e905';
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.ps3 .consoleNameTitle:before {
+  content: 'play station 3';
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.xboxone .isotype:before {
+  content: '\e906';
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.xboxone .consoleNameTitle:before {
+  content: 'xbox one';
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.xbox360 .isotype:before {
+  content: '\e906';
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.xbox360 .consoleNameTitle:before {
+  content: 'xbox 360';
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox .isotype {
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 15px;
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox .isotype:before {
+  font-family: TruequeGamer;
+  font-size: 33px;
+  color: #009992;
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  -o-transition: all 300ms;
+  -ms-transition: all 300ms;
+  transition: all 300ms;
+  padding: 10px 0;
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.checked {
+  background-color: #e6334c;
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.checked .isotype:before,
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.checked span:before {
+  color: #fff;
+  padding: 10px 0px;
+}
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.checked:hover .isotype:before,
+.mainContainer .filterMainContainer .consoleContainer button.consoleCheckbox.checked:hover span:before {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
 }
 .mainContainer .filterMainContainer .extraFilterContainer {
   margin: 10px 0;
@@ -361,7 +445,7 @@ header .searchButtonContainer .searchButton {
 .mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton {
   width: 150px;
   height: 40px;
-  background-color: #009992;
+  background-color: #00605b;
   border: 0px;
   font-size: 15px;
   display: -webkit-box;
@@ -389,11 +473,24 @@ header .searchButtonContainer .searchButton {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  -o-transition: all 300ms;
+  -ms-transition: all 300ms;
+  transition: all 300ms;
 }
 .mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton span {
-  color: #fff;
+  color: #009992;
   font-size: 15px;
   margin-left: 13px;
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  -o-transition: all 300ms;
+  -ms-transition: all 300ms;
+  transition: all 300ms;
+}
+.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton:hover span {
+  color: #fff;
 }
 .mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton input[type="checkbox"] {
   display: none;
@@ -405,13 +502,17 @@ header .searchButtonContainer .searchButton {
   height: 24px;
   -webkit-border-radius: 0px;
   border-radius: 0px;
-  background-color: #00605b;
+  background-color: #009992;
   border: 0;
   margin: 0;
   overflow: hidden;
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  -o-transition: all 300ms;
+  -ms-transition: all 300ms;
+  transition: all 300ms;
 }
-.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton input[type="checkbox"] + label:before,
-.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton input[type="checkbox"]:checked + label:before {
+.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton input[type="checkbox"] + label:before {
   margin: 0;
   width: 24px;
   height: 24px;
@@ -422,9 +523,41 @@ header .searchButtonContainer .searchButton {
   font-family: TruequeGamer;
   font-size: 22px;
   color: #fff;
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  -o-transition: all 300ms;
+  -ms-transition: all 300ms;
+  transition: all 300ms;
 }
-.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton input[type="checkbox"]:checked + label:before {
+.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton:hover input[type="checkbox"] + label:before {
   top: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  left: 0;
+  content: '\e902';
+  font-family: TruequeGamer;
+  font-size: 22px;
+  color: #fff;
+}
+.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton.checked {
+  background-color: #e6334c;
+}
+.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton.checked span {
+  color: #fff;
+}
+.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton.checked input[type="checkbox"] + label {
+  background-color: #e6334c;
+}
+.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton.checked input[type="checkbox"] + label:before {
+  top: 0px;
+}
+.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton:hover.checked span,
+.mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
 }
 footer {
   border: 0px;
@@ -566,6 +699,7 @@ footer .bugLinksContainer a {
   margin: 40px 0px;
 }
 .searchButton {
+  cursor: pointer;
   width: 120px;
   height: 40px;
   background-color: #e6334c;
@@ -649,4 +783,17 @@ footer .bugLinksContainer a {
   -ms-transform: scaleX(-1);
   transform: scaleX(-1);
   filter: FlipV;
+}
+input[type="text"] {
+  outline: none;
+  padding: 2px 18px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 15px;
+  color: #009992;
+}
+button {
+  cursor: pointer;
+  outline: none;
 }

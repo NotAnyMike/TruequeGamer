@@ -119,9 +119,78 @@ header
 				border: 0px
 				background-color: #00605B
 				display: flex
-				flex-direciton: column
+				flex-direction: column
 				justify-content: center
 				align-items: center
+				transition: all 300ms
+
+				&:hover
+					.isotype:before
+						color: white
+
+					.consoleNameTitle:before
+						color: white
+
+				.consoleNameTitle:before
+					text-transform: uppercase
+					color: #009992
+					font-size: 15px
+					transition: all 300ms
+					padding: 10px 0
+
+				&.ps4
+					.isotype:before
+						content: '\e905'
+
+					.consoleNameTitle:before
+						content: 'play station 4'
+						
+				&.ps3
+					.isotype:before
+						content: '\e905'
+
+					.consoleNameTitle:before
+						content: 'play station 3'
+
+				&.xboxone
+					.isotype:before
+						content: '\e906'
+
+					.consoleNameTitle:before
+						content: 'xbox one'
+
+				&.xbox360
+					.isotype:before
+						content: '\e906'
+
+					.consoleNameTitle:before
+						content: 'xbox 360'
+
+				.isotype
+					background-repeat: no-repeat
+					background-position: center center
+					display: inline-block
+					width: 30px
+					height: 30px
+					margin: 15px
+						
+					&:before
+						font-family: TruequeGamer
+						font-size: 33px
+						color: #009992
+						transition: all 300ms
+						padding: 10px 0
+
+				&.checked
+					background-color: #E6334C
+
+					.isotype:before, span:before
+						color: white
+						padding: 10px 0px
+						
+					&:hover
+						.isotype:before, span:before
+							opacity: 0.5
 
 		.extraFilterContainer
 			margin: 10px 0
@@ -155,7 +224,7 @@ header
 			button.extraFilterButton
 				width: 150px
 				height: 40px
-				background-color: #009992
+				background-color: #00605B
 				border: 0px
 				font-size: 15px
 				display: flex
@@ -163,11 +232,17 @@ header
 				flex-direction: row
 				padding: 0 13px
 				align-items: center
+				transition: all 300ms
 
 				span
-					color: white
+					color: #009992
 					font-size: 15px
 					margin-left: 13px
+					transition: all 300ms
+
+				&:hover
+					span
+						color: white
 
 				input[type="checkbox"]
 					display: none
@@ -179,12 +254,13 @@ header
 						display: inline-block
 						height: 24px
 						border-radius: 0px
-						background-color: #00605B
+						background-color: #009992
 						border: 0
 						margin: 0
 						overflow: hidden
+						transition: all 300ms
 
-					& + label:before, &:checked + label:before
+					& + label:before
 						margin: 0
 						width: 24px
 						height: 24px
@@ -195,9 +271,36 @@ header
 						font-family: TruequeGamer
 						font-size: 22px
 						color: white
+						transition: all 300ms
 
-					&:checked + label:before
+				&:hover 
+					input[type="checkbox"] + label:before
 						top: 0
+						margin: 0
+						width: 24px
+						height: 24px
+						position: relative
+						left: 0
+						content: '\e902'
+						font-family: TruequeGamer
+						font-size: 22px
+						color: white
+
+				&.checked
+					background-color: #E6334C
+					
+					span
+						color: white
+
+					input[type="checkbox"] + label
+						background-color: #E6334C
+
+						&:before
+							top: 0px
+
+				&:hover.checked
+					span, input[type="checkbox"] + label:before
+						opacity: 0.5
 
 footer
 	border: 0px
@@ -261,6 +364,7 @@ footer
 	margin: 40px 0px
 
 .searchButton
+		cursor: pointer
 		width:120px
 		height: 40px
 		background-color: #E6334C
@@ -330,3 +434,14 @@ footer
 .x-reflexion
 	transform: scaleX(-1)
 	filter: FlipV
+
+input[type="text"]
+	outline: none
+	padding: 2px 18px
+	box-sizing: border-box
+	font-size: 15px
+	color: #009992
+
+button
+	cursor: pointer
+	outline: none

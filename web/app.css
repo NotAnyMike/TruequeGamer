@@ -440,7 +440,8 @@ header .searchButtonContainer .searchButton {
   padding: 0;
   width: 23px;
   height: 23px;
-  background: #f00;
+  overflow: hidden;
+  cursor: pointer;
 }
 .mainContainer .filterMainContainer .extraFilterContainer button.extraFilterButton {
   width: 150px;

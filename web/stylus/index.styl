@@ -42,6 +42,26 @@ header
 		width: 215px
 		top: 80px
 
+	.profileContainer
+		display: flex
+		flex-direction: row
+		justify-content: center
+		align-items: center
+		width: 215px
+
+		figure
+			width: 43px
+			margin: 0
+			height: 43px
+			border-radius: 23px
+			overflow: hidden
+
+		span
+			color: #F29224
+			font-size: 20px
+			border-bottom: 1px solid $dark_green
+			margin: 20px
+
 	.searchButtonContainer
 		width: 215px
 		top: 0px
@@ -58,7 +78,7 @@ header
 			.searchButtonSubContainer
 				position: relative
 				bottom: 0
-				border-top: 1px solid #009992
+				border-top: 1px solid $dark_green
 				height: 70px
 				width: 50px
 		
@@ -80,10 +100,10 @@ header
 			bottom: 0px
 			border-radius: 20px
 			border: none
-			background-color: #009992
-			background-image: url(./img/search.png)
-			background-repeat: no-repeat
-			background-position: center center
+			background-color: $dark_green
+			
+			&:before
+				content: '\e908'
 
 .mainContainer
 	display: flex
@@ -96,12 +116,33 @@ header
 	
 	.searchFieldContainer
 		margin: 15px
+		position: relative
 
 		input[type="text"]
 			width: 350px
-			border-radius: 3px	
-			border: 1px solid #009992
 			height: 30px
+		
+		ul
+			position: absolute
+			top: 0
+			left: 0
+			margin-top: 28px
+			padding: 0
+			background: white
+			border: 1px solid $dark_green
+			border-radius: 0 0 3px 3px
+			box-sizing: border-box
+			width: 350px
+
+			li
+				cursor: pointer
+				font-size: 15px
+				list-style-type: none
+				padding: 5px 18px
+
+				&:hover
+					background-color: $dark_green
+					color: white
 
 	.filterMainContainer
 		width: 900px
@@ -133,7 +174,7 @@ header
 
 				.consoleNameTitle:before
 					text-transform: uppercase
-					color: #009992
+					color: $dark_green
 					font-size: 15px
 					transition: all 300ms
 					padding: 10px 0
@@ -177,12 +218,12 @@ header
 					&:before
 						font-family: TruequeGamer
 						font-size: 33px
-						color: #009992
+						color: $dark_green
 						transition: all 300ms
 						padding: 10px 0
 
 				&.checked
-					background-color: #E6334C
+					background-color: $red
 
 					.isotype:before, span:before
 						color: white
@@ -236,7 +277,7 @@ header
 				transition: all 300ms
 
 				span
-					color: #009992
+					color: $dark_green
 					font-size: 15px
 					margin-left: 13px
 					transition: all 300ms
@@ -255,7 +296,7 @@ header
 						display: inline-block
 						height: 24px
 						border-radius: 0px
-						background-color: #009992
+						background-color: $dark_green
 						border: 0
 						margin: 0
 						overflow: hidden
@@ -288,13 +329,13 @@ header
 						color: white
 
 				&.checked
-					background-color: #E6334C
+					background-color: $red
 					
 					span
 						color: white
 
 					input[type="checkbox"] + label
-						background-color: #E6334C
+						background-color: $red
 
 						&:before
 							top: 0px
@@ -303,9 +344,292 @@ header
 					span, input[type="checkbox"] + label:before
 						opacity: 0.5
 
+.chatBubble
+	position: fixed
+	display: flex
+	width: 84px
+	height: 84px
+	border-radius: 42px
+	background-color: $dark_green
+	bottom: 0
+	right: 0
+	margin: 20px
+	box-sizing: border-box
+	cursor: pointer
+	z-index: 1
+
+	img	
+		width: auto
+		height: auto
+		margin: auto
+
+	.messagesNumber
+		position: absolute
+		width: 40px
+		height: 40px
+		border-radius: 20px
+		background-color: $red
+		color: white
+
+	.messagesNumber
+		position: absolute
+		width: 40px
+		height: 40px
+		border-radius: 20px
+		background-color: $red
+		top: -20px
+		left: 20px
+		display:flex
+		justify-content: center
+		align-items: center
+
+		span
+			color: white
+
+.chatList
+	position: fixed
+	right: 0
+	bottom: 0
+	height: 100%
+	width: 417px
+	background: white 
+	opacity: 0.99
+	z-index: 1
+	display: flex
+	flex-direction: column
+
+	.titleContainer
+		background-color: #98CEB7
+		width: 100%
+		height: 70px
+		border-bottom: 4px solid $dark_green
+		display: flex
+		flex-direction: row
+		flex-shrink: 0
+		justify-content: center
+		align-items: center
+
+		span
+			text-transform: uppercase
+			font-size: 15px
+			margin: 0px 100px
+			padding: 5px
+
+			&:before
+				padding: 0 15px
+				content: '\e907'
+				font-family: TruequeGamer
+				color: $dark_green
+				font-size: 15px
+				
+		button.closeButton
+			width: 17px
+			height: 17px
+			background-image: url(img/x.png)
+			background-color: transparent
+			background-position: center center
+			background-repeat: no-repeat
+			border: 0
+			margin: 0
+
+	ul, .chatMessages
+		display: flex
+		flex-direction: column
+		flex-grow: 1
+		margin: 0
+		overflow-x: hidden
+		overflow-y: scroll
+		padding: 0
+
+		li
+			box-sizing: border-box
+			cursor: pointer
+			list-style-type: none			
+			margin: 0
+			border-bottom: 1px solid $green
+			display: flex
+			flex-direction: row
+			flex-shrink: 0
+			flex-wrap: wrap
+			align-items: center
+			justify-content: center
+			padding: 20px 10px
+			transition: background-color 150ms
+			width: 100%			
+
+			figure
+				width: 60px
+				height: 60px
+				border-radius: 30px
+				overflow: hidden
+				margin: 0
+				padding: 0
+				box-sizing: border-box
+
+			.content 
+				width: 270px
+				margin: 0 20px
+				display: flex
+				flex-direction: row
+				justify-content: center
+				align-items: center
+				flex-wrap: wrap
+
+				.name
+					text-transform: capitalize
+					color: $darker_green
+					font-size: $15px
+					flex-grow: 1
+					margin: 0 0 10px 0
+				
+				.time
+					font-size: 12px
+					color: $green
+					margin: 0 0 10px 0
+
+				.messageText
+					display: block
+					font-size: 11px
+					transition: color 150ms
+
+			&:hover
+				background-color: $dark_green
+
+				.messageText
+					color: white
+
+			&.unread
+				.messageText
+					color: $red
+				 
+				&:hover
+					.messageText
+						color: white
+	
+	.searchArea, .inputArea
+		background-color: $dark_green
+		box-sizing: border-box
+		display: flex
+		flex-direction: row
+		justify-content: center
+		flex-shrink: 0
+		align-items: center
+		height: 70px
+		margin: 0
+		padding: 10px 25px
+		width: 100%
+
+		input
+			flex-grow: 1
+			color: white
+			background-color: transparent
+			transition: all 150ms
+
+			&:focus,&:hover
+				background-color: white
+				color: $dark_green
+
+		.searchChatButton
+			width: 40px
+			height: 40px
+			background-color: $green
+			border: 0px
+			border-radius: 20px
+			margin-left: 20px
+
+			&:before
+				color: $darker_green
+				content: '\e908'
+
+.singleChat
+	position: absolute
+	height: 100%
+	width: 416px
+	bottom: 0;
+	left: -420px
+	background-color: white
+	display: flex
+	flex-direction: column
+
+	.inputArea
+		position: relative
+		bottom: 0
+
+	ul
+		&.chatMessages
+			background-color: $gray
+			height: 100%
+			flex-direction: column
+			padding: 0px 10px
+
+			li, li:hover
+				flex-direction: row
+				flex-grow: 0
+				justify-content: flex-start
+				border: 0
+				background-color: transparent
+				cursor: default
+				padding: 5px
+				align-items: flex-start
+
+				figure
+					margin: 0
+					width: 40px
+					height: 40px
+					border-radius: 20px
+
+				.message
+					background-color: white
+					border-radius: 5px
+					color: $dark_green
+					padding: 15px 30px
+					font-size: 12px
+					max-width: 260px
+					margin-left: 20px
+					position: relative
+
+					&:before
+						display: inline-block
+						width: 10px
+						height: 10px
+						position: absolute
+						top: 15px
+						left: -10px
+						content: ''
+						border-top: 5px transparent solid
+						border-bottom: 5px transparent solid
+						border-right: 10px white solid
+						box-sizing: border-box
+
+				.time
+					color: $dark_green
+					display: block
+					width: 100%
+					flex-shrink: 0
+					flex-grow: 1
+					font-size: 10px
+					text-align: right
+					margin: 5px 0px
+
+				&.own
+					justify-content: flex-end
+
+					figure
+						display: none
+
+					.message
+						background-color: $dark_green
+						color: white
+						max-width: inherit
+
+						&:before
+							left: inherit
+							right: -10px
+							border-left: 10px solid $dark_green
+							border-right: 0px
 footer
 	border: 0px
-	border-top: 1px solid #009992
+	border-top: 1px solid $dark_green
 	display: flex
 	flex-direction: row
 	justify-content: center
@@ -355,7 +679,7 @@ footer
 			height: 21px
 
 		span
-			color: #E6334C
+			color: $red
 			font-size: 12px
 
 		a
@@ -368,11 +692,17 @@ footer
 		cursor: pointer
 		width:120px
 		height: 40px
-		background-color: #E6334C
+		background-color: $red
 		border: 0px
 		border-radius: 5px
 		font-size: 22px
 		color: white
+
+		&:before
+			font-family: TruequeGamer
+			color: white
+			padding-top: 5px
+			display: inline-block
 
 .decoration
 	position relative
@@ -403,7 +733,7 @@ footer
 .instagramLink, .youtubeLink, .facebookLink, .twitterLink, .pinterestLink
 	width: 40px
 	height: 40px
-	background-color: #009992
+	background-color: $dark_green
 	border-radius: 20px
 	border: 0
 	margin: 20px
@@ -437,12 +767,18 @@ footer
 	filter: FlipV
 
 input[type="text"]
+	border-radius: 3px	
+	border: 1px solid $dark_green
 	outline: none
 	padding: 2px 18px
 	box-sizing: border-box
 	font-size: 15px
-	color: #009992
+	color: $dark_green
+	height: 30px
 
 button
 	cursor: pointer
 	outline: none
+
+.hidden
+	display: none !important

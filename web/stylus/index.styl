@@ -550,10 +550,67 @@ header
 	background-color: white
 	display: flex
 	flex-direction: column
+	flex-grow: 0
 
 	.inputArea
 		position: relative
 		bottom: 0
+		padding: 15px 10px 15px 20px
+		height: auto
+		flex-grow: 0
+		align-items: flex-start
+		
+		.text
+			display: flex
+			align-items: flex-start
+			justify-content: flex-start
+			background-color: white
+			border: 0px
+			flex-grow: 0
+			cursor: text
+			box-sizing: border-box
+			outline: none
+			border-radius: 3px
+			line-height: 25px
+			font-size: 18px
+			padding: 5px 10px
+			box-sizing: border-box
+			max-height: 140px
+			width: 100%
+			overflow-x: hidden
+			overflow-y: scroll
+
+			.content
+				width: 100%
+				display: inline-block
+				outline: none
+
+				*
+					font-size: inherit !important
+					background-color: inherit !important
+					color: inherit !important
+					width: auto !important
+					height: auto !important
+					text-decoration: none !important
+					border: 0 !important
+					margin: 0 !important
+					padding: 0 !important
+					text-transform: none !important
+
+			.hiddenSpan
+				display: none
+
+		button.sendButton
+			background-color: $green
+			border: 0
+			height: 35px
+			padding: 9px
+			border-radius: 3px
+			margin: 0 10px
+			
+			&:before
+				content: 'Send'
+				color: $darker_green
 
 	ul
 		&.chatMessages
@@ -766,7 +823,7 @@ footer
 	transform: scaleX(-1)
 	filter: FlipV
 
-input[type="text"]
+textarea, input[type="text"]
 	border-radius: 3px	
 	border: 1px solid $dark_green
 	outline: none

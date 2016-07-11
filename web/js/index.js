@@ -4,6 +4,7 @@ var searchField = document.getElementsByClassName('searchFieldContainer')[0].get
 var loginLink = document.getElementsByClassName('login')[0];
 var profileLink = document.getElementsByClassName('profileContainer')[0];
 var chatBubble = document.getElementsByClassName('chatBubble')[0];
+var chatInputDiv = document.getElementById('chatInputDiv');
 
 function profileFunction(){
 	loginLink.classList.toggle('hidden');
@@ -41,4 +42,10 @@ profileLink.onclick = function(){
 	profileFunction();
 	chatBubble.classList.add('hidden');
 
+}
+
+chatInputDiv.onpaste = function(e) {
+	e.preventDefault();
+	var text = e.clipboardData.getData("text/plain");
+	document.execCommand("insertHTML", false, text);
 }

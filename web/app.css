@@ -2,6 +2,7 @@
 @import 'font/style.css';
 html {
   height: 100%;
+  overflow-y: scroll;
 }
 body {
   height: 100%;
@@ -13,6 +14,7 @@ body {
   background: radial-gradient(circle, #fff3d7, #e9c699);
   font-family: 'Cabin', sans-serif;
   color: #009992;
+  overflow-y: scroll;
 }
 a {
   font-style: italic;
@@ -1034,10 +1036,111 @@ header .searchButtonContainer .searchButton:before {
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  -o-box-flex: 0;
+  -ms-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex-grow: 0;
+  flex-grow: 0;
 }
 .singleChat .inputArea {
   position: relative;
   bottom: 0;
+  padding: 15px 10px 15px 20px;
+  height: auto;
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  -o-box-flex: 0;
+  -ms-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex-grow: 0;
+  flex-grow: 0;
+  -webkit-box-align: start;
+  -moz-box-align: start;
+  -o-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+.singleChat .inputArea .text {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: start;
+  -moz-box-align: start;
+  -o-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  -o-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  background-color: #fff;
+  border: 0px;
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  -o-box-flex: 0;
+  -ms-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex-grow: 0;
+  flex-grow: 0;
+  cursor: text;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: none;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  line-height: 25px;
+  font-size: 18px;
+  padding: 5px 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  max-height: 140px;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.singleChat .inputArea .text .content {
+  width: 100%;
+  display: inline-block;
+  outline: none;
+}
+.singleChat .inputArea .text .content * {
+  font-size: inherit !important;
+  background-color: inherit !important;
+  color: inherit !important;
+  width: auto !important;
+  height: auto !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-transform: none !important;
+}
+.singleChat .inputArea .text .hiddenSpan {
+  display: none;
+}
+.singleChat .inputArea button.sendButton {
+  background-color: #98ceb7;
+  border: 0;
+  height: 35px;
+  padding: 9px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  margin: 0 10px;
+}
+.singleChat .inputArea button.sendButton:before {
+  content: 'Send';
+  color: #00605b;
 }
 .singleChat ul.chatMessages {
   background-color: #eff4ec;
@@ -1393,6 +1496,7 @@ footer .bugLinksContainer a {
   transform: scaleX(-1);
   filter: FlipV;
 }
+textarea,
 input[type="text"] {
   -webkit-border-radius: 3px;
   border-radius: 3px;

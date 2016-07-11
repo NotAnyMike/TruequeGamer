@@ -388,7 +388,7 @@ header
 
 .chatList
 	position: fixed
-	right: 0
+	right: -420px
 	bottom: 0
 	height: 100%
 	width: 417px
@@ -397,6 +397,12 @@ header
 	z-index: 1
 	display: flex
 	flex-direction: column
+
+	&.out
+		animation: chatOut 300ms ease forwards
+
+	&.in
+		animation: chatIn 300ms ease forwards
 
 	.titleContainer
 		background-color: #98CEB7
@@ -408,6 +414,7 @@ header
 		flex-shrink: 0
 		justify-content: center
 		align-items: center
+		z-index: 2
 
 		span
 			text-transform: uppercase
@@ -440,6 +447,8 @@ header
 		overflow-x: hidden
 		overflow-y: scroll
 		padding: 0
+		background-color: white
+		z-index: 2
 
 		li
 			box-sizing: border-box
@@ -518,6 +527,7 @@ header
 		margin: 0
 		padding: 10px 25px
 		width: 100%
+		z-index: 2
 
 		input
 			flex-grow: 1
@@ -546,11 +556,18 @@ header
 	height: 100%
 	width: 416px
 	bottom: 0;
-	left: -420px
+	left: 0px
 	background-color: white
 	display: flex
 	flex-direction: column
 	flex-grow: 0
+	z-index: 1
+
+	&.out
+		animation: singleChatOut 300ms ease 1 forwards
+		
+	&.in
+		animation: singleChatIn 300ms ease 1 forwards
 
 	.inputArea
 		position: relative
@@ -724,11 +741,14 @@ footer
 		justify-content: center
 		align-items: center
 		flex-grow: 1
-		
+	
 		a
 			min-width: 170px
 			margin: 15px 0
 			text-align: center 
+		
+			&:hover
+				color: $red
 			
 	.bugLinksContainer
 		figure
@@ -795,6 +815,9 @@ footer
 	border: 0
 	margin: 20px
 	color: white
+	
+	&:hover
+		background-color: $red
 
 	&:before
 		font-family: TruequeGamer
@@ -839,3 +862,49 @@ button
 
 .hidden
 	display: none !important
+
+/************* animations *************/
+
+@keyframes singleChatOut {
+	0%{
+		left: -420px
+		visibility: visible
+	}
+	100% {
+		left: 0px
+		visibility: hidden
+	}
+}
+
+@keyframes singleChatIn{
+	0%{
+		left: 0px
+		visibility: hidden
+	}
+	100%{
+		left: -420px
+		visibility: visible
+	}
+}
+
+@keyframes chatOut{
+	0%{
+		right: 0px
+		visibility: visible
+	}
+	100%{
+		right: -420px
+		visibility: hidden
+	}
+}
+
+@keyframes chatIn{
+	0%{
+		right: -420px
+		visibility: hidden
+	}
+	100%{
+		right: 0
+		visiblity: visible
+	}
+}

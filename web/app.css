@@ -695,7 +695,7 @@ header .searchButtonContainer .searchButton:before {
 }
 .chatList {
   position: fixed;
-  right: 0;
+  right: -420px;
   bottom: 0;
   height: 100%;
   width: 417px;
@@ -716,6 +716,20 @@ header .searchButtonContainer .searchButton:before {
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+}
+.chatList.out {
+  -webkit-animation: chatOut 300ms ease forwards;
+  -moz-animation: chatOut 300ms ease forwards;
+  -o-animation: chatOut 300ms ease forwards;
+  -ms-animation: chatOut 300ms ease forwards;
+  animation: chatOut 300ms ease forwards;
+}
+.chatList.in {
+  -webkit-animation: chatIn 300ms ease forwards;
+  -moz-animation: chatIn 300ms ease forwards;
+  -o-animation: chatIn 300ms ease forwards;
+  -ms-animation: chatIn 300ms ease forwards;
+  animation: chatIn 300ms ease forwards;
 }
 .chatList .titleContainer {
   background-color: #98ceb7;
@@ -748,6 +762,7 @@ header .searchButtonContainer .searchButton:before {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
+  z-index: 2;
 }
 .chatList .titleContainer span {
   text-transform: uppercase;
@@ -797,6 +812,8 @@ header .searchButtonContainer .searchButton:before {
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 0;
+  background-color: #fff;
+  z-index: 2;
 }
 .chatList ul li,
 .chatList .chatMessages li {
@@ -977,6 +994,7 @@ header .searchButtonContainer .searchButton:before {
   margin: 0;
   padding: 10px 25px;
   width: 100%;
+  z-index: 2;
 }
 .chatList .searchArea input,
 .chatList .inputArea input {
@@ -1022,7 +1040,7 @@ header .searchButtonContainer .searchButton:before {
   height: 100%;
   width: 416px;
   bottom: 0;
-  left: -420px;
+  left: 0px;
   background-color: #fff;
   display: -webkit-box;
   display: -moz-box;
@@ -1043,6 +1061,21 @@ header .searchButtonContainer .searchButton:before {
   box-flex: 0;
   -webkit-flex-grow: 0;
   flex-grow: 0;
+  z-index: 1;
+}
+.singleChat.out {
+  -webkit-animation: singleChatOut 300ms ease 1 forwards;
+  -moz-animation: singleChatOut 300ms ease 1 forwards;
+  -o-animation: singleChatOut 300ms ease 1 forwards;
+  -ms-animation: singleChatOut 300ms ease 1 forwards;
+  animation: singleChatOut 300ms ease 1 forwards;
+}
+.singleChat.in {
+  -webkit-animation: singleChatIn 300ms ease 1 forwards;
+  -moz-animation: singleChatIn 300ms ease 1 forwards;
+  -o-animation: singleChatIn 300ms ease 1 forwards;
+  -ms-animation: singleChatIn 300ms ease 1 forwards;
+  animation: singleChatIn 300ms ease 1 forwards;
 }
 .singleChat .inputArea {
   position: relative;
@@ -1390,6 +1423,10 @@ footer .bugLinksContainer a {
   margin: 15px 0;
   text-align: center;
 }
+footer .moreLinks a:hover,
+footer .bugLinksContainer a:hover {
+  color: #e6334c;
+}
 footer .bugLinksContainer figure {
   width: 21px;
   height: 21px;
@@ -1461,6 +1498,13 @@ footer .bugLinksContainer a {
   margin: 20px;
   color: #fff;
 }
+.instagramLink:hover,
+.youtubeLink:hover,
+.facebookLink:hover,
+.twitterLink:hover,
+.pinterestLink:hover {
+  background-color: #e6334c;
+}
 .instagramLink:before,
 .youtubeLink:before,
 .facebookLink:before,
@@ -1516,4 +1560,164 @@ button {
 }
 .hidden {
   display: none !important;
+}
+@-moz-keyframes singleChatOut {
+  0% {
+    left: -420px;
+    visibility: visible;
+  }
+  100% {
+    left: 0px;
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes singleChatOut {
+  0% {
+    left: -420px;
+    visibility: visible;
+  }
+  100% {
+    left: 0px;
+    visibility: hidden;
+  }
+}
+@-o-keyframes singleChatOut {
+  0% {
+    left: -420px;
+    visibility: visible;
+  }
+  100% {
+    left: 0px;
+    visibility: hidden;
+  }
+}
+@keyframes singleChatOut {
+  0% {
+    left: -420px;
+    visibility: visible;
+  }
+  100% {
+    left: 0px;
+    visibility: hidden;
+  }
+}
+@-moz-keyframes singleChatIn {
+  0% {
+    left: 0px;
+    visibility: hidden;
+  }
+  100% {
+    left: -420px;
+    visibility: visible;
+  }
+}
+@-webkit-keyframes singleChatIn {
+  0% {
+    left: 0px;
+    visibility: hidden;
+  }
+  100% {
+    left: -420px;
+    visibility: visible;
+  }
+}
+@-o-keyframes singleChatIn {
+  0% {
+    left: 0px;
+    visibility: hidden;
+  }
+  100% {
+    left: -420px;
+    visibility: visible;
+  }
+}
+@keyframes singleChatIn {
+  0% {
+    left: 0px;
+    visibility: hidden;
+  }
+  100% {
+    left: -420px;
+    visibility: visible;
+  }
+}
+@-moz-keyframes chatOut {
+  0% {
+    right: 0px;
+    visibility: visible;
+  }
+  100% {
+    right: -420px;
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes chatOut {
+  0% {
+    right: 0px;
+    visibility: visible;
+  }
+  100% {
+    right: -420px;
+    visibility: hidden;
+  }
+}
+@-o-keyframes chatOut {
+  0% {
+    right: 0px;
+    visibility: visible;
+  }
+  100% {
+    right: -420px;
+    visibility: hidden;
+  }
+}
+@keyframes chatOut {
+  0% {
+    right: 0px;
+    visibility: visible;
+  }
+  100% {
+    right: -420px;
+    visibility: hidden;
+  }
+}
+@-moz-keyframes chatIn {
+  0% {
+    right: -420px;
+    visibility: hidden;
+  }
+  100% {
+    right: 0;
+    visiblity: visible;
+  }
+}
+@-webkit-keyframes chatIn {
+  0% {
+    right: -420px;
+    visibility: hidden;
+  }
+  100% {
+    right: 0;
+    visiblity: visible;
+  }
+}
+@-o-keyframes chatIn {
+  0% {
+    right: -420px;
+    visibility: hidden;
+  }
+  100% {
+    right: 0;
+    visiblity: visible;
+  }
+}
+@keyframes chatIn {
+  0% {
+    right: -420px;
+    visibility: hidden;
+  }
+  100% {
+    right: 0;
+    visiblity: visible;
+  }
 }

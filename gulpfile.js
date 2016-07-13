@@ -16,6 +16,7 @@ gulp.task('stylus-dev', function(){
 	gulp.src('web/layout/stylus/app.styl')
 	.pipe(stylus({use : nib()}))
 	.pipe(gulp.dest('web/layout'))
+	.pipe(gulp.dest('web/react'))
 	.pipe(livereload({start: true}));
 });
 
@@ -33,5 +34,5 @@ gulp.task('react-dev', function(){
 
 gulp.task('w-react', function(){
 	livereload.listen();
-	gulp.watch(['!web/react/js/*.js','web/react/reactFiles/*.js'], ['react-dev']);
+	gulp.watch(['!web/react/js/*.js','web/react/reactFiles/**/*.js'], ['react-dev']);
 });

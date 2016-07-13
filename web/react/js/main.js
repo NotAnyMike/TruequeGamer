@@ -20421,13 +20421,267 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 module.exports = require('./lib/React');
 
 },{"./lib/React":28}],172:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     ReactDOM = require('react-dom');
 
-ReactDOM.render(React.createElement(
-	'h1',
-	null,
-	'Hello, world!'
-), document.getElementById('mainContainer'));
+var MainContainer = require('./components/mainContainer.js');
 
-},{"react":171,"react-dom":2}]},{},[172]);
+ReactDOM.render(React.createElement(MainContainer, null), document.getElementById('mainContainer'));
+
+},{"./components/mainContainer.js":178,"react":171,"react-dom":2}],173:[function(require,module,exports){
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	getInitialState: () => {
+		return {
+			clicked: false
+		};
+	},
+
+	handleClick: function (event, cli = this.state.clicked) {
+		this.setState({
+			clicked: !cli
+		});
+	},
+
+	propTypes: {
+		console: React.PropTypes.oneOf(['ps4', 'ps3', 'xboxone', 'xbox360']).isRequired
+	},
+
+	render: function () {
+		var className = "consoleCheckbox " + this.props.console + (this.state.clicked ? ' checked' : '');
+		return React.createElement(
+			'button',
+			{ className: className, onClick: this.handleClick },
+			React.createElement('div', { className: 'isotype' }),
+			React.createElement('span', { className: 'consoleNameTitle' })
+		);
+	}
+});
+
+},{"react":171}],174:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    ConsoleCheckbox = require('./consoleCheckbox.js');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'section',
+			{ className: 'consoleContainer' },
+			React.createElement(ConsoleCheckbox, { console: 'ps4' }),
+			React.createElement(ConsoleCheckbox, { console: 'xboxone' }),
+			React.createElement(ConsoleCheckbox, { console: 'ps3' }),
+			React.createElement(ConsoleCheckbox, { console: 'xbox360' })
+		);
+	}
+
+});
+
+},{"./consoleCheckbox.js":173,"react":171}],175:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	getInitialState: function () {
+		return {
+			checked: true
+		};
+	},
+
+	propTypes: {
+		title: React.PropTypes.oneOf(['nuevo', 'usado', 'trueque', 'venta']).isRequired
+	},
+
+	clickHandler: function () {
+		this.setState({ checked: !this.state.checked });
+	},
+
+	render: function () {
+		var className = 'extraFilterButton' + (this.state.checked ? ' checked' : '');
+		return React.createElement(
+			'button',
+			{ className: className, onClick: this.clickHandler },
+			React.createElement(
+				'span',
+				null,
+				this.props.title
+			),
+			React.createElement('input', { type: 'checkbox' }),
+			React.createElement('label', null)
+		);
+	}
+});
+
+},{"react":171}],176:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    ExtraFilterButton = require('./extraFilterButton');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'extraFilterContainer' },
+			React.createElement(
+				'section',
+				null,
+				React.createElement(ExtraFilterButton, { title: 'nuevo' }),
+				React.createElement(ExtraFilterButton, { title: 'usado' })
+			),
+			React.createElement('div', { className: 'listDecorator' }),
+			React.createElement(
+				'section',
+				null,
+				React.createElement(ExtraFilterButton, { title: 'trueque' }),
+				React.createElement(ExtraFilterButton, { title: 'nuevo' })
+			),
+			React.createElement('div', { className: 'listDecorator' }),
+			React.createElement(
+				'section',
+				{ className: 'locationSection' },
+				React.createElement(
+					'figure',
+					null,
+					React.createElement('img', { src: 'img/col.png', alt: '' })
+				),
+				React.createElement(
+					'button',
+					{ className: 'cityButton' },
+					'Bogotá'
+				)
+			)
+		);
+	}
+
+});
+
+},{"./extraFilterButton":175,"react":171}],177:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    ConsoleContainer = require('./consoleContainer.js'),
+    ExtraFilterContainer = require('./extraFilterContainer.js');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'filterMainContainer' },
+			React.createElement(ConsoleContainer, null),
+			React.createElement(ExtraFilterContainer, null)
+		);
+	}
+
+});
+
+},{"./consoleContainer.js":174,"./extraFilterContainer.js":176,"react":171}],178:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    SearchField = require('./searchField.js'),
+    FilterMainContainer = require('./filterMainContainer.js'),
+    SearchButton = require('./searchButton.js');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'mainContainer' },
+			React.createElement(SearchField, null),
+			React.createElement(FilterMainContainer, null),
+			React.createElement(SearchButton, null)
+		);
+	}
+
+});
+
+},{"./filterMainContainer.js":177,"./searchButton.js":179,"./searchField.js":180,"react":171}],179:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'dot-decorator arrow-decorator searchButtonSection' },
+			React.createElement(
+				'button',
+				{ className: 'searchButton' },
+				'Buscar'
+			)
+		);
+	}
+
+});
+
+},{"react":171}],180:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'searchFieldContainer' },
+			React.createElement('input', { type: 'text', placeholder: 'Nombre del juego a buscar' }),
+			React.createElement(
+				'ul',
+				{ className: 'hidden' },
+				React.createElement(
+					'li',
+					null,
+					'Resident Evil 4'
+				),
+				React.createElement(
+					'li',
+					null,
+					'Resident Evil 3'
+				),
+				React.createElement(
+					'li',
+					null,
+					'Resident Evil Zero'
+				),
+				React.createElement(
+					'li',
+					null,
+					'Resident Evil 2'
+				)
+			)
+		);
+	}
+});
+
+},{"react":171}]},{},[172]);

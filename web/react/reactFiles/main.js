@@ -1,7 +1,11 @@
+'use strict';
+
 var React = require('react'),
 		ReactDOM = require('react-dom');
 
+var MainContainer = require('./components/mainContainer.js');
+
 ReactDOM.render(
-	<h1>Hello, world!</h1>,
+	<MainContainer />,
 	document.getElementById('mainContainer')
 );

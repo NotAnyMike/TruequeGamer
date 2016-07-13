@@ -110,10 +110,7 @@ header
 	flex-direction: column
 	justify-content: space-between
 	align-items: center
-	
-	div
-		display: inline-block
-	
+		
 	.searchFieldContainer
 		margin: 15px
 		position: relative
@@ -147,202 +144,205 @@ header
 	.filterMainContainer
 		width: 900px
 
-		.consoleContainer
-			width: 100%
-			display: flex
-			flex-direction: row
-			justify-content: space-between
-			margin: 25px 0
+.consoleContainer
+	width: 100%
+	min-width: 900px
+	display: flex
+	flex-direction: row
+	justify-content: space-between
+	margin: 25px 0
 			
-			button.consoleCheckbox
-				width: 222px
-				height: 110px	
-				border: 0px
-				background-color: #00605B
-				display: flex
-				flex-direction: column
-				justify-content: center
-				align-items: center
-				transition: all 300ms
+button.consoleCheckbox
+	width: 222px
+	height: 110px	
+	border: 0px
+	background-color: #00605B
+	display: flex
+	flex-direction: column
+	justify-content: center
+	align-items: center
+	transition: all 300ms
 
-				&:hover
-					.isotype:before
-						color: white
+	&:hover
+		.isotype:before
+			color: white
 
-					.consoleNameTitle:before
-						color: white
+		.consoleNameTitle:before
+			color: white
 
-				.consoleNameTitle:before
-					text-transform: uppercase
-					color: $dark_green
-					font-size: 15px
-					transition: all 300ms
-					padding: 10px 0
+	.consoleNameTitle:before
+		text-transform: uppercase
+		color: $dark_green
+		font-size: 15px
+		transition: all 300ms
+		padding: 10px 0
 
-				&.ps4
-					.isotype:before
-						content: '\e905'
+	&.ps4
+		.isotype:before
+			content: '\e905'
 
-					.consoleNameTitle:before
-						content: 'play station 4'
-						
-				&.ps3
-					.isotype:before
-						content: '\e905'
+		.consoleNameTitle:before
+			content: 'play station 4'
+			
+	&.ps3
+		.isotype:before
+			content: '\e905'
 
-					.consoleNameTitle:before
-						content: 'play station 3'
+		.consoleNameTitle:before
+			content: 'play station 3'
 
-				&.xboxone
-					.isotype:before
-						content: '\e906'
+	&.xboxone
+		.isotype:before
+			content: '\e906'
 
-					.consoleNameTitle:before
-						content: 'xbox one'
+		.consoleNameTitle:before
+			content: 'xbox one'
 
-				&.xbox360
-					.isotype:before
-						content: '\e906'
+	&.xbox360
+		.isotype:before
+			content: '\e906'
 
-					.consoleNameTitle:before
-						content: 'xbox 360'
+		.consoleNameTitle:before
+			content: 'xbox 360'
 
-				.isotype
-					background-repeat: no-repeat
-					background-position: center center
-					display: inline-block
-					width: 30px
-					height: 30px
-					margin: 15px
-						
-					&:before
-						font-family: TruequeGamer
-						font-size: 33px
-						color: $dark_green
-						transition: all 300ms
-						padding: 10px 0
+	.isotype
+		background-repeat: no-repeat
+		background-position: center center
+		display: inline-block
+		width: 30px
+		height: 30px
+		margin: 15px
+			
+		&:before
+			font-family: TruequeGamer
+			font-size: 33px
+			color: $dark_green
+			transition: all 300ms
+			padding: 10px 0
 
-				&.checked
-					background-color: $red
+	&.checked
+		background-color: $red
 
-					.isotype:before, span:before
-						color: white
-						padding: 10px 0px
-						
-					&:hover
-						.isotype:before, span:before
-							opacity: 0.5
+		.isotype:before, span:before
+			color: white
+			padding: 10px 0px
+			
+		&:hover
+			.isotype:before, span:before
+				opacity: 0.5
 
-		.extraFilterContainer
-			margin: 10px 0
+.extraFilterContainer
+	margin: 10px 0
+	display: flex
+	flex-direction: row
+	justify-content: space-between
+	align-items: center
+	min-width: 900px
+	
+	section
+		width: 312px
+		display: flex
+		flex-direction: row
+		justify-content: space-between
+
+		&.locationSection
+			width: 178px
 			display: flex
 			flex-direction: row
 			justify-content: space-between
 			align-items: center
-			
-			section
-				width: 312px
-				display: flex
-				flex-direction: row
-				justify-content: space-between
 
-				&.locationSection
-					width: 178px
-					display: flex
-					flex-direction: row
-					justify-content: space-between
-					align-items: center
+			figure
+				border: solid 3px white
+				border-radius: 14px
+				margin: 0
+				padding: 0
+				width: 23px
+				height: 23px
+				overflow: hidden
+				cursor: pointer
 
-					figure
-						border: solid 3px white
-						border-radius: 14px
-						margin: 0
-						padding: 0
-						width: 23px
-						height: 23px
-						overflow: hidden
-						cursor: pointer
+button.extraFilterButton
+	width: 150px
+	height: 40px
+	background-color: #00605B
+	border: 0px
+	font-size: 15px
+	display: flex
+	justify-content: space-between
+	flex-direction: row
+	padding: 0 13px
+	align-items: center
+	transition: all 300ms
 
-			button.extraFilterButton
-				width: 150px
-				height: 40px
-				background-color: #00605B
-				border: 0px
-				font-size: 15px
-				display: flex
-				justify-content: space-between
-				flex-direction: row
-				padding: 0 13px
-				align-items: center
-				transition: all 300ms
+	span
+		color: $dark_green
+		font-size: 15px
+		margin-left: 13px
+		transition: all 300ms
+		text-transform: capitalize
 
-				span
-					color: $dark_green
-					font-size: 15px
-					margin-left: 13px
-					transition: all 300ms
+	&:hover
+		span
+			color: white
 
-				&:hover
-					span
-						color: white
+	input[type="checkbox"]
+		display: none
 
-				input[type="checkbox"]
-					display: none
+	input[type="checkbox"] 
+		& + label
+			cursor: pointer
+			width: 24px
+			display: inline-block
+			height: 24px
+			border-radius: 0px
+			background-color: $dark_green
+			border: 0
+			margin: 0
+			overflow: hidden
+			transition: all 300ms
 
-				input[type="checkbox"] 
-					& + label
-						cursor: pointer
-						width: 24px
-						display: inline-block
-						height: 24px
-						border-radius: 0px
-						background-color: $dark_green
-						border: 0
-						margin: 0
-						overflow: hidden
-						transition: all 300ms
+		& + label:before
+			margin: 0
+			width: 24px
+			height: 24px
+			position: relative
+			top: -24px
+			left: 0
+			content: '\e902'
+			font-family: TruequeGamer
+			font-size: 22px
+			color: white
+			transition: all 300ms
 
-					& + label:before
-						margin: 0
-						width: 24px
-						height: 24px
-						position: relative
-						top: -24px
-						left: 0
-						content: '\e902'
-						font-family: TruequeGamer
-						font-size: 22px
-						color: white
-						transition: all 300ms
+	&:hover 
+		input[type="checkbox"] + label:before
+			top: 0
+			margin: 0
+			width: 24px
+			height: 24px
+			position: relative
+			left: 0
+			content: '\e902'
+			font-family: TruequeGamer
+			font-size: 22px
+			color: white
 
-				&:hover 
-					input[type="checkbox"] + label:before
-						top: 0
-						margin: 0
-						width: 24px
-						height: 24px
-						position: relative
-						left: 0
-						content: '\e902'
-						font-family: TruequeGamer
-						font-size: 22px
-						color: white
+	&.checked
+		background-color: $red
+		
+		span
+			color: white
 
-				&.checked
-					background-color: $red
-					
-					span
-						color: white
+		input[type="checkbox"] + label
+			background-color: $red
 
-					input[type="checkbox"] + label
-						background-color: $red
+			&:before
+				top: 0px
 
-						&:before
-							top: 0px
-
-				&:hover.checked
-					span, input[type="checkbox"] + label:before
-						opacity: 0.5
+	&:hover.checked
+		span, input[type="checkbox"] + label:before
+			opacity: 0.5
 
 .chatBubble
 	position: fixed

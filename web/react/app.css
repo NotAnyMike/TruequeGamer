@@ -106,27 +106,27 @@ header .isotypeContainer .sloganContainer {
   font-size: 17px;
   margin: 0 0 15px 0;
 }
-header .isotypeContainer .sloganContainer {
+.sloganContainer {
   margin-top: 15px;
 }
-header .isotypeContainer .sloganContainer span {
+.sloganContainer span {
   padding: 2px;
 }
-header .isotypeContainer .sloganContainer span:nth-child(2) {
+.sloganContainer span:nth-child(2) {
   position: relative;
 }
-header .isotypeContainer .sloganContainer span:nth-child(2) img {
+.sloganContainer span:nth-child(2) img {
   position: absolute;
   left: -5px;
   z-index: 1;
 }
-header .login {
+.login {
   margin-top: 80px;
   display: inline-block;
   width: 215px;
   top: 80px;
 }
-header .profileContainer {
+.profileContainer {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -153,7 +153,7 @@ header .profileContainer {
   align-items: center;
   width: 215px;
 }
-header .profileContainer figure {
+.profileContainer figure {
   width: 43px;
   margin: 0;
   height: 43px;
@@ -161,17 +161,17 @@ header .profileContainer figure {
   border-radius: 23px;
   overflow: hidden;
 }
-header .profileContainer span {
+.profileContainer span {
   color: #f29224;
   font-size: 20px;
   border-bottom: 1px solid #009992;
   margin: 20px;
 }
-header .searchButtonContainer {
+.searchHeaderButtonContainer {
   width: 215px;
   top: 0px;
 }
-header .searchButtonContainer div:first-child {
+.searchHeaderButtonContainer div:first-child {
   height: 100px;
   width: 75px;
   background-color: #98ceb7;
@@ -195,14 +195,14 @@ header .searchButtonContainer div:first-child {
   -webkit-align-items: flex-end;
   align-items: flex-end;
 }
-header .searchButtonContainer div:first-child .searchButtonSubContainer {
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer {
   position: relative;
   bottom: 0;
   border-top: 1px solid #009992;
   height: 70px;
   width: 50px;
 }
-header .searchButtonContainer div:nth-child(2) {
+.searchHeaderButtonContainer div:nth-child(2) {
   position: absolute;
   top: 100px;
   height: 20px;
@@ -213,7 +213,7 @@ header .searchButtonContainer div:nth-child(2) {
   border: 37.5px transparent solid;
   border-top: 20px solid #98ceb7;
 }
-header .searchButtonContainer .searchButton {
+.searchHeaderButtonContainer .searchButton {
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -224,7 +224,7 @@ header .searchButtonContainer .searchButton {
   border: none;
   background-color: #009992;
 }
-header .searchButtonContainer .searchButton:before {
+.searchHeaderButtonContainer .searchButton:before {
   content: '\e908';
 }
 .mainContainer {

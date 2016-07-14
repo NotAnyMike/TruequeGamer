@@ -20426,11 +20426,11 @@ module.exports = require('./lib/React');
 var React = require('react'),
     ReactDOM = require('react-dom');
 
-var MainContainer = require('./components/mainContainer.js');
+var Index = require('./components/index.js');
 
-ReactDOM.render(React.createElement(MainContainer, null), document.getElementById('mainContainer'));
+ReactDOM.render(React.createElement(Index, null), document.getElementById('mainContainer'));
 
-},{"./components/mainContainer.js":178,"react":171,"react-dom":2}],173:[function(require,module,exports){
+},{"./components/index.js":180,"react":171,"react-dom":2}],173:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -20599,6 +20599,163 @@ module.exports = React.createClass({
 'use strict';
 
 var React = require('react'),
+    SocialLink = require('./socialLink.js');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'footer',
+			null,
+			React.createElement(
+				'section',
+				{ className: 'moreLinks' },
+				React.createElement(
+					'a',
+					{ href: '#' },
+					'Sobre nosotros'
+				),
+				React.createElement(
+					'a',
+					{ href: '#' },
+					'Contáctanos'
+				)
+			),
+			React.createElement('div', { className: 'footerDecorator' }),
+			React.createElement(
+				'section',
+				{ className: 'socialLinks' },
+				React.createElement(SocialLink, { type: 'instagram' }),
+				React.createElement(SocialLink, { type: 'facebook' }),
+				React.createElement(SocialLink, { type: 'twitter' }),
+				React.createElement(SocialLink, { type: 'twitter' }),
+				React.createElement(SocialLink, { type: 'pinterest' }),
+				React.createElement(
+					'span',
+					null,
+					'www.truequegamer.com. ©2016 Derechos reservados. Bogotá D.C., Colombia.'
+				)
+			),
+			React.createElement('div', { className: 'footerDecorator x-reflexion' }),
+			React.createElement(
+				'section',
+				{ className: 'bugLinksContainer' },
+				React.createElement(
+					'figure',
+					null,
+					React.createElement('img', { src: 'img/bug.png', alt: '' })
+				),
+				React.createElement(
+					'span',
+					null,
+					'Chan, chan, chan, chaaan'
+				),
+				React.createElement(
+					'a',
+					{ href: '' },
+					'Informar bug!'
+				)
+			)
+		);
+	}
+
+});
+
+},{"./socialLink.js":189,"react":171}],179:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    IsotypeContainer = require('./isotypeContainer.js'),
+    ProfileLink = require('./profileLink.js'),
+    SearchButtonHeader = require('./searchButtonHeader.js');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'header',
+			null,
+			React.createElement(SearchButtonHeader, null),
+			React.createElement(IsotypeContainer, null),
+			React.createElement(ProfileLink, null)
+		);
+	}
+
+});
+
+},{"./isotypeContainer.js":182,"./profileLink.js":184,"./searchButtonHeader.js":186,"react":171}],180:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    Header = require('./header.js'),
+    MainContainer = require('./mainContainer.js'),
+    Footer = require('./footer.js');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			null,
+			React.createElement(Header, null),
+			React.createElement(MainContainer, null),
+			React.createElement(Footer, null)
+		);
+	}
+
+});
+
+},{"./footer.js":178,"./header.js":179,"./mainContainer.js":183,"react":171}],181:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'figure',
+			null,
+			React.createElement('img', { className: 'isotype', src: './img/isotype.png' })
+		);
+	}
+
+});
+
+},{"react":171}],182:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    Isotype = require('./isotype.js'),
+    Slogan = require('./slogan.js');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'isotypeContainer' },
+			React.createElement(Isotype, null),
+			React.createElement(Slogan, null)
+		);
+	}
+
+});
+
+},{"./isotype.js":181,"./slogan.js":188,"react":171}],183:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
     SearchField = require('./searchField.js'),
     FilterMainContainer = require('./filterMainContainer.js'),
     SearchButton = require('./searchButton.js');
@@ -20619,7 +20776,49 @@ module.exports = React.createClass({
 
 });
 
-},{"./filterMainContainer.js":177,"./searchButton.js":179,"./searchField.js":180,"react":171}],179:[function(require,module,exports){
+},{"./filterMainContainer.js":177,"./searchButton.js":185,"./searchField.js":187,"react":171}],184:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	getInitialState: function () {
+		return {
+			logged: true
+		};
+	},
+
+	render: function () {
+		var toReturn = React.createElement(
+			'a',
+			{ className: 'login arrow-decorator dot-decorator', href: '#' },
+			'Ingresa con Facebook'
+		);
+		if (this.state.logged) {
+			toReturn = React.createElement(
+				'a',
+				{ href: '#', className: 'profileContainer' },
+				React.createElement(
+					'span',
+					null,
+					'Carlos Mejia'
+				),
+				React.createElement(
+					'figure',
+					null,
+					React.createElement('img', { src: 'img/face.png', alt: '' })
+				)
+			);
+		}
+		return toReturn;
+	}
+
+});
+
+},{"react":171}],185:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -20642,7 +20841,35 @@ module.exports = React.createClass({
 
 });
 
-},{"react":171}],180:[function(require,module,exports){
+},{"react":171}],186:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'searchHeaderButtonContainer' },
+			React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'div',
+					{ className: 'searchButtonSubContainer' },
+					React.createElement('button', { className: 'searchButton' })
+				)
+			),
+			React.createElement('div', null)
+		);
+	}
+
+});
+
+},{"react":171}],187:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -20682,6 +20909,63 @@ module.exports = React.createClass({
 			)
 		);
 	}
+});
+
+},{"react":171}],188:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'sloganContainer' },
+			React.createElement(
+				'span',
+				{ className: 'dot-decorator' },
+				'Intercambiando juegos desde '
+			),
+			React.createElement(
+				'span',
+				null,
+				React.createElement('img', { className: 'crossline', src: './img/crossline.png' }),
+				React.createElement(
+					'span',
+					null,
+					'1993.'
+				)
+			),
+			React.createElement(
+				'span',
+				{ className: 'arrow-decorator' },
+				' 2016'
+			)
+		);
+	}
+
+});
+
+},{"react":171}],189:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	propTypes: {
+		type: React.PropTypes.oneOf(['instagram', 'facebook', 'youtube', 'twitter', 'pinterest']).isRequired
+	},
+
+	render: function () {
+		return React.createElement('a', { className: this.props.type + "Link", href: '#' });
+	}
+
 });
 
 },{"react":171}]},{},[172]);

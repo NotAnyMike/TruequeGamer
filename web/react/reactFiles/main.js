@@ -3,9 +3,9 @@
 var React = require('react'),
 		ReactDOM = require('react-dom');
 
-var MainContainer = require('./components/mainContainer.js');
+var Index = require('./components/index.js');
 
 ReactDOM.render(
-	<MainContainer />,
+	<Index />,
 	document.getElementById('mainContainer')
 );

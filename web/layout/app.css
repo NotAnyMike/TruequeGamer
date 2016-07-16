@@ -261,7 +261,11 @@ header .isotypeContainer .sloganContainer {
   width: 350px;
   height: 30px;
 }
+.mainContainer .searchFieldContainer input[type="text"]:focus + ul {
+  display: block;
+}
 .mainContainer .searchFieldContainer ul {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;

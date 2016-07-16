@@ -21038,17 +21038,22 @@ ReactDOM.render(React.createElement(Index, null), document.getElementById('mainC
 var Dispatcher = require('flux').Dispatcher,
     Constants = require('./constants.js');
 
-//var AppDispatcher = new Dispatcher();
 var AppDispatcher = require('./dispatcher.js');
 
 var Actions = {
 
 	changeFilterState: function (filter, new_status) {
-		console.log('changeFilterState calling');
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.changeFilterState,
-			filter: Constants.filter.not_used,
-			new_status: new_status
+			filter: filter,
+			value: new_status
+		});
+	},
+
+	changeSearchInput: function (text) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.changeSearchInput,
+			value: text
 		});
 	}
 
@@ -21057,30 +21062,36 @@ var Actions = {
 module.exports = Actions;
 
 },{"./constants.js":196,"./dispatcher.js":197,"flux":1}],179:[function(require,module,exports){
-var React = require('react');
+var React = require('react'),
+    Constants = require('../constants.js'),
+    Actions = require('../actions.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	getInitialState: () => {
+	getInitialState: function () {
 		return {
-			clicked: false
+			checked: false
 		};
 	},
 
-	handleClick: function (event, cli = this.state.clicked) {
+	handleClick: function () {
+		var new_state = !this.state.checked;
 		this.setState({
-			clicked: !cli
+			checked: new_state
 		});
+		Actions.changeFilterState(this.props.filterType, new_state);
 	},
 
 	propTypes: {
-		console: React.PropTypes.oneOf(['ps4', 'ps3', 'xboxone', 'xbox360']).isRequired
+		//this porp console must be removed later
+		console: React.PropTypes.oneOf(['ps4', 'ps3', 'xboxone', 'xbox360']).isRequired,
+		filterType: React.PropTypes.oneOf([Constants.filter.ps, Constants.filter.xbox]).isRequired
 	},
 
 	render: function () {
-		var className = "consoleCheckbox " + this.props.console + (this.state.clicked ? ' checked' : '');
+		var className = "consoleCheckbox " + this.props.console + (this.state.checked ? ' checked' : '');
 		return React.createElement(
 			'button',
 			{ className: className, onClick: this.handleClick },
@@ -21090,11 +21101,12 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":176}],180:[function(require,module,exports){
+},{"../actions.js":178,"../constants.js":196,"react":176}],180:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
-    ConsoleCheckbox = require('./consoleCheckbox.js');
+    ConsoleCheckbox = require('./consoleCheckbox.js'),
+    Constants = require('../constants.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -21104,19 +21116,21 @@ module.exports = React.createClass({
 		return React.createElement(
 			'section',
 			{ className: 'consoleContainer' },
-			React.createElement(ConsoleCheckbox, { console: 'ps4' }),
-			React.createElement(ConsoleCheckbox, { console: 'xboxone' }),
-			React.createElement(ConsoleCheckbox, { console: 'ps3' }),
-			React.createElement(ConsoleCheckbox, { console: 'xbox360' })
+			React.createElement(ConsoleCheckbox, { console: 'ps4', filterType: Constants.filter.ps }),
+			React.createElement(ConsoleCheckbox, { console: 'xboxone', filterType: Constants.filter.xbox }),
+			React.createElement(ConsoleCheckbox, { console: 'ps3', filterType: Constants.filter.ps }),
+			React.createElement(ConsoleCheckbox, { console: 'xbox360', filterType: Constants.filter.xbox })
 		);
 	}
 
 });
 
-},{"./consoleCheckbox.js":179,"react":176}],181:[function(require,module,exports){
+},{"../constants.js":196,"./consoleCheckbox.js":179,"react":176}],181:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+    Constants = require('../constants.js'),
+    Actions = require('../actions.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -21128,23 +21142,42 @@ module.exports = React.createClass({
 		};
 	},
 
+	componentDidMount: function () {},
+
 	propTypes: {
-		title: React.PropTypes.oneOf(['nuevo', 'usado', 'trueque', 'venta']).isRequired
+		filterType: React.PropTypes.oneOf([Constants.filter.not_used, Constants.filter.used, Constants.filter.exchange, Constants.filter.to_sell]).isRequired
 	},
 
 	clickHandler: function () {
-		this.setState({ checked: !this.state.checked });
+		var new_state = !this.state.checked;
+		this.setState({ checked: new_state });
+		Actions.changeFilterState(this.props.filterType, new_state);
 	},
 
 	render: function () {
 		var className = 'extraFilterButton' + (this.state.checked ? ' checked' : '');
+		var title = '';
+		switch (this.props.filterType) {
+			case Constants.filter.not_used:
+				title = "nuevo";
+				break;
+			case Constants.filter.used:
+				title = "usado";
+				break;
+			case Constants.filter.exchange:
+				title = "trueque";
+				break;
+			case Constants.filter.to_sell:
+				title = "venta";
+				break;
+		}
 		return React.createElement(
 			'button',
 			{ className: className, onClick: this.clickHandler },
 			React.createElement(
 				'span',
 				null,
-				this.props.title
+				title
 			),
 			React.createElement('input', { type: 'checkbox' }),
 			React.createElement('label', null)
@@ -21152,11 +21185,12 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":176}],182:[function(require,module,exports){
+},{"../actions.js":178,"../constants.js":196,"react":176}],182:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
-    ExtraFilterButton = require('./extraFilterButton');
+    ExtraFilterButton = require('./extraFilterButton'),
+    Constants = require('../constants.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -21169,15 +21203,15 @@ module.exports = React.createClass({
 			React.createElement(
 				'section',
 				null,
-				React.createElement(ExtraFilterButton, { title: 'nuevo' }),
-				React.createElement(ExtraFilterButton, { title: 'usado' })
+				React.createElement(ExtraFilterButton, { filterType: Constants.filter.not_used }),
+				React.createElement(ExtraFilterButton, { filterType: Constants.filter.used })
 			),
 			React.createElement('div', { className: 'listDecorator' }),
 			React.createElement(
 				'section',
 				null,
-				React.createElement(ExtraFilterButton, { title: 'trueque' }),
-				React.createElement(ExtraFilterButton, { title: 'nuevo' })
+				React.createElement(ExtraFilterButton, { filterType: Constants.filter.exchange }),
+				React.createElement(ExtraFilterButton, { filterType: Constants.filter.to_sell })
 			),
 			React.createElement('div', { className: 'listDecorator' }),
 			React.createElement(
@@ -21199,7 +21233,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./extraFilterButton":181,"react":176}],183:[function(require,module,exports){
+},{"../constants.js":196,"./extraFilterButton":181,"react":176}],183:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -21318,6 +21352,7 @@ module.exports = React.createClass({
 
 var React = require('react'),
     SearchStore = require('../stores/searchStore.js'),
+    SuggestionStore = require('../stores/suggestionStore.js'),
     Header = require('./header.js'),
     MainContainer = require('./mainContainer.js'),
     Footer = require('./footer.js'),
@@ -21328,11 +21363,7 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	componentDidMount: function () {
-		console.log('mounting');
-		Actions.changeFilterState(Constants.filter.not_used, true);
-		console.log('mounted correctly');
-	},
+	componentDidMount: function () {},
 
 	componentWillUnmount: function () {},
 
@@ -21348,7 +21379,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../actions.js":178,"../constants.js":196,"../stores/searchStore.js":198,"./footer.js":184,"./header.js":185,"./mainContainer.js":189,"react":176}],187:[function(require,module,exports){
+},{"../actions.js":178,"../constants.js":196,"../stores/searchStore.js":198,"../stores/suggestionStore.js":199,"./footer.js":184,"./header.js":185,"./mainContainer.js":189,"react":176}],187:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -21509,20 +21540,33 @@ module.exports = React.createClass({
 },{"react":176}],193:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+    Actions = require('../actions.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
 
 
+	getInitialState: function () {
+		return { value: '' };
+	},
+
+	_changeHandler: function (e) {
+		var new_value = e.target.value;
+		if (new_value.length > 3) {
+			this.setState({ value: new_value });
+			Actions.changeSearchInput(new_value);
+		};
+	},
+
 	render: function () {
 		return React.createElement(
 			'div',
 			{ className: 'searchFieldContainer' },
-			React.createElement('input', { type: 'text', placeholder: 'Nombre del juego a buscar' }),
+			React.createElement('input', { type: 'text', placeholder: 'Nombre del juego a buscar', onChange: this._changeHandler }),
 			React.createElement(
 				'ul',
-				{ className: 'hidden' },
+				null,
 				React.createElement(
 					'li',
 					null,
@@ -21548,7 +21592,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":176}],194:[function(require,module,exports){
+},{"../actions.js":178,"react":176}],194:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -21609,10 +21653,19 @@ module.exports = React.createClass({
 var Constants = {
 	bogota: 'bogota',
 	actionType: {
-		changeFilterState: 'change_filter_status'
+		changeFilterState: 'change_filter_status',
+		changeSearchInput: 'change_search_input'
+	},
+	eventType: {
+		suggestionsRefresh: 'suggestions_refresh'
 	},
 	filter: {
-		not_used: 'not_used'
+		not_used: 'not_used',
+		used: 'used',
+		exchange: 'exchange',
+		to_sell: 'to_sell',
+		xbox: 'xbox',
+		ps: 'ps'
 	}
 };
 
@@ -21626,15 +21679,13 @@ var AppDispatcher = new Dispatcher();
 module.exports = AppDispatcher;
 
 },{"flux":1}],198:[function(require,module,exports){
-var Dispatcher = require('flux').Dispatcher,
-    EventEmitter = require('events').EventEmitter,
+var EventEmitter = require('events').EventEmitter,
     Constants = require('../constants.js'),
     assign = require('object-assign');
 
-//var AppDispatcher = new Dispatcher();
 var AppDispatcher = require('../dispatcher.js');
 
-var _search = {
+var _store = {
 	text: '',
 	xbox: true,
 	ps: true,
@@ -21645,13 +21696,75 @@ var _search = {
 	city: Constants.bogota
 };
 
-var SearchStore = assign({}, EventEmitter.prototype, {});
+var SearchStore = assign({}, EventEmitter.prototype, {
+
+	changeFilterState: function (filterName, new_state) {
+		switch (filterName) {
+			case Constants.filter.not_used:
+				_store.not_used = new_state;
+				break;
+			case Constants.filter.used:
+				_store.used = new_state;
+				break;
+			case Constants.filter.xbox:
+				_store.xbox = new_state;
+				break;
+			case Constants.filter.ps:
+				_store.ps = new_state;
+				break;
+			case Constants.filter.to_sell:
+				_store.to_sell = new_state;
+				break;
+			case Constants.filter.exchange:
+				_store.exchange = new_state;
+				break;
+		};
+	},
+
+	getFilterState: function (filterName) {
+		var toReturn = false;
+		switch (filterName) {
+			case Constants.filter.not_used:
+				toReturn = _store.not_used;
+				break;
+			case Constants.filter.used:
+				toReturn = _store.used;
+				break;
+			case Constants.filter.xbox:
+				toReturn = _store.xbox;
+				break;
+			case Constants.filter.ps:
+				toReturn = _store.ps;
+				break;
+			case Constants.filter.to_sell:
+				toReturn = _store.to_sell;
+				break;
+			case Constants.filter.exchange:
+				toReturn = _store.exchange;
+				break;
+		};
+
+		return toReturn;
+	},
+
+	changeSearchInput: function (value) {
+		_store.text = value;
+	},
+
+	getStore: function () {
+		return _store;
+	}
+
+});
 
 AppDispatcher.register(function (payload) {
 
 	switch (payload.actionType) {
 		case Constants.actionType.changeFilterState:
-			console.log('The filter ' + payload.filter + '  has changed, its new status is ' + payload.new_status);
+			SearchStore.changeFilterState(payload.filter, payload.value);
+			break;
+		case Constants.actionType.changeSearchInput:
+			SearchStore.changeSearchInput(payload.value);
 			break;
 	};
 
@@ -21660,4 +21773,45 @@ AppDispatcher.register(function (payload) {
 
 module.exports = SearchStore;
 
-},{"../constants.js":196,"../dispatcher.js":197,"events":4,"flux":1,"object-assign":6}]},{},[177]);
+},{"../constants.js":196,"../dispatcher.js":197,"events":4,"object-assign":6}],199:[function(require,module,exports){
+var EventEmitter = require('events').EventEmitter,
+    AppDispatcher = require('../dispatcher'),
+    Constants = require('../constants.js'),
+    assign = require('object-assign');
+
+var _store = {
+	value: '',
+	xbox: true,
+	ps: true,
+	suggestions: ['pokemon Go', 'pokemon X', 'pokemon Y']
+};
+
+var SuggestionStore = assign({}, EventEmitter.prototype, {
+	run: AppDispatcher.register(function (payload) {
+		switch (payload.actionType) {
+			case Constants.actionType.changeSearchInput:
+				//get the list from the server
+				//show the list by calling the event
+				break;
+		}
+		return true;
+	}),
+
+	onSuggestionsRefresh: function () {
+		this.emit(Constants.eventType.suggestionsRefresh);
+	},
+
+	addSuggestionsRefreshListener: function (callback) {
+		this.on(Constants.eventType.suggestionsRefresh, callback);
+	},
+
+	removeSuggestionsRefreshListener: function (callback) {
+		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
+	}
+});
+
+SuggestionStore.run;
+
+module.exports = SuggestionStore;
+
+},{"../constants.js":196,"../dispatcher":197,"events":4,"object-assign":6}]},{},[177]);

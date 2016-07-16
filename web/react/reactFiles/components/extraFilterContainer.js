@@ -1,7 +1,8 @@
 'use strict';
 
 var React = require('react'),
-		ExtraFilterButton = require('./extraFilterButton');
+		ExtraFilterButton = require('./extraFilterButton'),
+		Constants = require('../constants.js');
 
 module.exports = React.createClass({
 
@@ -9,13 +10,13 @@ module.exports = React.createClass({
 		return (
 			<div className="extraFilterContainer">
 				<section>
-					<ExtraFilterButton title="nuevo" />
-					<ExtraFilterButton title="usado" />
+					<ExtraFilterButton filterType={Constants.filter.not_used} />
+					<ExtraFilterButton filterType={Constants.filter.used} />
 				</section>
 				<div className="listDecorator"></div>
 				<section>
-					<ExtraFilterButton title="trueque" />
-					<ExtraFilterButton title="nuevo" />
+					<ExtraFilterButton filterType={Constants.filter.exchange} />
+					<ExtraFilterButton filterType={Constants.filter.to_sell}  />
 				</section>
 				<div className="listDecorator"></div>
 				<section className="locationSection">

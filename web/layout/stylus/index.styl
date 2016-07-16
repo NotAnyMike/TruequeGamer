@@ -118,8 +118,12 @@ header
 		input[type="text"]
 			width: 350px
 			height: 30px
+
+			&:focus + ul
+				display: block
 		
 		ul
+			display: none;
 			position: absolute
 			top: 0
 			left: 0
@@ -140,7 +144,7 @@ header
 				&:hover
 					background-color: $dark_green
 					color: white
-
+					
 	.filterMainContainer
 		width: 900px
 

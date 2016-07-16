@@ -2,6 +2,7 @@
 
 var React = require('react'),
 		SearchStore = require('../stores/searchStore.js'),
+		SuggestionStore = require('../stores/suggestionStore.js'),
 		Header = require('./header.js'),
 		MainContainer = require('./mainContainer.js'),
 		Footer = require('./footer.js'),
@@ -11,9 +12,6 @@ var React = require('react'),
 module.exports = React.createClass({
 
 	componentDidMount: function(){
-		console.log('mounting');
-		Actions.changeFilterState(Constants.filter.not_used, true);
-		console.log('mounted correctly');
 	},
 
 	componentWillUnmount: function(){

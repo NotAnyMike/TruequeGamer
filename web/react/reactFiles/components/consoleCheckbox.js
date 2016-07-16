@@ -1,25 +1,34 @@
-var React = require('react');
+var React = require('react'),
+		Constants = require('../constants.js'),
+		Actions = require('../actions.js');
 
 module.exports = React.createClass({
 
-	getInitialState: ()=>{
+	getInitialState: function(){
 		return {
-			clicked: false
+			checked: false
 		}
 	},
 
-	handleClick: function(event, cli = this.state.clicked){
+	handleClick: function(){
+		var new_state = !this.state.checked;
 		this.setState({
-			clicked: !cli
+			checked: new_state
 		});
+		Actions.changeFilterState(this.props.filterType, new_state);
 	},
 
 	propTypes: {
+		//this porp console must be removed later
 		console: React.PropTypes.oneOf(['ps4', 'ps3', 'xboxone', 'xbox360']).isRequired,
+		filterType: React.PropTypes.oneOf([
+				Constants.filter.ps,
+				Constants.filter.xbox
+		]).isRequired,
 	},
 
 	render: function(){
-		var className = "consoleCheckbox " + this.props.console + (this.state.clicked ? ' checked' : '');
+		var className = "consoleCheckbox " + this.props.console + (this.state.checked ? ' checked' : '');
 		return (
 			<button className={className} onClick={this.handleClick}>
 					<div className="isotype"></div>

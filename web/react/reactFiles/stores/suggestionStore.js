@@ -8,9 +8,6 @@ var _store = {
 		xbox: true,
 		ps: true,
 		suggestions: [
-			'pokemon Go',
-			'pokemon X',
-			'pokemon Y'
 		]
 	};
 
@@ -18,12 +15,23 @@ var SuggestionStore = assign({}, EventEmitter.prototype, {
 	run: AppDispatcher.register(function(payload){
 		switch(payload.actionType){
 			case Constants.actionType.changeSearchInput:
-				//get the list from the server
-				//show the list by calling the event
+				SuggestionStore._onChangeSearchInput(payload.value);
 				break;
 		}
 		return true;
 	}),
+
+	_onChangeSearchInput: function(text){
+		//get the list from the server
+		//for now one let's just add 1 2 and 3 to the text
+		_store.suggestions =  [
+			text + ' 1',
+			text + ' 2',
+			text + ' GO'
+		];
+		//show the list by calling the event
+		this.onSuggestionsRefresh();
+	},
 
 	onSuggestionsRefresh: function(){
 		this.emit(Constants.eventType.suggestionsRefresh);
@@ -35,7 +43,12 @@ var SuggestionStore = assign({}, EventEmitter.prototype, {
 
 	removeSuggestionsRefreshListener: function(callback){
 		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
-	}
+	},
+
+	getSuggestions: function(){
+		return _store.suggestions;
+	},
+
 });
 
 SuggestionStore.run;

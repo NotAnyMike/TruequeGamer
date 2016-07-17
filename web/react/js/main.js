@@ -21042,11 +21042,11 @@ var AppDispatcher = require('./dispatcher.js');
 
 var Actions = {
 
-	changeFilterState: function (filter, new_status) {
+	changeFilterState: function (filter, value) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.changeFilterState,
 			filter: filter,
-			value: new_status
+			value: value
 		});
 	},
 
@@ -21541,21 +21541,36 @@ module.exports = React.createClass({
 'use strict';
 
 var React = require('react'),
-    Actions = require('../actions.js');
+    Actions = require('../actions.js'),
+    SuggestionStore = require('../stores/suggestionStore.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
 
 
 	getInitialState: function () {
-		return { value: '' };
+		return {
+			value: '',
+			suggestions: []
+		};
+	},
+
+	componentDidMount: function () {
+		SuggestionStore.addSuggestionsRefreshListener(this._onSuggestionRefresh);
+	},
+
+	_onSuggestionRefresh: function () {
+		var suggestions = SuggestionStore.getSuggestions();
+		this.setState({ suggestions: suggestions });
 	},
 
 	_changeHandler: function (e) {
 		var new_value = e.target.value;
+		this.setState({ value: new_value });
 		if (new_value.length > 3) {
-			this.setState({ value: new_value });
 			Actions.changeSearchInput(new_value);
+		} else {
+			this.setState({ suggestions: [] });
 		};
 	},
 
@@ -21567,32 +21582,19 @@ module.exports = React.createClass({
 			React.createElement(
 				'ul',
 				null,
-				React.createElement(
-					'li',
-					null,
-					'Resident Evil 4'
-				),
-				React.createElement(
-					'li',
-					null,
-					'Resident Evil 3'
-				),
-				React.createElement(
-					'li',
-					null,
-					'Resident Evil Zero'
-				),
-				React.createElement(
-					'li',
-					null,
-					'Resident Evil 2'
-				)
+				this.state.suggestions.map(function (element) {
+					return React.createElement(
+						'li',
+						null,
+						element
+					);
+				})
 			)
 		);
 	}
 });
 
-},{"../actions.js":178,"react":176}],194:[function(require,module,exports){
+},{"../actions.js":178,"../stores/suggestionStore.js":199,"react":176}],194:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -21783,19 +21785,26 @@ var _store = {
 	value: '',
 	xbox: true,
 	ps: true,
-	suggestions: ['pokemon Go', 'pokemon X', 'pokemon Y']
+	suggestions: []
 };
 
 var SuggestionStore = assign({}, EventEmitter.prototype, {
 	run: AppDispatcher.register(function (payload) {
 		switch (payload.actionType) {
 			case Constants.actionType.changeSearchInput:
-				//get the list from the server
-				//show the list by calling the event
+				SuggestionStore._onChangeSearchInput(payload.value);
 				break;
 		}
 		return true;
 	}),
+
+	_onChangeSearchInput: function (text) {
+		//get the list from the server
+		//for now one let's just add 1 2 and 3 to the text
+		_store.suggestions = [text + ' 1', text + ' 2', text + ' GO'];
+		//show the list by calling the event
+		this.onSuggestionsRefresh();
+	},
 
 	onSuggestionsRefresh: function () {
 		this.emit(Constants.eventType.suggestionsRefresh);
@@ -21807,7 +21816,12 @@ var SuggestionStore = assign({}, EventEmitter.prototype, {
 
 	removeSuggestionsRefreshListener: function (callback) {
 		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
+	},
+
+	getSuggestions: function () {
+		return _store.suggestions;
 	}
+
 });
 
 SuggestionStore.run;

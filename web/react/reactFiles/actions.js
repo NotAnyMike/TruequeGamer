@@ -5,11 +5,11 @@ var AppDispatcher = require('./dispatcher.js');
 
 var Actions = {
 
-	changeFilterState: function(filter, new_status){
+	changeFilterState: function(filter, value){
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.changeFilterState,
 			filter: filter,
-			value: new_status
+			value: value
 		});
 	},
 

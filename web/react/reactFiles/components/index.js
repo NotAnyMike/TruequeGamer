@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react'),
-		SearchStore = require('../stores/searchStore.js'),
+		AppStore = require('../stores/appStore.js'),
 		SuggestionStore = require('../stores/suggestionStore.js'),
 		Header = require('./header.js'),
 		MainContainer = require('./mainContainer.js'),
@@ -11,12 +11,32 @@ var React = require('react'),
 
 module.exports = React.createClass({
 
+	getInitialState: function(){
+		return ({
+			search: {
+				text: '',
+				xbox: true,
+				ps: true,
+				not_used: true,
+				used: true,
+				exchange: true,
+				to_sell: true,
+				city: Constants.bogota	
+			},
+			user: {
+				logged: false,
+				user: '',
+				pic: ''
+			}
+		});
+	},
+
 	componentDidMount: function(){
-		SearchStore.addSearchButtonClickedListener(this.onSearch);
+		AppStore.addSearchButtonClickedListener(this.onSearch);
 	},
 
 	onSearch: function(){
-		var store = SearchStore.getStore();
+		var store = AppStore.getStore();
 		console.log('title: ' + store.text + ' xbox: ' + store.xbox + ' ps: ' + store.ps + ' not_used: ' + store.not_used + ' used: ' + store.used + ' exchange: ' + store.exchange + ' to_sell: ' + store.to_sell + ' city: ' + store.city);
 	},
 
@@ -26,7 +46,7 @@ module.exports = React.createClass({
 	render: function(){
 		return (
 				<div>
-					<Header />
+					<Header user={this.state.user} />
 					<MainContainer />
 					<Footer />
 				</div>

@@ -21347,7 +21347,7 @@ module.exports = React.createClass({
 			null,
 			React.createElement(SearchButtonHeader, null),
 			React.createElement(IsotypeContainer, null),
-			React.createElement(ProfileLink, null)
+			React.createElement(ProfileLink, { user: this.props.user })
 		);
 	}
 
@@ -21357,7 +21357,7 @@ module.exports = React.createClass({
 'use strict';
 
 var React = require('react'),
-    SearchStore = require('../stores/searchStore.js'),
+    AppStore = require('../stores/appStore.js'),
     SuggestionStore = require('../stores/suggestionStore.js'),
     Header = require('./header.js'),
     MainContainer = require('./mainContainer.js'),
@@ -21369,12 +21369,32 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
+	getInitialState: function () {
+		return {
+			search: {
+				text: '',
+				xbox: true,
+				ps: true,
+				not_used: true,
+				used: true,
+				exchange: true,
+				to_sell: true,
+				city: Constants.bogota
+			},
+			user: {
+				logged: false,
+				user: '',
+				pic: ''
+			}
+		};
+	},
+
 	componentDidMount: function () {
-		SearchStore.addSearchButtonClickedListener(this.onSearch);
+		AppStore.addSearchButtonClickedListener(this.onSearch);
 	},
 
 	onSearch: function () {
-		var store = SearchStore.getStore();
+		var store = AppStore.getStore();
 		console.log('title: ' + store.text + ' xbox: ' + store.xbox + ' ps: ' + store.ps + ' not_used: ' + store.not_used + ' used: ' + store.used + ' exchange: ' + store.exchange + ' to_sell: ' + store.to_sell + ' city: ' + store.city);
 	},
 
@@ -21384,7 +21404,7 @@ module.exports = React.createClass({
 		return React.createElement(
 			'div',
 			null,
-			React.createElement(Header, null),
+			React.createElement(Header, { user: this.state.user }),
 			React.createElement(MainContainer, null),
 			React.createElement(Footer, null)
 		);
@@ -21392,7 +21412,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../actions.js":178,"../constants.js":196,"../stores/searchStore.js":198,"../stores/suggestionStore.js":199,"./footer.js":184,"./header.js":185,"./mainContainer.js":189,"react":176}],187:[function(require,module,exports){
+},{"../actions.js":178,"../constants.js":196,"../stores/appStore.js":198,"../stores/suggestionStore.js":199,"./footer.js":184,"./header.js":185,"./mainContainer.js":189,"react":176}],187:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -21466,9 +21486,17 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	getInitialState: function () {
+	propsType: {
+		User: React.PropTypes.object.isRequired
+	},
+
+	getDefaultProps: function () {
 		return {
-			logged: true
+			user: {
+				logged: false,
+				user: '',
+				pic: ''
+			}
 		};
 	},
 
@@ -21478,7 +21506,7 @@ module.exports = React.createClass({
 			{ className: 'login arrow-decorator dot-decorator', href: '#' },
 			'Ingresa con Facebook'
 		);
-		if (this.state.logged) {
+		if (this.props.user.logged) {
 			toReturn = React.createElement(
 				'a',
 				{ href: '#', className: 'profileContainer' },
@@ -21603,7 +21631,7 @@ module.exports = React.createClass({
 				this.state.suggestions.map(function (element) {
 					return React.createElement(
 						'li',
-						null,
+						{ key: element },
 						element
 					);
 				})
@@ -21708,14 +21736,21 @@ var EventEmitter = require('events').EventEmitter,
 var AppDispatcher = require('../dispatcher.js');
 
 var _store = {
-	text: '',
-	xbox: true,
-	ps: true,
-	not_used: true,
-	used: true,
-	exchange: true,
-	to_sell: true,
-	city: Constants.bogota
+	search: {
+		text: '',
+		xbox: true,
+		ps: true,
+		not_used: true,
+		used: true,
+		exchange: true,
+		to_sell: true,
+		city: Constants.bogota
+	},
+	user: {
+		logged: false,
+		user: '',
+		pic: ''
+	}
 };
 
 var SearchStore = assign({}, EventEmitter.prototype, {
@@ -21723,22 +21758,22 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 	changeFilterState: function (filterName, new_state) {
 		switch (filterName) {
 			case Constants.filter.not_used:
-				_store.not_used = new_state;
+				_store.searchnot_used = new_state;
 				break;
 			case Constants.filter.used:
-				_store.used = new_state;
+				_store.searchused = new_state;
 				break;
 			case Constants.filter.xbox:
-				_store.xbox = new_state;
+				_store.searchxbox = new_state;
 				break;
 			case Constants.filter.ps:
-				_store.ps = new_state;
+				_store.searchps = new_state;
 				break;
 			case Constants.filter.to_sell:
-				_store.to_sell = new_state;
+				_store.searchto_sell = new_state;
 				break;
 			case Constants.filter.exchange:
-				_store.exchange = new_state;
+				_store.searchexchange = new_state;
 				break;
 		};
 	},
@@ -21747,22 +21782,22 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 		var toReturn = false;
 		switch (filterName) {
 			case Constants.filter.not_used:
-				toReturn = _store.not_used;
+				toReturn = _store.searchnot_used;
 				break;
 			case Constants.filter.used:
-				toReturn = _store.used;
+				toReturn = _store.searchused;
 				break;
 			case Constants.filter.xbox:
-				toReturn = _store.xbox;
+				toReturn = _store.searchxbox;
 				break;
 			case Constants.filter.ps:
-				toReturn = _store.ps;
+				toReturn = _store.searchps;
 				break;
 			case Constants.filter.to_sell:
-				toReturn = _store.to_sell;
+				toReturn = _store.searchto_sell;
 				break;
 			case Constants.filter.exchange:
-				toReturn = _store.exchange;
+				toReturn = _store.searchexchange;
 				break;
 		};
 
@@ -21770,7 +21805,7 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 	},
 
 	changeSearchInput: function (value) {
-		_store.text = value;
+		_store.searchtext = value;
 	},
 
 	searchButtonClicked: function () {

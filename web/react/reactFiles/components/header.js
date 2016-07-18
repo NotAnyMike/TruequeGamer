@@ -12,7 +12,7 @@ module.exports = React.createClass({
 				<header>
 					<SearchButtonHeader />
 					<IsotypeContainer />
-					<ProfileLink />
+					<ProfileLink user={this.props.user}/>
 				</header>
 		);
 	},

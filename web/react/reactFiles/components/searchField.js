@@ -38,7 +38,7 @@ module.exports = React.createClass({
 							<input type="text" placeholder="Nombre del juego a buscar" onChange={this._changeHandler}/>
 							<ul>
 								{this.state.suggestions.map(function(element){
-										return <li>{element}</li>;
+										return <li key={element}>{element}</li>;
 								})}
 							</ul>
 			</div>

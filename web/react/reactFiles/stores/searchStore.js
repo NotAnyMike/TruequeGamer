@@ -64,16 +64,27 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 		};
 
 		return toReturn;
-
 	},
 
 	changeSearchInput: function(value){
 		_store.text = value;	
 	},
 
+	searchButtonClicked: function(){
+		this.emit(Constants.eventType.search);	
+	},
+
+	addSearchButtonClickedListener: function(callback){
+		this.on(Constants.eventType.search, callback);
+	},
+	
+	removeSearchButtonClickedListener: function(callback){
+		this.removeListener(callback);
+	},
+
 	getStore: function(){
 		return _store;
-	}
+	},
 
 });
 
@@ -85,6 +96,9 @@ AppDispatcher.register(function(payload){
 			break;
 		case Constants.actionType.changeSearchInput:
 			SearchStore.changeSearchInput(payload.value);
+			break;
+		case Constants.actionType.searchButtonClicked:
+			SearchStore.searchButtonClicked();
 			break;
 	};
 

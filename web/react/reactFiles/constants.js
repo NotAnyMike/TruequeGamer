@@ -3,9 +3,11 @@ var Constants = {
 	actionType: {
 		changeFilterState: 'change_filter_status',
 		changeSearchInput: 'change_search_input',
+		searchButtonClicked: 'change_button_clicked',
 	},
 	eventType: {
-		suggestionsRefresh: 'suggestions_refresh'
+		suggestionsRefresh: 'suggestions_refresh',
+		search: 'search',
 	},
 	filter: {
 		not_used: 'not_used',

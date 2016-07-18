@@ -21055,6 +21055,12 @@ var Actions = {
 			actionType: Constants.actionType.changeSearchInput,
 			value: text
 		});
+	},
+
+	searchButtonClicked: function () {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.searchButtonClicked
+		});
 	}
 
 };
@@ -21363,7 +21369,14 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	componentDidMount: function () {},
+	componentDidMount: function () {
+		SearchStore.addSearchButtonClickedListener(this.onSearch);
+	},
+
+	onSearch: function () {
+		var store = SearchStore.getStore();
+		console.log('title: ' + store.text + ' xbox: ' + store.xbox + ' ps: ' + store.ps + ' not_used: ' + store.not_used + ' used: ' + store.used + ' exchange: ' + store.exchange + ' to_sell: ' + store.to_sell + ' city: ' + store.city);
+	},
 
 	componentWillUnmount: function () {},
 
@@ -21489,7 +21502,8 @@ module.exports = React.createClass({
 },{"react":176}],191:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+    Actions = require('../actions.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -21501,15 +21515,19 @@ module.exports = React.createClass({
 			{ className: 'dot-decorator arrow-decorator searchButtonSection' },
 			React.createElement(
 				'button',
-				{ className: 'searchButton' },
+				{ className: 'searchButton', onClick: this._clickHandler },
 				'Buscar'
 			)
 		);
+	},
+
+	_clickHandler: function () {
+		Actions.searchButtonClicked();
 	}
 
 });
 
-},{"react":176}],192:[function(require,module,exports){
+},{"../actions.js":178,"react":176}],192:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -21656,10 +21674,12 @@ var Constants = {
 	bogota: 'bogota',
 	actionType: {
 		changeFilterState: 'change_filter_status',
-		changeSearchInput: 'change_search_input'
+		changeSearchInput: 'change_search_input',
+		searchButtonClicked: 'change_button_clicked'
 	},
 	eventType: {
-		suggestionsRefresh: 'suggestions_refresh'
+		suggestionsRefresh: 'suggestions_refresh',
+		search: 'search'
 	},
 	filter: {
 		not_used: 'not_used',
@@ -21753,6 +21773,18 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 		_store.text = value;
 	},
 
+	searchButtonClicked: function () {
+		this.emit(Constants.eventType.search);
+	},
+
+	addSearchButtonClickedListener: function (callback) {
+		this.on(Constants.eventType.search, callback);
+	},
+
+	removeSearchButtonClickedListener: function (callback) {
+		this.removeListener(callback);
+	},
+
 	getStore: function () {
 		return _store;
 	}
@@ -21767,6 +21799,9 @@ AppDispatcher.register(function (payload) {
 			break;
 		case Constants.actionType.changeSearchInput:
 			SearchStore.changeSearchInput(payload.value);
+			break;
+		case Constants.actionType.searchButtonClicked:
+			SearchStore.searchButtonClicked();
 			break;
 	};
 

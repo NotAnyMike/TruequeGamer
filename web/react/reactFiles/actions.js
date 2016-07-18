@@ -18,6 +18,12 @@ var Actions = {
 			actionType: Constants.actionType.changeSearchInput,
 			value: text
 		});
+	},
+
+	searchButtonClicked: function(){
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.searchButtonClicked
+		});
 	}
 
 };

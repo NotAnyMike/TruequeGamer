@@ -12,6 +12,12 @@ var React = require('react'),
 module.exports = React.createClass({
 
 	componentDidMount: function(){
+		SearchStore.addSearchButtonClickedListener(this.onSearch);
+	},
+
+	onSearch: function(){
+		var store = SearchStore.getStore();
+		console.log('title: ' + store.text + ' xbox: ' + store.xbox + ' ps: ' + store.ps + ' not_used: ' + store.not_used + ' used: ' + store.used + ' exchange: ' + store.exchange + ' to_sell: ' + store.to_sell + ' city: ' + store.city);
 	},
 
 	componentWillUnmount: function(){

@@ -9,6 +9,8 @@ var React = require('react'),
 		Actions = require('../actions.js'),
 		Constants = require('../constants.js');
 
+var Link = require('react-router').Link;
+
 module.exports = React.createClass({
 
 	getInitialState: function(){
@@ -49,6 +51,7 @@ module.exports = React.createClass({
 					<Header user={this.state.user} />
 					<MainContainer />
 					<Footer />
+					<Link to='/contactUs'>hola</Link>
 				</div>
 		);
 	},

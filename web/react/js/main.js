@@ -26484,7 +26484,8 @@ module.exports = React.createClass({
 });
 
 },{"../constants.js":260,"./consoleCheckbox.js":242,"react":239}],244:[function(require,module,exports){
-var React = require('react');
+var React = require('react'),
+    Link = require('react-router').Link;
 
 var ContactUs = React.createClass({
 	displayName: 'ContactUs',
@@ -26492,9 +26493,9 @@ var ContactUs = React.createClass({
 
 	render: function () {
 		return React.createElement(
-			'a',
-			null,
-			'contact us page'
+			Link,
+			{ to: '/' },
+			'go home'
 		);
 	}
 
@@ -26502,7 +26503,7 @@ var ContactUs = React.createClass({
 
 module.exports = ContactUs;
 
-},{"react":239}],245:[function(require,module,exports){
+},{"react":239,"react-router":37}],245:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26779,12 +26780,7 @@ module.exports = React.createClass({
 			null,
 			React.createElement(Header, { user: this.state.user }),
 			React.createElement(MainContainer, null),
-			React.createElement(Footer, null),
-			React.createElement(
-				Link,
-				{ to: '/contactUs' },
-				'hola'
-			)
+			React.createElement(Footer, null)
 		);
 	}
 

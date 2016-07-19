@@ -51,7 +51,6 @@ module.exports = React.createClass({
 					<Header user={this.state.user} />
 					<MainContainer />
 					<Footer />
-					<Link to='/contactUs'>hola</Link>
 				</div>
 		);
 	},

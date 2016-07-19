@@ -1,10 +1,11 @@
-var React = require('react');
+var React = require('react'),
+		Link = require('react-router').Link;
 
 var ContactUs = React.createClass({
 	
 	render: function(){
 		return (
-			<a>contact us page</a>
+				<Link to="/">go home</Link>
 		);
 	}
 

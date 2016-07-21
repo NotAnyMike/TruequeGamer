@@ -9,13 +9,14 @@ var Link = require('react-router').Link;
 var browserHistory = require('react-router').browserHistory;
 
 var Index = require('./components/index.js'),
-		ContactUs = require('./components/contactUs.js');
+		ContactUs = require('./components/contactUs.js'),
+		Testing = require('./components/chat.js');
 
 ReactDOM.render(
 	//<Index />,
 	(
 		<Router history={browserHistory}>
-			<Route path="/" component={Index} />
+			<Route path="/" component={Testing} />
 			<Route path="contactUs" component={ContactUs} />
 		</Router>
 	),

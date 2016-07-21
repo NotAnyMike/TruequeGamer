@@ -24,7 +24,15 @@ var Actions = {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.searchButtonClicked
 		});
-	}
+	},
+
+	sendMessage: function(chat_id, value){
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.sendMessage,
+			chat_id: chat_id,
+			value
+		});
+	},
 
 };
 

@@ -723,6 +723,21 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   -ms-flex-direction: column;
   flex-direction: column;
 }
+.chatList .container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100%;
+}
 .chatList.out {
   -webkit-animation: chatOut 300ms ease forwards;
   -moz-animation: chatOut 300ms ease forwards;
@@ -772,8 +787,10 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
 }
 .chatList .titleContainer span {
   text-transform: uppercase;
+  text-align: center;
   font-size: 15px;
-  margin: 0px 100px;
+  margin: 0px 20px;
+  width: 300px;
   padding: 5px;
 }
 .chatList .titleContainer span:before {
@@ -947,6 +964,8 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   -o-transition: color 150ms;
   -ms-transition: color 150ms;
   transition: color 150ms;
+  -webkit-flex-basis: 100%;
+  flex-basis: 100%;
 }
 .chatList ul li:hover,
 .chatList .chatMessages li:hover {

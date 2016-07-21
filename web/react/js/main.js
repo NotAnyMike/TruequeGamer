@@ -26375,18 +26375,19 @@ var Link = require('react-router').Link;
 var browserHistory = require('react-router').browserHistory;
 
 var Index = require('./components/index.js'),
-    ContactUs = require('./components/contactUs.js');
+    ContactUs = require('./components/contactUs.js'),
+    Testing = require('./components/chat.js');
 
 ReactDOM.render(
 //<Index />,
 React.createElement(
 	Router,
 	{ history: browserHistory },
-	React.createElement(Route, { path: '/', component: Index }),
+	React.createElement(Route, { path: '/', component: Testing }),
 	React.createElement(Route, { path: 'contactUs', component: ContactUs })
 ), document.getElementById('mainContainer'));
 
-},{"./components/contactUs.js":244,"./components/index.js":250,"react":239,"react-dom":7,"react-router":37}],241:[function(require,module,exports){
+},{"./components/chat.js":242,"./components/contactUs.js":248,"./components/index.js":254,"react":239,"react-dom":7,"react-router":37}],241:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher,
     Constants = require('./constants.js');
 
@@ -26413,13 +26414,235 @@ var Actions = {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.searchButtonClicked
 		});
+	},
+
+	sendMessage: function (chat_id, value) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.sendMessage,
+			chat_id: chat_id,
+			value
+		});
 	}
 
 };
 
 module.exports = Actions;
 
-},{"./constants.js":260,"./dispatcher.js":261,"flux":1}],242:[function(require,module,exports){
+},{"./constants.js":267,"./dispatcher.js":268,"flux":1}],242:[function(require,module,exports){
+var React = require('react'),
+    ChatContainer = require('./chatContainer.js'),
+    ChatBubble = require('./chatBubble.js'),
+    ChatStore = require('../stores/chatStore.js'),
+    Actions = require('../actions.js');
+
+var Chat = React.createClass({
+	displayName: 'Chat',
+
+
+	getInitialState: function () {
+		var store = ChatStore.getStore();
+		return {
+			store: store,
+			activeChat: store.chats[0].id,
+			visible: false,
+			singleChatVisible: false,
+			textToSend: ''
+		};
+	},
+
+	componentDidMount: function () {
+		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
+	},
+
+	componentWillUnmount: function () {
+		ChatStore.removeOnMessageAddedListerner(this.onMessageAdded);
+	},
+
+	onMessageAdded: function () {
+		this.setState({
+			store: ChatStore.getStore()
+		});
+	},
+
+	showChatFunction: function () {
+		this.setState({
+			visible: true,
+			singleChatVisible: false
+		});
+	},
+
+	closeChatFunction: function () {
+		this.setState({
+			visible: false,
+			singleChatVisible: false
+		});
+	},
+
+	closeSingleChatFunction: function () {
+		this.setState({
+			singleChatVisible: false
+		});
+	},
+
+	openCertainChatFunction: function (id) {
+		//get the position of the chat with id id
+		this.setState({
+			activeChat: id,
+			visible: true,
+			singleChatVisible: true
+		});
+	},
+
+	sendFunction: function () {
+		Actions.sendMessage(this.state.activeChat, this.state.textToSend);
+	},
+
+	onChangeInputChat: function (e) {
+		if (e.keyCode == 13) {
+			this.sendFunction();
+		} else {
+			this.setState({ textToSend: e.target.innerText });
+		}
+	},
+
+	render: function () {
+
+		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
+		return React.createElement(
+			'div',
+			null,
+			React.createElement(ChatBubble, { unread: this.state.store.unread, showChatFunction: this.showChatFunction }),
+			React.createElement(ChatContainer, {
+				visible: this.state.visible,
+				singleChatVisible: this.state.singleChatVisible,
+				chats: this.state.store.chats,
+				activeChat: activeChat,
+				closeSingleChatFunction: this.closeSingleChatFunction,
+				closeChatFunction: this.closeChatFunction,
+				openCertainChatFunction: this.openCertainChatFunction,
+				onChangeInputChat: this.onChangeInputChat,
+				sendFunction: this.sendFunction
+			})
+		);
+	}
+});
+
+module.exports = Chat;
+
+},{"../actions.js":241,"../stores/chatStore.js":270,"./chatBubble.js":243,"./chatContainer.js":244,"react":239}],243:[function(require,module,exports){
+var React = require('react');
+
+ChatBubble = React.createClass({
+	displayName: "ChatBubble",
+
+
+	propTypes: {
+		unread: React.PropTypes.number.isRequired,
+		showChatFunction: React.PropTypes.func.isRequired
+	},
+
+	render: function () {
+		return React.createElement(
+			"section",
+			{ className: "chatBubble", onClick: this.props.showChatFunction },
+			React.createElement("img", { src: "img/chatBubble.png", alt: "" }),
+			React.createElement(
+				"div",
+				{ className: "messagesNumber" },
+				React.createElement(
+					"span",
+					null,
+					this.props.unread
+				)
+			)
+		);
+	}
+
+});
+
+module.exports = ChatBubble;
+
+},{"react":239}],244:[function(require,module,exports){
+var React = require('react'),
+    ChatList = require('./chatList.js'),
+    SingleChat = require('./singleChat.js');
+
+var ChatContainer = React.createClass({
+	displayName: 'ChatContainer',
+
+
+	propTypes: {
+		chats: React.PropTypes.array.isRequired,
+		activeChat: React.PropTypes.number,
+		visible: React.PropTypes.bool.isRequired,
+		singleChatVisible: React.PropTypes.bool.isRequired,
+		closeSingleChatFunction: React.PropTypes.func.isRequired,
+		closeChatFunction: React.PropTypes.func.isRequired,
+		openCertainChatFunction: React.PropTypes.func.isRequired,
+		sendFunction: React.PropTypes.func.isRequired,
+		onChangeInputChat: React.PropTypes.func.isRequired
+	},
+
+	render: function () {
+		return React.createElement(
+			'section',
+			{ id: 'chat', className: "chatList " + (this.props.visible ? "in" : "out") },
+			React.createElement(ChatList, { chats: this.props.chats, closeChatFunction: this.props.closeChatFunction, openCertainChatFunction: this.props.openCertainChatFunction }),
+			React.createElement(SingleChat, { visible: this.props.singleChatVisible, chat: this.props.chats[this.props.activeChat], closeSingleChatFunction: this.props.closeSingleChatFunction, onChangeInputChat: this.props.onChangeInputChat, sendFunction: this.props.sendFunction })
+		);
+	}
+});
+
+module.exports = ChatContainer;
+
+},{"./chatList.js":245,"./singleChat.js":263,"react":239}],245:[function(require,module,exports){
+var React = require('react'),
+    ItemChat = require('./itemChat.js');
+
+var ChatList = React.createClass({
+	displayName: 'ChatList',
+
+
+	propTypes: {
+		chats: React.PropTypes.array.isRequired,
+		closeChatFunction: React.PropTypes.func.isRequired,
+		openCertainChatFunction: React.PropTypes.func.isRequired
+	},
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'container' },
+			React.createElement(
+				'div',
+				{ className: 'titleContainer' },
+				React.createElement(
+					'span',
+					null,
+					'Trueque Chat'
+				),
+				React.createElement('button', { className: 'closeButton', onClick: this.props.closeChatFunction })
+			),
+			React.createElement(
+				'ul',
+				null,
+				this.props.chats.map(function (element) {
+					return React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: element.messages[0], openCertainChatFunction: this.props.openCertainChatFunction });
+				}.bind(this))
+			),
+			React.createElement(
+				'div',
+				{ className: 'searchArea' },
+				React.createElement('input', { type: 'text', placeholder: 'Buscar perfil' }),
+				React.createElement('button', { className: 'searchChatButton searchButton' })
+			)
+		);
+	}
+});
+
+module.exports = ChatList;
+
+},{"./itemChat.js":257,"react":239}],246:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../constants.js'),
     Actions = require('../actions.js');
@@ -26459,7 +26682,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../actions.js":241,"../constants.js":260,"react":239}],243:[function(require,module,exports){
+},{"../actions.js":241,"../constants.js":267,"react":239}],247:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26483,7 +26706,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../constants.js":260,"./consoleCheckbox.js":242,"react":239}],244:[function(require,module,exports){
+},{"../constants.js":267,"./consoleCheckbox.js":246,"react":239}],248:[function(require,module,exports){
 var React = require('react'),
     Link = require('react-router').Link;
 
@@ -26503,7 +26726,7 @@ var ContactUs = React.createClass({
 
 module.exports = ContactUs;
 
-},{"react":239,"react-router":37}],245:[function(require,module,exports){
+},{"react":239,"react-router":37}],249:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26563,7 +26786,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../actions.js":241,"../constants.js":260,"react":239}],246:[function(require,module,exports){
+},{"../actions.js":241,"../constants.js":267,"react":239}],250:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26611,7 +26834,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../constants.js":260,"./extraFilterButton":245,"react":239}],247:[function(require,module,exports){
+},{"../constants.js":267,"./extraFilterButton":249,"react":239}],251:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26633,7 +26856,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./consoleContainer.js":243,"./extraFilterContainer.js":246,"react":239}],248:[function(require,module,exports){
+},{"./consoleContainer.js":247,"./extraFilterContainer.js":250,"react":239}],252:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26701,7 +26924,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./socialLink.js":259,"react":239}],249:[function(require,module,exports){
+},{"./socialLink.js":266,"react":239}],253:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26725,7 +26948,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./isotypeContainer.js":252,"./profileLink.js":254,"./searchButtonHeader.js":256,"react":239}],250:[function(require,module,exports){
+},{"./isotypeContainer.js":256,"./profileLink.js":259,"./searchButtonHeader.js":261,"react":239}],254:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26786,7 +27009,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../actions.js":241,"../constants.js":260,"../stores/appStore.js":262,"../stores/suggestionStore.js":263,"./footer.js":248,"./header.js":249,"./mainContainer.js":253,"react":239,"react-router":37}],251:[function(require,module,exports){
+},{"../actions.js":241,"../constants.js":267,"../stores/appStore.js":269,"../stores/suggestionStore.js":271,"./footer.js":252,"./header.js":253,"./mainContainer.js":258,"react":239,"react-router":37}],255:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -26805,7 +27028,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],252:[function(require,module,exports){
+},{"react":239}],256:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26827,7 +27050,60 @@ module.exports = React.createClass({
 
 });
 
-},{"./isotype.js":251,"./slogan.js":258,"react":239}],253:[function(require,module,exports){
+},{"./isotype.js":255,"./slogan.js":265,"react":239}],257:[function(require,module,exports){
+var React = require('react');
+
+var ItemChat = React.createClass({
+	displayName: "ItemChat",
+
+
+	setInitialState: function () {
+		return {};
+	},
+
+	propTypes: {
+		user: React.PropTypes.object.isRequired,
+		message: React.PropTypes.object.isRequired,
+		openCertainChatFunction: React.PropTypes.func.isRequired,
+		id: React.PropTypes.number.isRequired
+	},
+
+	render: function () {
+		return React.createElement(
+			"li",
+			{ className: this.props.message.read ? "" : "unread", onClick: () => this.props.openCertainChatFunction(this.props.id) },
+			React.createElement(
+				"figure",
+				null,
+				React.createElement("img", { src: "img/" + this.props.user.pic + ".png", alt: "" })
+			),
+			React.createElement(
+				"div",
+				{ className: "content" },
+				React.createElement(
+					"span",
+					{ className: "name" },
+					this.props.user.name
+				),
+				React.createElement(
+					"span",
+					{ className: "time" },
+					this.props.message.time
+				),
+				React.createElement(
+					"span",
+					{ className: "messageText" },
+					this.props.message.value
+				)
+			)
+		);
+	}
+
+});
+
+module.exports = ItemChat;
+
+},{"react":239}],258:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26851,7 +27127,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./filterMainContainer.js":247,"./searchButton.js":255,"./searchField.js":257,"react":239}],254:[function(require,module,exports){
+},{"./filterMainContainer.js":251,"./searchButton.js":260,"./searchField.js":262,"react":239}],259:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -26901,7 +27177,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],255:[function(require,module,exports){
+},{"react":239}],260:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26929,7 +27205,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../actions.js":241,"react":239}],256:[function(require,module,exports){
+},{"../actions.js":241,"react":239}],261:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -26957,7 +27233,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],257:[function(require,module,exports){
+},{"react":239}],262:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27014,7 +27290,105 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../actions.js":241,"../stores/suggestionStore.js":263,"react":239}],258:[function(require,module,exports){
+},{"../actions.js":241,"../stores/suggestionStore.js":271,"react":239}],263:[function(require,module,exports){
+var React = require('react'),
+    SingleMessage = require('./singleMessage.js');
+
+var SingleChat = React.createClass({
+	displayName: 'SingleChat',
+
+
+	propTypes: {
+		visible: React.PropTypes.bool.isRequired,
+		chat: React.PropTypes.object.isRequired,
+		closeSingleChatFunction: React.PropTypes.func.isRequired,
+		sendFunction: React.PropTypes.func.isRequired,
+		onChangeInputChat: React.PropTypes.func.isRequired
+	},
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ id: 'singleChat', className: "singleChat" + (this.props.visible ? " in" : " out") },
+			React.createElement(
+				'div',
+				{ className: 'titleContainer' },
+				React.createElement(
+					'span',
+					null,
+					this.props.chat.user.name
+				),
+				React.createElement('button', { className: 'closeButton', onClick: this.props.closeSingleChatFunction })
+			),
+			React.createElement(
+				'ul',
+				{ className: 'chatMessages' },
+				this.props.chat.messages.map(function (element) {
+					return React.createElement(SingleMessage, { key: element.id, message: element, user: this.props.chat.user });
+				}.bind(this))
+			),
+			React.createElement(
+				'div',
+				{ className: 'inputArea' },
+				React.createElement(
+					'div',
+					{ className: 'text' },
+					React.createElement(
+						'span',
+						{ id: 'chatInputDiv',
+							onInput: this.props.onChangeInputChat,
+							className: 'content',
+							contentEditable: true
+						},
+						'Hola, cómo estás?'
+					)
+				),
+				React.createElement('button', { className: 'sendButton', onClick: this.props.sendFunction })
+			)
+		);
+	}
+});
+
+module.exports = SingleChat;
+
+},{"./singleMessage.js":264,"react":239}],264:[function(require,module,exports){
+var React = require('react');
+
+var SingleMessage = React.createClass({
+	displayName: "SingleMessage",
+
+
+	propTypes: {
+		message: React.PropTypes.object.isRequired,
+		user: React.PropTypes.object.isRequired
+	},
+
+	render: function () {
+		return React.createElement(
+			"li",
+			{ className: this.props.message.mine ? "own" : "" },
+			React.createElement(
+				"figure",
+				null,
+				React.createElement("img", { src: "img/min-" + this.props.user.pic + ".png", alt: "" })
+			),
+			React.createElement(
+				"span",
+				{ className: "message" },
+				this.props.message.value
+			),
+			React.createElement(
+				"span",
+				{ className: "time" },
+				this.props.message.time
+			)
+		);
+	}
+});
+
+module.exports = SingleMessage;
+
+},{"react":239}],265:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27052,7 +27426,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],259:[function(require,module,exports){
+},{"react":239}],266:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27071,17 +27445,20 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],260:[function(require,module,exports){
-var Constants = {
+},{"react":239}],267:[function(require,module,exports){
+const Constants = {
 	bogota: 'bogota',
 	actionType: {
 		changeFilterState: 'change_filter_status',
 		changeSearchInput: 'change_search_input',
-		searchButtonClicked: 'change_button_clicked'
+		searchButtonClicked: 'change_button_clicked',
+		openCertainChat: 'open_certain_chat',
+		sendMessage: 'send_message'
 	},
 	eventType: {
 		suggestionsRefresh: 'suggestions_refresh',
-		search: 'search'
+		search: 'search',
+		messageAdded: 'message_added'
 	},
 	filter: {
 		not_used: 'not_used',
@@ -27095,14 +27472,14 @@ var Constants = {
 
 module.exports = Constants;
 
-},{}],261:[function(require,module,exports){
+},{}],268:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 
 var AppDispatcher = new Dispatcher();
 
 module.exports = AppDispatcher;
 
-},{"flux":1}],262:[function(require,module,exports){
+},{"flux":1}],269:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../constants.js'),
     assign = require('object-assign');
@@ -27219,7 +27596,101 @@ AppDispatcher.register(function (payload) {
 
 module.exports = SearchStore;
 
-},{"../constants.js":260,"../dispatcher.js":261,"events":4,"object-assign":6}],263:[function(require,module,exports){
+},{"../constants.js":267,"../dispatcher.js":268,"events":4,"object-assign":6}],270:[function(require,module,exports){
+var EventEmitter = require('events').EventEmitter,
+    Constants = require('../constants.js'),
+    assign = require('object-assign');
+AppDispatcher = require('../dispatcher.js');
+
+var _store = {
+
+	unread: 3,
+	chats: [{
+		id: 1,
+		read: true,
+		user: {
+			name: 'Sandra Ficci',
+			pic: 'profile'
+		},
+		messages: [{
+			id: 1,
+			value: "No sé si pueda, yo te confirmo mañana, que pena contigo luis.",
+			time: "hace 1h",
+			mine: false
+		}, {
+			id: 2,
+			value: "Ok gracias",
+			time: "hace 30m",
+			mine: true
+		}]
+	}, {
+		id: 3,
+		read: true,
+		user: {
+			name: 'Mike W',
+			pic: 'profile'
+		},
+		messages: [{
+			id: 123,
+			value: "Te compro todo lo que tengas!!.",
+			time: "hace 1h",
+			mine: false,
+			recived: true
+		}, {
+			id: 2,
+			value: "No, jódete, ya no lo vendo :3",
+			time: "hace 30m",
+			mine: true,
+			recived: true
+		}]
+	}]
+};
+
+var ChatStore = assign({}, EventEmitter.prototype, {
+
+	getStore: function () {
+		return _store;
+	},
+
+	_entryPoint: function (payload) {
+		switch (payload.actionType) {
+			case Constants.actionType.sendMessage:
+				ChatStore.sendMessage(payload.chat_id, payload.value);
+				break;
+		}
+	},
+
+	sendMessage: function (chat_id, value) {
+		var index = _store.chats.indexOf(_store.chats.find(element => element.id === chat_id));
+		console.log(index);
+		_store.chats[index].messages.push({
+			id: _store.chats[index].messages[_store.chats[index].messages.length - 1].id + 1,
+			value: value,
+			time: 'ahora mismo',
+			mine: true,
+			recived: false
+		});
+		this.emit(Constants.eventType.messageAdded);
+	},
+
+	addOnMessageAddedListener: function (callback) {
+		this.on(Constants.eventType.messageAdded, callback);
+	},
+
+	removeOnMessageAddedListener: function (callback) {
+		this.removeListener(callback);
+	}
+
+});
+
+AppDispatcher.register(function (payload) {
+	ChatStore._entryPoint(payload);
+	return true;
+});
+
+module.exports = ChatStore;
+
+},{"../constants.js":267,"../dispatcher.js":268,"events":4,"object-assign":6}],271:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     AppDispatcher = require('../dispatcher'),
     Constants = require('../constants.js'),
@@ -27272,4 +27743,4 @@ SuggestionStore.run;
 
 module.exports = SuggestionStore;
 
-},{"../constants.js":260,"../dispatcher":261,"events":4,"object-assign":6}]},{},[240]);
+},{"../constants.js":267,"../dispatcher":268,"events":4,"object-assign":6}]},{},[240]);

@@ -9,18 +9,27 @@ var ChatContainer = React.createClass({
 		activeChat: React.PropTypes.number,
 		visible: React.PropTypes.bool.isRequired,
 		singleChatVisible: React.PropTypes.bool.isRequired,
-		closeSingleChatFunction: React.PropTypes.func.isRequired,
-		closeChatFunction: React.PropTypes.func.isRequired,
-		openCertainChatFunction: React.PropTypes.func.isRequired,
-		sendFunction: React.PropTypes.func.isRequired,
+		closeSingleChatFn: React.PropTypes.func.isRequired,
+		closeChatFn: React.PropTypes.func.isRequired,
+		openCertainChatFn: React.PropTypes.func.isRequired,
+		sendFn: React.PropTypes.func.isRequired,
 		onChangeInputChat: React.PropTypes.func.isRequired,
+		onKeyUpFn: React.PropTypes.func.isRequired,
 	},
 
 	render: function(){
 		return (
 			<section id="chat" className={"chatList "+ (this.props.visible ? "in" : "out")}>
-				<ChatList chats={this.props.chats} closeChatFunction={this.props.closeChatFunction} openCertainChatFunction={this.props.openCertainChatFunction}/>
-				<SingleChat visible={this.props.singleChatVisible} chat={this.props.chats[this.props.activeChat]} closeSingleChatFunction={this.props.closeSingleChatFunction} onChangeInputChat={this.props.onChangeInputChat} sendFunction={this.props.sendFunction}/>
+				<ChatList chats={this.props.chats} closeChatFn={this.props.closeChatFn} openCertainChatFn={this.props.openCertainChatFn}/>
+				<SingleChat 
+					value={this.props.value} 
+					visible={this.props.singleChatVisible} 
+					chat={this.props.chats[this.props.activeChat]} 
+					closeSingleChatFn={this.props.closeSingleChatFn} 
+					onChangeInputChat={this.props.onChangeInputChat} 
+					sendFn={this.props.sendFn} 
+					onKeyUpFn={this.props.onKeyUpFn} 
+				/>
 			</section>
 		)
 	}

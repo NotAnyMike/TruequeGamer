@@ -26464,27 +26464,27 @@ var Chat = React.createClass({
 		});
 	},
 
-	showChatFunction: function () {
+	showChatFn: function () {
 		this.setState({
 			visible: true,
 			singleChatVisible: false
 		});
 	},
 
-	closeChatFunction: function () {
+	closeChatFn: function () {
 		this.setState({
 			visible: false,
 			singleChatVisible: false
 		});
 	},
 
-	closeSingleChatFunction: function () {
+	closeSingleChatFn: function () {
 		this.setState({
 			singleChatVisible: false
 		});
 	},
 
-	openCertainChatFunction: function (id) {
+	openCertainChatFn: function (id) {
 		//get the position of the chat with id id
 		this.setState({
 			activeChat: id,
@@ -26493,35 +26493,46 @@ var Chat = React.createClass({
 		});
 	},
 
-	sendFunction: function () {
-		Actions.sendMessage(this.state.activeChat, this.state.textToSend);
+	sendFn: function () {
+		var text = this.state.textToSend.replace(/\s+/g, '');
+		if (text !== '') {
+			console.log('-' + this.state.textToSend + '-');
+			this.setState({ textToSend: '' });
+			Actions.sendMessage(this.state.activeChat, this.state.textToSend);
+		}
 	},
 
 	onChangeInputChat: function (e) {
+		this.setState({ textToSend: e.target.innerText });
+	},
+
+	onKeyUpFn: function (e) {
 		if (e.keyCode == 13) {
-			this.sendFunction();
-		} else {
-			this.setState({ textToSend: e.target.innerText });
+			console.log('enter');
+			e.stopPropagation;
+			e.preventDefault;
+			this.sendFn();
 		}
 	},
 
 	render: function () {
-
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
 		return React.createElement(
 			'div',
 			null,
-			React.createElement(ChatBubble, { unread: this.state.store.unread, showChatFunction: this.showChatFunction }),
+			React.createElement(ChatBubble, { unread: this.state.store.unread, showChatFn: this.showChatFn }),
 			React.createElement(ChatContainer, {
 				visible: this.state.visible,
 				singleChatVisible: this.state.singleChatVisible,
 				chats: this.state.store.chats,
 				activeChat: activeChat,
-				closeSingleChatFunction: this.closeSingleChatFunction,
-				closeChatFunction: this.closeChatFunction,
-				openCertainChatFunction: this.openCertainChatFunction,
+				closeSingleChatFn: this.closeSingleChatFn,
+				closeChatFn: this.closeChatFn,
+				openCertainChatFn: this.openCertainChatFn,
 				onChangeInputChat: this.onChangeInputChat,
-				sendFunction: this.sendFunction
+				sendFn: this.sendFn,
+				onKeyUpFn: this.onKeyUpFn,
+				value: this.state.textToSend
 			})
 		);
 	}
@@ -26538,13 +26549,13 @@ ChatBubble = React.createClass({
 
 	propTypes: {
 		unread: React.PropTypes.number.isRequired,
-		showChatFunction: React.PropTypes.func.isRequired
+		showChatFn: React.PropTypes.func.isRequired
 	},
 
 	render: function () {
 		return React.createElement(
 			"section",
-			{ className: "chatBubble", onClick: this.props.showChatFunction },
+			{ className: "chatBubble", onClick: this.props.showChatFn },
 			React.createElement("img", { src: "img/chatBubble.png", alt: "" }),
 			React.createElement(
 				"div",
@@ -26576,19 +26587,28 @@ var ChatContainer = React.createClass({
 		activeChat: React.PropTypes.number,
 		visible: React.PropTypes.bool.isRequired,
 		singleChatVisible: React.PropTypes.bool.isRequired,
-		closeSingleChatFunction: React.PropTypes.func.isRequired,
-		closeChatFunction: React.PropTypes.func.isRequired,
-		openCertainChatFunction: React.PropTypes.func.isRequired,
-		sendFunction: React.PropTypes.func.isRequired,
-		onChangeInputChat: React.PropTypes.func.isRequired
+		closeSingleChatFn: React.PropTypes.func.isRequired,
+		closeChatFn: React.PropTypes.func.isRequired,
+		openCertainChatFn: React.PropTypes.func.isRequired,
+		sendFn: React.PropTypes.func.isRequired,
+		onChangeInputChat: React.PropTypes.func.isRequired,
+		onKeyUpFn: React.PropTypes.func.isRequired
 	},
 
 	render: function () {
 		return React.createElement(
 			'section',
 			{ id: 'chat', className: "chatList " + (this.props.visible ? "in" : "out") },
-			React.createElement(ChatList, { chats: this.props.chats, closeChatFunction: this.props.closeChatFunction, openCertainChatFunction: this.props.openCertainChatFunction }),
-			React.createElement(SingleChat, { visible: this.props.singleChatVisible, chat: this.props.chats[this.props.activeChat], closeSingleChatFunction: this.props.closeSingleChatFunction, onChangeInputChat: this.props.onChangeInputChat, sendFunction: this.props.sendFunction })
+			React.createElement(ChatList, { chats: this.props.chats, closeChatFn: this.props.closeChatFn, openCertainChatFn: this.props.openCertainChatFn }),
+			React.createElement(SingleChat, {
+				value: this.props.value,
+				visible: this.props.singleChatVisible,
+				chat: this.props.chats[this.props.activeChat],
+				closeSingleChatFn: this.props.closeSingleChatFn,
+				onChangeInputChat: this.props.onChangeInputChat,
+				sendFn: this.props.sendFn,
+				onKeyUpFn: this.props.onKeyUpFn
+			})
 		);
 	}
 });
@@ -26605,8 +26625,8 @@ var ChatList = React.createClass({
 
 	propTypes: {
 		chats: React.PropTypes.array.isRequired,
-		closeChatFunction: React.PropTypes.func.isRequired,
-		openCertainChatFunction: React.PropTypes.func.isRequired
+		closeChatFn: React.PropTypes.func.isRequired,
+		openCertainChatFn: React.PropTypes.func.isRequired
 	},
 
 	render: function () {
@@ -26621,13 +26641,13 @@ var ChatList = React.createClass({
 					null,
 					'Trueque Chat'
 				),
-				React.createElement('button', { className: 'closeButton', onClick: this.props.closeChatFunction })
+				React.createElement('button', { className: 'closeButton', onClick: this.props.closeChatFn })
 			),
 			React.createElement(
 				'ul',
 				null,
 				this.props.chats.map(function (element) {
-					return React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: element.messages[0], openCertainChatFunction: this.props.openCertainChatFunction });
+					return React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: element.messages[0], openCertainChatFn: this.props.openCertainChatFn });
 				}.bind(this))
 			),
 			React.createElement(
@@ -27064,14 +27084,14 @@ var ItemChat = React.createClass({
 	propTypes: {
 		user: React.PropTypes.object.isRequired,
 		message: React.PropTypes.object.isRequired,
-		openCertainChatFunction: React.PropTypes.func.isRequired,
+		openCertainChatFn: React.PropTypes.func.isRequired,
 		id: React.PropTypes.number.isRequired
 	},
 
 	render: function () {
 		return React.createElement(
 			"li",
-			{ className: this.props.message.read ? "" : "unread", onClick: () => this.props.openCertainChatFunction(this.props.id) },
+			{ className: this.props.message.read ? "" : "unread", onClick: () => this.props.openCertainChatFn(this.props.id) },
 			React.createElement(
 				"figure",
 				null,
@@ -27301,12 +27321,17 @@ var SingleChat = React.createClass({
 	propTypes: {
 		visible: React.PropTypes.bool.isRequired,
 		chat: React.PropTypes.object.isRequired,
-		closeSingleChatFunction: React.PropTypes.func.isRequired,
-		sendFunction: React.PropTypes.func.isRequired,
+		closeSingleChatFn: React.PropTypes.func.isRequired,
+		sendFn: React.PropTypes.func.isRequired,
+		onKeyUpFn: React.PropTypes.func.isRequired,
 		onChangeInputChat: React.PropTypes.func.isRequired
 	},
 
 	render: function () {
+		var text = this.props.value;
+		function createMarkup() {
+			return { __html: text };
+		};
 		return React.createElement(
 			'div',
 			{ id: 'singleChat', className: "singleChat" + (this.props.visible ? " in" : " out") },
@@ -27318,7 +27343,7 @@ var SingleChat = React.createClass({
 					null,
 					this.props.chat.user.name
 				),
-				React.createElement('button', { className: 'closeButton', onClick: this.props.closeSingleChatFunction })
+				React.createElement('button', { className: 'closeButton', onClick: this.props.closeSingleChatFn })
 			),
 			React.createElement(
 				'ul',
@@ -27333,17 +27358,15 @@ var SingleChat = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'text' },
-					React.createElement(
-						'span',
-						{ id: 'chatInputDiv',
-							onInput: this.props.onChangeInputChat,
-							className: 'content',
-							contentEditable: true
-						},
-						'Hola, cómo estás?'
-					)
+					React.createElement('span', { id: 'chatInputDiv',
+						onInput: this.props.onChangeInputChat,
+						onKeyUp: this.props.onKeyUpFn,
+						className: 'content',
+						contentEditable: true,
+						dangerouslySetInnerHTML: createMarkup()
+					})
 				),
-				React.createElement('button', { className: 'sendButton', onClick: this.props.sendFunction })
+				React.createElement('button', { className: 'sendButton', onClick: this.props.sendFn })
 			)
 		);
 	}

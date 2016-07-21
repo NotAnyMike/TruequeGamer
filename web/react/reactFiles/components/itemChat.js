@@ -10,13 +10,13 @@ var ItemChat = React.createClass({
 	propTypes: {
 		user: React.PropTypes.object.isRequired,
 		message: React.PropTypes.object.isRequired,
-		openCertainChatFunction: React.PropTypes.func.isRequired,
+		openCertainChatFn: React.PropTypes.func.isRequired,
 		id: React.PropTypes.number.isRequired,
 	},	
 	
 	render: function(){
 		return (
-			<li className={this.props.message.read ? "" : "unread"} onClick={() => this.props.openCertainChatFunction(this.props.id)} >
+			<li className={this.props.message.read ? "" : "unread"} onClick={() => this.props.openCertainChatFn(this.props.id)} >
 				<figure><img src={"img/" + this.props.user.pic + ".png"} alt="" /></figure>
 				<div className="content">
 					<span className="name">{this.props.user.name}</span>

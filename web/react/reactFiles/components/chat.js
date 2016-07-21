@@ -31,27 +31,27 @@ var Chat = React.createClass({
 		});
 	},
 	
-	showChatFunction: function(){
+	showChatFn: function(){
 		this.setState({
 			visible: true,
 			singleChatVisible: false
 		});
 	},
 
-	closeChatFunction: function(){
+	closeChatFn: function(){
 		this.setState({
 			visible: false,
 			singleChatVisible: false
 		});
 	},
 
-	closeSingleChatFunction: function(){
+	closeSingleChatFn: function(){
 		this.setState({
 			singleChatVisible: false
 		});
 	},
 
-	openCertainChatFunction: function(id){
+	openCertainChatFn: function(id){
 		//get the position of the chat with id id
 		this.setState({
 			activeChat: id,
@@ -60,34 +60,45 @@ var Chat = React.createClass({
 		});
 	},
 
-	sendFunction: function(){
-		Actions.sendMessage(this.state.activeChat, this.state.textToSend);
-	},
-
-	onChangeInputChat: function(e){
-		if(e.keyCode == 13){
-			this.sendFunction();
-		}else{
-			this.setState({textToSend: e.target.innerText});
+	sendFn: function(){
+		var text = this.state.textToSend.replace(/\s+/g, '');
+		if(text !== ''){
+			console.log('-' + this.state.textToSend + '-');
+			this.setState({textToSend: ''});
+			Actions.sendMessage(this.state.activeChat, this.state.textToSend);
 		}
 	},
 
-	render: function(){
-			
+	onChangeInputChat: function(e){
+		this.setState({textToSend: e.target.innerText});
+	},
+
+	onKeyUpFn: function(e){
+		if(e.keyCode == 13){
+			console.log('enter');
+			e.stopPropagation;
+			e.preventDefault;
+			this.sendFn();
+		}
+	},
+
+	render: function(){		
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
 		return(
 			<div>
-				<ChatBubble unread={this.state.store.unread} showChatFunction={this.showChatFunction}/>
+				<ChatBubble unread={this.state.store.unread} showChatFn={this.showChatFn}/>
 				<ChatContainer 
 					visible={this.state.visible} 
 					singleChatVisible={this.state.singleChatVisible} 
 					chats={this.state.store.chats} 
 					activeChat={activeChat} 
-					closeSingleChatFunction={this.closeSingleChatFunction} 
-					closeChatFunction={this.closeChatFunction} 
-					openCertainChatFunction={this.openCertainChatFunction} 
+					closeSingleChatFn={this.closeSingleChatFn} 
+					closeChatFn={this.closeChatFn} 
+					openCertainChatFn={this.openCertainChatFn} 
 					onChangeInputChat={this.onChangeInputChat} 
-					sendFunction={this.sendFunction} 
+					sendFn={this.sendFn} 
+					onKeyUpFn={this.onKeyUpFn} 
+					value={this.state.textToSend} 
 				/>
 			</div>
 		);

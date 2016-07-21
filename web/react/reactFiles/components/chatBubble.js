@@ -4,12 +4,12 @@ ChatBubble = React.createClass({
 	
 	propTypes: {
 		unread: React.PropTypes.number.isRequired,
-		showChatFunction: React.PropTypes.func.isRequired,
+		showChatFn: React.PropTypes.func.isRequired,
 	},
 
 	render: function(){
 		return (			
-			<section className="chatBubble" onClick={this.props.showChatFunction}>
+			<section className="chatBubble" onClick={this.props.showChatFn}>
 				<img src="img/chatBubble.png" alt=""/>
 				<div className="messagesNumber">
 					<span>{this.props.unread}</span>

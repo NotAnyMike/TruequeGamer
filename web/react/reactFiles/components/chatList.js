@@ -5,8 +5,8 @@ var ChatList = React.createClass({
 	
 	propTypes: {
 		chats: React.PropTypes.array.isRequired,
-		closeChatFunction: React.PropTypes.func.isRequired,
-		openCertainChatFunction: React.PropTypes.func.isRequired,
+		closeChatFn: React.PropTypes.func.isRequired,
+		openCertainChatFn: React.PropTypes.func.isRequired,
 	},
 
 	render: function(){
@@ -14,12 +14,12 @@ var ChatList = React.createClass({
 			<div className="container">
 				<div className="titleContainer">
 					<span>Trueque Chat</span>
-					<button className="closeButton" onClick={this.props.closeChatFunction}></button>
+					<button className="closeButton" onClick={this.props.closeChatFn}></button>
 				</div>
 				<ul>
 					{this.props.chats.map(
 							function(element){
-								return (<ItemChat id={element.id} key={element.id} user={element.user} message={element.messages[0]} openCertainChatFunction={this.props.openCertainChatFunction}/>);
+								return (<ItemChat id={element.id} key={element.id} user={element.user} message={element.messages[0]} openCertainChatFn={this.props.openCertainChatFn}/>);
 						}.bind(this))}
 				</ul>
 				<div className="searchArea">

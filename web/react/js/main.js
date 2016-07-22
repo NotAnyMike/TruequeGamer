@@ -26383,7 +26383,7 @@ ReactDOM.render(
 React.createElement(
 	Router,
 	{ history: browserHistory },
-	React.createElement(Route, { path: '/', component: Testing }),
+	React.createElement(Route, { path: '/', component: Index }),
 	React.createElement(Route, { path: 'contactUs', component: ContactUs })
 ), document.getElementById('mainContainer'));
 
@@ -26977,6 +26977,7 @@ var React = require('react'),
     Header = require('./header.js'),
     MainContainer = require('./mainContainer.js'),
     Footer = require('./footer.js'),
+    Chat = require('./chat.js'),
     Actions = require('../actions.js'),
     Constants = require('../constants.js');
 
@@ -26999,7 +27000,7 @@ module.exports = React.createClass({
 				city: Constants.bogota
 			},
 			user: {
-				logged: false,
+				logged: true,
 				user: '',
 				pic: ''
 			}
@@ -27018,18 +27019,23 @@ module.exports = React.createClass({
 	componentWillUnmount: function () {},
 
 	render: function () {
+		var chat;
+		if (this.state.user.logged) {
+			chat = React.createElement(Chat, null);
+		}
 		return React.createElement(
 			'div',
 			null,
 			React.createElement(Header, { user: this.state.user }),
 			React.createElement(MainContainer, null),
-			React.createElement(Footer, null)
+			React.createElement(Footer, null),
+			chat
 		);
 	}
 
 });
 
-},{"../actions.js":241,"../constants.js":267,"../stores/appStore.js":269,"../stores/suggestionStore.js":271,"./footer.js":252,"./header.js":253,"./mainContainer.js":258,"react":239,"react-router":37}],255:[function(require,module,exports){
+},{"../actions.js":241,"../constants.js":267,"../stores/appStore.js":269,"../stores/suggestionStore.js":271,"./chat.js":242,"./footer.js":252,"./header.js":253,"./mainContainer.js":258,"react":239,"react-router":37}],255:[function(require,module,exports){
 'use strict';
 
 var React = require('react');

@@ -16,7 +16,7 @@ ReactDOM.render(
 	//<Index />,
 	(
 		<Router history={browserHistory}>
-			<Route path="/" component={Testing} />
+			<Route path="/" component={Index} />
 			<Route path="contactUs" component={ContactUs} />
 		</Router>
 	),

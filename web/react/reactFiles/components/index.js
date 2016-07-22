@@ -6,6 +6,7 @@ var React = require('react'),
 		Header = require('./header.js'),
 		MainContainer = require('./mainContainer.js'),
 		Footer = require('./footer.js'),
+		Chat = require('./chat.js'),
 		Actions = require('../actions.js'),
 		Constants = require('../constants.js');
 
@@ -26,7 +27,7 @@ module.exports = React.createClass({
 				city: Constants.bogota	
 			},
 			user: {
-				logged: false,
+				logged: true,
 				user: '',
 				pic: ''
 			}
@@ -46,11 +47,16 @@ module.exports = React.createClass({
 	},
 	
 	render: function(){
+		var chat;
+		if(this.state.user.logged) {
+			chat = <Chat />;
+		}
 		return (
 				<div>
 					<Header user={this.state.user} />
 					<MainContainer />
 					<Footer />
+					{chat}
 				</div>
 		);
 	},

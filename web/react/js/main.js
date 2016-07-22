@@ -26387,53 +26387,12 @@ React.createElement(
 	React.createElement(Route, { path: 'contactUs', component: ContactUs })
 ), document.getElementById('mainContainer'));
 
-},{"./components/chat.js":242,"./components/contactUs.js":248,"./components/index.js":254,"react":239,"react-dom":7,"react-router":37}],241:[function(require,module,exports){
-var Dispatcher = require('flux').Dispatcher,
-    Constants = require('./constants.js');
-
-var AppDispatcher = require('./dispatcher.js');
-
-var Actions = {
-
-	changeFilterState: function (filter, value) {
-		AppDispatcher.dispatch({
-			actionType: Constants.actionType.changeFilterState,
-			filter: filter,
-			value: value
-		});
-	},
-
-	changeSearchInput: function (text) {
-		AppDispatcher.dispatch({
-			actionType: Constants.actionType.changeSearchInput,
-			value: text
-		});
-	},
-
-	searchButtonClicked: function () {
-		AppDispatcher.dispatch({
-			actionType: Constants.actionType.searchButtonClicked
-		});
-	},
-
-	sendMessage: function (chat_id, value) {
-		AppDispatcher.dispatch({
-			actionType: Constants.actionType.sendMessage,
-			chat_id: chat_id,
-			value
-		});
-	}
-
-};
-
-module.exports = Actions;
-
-},{"./constants.js":267,"./dispatcher.js":268,"flux":1}],242:[function(require,module,exports){
+},{"./components/chat.js":241,"./components/contactUs.js":247,"./components/index.js":253,"react":239,"react-dom":7,"react-router":37}],241:[function(require,module,exports){
 var React = require('react'),
     ChatContainer = require('./chatContainer.js'),
     ChatBubble = require('./chatBubble.js'),
     ChatStore = require('../stores/chatStore.js'),
-    Actions = require('../actions.js');
+    Actions = require('../utils/actions.js');
 
 var Chat = React.createClass({
 	displayName: 'Chat',
@@ -26496,7 +26455,6 @@ var Chat = React.createClass({
 	sendFn: function () {
 		var text = this.state.textToSend.replace(/\s+/g, '');
 		if (text !== '') {
-			console.log('-' + this.state.textToSend + '-');
 			this.setState({ textToSend: '' });
 			Actions.sendMessage(this.state.activeChat, this.state.textToSend);
 		}
@@ -26508,7 +26466,6 @@ var Chat = React.createClass({
 
 	onKeyUpFn: function (e) {
 		if (e.keyCode == 13) {
-			console.log('enter');
 			e.stopPropagation;
 			e.preventDefault;
 			this.sendFn();
@@ -26540,7 +26497,7 @@ var Chat = React.createClass({
 
 module.exports = Chat;
 
-},{"../actions.js":241,"../stores/chatStore.js":270,"./chatBubble.js":243,"./chatContainer.js":244,"react":239}],243:[function(require,module,exports){
+},{"../stores/chatStore.js":268,"../utils/actions.js":270,"./chatBubble.js":242,"./chatContainer.js":243,"react":239}],242:[function(require,module,exports){
 var React = require('react');
 
 ChatBubble = React.createClass({
@@ -26573,7 +26530,7 @@ ChatBubble = React.createClass({
 
 module.exports = ChatBubble;
 
-},{"react":239}],244:[function(require,module,exports){
+},{"react":239}],243:[function(require,module,exports){
 var React = require('react'),
     ChatList = require('./chatList.js'),
     SingleChat = require('./singleChat.js');
@@ -26615,7 +26572,7 @@ var ChatContainer = React.createClass({
 
 module.exports = ChatContainer;
 
-},{"./chatList.js":245,"./singleChat.js":263,"react":239}],245:[function(require,module,exports){
+},{"./chatList.js":244,"./singleChat.js":262,"react":239}],244:[function(require,module,exports){
 var React = require('react'),
     ItemChat = require('./itemChat.js');
 
@@ -26662,10 +26619,10 @@ var ChatList = React.createClass({
 
 module.exports = ChatList;
 
-},{"./itemChat.js":257,"react":239}],246:[function(require,module,exports){
+},{"./itemChat.js":256,"react":239}],245:[function(require,module,exports){
 var React = require('react'),
-    Constants = require('../constants.js'),
-    Actions = require('../actions.js');
+    Constants = require('../utils/constants.js'),
+    Actions = require('../utils/actions.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -26702,12 +26659,12 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../actions.js":241,"../constants.js":267,"react":239}],247:[function(require,module,exports){
+},{"../utils/actions.js":270,"../utils/constants.js":271,"react":239}],246:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
     ConsoleCheckbox = require('./consoleCheckbox.js'),
-    Constants = require('../constants.js');
+    Constants = require('../utils/constants.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -26726,7 +26683,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../constants.js":267,"./consoleCheckbox.js":246,"react":239}],248:[function(require,module,exports){
+},{"../utils/constants.js":271,"./consoleCheckbox.js":245,"react":239}],247:[function(require,module,exports){
 var React = require('react'),
     Link = require('react-router').Link;
 
@@ -26746,12 +26703,12 @@ var ContactUs = React.createClass({
 
 module.exports = ContactUs;
 
-},{"react":239,"react-router":37}],249:[function(require,module,exports){
+},{"react":239,"react-router":37}],248:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
-    Constants = require('../constants.js'),
-    Actions = require('../actions.js');
+    Constants = require('../utils/constants.js'),
+    Actions = require('../utils/actions.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -26806,12 +26763,12 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../actions.js":241,"../constants.js":267,"react":239}],250:[function(require,module,exports){
+},{"../utils/actions.js":270,"../utils/constants.js":271,"react":239}],249:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
     ExtraFilterButton = require('./extraFilterButton'),
-    Constants = require('../constants.js');
+    Constants = require('../utils/constants.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -26854,7 +26811,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../constants.js":267,"./extraFilterButton":249,"react":239}],251:[function(require,module,exports){
+},{"../utils/constants.js":271,"./extraFilterButton":248,"react":239}],250:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26876,7 +26833,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./consoleContainer.js":247,"./extraFilterContainer.js":250,"react":239}],252:[function(require,module,exports){
+},{"./consoleContainer.js":246,"./extraFilterContainer.js":249,"react":239}],251:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26944,7 +26901,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./socialLink.js":266,"react":239}],253:[function(require,module,exports){
+},{"./socialLink.js":265,"react":239}],252:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26968,7 +26925,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./isotypeContainer.js":256,"./profileLink.js":259,"./searchButtonHeader.js":261,"react":239}],254:[function(require,module,exports){
+},{"./isotypeContainer.js":255,"./profileLink.js":258,"./searchButtonHeader.js":260,"react":239}],253:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26978,8 +26935,9 @@ var React = require('react'),
     MainContainer = require('./mainContainer.js'),
     Footer = require('./footer.js'),
     Chat = require('./chat.js'),
-    Actions = require('../actions.js'),
-    Constants = require('../constants.js');
+    Actions = require('../utils/actions.js'),
+    Constants = require('../utils/constants.js'),
+    Functions = require('../utils/functions.js');
 
 var Link = require('react-router').Link;
 
@@ -27009,6 +26967,7 @@ module.exports = React.createClass({
 
 	componentDidMount: function () {
 		AppStore.addSearchButtonClickedListener(this.onSearch);
+		Functions.startAnalytics();
 	},
 
 	onSearch: function () {
@@ -27035,7 +26994,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../actions.js":241,"../constants.js":267,"../stores/appStore.js":269,"../stores/suggestionStore.js":271,"./chat.js":242,"./footer.js":252,"./header.js":253,"./mainContainer.js":258,"react":239,"react-router":37}],255:[function(require,module,exports){
+},{"../stores/appStore.js":267,"../stores/suggestionStore.js":269,"../utils/actions.js":270,"../utils/constants.js":271,"../utils/functions.js":272,"./chat.js":241,"./footer.js":251,"./header.js":252,"./mainContainer.js":257,"react":239,"react-router":37}],254:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27054,7 +27013,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],256:[function(require,module,exports){
+},{"react":239}],255:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27076,7 +27035,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./isotype.js":255,"./slogan.js":265,"react":239}],257:[function(require,module,exports){
+},{"./isotype.js":254,"./slogan.js":264,"react":239}],256:[function(require,module,exports){
 var React = require('react');
 
 var ItemChat = React.createClass({
@@ -27129,7 +27088,7 @@ var ItemChat = React.createClass({
 
 module.exports = ItemChat;
 
-},{"react":239}],258:[function(require,module,exports){
+},{"react":239}],257:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27153,7 +27112,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./filterMainContainer.js":251,"./searchButton.js":260,"./searchField.js":262,"react":239}],259:[function(require,module,exports){
+},{"./filterMainContainer.js":250,"./searchButton.js":259,"./searchField.js":261,"react":239}],258:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27203,11 +27162,11 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],260:[function(require,module,exports){
+},{"react":239}],259:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
-    Actions = require('../actions.js');
+    Actions = require('../utils/actions.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -27231,7 +27190,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../actions.js":241,"react":239}],261:[function(require,module,exports){
+},{"../utils/actions.js":270,"react":239}],260:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27259,11 +27218,11 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],262:[function(require,module,exports){
+},{"react":239}],261:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
-    Actions = require('../actions.js'),
+    Actions = require('../utils/actions.js'),
     SuggestionStore = require('../stores/suggestionStore.js');
 
 module.exports = React.createClass({
@@ -27316,7 +27275,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../actions.js":241,"../stores/suggestionStore.js":271,"react":239}],263:[function(require,module,exports){
+},{"../stores/suggestionStore.js":269,"../utils/actions.js":270,"react":239}],262:[function(require,module,exports){
 var React = require('react'),
     SingleMessage = require('./singleMessage.js');
 
@@ -27380,7 +27339,7 @@ var SingleChat = React.createClass({
 
 module.exports = SingleChat;
 
-},{"./singleMessage.js":264,"react":239}],264:[function(require,module,exports){
+},{"./singleMessage.js":263,"react":239}],263:[function(require,module,exports){
 var React = require('react');
 
 var SingleMessage = React.createClass({
@@ -27417,7 +27376,7 @@ var SingleMessage = React.createClass({
 
 module.exports = SingleMessage;
 
-},{"react":239}],265:[function(require,module,exports){
+},{"react":239}],264:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27455,7 +27414,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],266:[function(require,module,exports){
+},{"react":239}],265:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27474,43 +27433,16 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],267:[function(require,module,exports){
-const Constants = {
-	bogota: 'bogota',
-	actionType: {
-		changeFilterState: 'change_filter_status',
-		changeSearchInput: 'change_search_input',
-		searchButtonClicked: 'change_button_clicked',
-		openCertainChat: 'open_certain_chat',
-		sendMessage: 'send_message'
-	},
-	eventType: {
-		suggestionsRefresh: 'suggestions_refresh',
-		search: 'search',
-		messageAdded: 'message_added'
-	},
-	filter: {
-		not_used: 'not_used',
-		used: 'used',
-		exchange: 'exchange',
-		to_sell: 'to_sell',
-		xbox: 'xbox',
-		ps: 'ps'
-	}
-};
-
-module.exports = Constants;
-
-},{}],268:[function(require,module,exports){
+},{"react":239}],266:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 
 var AppDispatcher = new Dispatcher();
 
 module.exports = AppDispatcher;
 
-},{"flux":1}],269:[function(require,module,exports){
+},{"flux":1}],267:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
-    Constants = require('../constants.js'),
+    Constants = require('../utils/constants.js'),
     assign = require('object-assign');
 
 var AppDispatcher = require('../dispatcher.js');
@@ -27625,9 +27557,9 @@ AppDispatcher.register(function (payload) {
 
 module.exports = SearchStore;
 
-},{"../constants.js":267,"../dispatcher.js":268,"events":4,"object-assign":6}],270:[function(require,module,exports){
+},{"../dispatcher.js":266,"../utils/constants.js":271,"events":4,"object-assign":6}],268:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
-    Constants = require('../constants.js'),
+    Constants = require('../utils/constants.js'),
     assign = require('object-assign');
 AppDispatcher = require('../dispatcher.js');
 
@@ -27691,7 +27623,6 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	sendMessage: function (chat_id, value) {
 		var index = _store.chats.indexOf(_store.chats.find(element => element.id === chat_id));
-		console.log(index);
 		_store.chats[index].messages.push({
 			id: _store.chats[index].messages[_store.chats[index].messages.length - 1].id + 1,
 			value: value,
@@ -27719,10 +27650,10 @@ AppDispatcher.register(function (payload) {
 
 module.exports = ChatStore;
 
-},{"../constants.js":267,"../dispatcher.js":268,"events":4,"object-assign":6}],271:[function(require,module,exports){
+},{"../dispatcher.js":266,"../utils/constants.js":271,"events":4,"object-assign":6}],269:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     AppDispatcher = require('../dispatcher'),
-    Constants = require('../constants.js'),
+    Constants = require('../utils/constants.js'),
     assign = require('object-assign');
 
 var _store = {
@@ -27772,4 +27703,89 @@ SuggestionStore.run;
 
 module.exports = SuggestionStore;
 
-},{"../constants.js":267,"../dispatcher":268,"events":4,"object-assign":6}]},{},[240]);
+},{"../dispatcher":266,"../utils/constants.js":271,"events":4,"object-assign":6}],270:[function(require,module,exports){
+var Dispatcher = require('flux').Dispatcher,
+    Constants = require('./constants.js');
+
+var AppDispatcher = require('../dispatcher.js');
+
+var Actions = {
+
+	changeFilterState: function (filter, value) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.changeFilterState,
+			filter: filter,
+			value: value
+		});
+	},
+
+	changeSearchInput: function (text) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.changeSearchInput,
+			value: text
+		});
+	},
+
+	searchButtonClicked: function () {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.searchButtonClicked
+		});
+	},
+
+	sendMessage: function (chat_id, value) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.sendMessage,
+			chat_id: chat_id,
+			value
+		});
+	}
+
+};
+
+module.exports = Actions;
+
+},{"../dispatcher.js":266,"./constants.js":271,"flux":1}],271:[function(require,module,exports){
+const Constants = {
+	bogota: 'bogota',
+	actionType: {
+		changeFilterState: 'change_filter_status',
+		changeSearchInput: 'change_search_input',
+		searchButtonClicked: 'change_button_clicked',
+		openCertainChat: 'open_certain_chat',
+		sendMessage: 'send_message'
+	},
+	eventType: {
+		suggestionsRefresh: 'suggestions_refresh',
+		search: 'search',
+		messageAdded: 'message_added'
+	},
+	filter: {
+		not_used: 'not_used',
+		used: 'used',
+		exchange: 'exchange',
+		to_sell: 'to_sell',
+		xbox: 'xbox',
+		ps: 'ps'
+	}
+};
+
+module.exports = Constants;
+
+},{}],272:[function(require,module,exports){
+const Functions = {
+	startAnalytics: function () {
+		{
+			(function (i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
+					(i[r].q = i[r].q || []).push(arguments);
+				}, i[r].l = 1 * new Date();a = s.createElement(o), m = s.getElementsByTagName(o)[0];a.async = 1;a.src = g;m.parentNode.insertBefore(a, m);
+			})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+			ga('create', 'UA-77835108-2', 'auto');
+			ga('send', 'pageview');
+		}
+	}
+};
+
+module.exports = Functions;
+
+},{}]},{},[240]);

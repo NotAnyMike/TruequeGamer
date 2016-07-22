@@ -1,7 +1,7 @@
 var Dispatcher = require('flux').Dispatcher,
 		Constants = require('./constants.js');
 
-var AppDispatcher = require('./dispatcher.js');
+var AppDispatcher = require('../dispatcher.js');
 
 var Actions = {
 

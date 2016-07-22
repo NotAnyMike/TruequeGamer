@@ -1,5 +1,5 @@
 var EventEmitter = require('events').EventEmitter,
-		Constants = require('../constants.js'),
+		Constants = require('../utils/constants.js'),
 		assign = require('object-assign')
 		AppDispatcher = require('../dispatcher.js');
 
@@ -73,7 +73,6 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	sendMessage: function(chat_id, value){
 		var index = _store.chats.indexOf(_store.chats.find(element => element.id === chat_id));
-		console.log(index);
 		_store.chats[index].messages.push({
 			id: _store.chats[index].messages[_store.chats[index].messages.length -1 ].id + 1,
 			value: value,

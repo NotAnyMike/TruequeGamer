@@ -2,7 +2,7 @@ var React = require('react'),
 		ChatContainer = require('./chatContainer.js'),
 		ChatBubble = require('./chatBubble.js'),
 		ChatStore = require('../stores/chatStore.js'),
-		Actions = require('../actions.js');
+		Actions = require('../utils/actions.js');
 
 var Chat = React.createClass({
 	
@@ -63,7 +63,6 @@ var Chat = React.createClass({
 	sendFn: function(){
 		var text = this.state.textToSend.replace(/\s+/g, '');
 		if(text !== ''){
-			console.log('-' + this.state.textToSend + '-');
 			this.setState({textToSend: ''});
 			Actions.sendMessage(this.state.activeChat, this.state.textToSend);
 		}
@@ -75,7 +74,6 @@ var Chat = React.createClass({
 
 	onKeyUpFn: function(e){
 		if(e.keyCode == 13){
-			console.log('enter');
 			e.stopPropagation;
 			e.preventDefault;
 			this.sendFn();

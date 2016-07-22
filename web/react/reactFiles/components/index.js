@@ -7,8 +7,9 @@ var React = require('react'),
 		MainContainer = require('./mainContainer.js'),
 		Footer = require('./footer.js'),
 		Chat = require('./chat.js'),
-		Actions = require('../actions.js'),
-		Constants = require('../constants.js');
+		Actions = require('../utils/actions.js'),
+		Constants = require('../utils/constants.js'),
+		Functions = require('../utils/functions.js');
 
 var Link = require('react-router').Link;
 
@@ -36,6 +37,7 @@ module.exports = React.createClass({
 
 	componentDidMount: function(){
 		AppStore.addSearchButtonClickedListener(this.onSearch);
+		Functions.startAnalytics();
 	},
 
 	onSearch: function(){

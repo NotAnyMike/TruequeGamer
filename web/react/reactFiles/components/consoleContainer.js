@@ -2,7 +2,7 @@
 
 var React = require('react'),
 		ConsoleCheckbox = require('./consoleCheckbox.js'),
-		Constants = require('../constants.js');
+		Constants = require('../utils/constants.js');
 
 module.exports = React.createClass({
 	

@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react'),
-		Actions = require('../actions.js'),
+		Actions = require('../utils/actions.js'),
 		SuggestionStore = require('../stores/suggestionStore.js');
 
 module.exports = React.createClass({

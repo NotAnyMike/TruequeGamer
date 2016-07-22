@@ -1,8 +1,8 @@
 'use strict';
 
 var React = require('react'),
-		Constants = require('../constants.js'),
-		Actions = require('../actions.js');
+		Constants = require('../utils/constants.js'),
+		Actions = require('../utils/actions.js');
 
 module.exports = React.createClass({
 

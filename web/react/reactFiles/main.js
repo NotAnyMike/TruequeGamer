@@ -14,11 +14,9 @@ var Index = require('./components/index.js'),
 
 ReactDOM.render(
 	//<Index />,
-	(
-		<Router history={browserHistory}>
-			<Route path="/" component={Index} />
+	(<Router history={browserHistory}>
+			<Route path="*" component={Index} />
 			<Route path="contactUs" component={ContactUs} />
-		</Router>
-	),
+		</Router>),
 	document.getElementById('mainContainer')
 );

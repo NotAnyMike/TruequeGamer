@@ -1,6 +1,6 @@
 var React = require('react');
 
-ChatBubble = React.createClass({
+var ChatBubble = React.createClass({
 	
 	propTypes: {
 		unread: React.PropTypes.number.isRequired,

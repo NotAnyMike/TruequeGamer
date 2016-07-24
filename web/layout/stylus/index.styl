@@ -76,6 +76,7 @@ header
 		display: flex
 		justify-content: center
 		align-items: flex-end
+		z-index: 3
 	
 		.searchButtonSubContainer
 			position: relative
@@ -92,7 +93,8 @@ header
 		box-sizing: border-box
 		border: 37.5px transparent solid
 		border-top: 20px solid #98CEB7
-
+		box-shadow: 0px -5px 0px #98ceb7
+		z-index: 2
 
 	.searchButton
 		cursor: pointer
@@ -175,13 +177,17 @@ button.consoleCheckbox
 
 		.consoleNameTitle:before
 			color: white
+	
+	.consoleNameTitle
+		flex-grow: 0
+		margin-bottom: auto
 
-	.consoleNameTitle:before
-		text-transform: uppercase
-		color: $dark_green
-		font-size: 15px
-		transition: all 300ms
-		padding: 10px 0
+		&:before
+			text-transform: uppercase
+			color: $dark_green
+			font-size: 15px
+			transition: all 300ms
+			padding: 10px 0
 
 	&.ps4
 		.isotype:before
@@ -215,9 +221,11 @@ button.consoleCheckbox
 		background-repeat: no-repeat
 		background-position: center center
 		display: inline-block
-		width: 30px
+		width: auto
 		height: 30px
 		margin: 15px
+		flex-grow: 0
+		margin-top: auto
 			
 		&:before
 			font-family: TruequeGamer
@@ -287,6 +295,10 @@ button.extraFilterButton
 		margin-left: 13px
 		transition: all 300ms
 		text-transform: capitalize
+		flex-grow: 1
+		text-align: left
+		float: left
+		line-height: 24px
 
 	&:hover
 		span
@@ -307,6 +319,7 @@ button.extraFilterButton
 			margin: 0
 			overflow: hidden
 			transition: all 300ms
+			float: right
 
 		& + label:before
 			margin: 0
@@ -365,8 +378,8 @@ button.extraFilterButton
 	z-index: 1
 
 	img	
-		width: auto
-		height: auto
+		width: 42px
+		height: 38px
 		margin: auto
 
 	.messagesNumber
@@ -408,6 +421,7 @@ button.extraFilterButton
 		display: flex
 		flex-direction: column
 		height: 100%
+		z-index: 2
 
 	&.out
 		animation: chatOut 300ms ease forwards
@@ -500,7 +514,7 @@ button.extraFilterButton
 				.name
 					text-transform: capitalize
 					color: $darker_green
-					font-size: $15px
+					font-size: 15px
 					flex-grow: 1
 					margin: 0 0 10px 0
 				

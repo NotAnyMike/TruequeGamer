@@ -196,7 +196,6 @@ header .isotypeContainer .sloganContainer {
   -ms-flex-align: end;
   -webkit-align-items: flex-end;
   align-items: flex-end;
-  z-index: 3;
 }
 .searchHeaderButtonContainer div:first-child .searchButtonSubContainer {
   position: relative;
@@ -215,9 +214,6 @@ header .isotypeContainer .sloganContainer {
   box-sizing: border-box;
   border: 37.5px transparent solid;
   border-top: 20px solid #98ceb7;
-  -webkit-box-shadow: 0px -5px 0px #98ceb7;
-  box-shadow: 0px -5px 0px #98ceb7;
-  z-index: 2;
 }
 .searchHeaderButtonContainer .searchButton {
   cursor: pointer;
@@ -363,16 +359,6 @@ button.consoleCheckbox:hover .isotype:before {
 button.consoleCheckbox:hover .consoleNameTitle:before {
   color: #fff;
 }
-button.consoleCheckbox .consoleNameTitle {
-  -webkit-box-flex: 0;
-  -moz-box-flex: 0;
-  -o-box-flex: 0;
-  -ms-box-flex: 0;
-  box-flex: 0;
-  -webkit-flex-grow: 0;
-  flex-grow: 0;
-  margin-bottom: auto;
-}
 button.consoleCheckbox .consoleNameTitle:before {
   text-transform: uppercase;
   color: #009992;
@@ -412,17 +398,9 @@ button.consoleCheckbox .isotype {
   background-repeat: no-repeat;
   background-position: center center;
   display: inline-block;
-  width: auto;
+  width: 30px;
   height: 30px;
   margin: 15px;
-  -webkit-box-flex: 0;
-  -moz-box-flex: 0;
-  -o-box-flex: 0;
-  -ms-box-flex: 0;
-  box-flex: 0;
-  -webkit-flex-grow: 0;
-  flex-grow: 0;
-  margin-top: auto;
 }
 button.consoleCheckbox .isotype:before {
   font-family: TruequeGamer;
@@ -583,16 +561,6 @@ button.extraFilterButton span {
   -ms-transition: all 300ms;
   transition: all 300ms;
   text-transform: capitalize;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -o-box-flex: 1;
-  -ms-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex-grow: 1;
-  flex-grow: 1;
-  text-align: left;
-  float: left;
-  line-height: 24px;
 }
 button.extraFilterButton:hover span {
   color: #fff;
@@ -616,7 +584,6 @@ button.extraFilterButton input[type="checkbox"] + label {
   -o-transition: all 300ms;
   -ms-transition: all 300ms;
   transition: all 300ms;
-  float: right;
 }
 button.extraFilterButton input[type="checkbox"] + label:before {
   margin: 0;
@@ -688,8 +655,8 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   z-index: 1;
 }
 .chatBubble img {
-  width: 42px;
-  height: 38px;
+  width: auto;
+  height: auto;
   margin: auto;
 }
 .chatBubble .messagesNumber {
@@ -770,7 +737,6 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   -ms-flex-direction: column;
   flex-direction: column;
   height: 100%;
-  z-index: 2;
 }
 .chatList.out {
   -webkit-animation: chatOut 300ms ease forwards;
@@ -973,7 +939,7 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
 .chatList .chatMessages li .content .name {
   text-transform: capitalize;
   color: #00605b;
-  font-size: 15px;
+  font-size: $15px;
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -o-box-flex: 1;

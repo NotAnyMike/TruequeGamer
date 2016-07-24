@@ -63,8 +63,8 @@ var Chat = React.createClass({
 	sendFn: function(){
 		var text = this.state.textToSend.replace(/\s+/g, '');
 		if(text !== ''){
-			this.setState({textToSend: ''});
 			Actions.sendMessage(this.state.activeChat, this.state.textToSend);
+			this.setState({textToSend: null});
 		}
 	},
 
@@ -82,7 +82,7 @@ var Chat = React.createClass({
 
 	render: function(){		
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
-		return(
+		return (
 			<div>
 				<ChatBubble unread={this.state.store.unread} showChatFn={this.showChatFn}/>
 				<ChatContainer 
@@ -100,7 +100,6 @@ var Chat = React.createClass({
 				/>
 			</div>
 		);
-
 	}
 });
 

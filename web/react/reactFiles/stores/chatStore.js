@@ -1,6 +1,6 @@
 var EventEmitter = require('events').EventEmitter,
 		Constants = require('../utils/constants.js'),
-		assign = require('object-assign')
+		assign = require('object-assign'),
 		AppDispatcher = require('../dispatcher.js');
 
 var _store = {

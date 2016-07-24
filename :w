@@ -1,6 +1,5 @@
 var React = require('react'),
-		SingleMessage = require('./singleMessage.js'),
-		ReactDOM = require('react-dom');
+		SingleMessage = require('./singleMessage.js');
 
 var SingleChat = React.createClass({
 	
@@ -10,25 +9,24 @@ var SingleChat = React.createClass({
 		chat: React.PropTypes.object.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
-		onKeyDownFn: React.PropTypes.func.isRequired,
+		onKeyUpFn: React.PropTypes.func.isRequired,
 		onChangeInputChat: React.PropTypes.func.isRequired,
 	},
 
 	shouldComponentUpdate: function(nextProps, nextState){
+		console.log("new: " + nextProps.value);
+		console.log("old: " + this.props.value);
 		if(nextProps.value !== '' && this.props.visible === nextProps.visible) {
+			console.log('not update');
 			return false;
 		} else {
+			console.log('uptate');
 			return true;
-		}
-	},
-
-	componentDidUpdate: function(){
-		if(this.props.visible){
-			ReactDOM.findDOMNode(this).getElementsByClassName('content')[0].focus();
 		}
 	},
 	
 	render: function(){
+		console.log("text: '" + this.props.value + "'");
 		return(				
 			<div id="singleChat" className={"singleChat" + (this.props.visible ? " in": " out")}>
 				<div className="titleContainer">
@@ -45,7 +43,7 @@ var SingleChat = React.createClass({
 						<span id="chatInputDiv" 
 							key={Date()}
 							onInput={this.props.onChangeInputChat} 
-							onKeyDown={this.props.onKeyDownFn}
+							onKeyUp={this.props.onKeyUpFn}
 							className="content" 
 							contentEditable
 							dangerouslySetInnerHTML={{__html: this.props.value}}

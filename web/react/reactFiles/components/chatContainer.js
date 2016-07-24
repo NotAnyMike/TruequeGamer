@@ -14,7 +14,7 @@ var ChatContainer = React.createClass({
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
 		onChangeInputChat: React.PropTypes.func.isRequired,
-		onKeyUpFn: React.PropTypes.func.isRequired,
+		onKeyDownFn: React.PropTypes.func.isRequired,
 	},
 
 	render: function(){
@@ -28,7 +28,7 @@ var ChatContainer = React.createClass({
 					closeSingleChatFn={this.props.closeSingleChatFn} 
 					onChangeInputChat={this.props.onChangeInputChat} 
 					sendFn={this.props.sendFn} 
-					onKeyUpFn={this.props.onKeyUpFn} 
+					onKeyDownFn={this.props.onKeyDownFn} 
 				/>
 			</section>
 		)

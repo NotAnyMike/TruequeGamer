@@ -36,7 +36,7 @@ gulp.task('react-dev', function(){
 		.pipe(livereload({start: true}));
 });
 
-gulp.task('react-dev-multibrowser', function(){
+gulp.task('react-dev-es6', function(){
 	return browserify('./web/react/reactFiles/main.js')
 		.transform("babelify", {presets: ["es2015","react"]})
 		.bundle()

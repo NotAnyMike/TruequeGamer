@@ -63,19 +63,25 @@ var Chat = React.createClass({
 	sendFn: function(){
 		var text = this.state.textToSend.replace(/\s+/g, '');
 		if(text !== ''){
+			this.setState({textToSend: ''});
 			Actions.sendMessage(this.state.activeChat, this.state.textToSend);
-			this.setState({textToSend: null});
 		}
 	},
 
 	onChangeInputChat: function(e){
-		this.setState({textToSend: e.target.innerText});
+		var value;
+		//Firefox does not support .innerText
+		if(!e.target.innerText){
+			value = e.target.textContent;
+		}else{
+			value = e.target.innerText;
+		}
+		this.setState({textToSend: value});
 	},
 
-	onKeyUpFn: function(e){
-		if(e.keyCode == 13){
-			e.stopPropagation;
-			e.preventDefault;
+	onKeyDownFn: function(e){
+		if(e.keyCode === 13 && !e.shiftKey){
+			e.preventDefault();
 			this.sendFn();
 		}
 	},
@@ -95,7 +101,7 @@ var Chat = React.createClass({
 					openCertainChatFn={this.openCertainChatFn} 
 					onChangeInputChat={this.onChangeInputChat} 
 					sendFn={this.sendFn} 
-					onKeyUpFn={this.onKeyUpFn} 
+					onKeyDownFn={this.onKeyDownFn} 
 					value={this.state.textToSend} 
 				/>
 			</div>

@@ -6,7 +6,7 @@ var SingleChat = React.createClass({
 	
 	propTypes: {
 		value: React.PropTypes.string,
-		visible: React.PropTypes.bool.isRequired,
+		visible: React.PropTypes.bool,
 		chat: React.PropTypes.object.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
@@ -15,8 +15,16 @@ var SingleChat = React.createClass({
 	},
 
 	render: function(){
+		var visible;
+		if(this.props.visible === false)
+			visible = "out";
+		else if(this.props.visible === true)
+			visible = "in"
+		else
+			visible = "";
+
 		return(				
-			<div id="singleChat" className={"singleChat" + (this.props.visible ? " in": " out")}>
+			<div id="singleChat" className={"singleChat " + visible}>
 				<div className="titleContainer">
 					<span>{this.props.chat.user.name}</span>
 					<button className="closeButton" onClick={this.props.closeSingleChatFn}></button>

@@ -7,8 +7,8 @@ var ChatContainer = React.createClass({
 	propTypes: {
 		chats: React.PropTypes.array.isRequired,
 		activeChat: React.PropTypes.number,
-		visible: React.PropTypes.bool.isRequired,
-		singleChatVisible: React.PropTypes.bool.isRequired,
+		visible: React.PropTypes.bool,
+		singleChatVisible: React.PropTypes.bool,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
@@ -18,8 +18,15 @@ var ChatContainer = React.createClass({
 	},
 
 	render: function(){
+		var visible;
+		if(this.props.visible === false)
+			visible = "out";
+		else if(this.props.visible === true)
+			visible = "in"
+		else
+			visible = "";
 		return (
-			<section id="chat" className={"chatList "+ (this.props.visible ? "in" : "out")}>
+			<section id="chat" className={"chatList "+ visible}>
 				<ChatList chats={this.props.chats} closeChatFn={this.props.closeChatFn} openCertainChatFn={this.props.openCertainChatFn}/>
 				<SingleChat 
 					value={this.props.value} 

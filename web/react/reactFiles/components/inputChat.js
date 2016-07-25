@@ -5,7 +5,7 @@ var InputChat = React.createClass({
 
 	propTypes: {
 		value: React.PropTypes.string,
-		visible: React.PropTypes.bool.isRequired,
+		visible: React.PropTypes.bool,
 		onKeyDownFn: React.PropTypes.func.isRequired,
 		onChangeInputChatFn: React.PropTypes.func.isRequired,
 	},
@@ -13,6 +13,7 @@ var InputChat = React.createClass({
 	shouldComponentUpdate: function(nextProps, nextState){
 		if(
 				nextProps.visible === false
+				|| nextProps.visible === null
 				|| (
 					nextProps.value !== '' 
 					&& this.props.onKeyDownFn === nextProps.onKeyDownFn

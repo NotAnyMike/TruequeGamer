@@ -26187,8 +26187,8 @@ var Chat = React.createClass({
 		return {
 			store: store,
 			activeChat: store.chats[0].id,
-			visible: false,
-			singleChatVisible: false,
+			visible: null,
+			singleChatVisible: null,
 			textToSend: ''
 		};
 	},
@@ -26208,9 +26208,15 @@ var Chat = React.createClass({
 	},
 
 	showChatFn: function showChatFn() {
+		var singleChatVisible;
+		if (this.state.singleChatVisible === null) {
+			singleChatVisible = null;
+		} else {
+			singleChatVisible = false;
+		}
 		this.setState({
 			visible: true,
-			singleChatVisible: false
+			singleChatVisible: singleChatVisible
 		});
 	},
 
@@ -26229,7 +26235,7 @@ var Chat = React.createClass({
 
 	openCertainChatFn: function openCertainChatFn(id) {
 		//get the position of the chat with id id
-		if (this.state.activeChat !== id) {
+		if (this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null) {
 			this.setState({
 				activeChat: id,
 				visible: true,
@@ -26343,8 +26349,8 @@ var ChatContainer = React.createClass({
 	propTypes: {
 		chats: React.PropTypes.array.isRequired,
 		activeChat: React.PropTypes.number,
-		visible: React.PropTypes.bool.isRequired,
-		singleChatVisible: React.PropTypes.bool.isRequired,
+		visible: React.PropTypes.bool,
+		singleChatVisible: React.PropTypes.bool,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
@@ -26354,9 +26360,11 @@ var ChatContainer = React.createClass({
 	},
 
 	render: function render() {
+		var visible;
+		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 		return React.createElement(
 			'section',
-			{ id: 'chat', className: "chatList " + (this.props.visible ? "in" : "out") },
+			{ id: 'chat', className: "chatList " + visible },
 			React.createElement(ChatList, { chats: this.props.chats, closeChatFn: this.props.closeChatFn, openCertainChatFn: this.props.openCertainChatFn }),
 			React.createElement(SingleChat, {
 				value: this.props.value,
@@ -26813,13 +26821,13 @@ var InputChat = React.createClass({
 
 	propTypes: {
 		value: React.PropTypes.string,
-		visible: React.PropTypes.bool.isRequired,
+		visible: React.PropTypes.bool,
 		onKeyDownFn: React.PropTypes.func.isRequired,
 		onChangeInputChatFn: React.PropTypes.func.isRequired
 	},
 
 	shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
-		if (nextProps.visible === false || nextProps.value !== '' && this.props.onKeyDownFn === nextProps.onKeyDownFn && this.props.onChangeInputChat === nextProps.onChangeInputChat && this.props.visible === nextProps.visible) {
+		if (nextProps.visible === false || nextProps.visible === null || nextProps.value !== '' && this.props.onKeyDownFn === nextProps.onKeyDownFn && this.props.onChangeInputChat === nextProps.onChangeInputChat && this.props.visible === nextProps.visible) {
 			return false;
 		} else {
 			return true;
@@ -27146,7 +27154,7 @@ var SingleChat = React.createClass({
 
 	propTypes: {
 		value: React.PropTypes.string,
-		visible: React.PropTypes.bool.isRequired,
+		visible: React.PropTypes.bool,
 		chat: React.PropTypes.object.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
@@ -27155,9 +27163,12 @@ var SingleChat = React.createClass({
 	},
 
 	render: function render() {
+		var visible;
+		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
+
 		return React.createElement(
 			'div',
-			{ id: 'singleChat', className: "singleChat" + (this.props.visible ? " in" : " out") },
+			{ id: 'singleChat', className: "singleChat " + visible },
 			React.createElement(
 				'div',
 				{ className: 'titleContainer' },

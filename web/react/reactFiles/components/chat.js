@@ -11,8 +11,8 @@ var Chat = React.createClass({
 		return  ({
 			store: store,
 			activeChat: store.chats[0].id,
-			visible: false,
-			singleChatVisible: false,
+			visible: null,
+			singleChatVisible: null,
 			textToSend: '',
 		});
 	},
@@ -32,9 +32,15 @@ var Chat = React.createClass({
 	},
 	
 	showChatFn: function(){
+		var singleChatVisible;
+		if(this.state.singleChatVisible === null){
+			singleChatVisible = null;
+		}else{
+			singleChatVisible = false;
+		}
 		this.setState({
 			visible: true,
-			singleChatVisible: false
+			singleChatVisible: singleChatVisible,
 		});
 	},
 
@@ -53,7 +59,7 @@ var Chat = React.createClass({
 
 	openCertainChatFn: function(id){
 		//get the position of the chat with id id
-		if(this.state.activeChat !== id){
+		if(this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null){
 			this.setState({
 				activeChat: id,
 				visible: true,

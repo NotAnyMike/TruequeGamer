@@ -9,11 +9,21 @@ var gulp = require('gulp'),
 		source = require('vinyl-source-stream'),
 		buffer = require('vinyl-buffer'),
 		webpackStream = require('webpack-stream'),
-		envify = require('envify/custom');
+		envify = require('envify/custom'),
+		cleanCSS = require('gulp-clean-css'),
+		rename = require('gulp-rename'),
+		imagemin = require('gulp-imagemin');
 
 gulp.task('stylus-dev', function(){
 	gulp.src('web/layout/stylus/app.styl')
-	.pipe(stylus({use : nib()}))
+	.pipe(stylus({'include css': true, use : nib()}))
+	.pipe(gulp.dest('web/layout'))
+	.pipe(gulp.dest('web/react'));
+});
+
+gulp.task('stylus-dev-w', function(){
+	gulp.src('web/layout/stylus/app.styl')
+	.pipe(stylus({'include css': true, use : nib()}))
 	.pipe(gulp.dest('web/layout'))
 	.pipe(gulp.dest('web/react'))
 	.pipe(livereload({start: true}));
@@ -21,7 +31,7 @@ gulp.task('stylus-dev', function(){
 
 gulp.task('w-stylus', function(){
 	livereload.listen();
-	gulp.watch(['!web/layout/stylus/app.styl','web/layout/stylus/*.styl'], ['stylus-dev']);
+	gulp.watch(['!web/layout/stylus/app.styl','web/layout/stylus/*.styl'], ['stylus-dev-w']);
 });
 
 gulp.task('w-react', function(){
@@ -97,9 +107,24 @@ gulp.task('react-prod', ['react-prod-es6'], function(){
 	}
 	return gulp.src('./web/react/js/main.js')
 		.pipe(buildDist(opts))
-		.pipe(gulp.dest('./web/react/js'));
+		.pipe(gulp.dest('web/react/js'))
+		.pipe(gulp.dest('web/public/js'));
 });
 
 gulp.task('apply-prod-environment', function() {
 	process.env.NODE_ENV = 'production';
+});
+
+gulp.task('css-prod', ['stylus-dev'], function(){
+	return gulp.src('web/react/app.css')
+		.pipe(cleanCSS({advanced: false}))
+		.pipe(rename({suffix: '.min'}))
+		.pipe(gulp.dest('web/react'))
+		.pipe(gulp.dest('web/public'));
+});
+
+gulp.task('img', function(){
+	return gulp.src('web/react/img/*')
+		.pipe(imagemin())
+		.pipe(gulp.dest('web/public/img'));
 });

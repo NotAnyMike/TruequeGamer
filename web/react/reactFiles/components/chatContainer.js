@@ -13,7 +13,7 @@ var ChatContainer = React.createClass({
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
-		onChangeInputChat: React.PropTypes.func.isRequired,
+		onChangeInputChatFn: React.PropTypes.func.isRequired,
 		onKeyDownFn: React.PropTypes.func.isRequired,
 	},
 
@@ -26,7 +26,7 @@ var ChatContainer = React.createClass({
 					visible={this.props.singleChatVisible} 
 					chat={this.props.chats[this.props.activeChat]} 
 					closeSingleChatFn={this.props.closeSingleChatFn} 
-					onChangeInputChat={this.props.onChangeInputChat} 
+					onChangeInputChatFn={this.props.onChangeInputChatFn} 
 					sendFn={this.props.sendFn} 
 					onKeyDownFn={this.props.onKeyDownFn} 
 				/>

@@ -53,11 +53,14 @@ var Chat = React.createClass({
 
 	openCertainChatFn: function(id){
 		//get the position of the chat with id id
-		this.setState({
-			activeChat: id,
-			visible: true,
-			singleChatVisible: true
-		});
+		if(this.state.activeChat !== id){
+			this.setState({
+				activeChat: id,
+				visible: true,
+				singleChatVisible: true,
+				textToSend: '',
+			});
+		}
 	},
 
 	sendFn: function(){
@@ -68,7 +71,7 @@ var Chat = React.createClass({
 		}
 	},
 
-	onChangeInputChat: function(e){
+	onChangeInputChatFn: function(e){
 		var value;
 		//Firefox does not support .innerText
 		if(!e.target.innerText){
@@ -99,7 +102,7 @@ var Chat = React.createClass({
 					closeSingleChatFn={this.closeSingleChatFn} 
 					closeChatFn={this.closeChatFn} 
 					openCertainChatFn={this.openCertainChatFn} 
-					onChangeInputChat={this.onChangeInputChat} 
+					onChangeInputChatFn={this.onChangeInputChatFn} 
 					sendFn={this.sendFn} 
 					onKeyDownFn={this.onKeyDownFn} 
 					value={this.state.textToSend} 

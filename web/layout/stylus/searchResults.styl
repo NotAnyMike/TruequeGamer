@@ -1,0 +1,180 @@
+footer.searchResults
+	background-color: white
+	
+.searchResultsMainContainer
+	background-color: white
+	flex-grow: 1
+	flex-shrink: 0
+	padding: 0
+	margin: 0
+
+	.container
+		align-items: center
+		display: flex
+		flex-direction: column
+		justify-content: center
+		margin: 0 auto
+		max-width: 1090px
+		padding: 0
+
+		.title
+			border: 0
+			border-bottom: 1px solid black
+			display: block
+			font-size: 19px
+			padding: 35px 0
+			text-transform: uppercase
+			width: 100%
+
+			&:before
+				content: '(:'
+
+			&:after
+				content: 'aquí encontrarás juegos de PlayStation y de XBox'
+		
+		ul
+			align-items: flex-start
+			display: flex
+			flex-direction: row
+			flex-wrap: wrap
+			justify-content: left
+			padding: 0
+			width: 100%
+			margin-right: -8px
+			
+			il
+				align-items: flex-start
+				border: 2px solid black
+				display: flex
+				flex-direction: column
+				flex-grow: 0
+				height: 340px
+				margin-right: 8px
+				overflow: hidden
+				width: 167px
+				background: gainsboro
+
+				figure
+					height: 180px
+					margin: 8px auto
+					width: 142px
+
+					img
+						height: 180px
+						width: 142px
+
+				.name
+					font-size: 15px
+					margin: 18px 12.5px 5px 12.5px
+					text-transform: uppercase
+
+				.exchange
+					font-size: 14px
+					text-transform: uppercase
+					margin: 5px 12.5px 
+
+					div
+						visibility: hidden
+						display: none
+
+				.availableConsoles
+					box-sizing: border-box
+					position: relative
+					width: 100%
+
+					.container
+						border-top: 1px solid white
+						box-sizing: border-box
+						display: flex
+						flex-direction: row
+						justify-content: center
+						margin: 5px 9px 0px 9px
+						
+						span
+							display: inline-block
+							height: 28px
+							margin: 6px 12.5px
+							width: 36px
+
+							&:before
+								color: white
+								font-family: TruequeGamer
+								font-size: 28px
+								opacity: .5
+								transition: opacity 300ms
+
+							&:first-child:before
+								content: '\e905'
+
+							&:nth-child(2):before
+								content: '\e906'
+								padding-left: 5px
+
+				.price
+					align-items: center
+					box-sizing: border-box
+					color: white
+					display: flex
+					flex-shrink: 0
+					font-size: 12px
+					height: 30px
+					justify-content: center
+					padding: 0 12.5px
+					transition: background 1000ms
+					text-align: center
+					text-transform: uppercase
+					width: 100%
+
+				.alsoAvailableOn
+					visiblity: hidden
+				
+				&.only
+					.availableConsoles
+						&:before,&:after
+							background-image: url(img/onlyConsoleDecorator.png)
+							background-position: center right
+							background-repeat: no-repeat
+							content: ''
+							display: inline-block
+							height: 40px
+							margin-top: 6px
+							opacity: .5
+							position: absolute
+							width: 15px
+
+						&:after
+							filter: FlipH
+							right: 0
+							transform: scaleX(-1)
+							top: 0
+
+				&.ps
+					.availableConsoles
+						.container
+							span:first-child:before
+								opacity: 1
+
+					.price
+						background: radial-gradient(circle, #183A68, #142033)
+
+					&.only
+						.availableConsoles
+							.container
+								span:nth-child(2)
+									display: none
+
+				&.xbox
+					.availableConsoles
+						.container
+							span:nth-child(2):before
+								opacity: 1
+
+					.price
+						background: linear-gradient(right, #1C7B33, #25632C)
+
+					&.only
+						.availableConsoles
+							.container
+								span:first-child
+									display: none
+						

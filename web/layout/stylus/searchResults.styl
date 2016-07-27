@@ -1,6 +1,3 @@
-footer.searchResults
-	background-color: white
-	
 .searchResultsMainContainer
 	background-color: white
 	flex-grow: 1
@@ -16,24 +13,36 @@ footer.searchResults
 		margin: 0 auto
 		max-width: 1090px
 		padding: 0
-
+	
 		.title
+			align-items: center
 			border: 0
-			border-bottom: 1px solid black
-			display: block
-			font-size: 19px
-			padding: 35px 0
+			color: white
+			display: flex
+			font-size: 20px
+			height: 40px
+			justify-content: flex-start
+			padding: 25px 0
 			text-transform: uppercase
 			width: 100%
 
 			&:before
-				content: '(:'
+				content: ''
+				display: inline-block
+				font-size: 40px
+				font-family: TruequeGamer
+				height: 40px
+				width: 40px
 
 			&:after
-				content: 'aquí encontrarás juegos de PlayStation y de XBox'
+				content: ''
+				display: inline-block
+				margin-left: 60px
 		
 		ul
 			align-items: flex-start
+			color: white
+			cursor: pointer
 			display: flex
 			flex-direction: row
 			flex-wrap: wrap
@@ -44,90 +53,163 @@ footer.searchResults
 			
 			il
 				align-items: flex-start
-				border: 2px solid black
 				display: flex
 				flex-direction: column
 				flex-grow: 0
 				height: 340px
+				margin-bottom: 34px
 				margin-right: 8px
 				overflow: hidden
 				width: 167px
-				background: gainsboro
 
 				figure
-					height: 180px
-					margin: 8px auto
-					width: 142px
+					align-items: center
+					border-bottom: 0px
+					box-sizing: border-box
+					display: flex
+					flex-shrink: 0
+					justify-content: center
+					margin: auto
+					padding: 8px 0
+					transition: border $time
+					width: 100%
 
 					img
 						height: 180px
 						width: 142px
 
-				.name
-					font-size: 15px
-					margin: 18px 12.5px 5px 12.5px
-					text-transform: uppercase
-
-				.exchange
-					font-size: 14px
-					text-transform: uppercase
-					margin: 5px 12.5px 
-
-					div
-						visibility: hidden
-						display: none
-
-				.availableConsoles
+				.contentContainer
+					background-color: $dark_green
 					box-sizing: border-box
-					position: relative
+					display: flex
+					justify-content: center
+					flex-direction: column
+					flex-shrink: 0
+					flex-grow: 1
+					text-align: center
+					transition: background-color $time, color $time
 					width: 100%
+			
+					.name
+						font-size: 15px
+						margin: 15px 12.5px 3px 12.5px
+						order: 1
+						text-transform: uppercase
 
-					.container
-						border-top: 1px solid white
+					.exchange
+						font-size: 14px
+						text-transform: uppercase
+						margin: 3px 12.5px 
+						order: 2
+						position: relative
+						
+						&:before,&:after
+							bottom: 2px
+							color: $orange
+							font-family: TruequeGamer
+							font-size: 5px
+							font-style: normal
+							position: relative
+							transition: color $time
+
+						&:before
+							content: '\e900'
+							padding-right: 5px
+
+						&:after
+							content: '\e901'
+							bottom: 1px
+							font-size: 7px
+							padding-left: 2px
+
+						span:before
+							transition: color $time
+
+						div
+							background-image: url(img/crossline-exchange.png)
+							background-repeat: no-repeat
+							background-position: center center
+							display: none
+							height: 22px
+							left: 0
+							position: absolute
+							transition: opacity $time, background-image $time
+							top: 7px
+							width: 77px
+							
+
+					.availableConsoles
 						box-sizing: border-box
+						flex-grow: 1
+						flex-shrink: 0
+						order: 3
+						position: relative
+						width: 100%
+
+						.container
+							border-top: 1px solid white
+							box-sizing: border-box
+							display: flex
+							flex-direction: row
+							justify-content: center
+							margin: 5px 9px 0px 9px
+							
+							span
+								display: inline-block
+								height: 28px
+								margin: 6px 7.5px
+								width: 36px
+
+								&:before
+									color: white
+									font-family: TruequeGamer
+									font-size: 28px
+									opacity: .5
+									transition: opacity $time
+
+								&:first-child:before
+									content: '\e905'
+
+								&:nth-child(2):before
+									content: '\e906'
+
+					.price
+						align-items: center
+						box-sizing: border-box
+						color: white
 						display: flex
-						flex-direction: row
+						flex-grow: 1
+						flex-shrink: 0
+						font-size: 12px
+						height: 30px
 						justify-content: center
-						margin: 5px 9px 0px 9px
+						order: 4
+						padding: 0 12.5px
+						transition: background 1000ms
+						text-align: center
+						text-transform: uppercase
+						transition: color $time
+						width: 100%
+
+					.alsoAvailableOn
+						align-items: center
+						display: none
+						height: 24px
+						justify-content: center
+						order: 5
 						
 						span
-							display: inline-block
-							height: 28px
-							margin: 6px 12.5px
-							width: 36px
+							font-size: 8px
+							border-top: 1px solid white
+							margin: 0 12.5px
+							padding: 6px 0
+							text-transform: uppercase
+							transition: border $time
+							width: 100%
 
 							&:before
-								color: white
-								font-family: TruequeGamer
-								font-size: 28px
-								opacity: .5
-								transition: opacity 300ms
-
-							&:first-child:before
-								content: '\e905'
-
-							&:nth-child(2):before
-								content: '\e906'
-								padding-left: 5px
-
-				.price
-					align-items: center
-					box-sizing: border-box
-					color: white
-					display: flex
-					flex-shrink: 0
-					font-size: 12px
-					height: 30px
-					justify-content: center
-					padding: 0 12.5px
-					transition: background 1000ms
-					text-align: center
-					text-transform: uppercase
-					width: 100%
-
-				.alsoAvailableOn
-					visiblity: hidden
-				
+								transition: color $time
+						
 				&.only
 					.availableConsoles
 						&:before,&:after
@@ -137,6 +219,7 @@ footer.searchResults
 							content: ''
 							display: inline-block
 							height: 40px
+							left: 0
 							margin-top: 6px
 							opacity: .5
 							position: absolute
@@ -144,9 +227,17 @@ footer.searchResults
 
 						&:after
 							filter: FlipH
+							left: auto
 							right: 0
 							transform: scaleX(-1)
 							top: 0
+
+					.alsoAvailableOn
+						background-color: $red
+						border: 0px
+
+						span
+							border: 0px
 
 				&.ps
 					.availableConsoles
@@ -178,3 +269,271 @@ footer.searchResults
 								span:first-child
 									display: none
 						
+/***************************************************************************
+														Both section
+***************************************************************************/
+.searchResultsMainContainer
+	&.both
+		.title
+			color: $dark_green
+			border-bottom: 1px solid $dark_green
+			
+			&:before
+				background-image: url(img/smile.png)
+				backgronud-position: center center
+				background-repeat: no-repeat
+
+			&:after
+				content: 'aquí encontrarás juegos de PlayStation y de XBox'
+
+		.container
+			ul
+				il
+					align-items: center
+
+					figure
+						border: 2px solid $dark_green
+
+					.contentContainer
+						.exchange								
+							span:before
+								content: 'cambio'
+
+					&.noExchange
+						.contentContainer
+							.exchange
+								span:before
+									color: $darker_green
+									content: 'no hay cambio'
+
+								&:before,&:after
+									content: ''
+									display: none
+
+/***************************************************************************
+														PS section only
+***************************************************************************/
+
+#semi_body.ps
+	background: $ps_radial_gradient
+
+.searchResultMainContainer
+ 	&.ps	
+		background-color: transparent
+
+		.container
+			.title
+				border-bottom: 1px solid white
+
+				&:before
+					content: '\e905'
+
+				&:after
+					content: 'estás en la sección de play station'
+
+			ul
+				il
+					align-items: left
+					height: 310px
+
+					figure
+						border: 2px solid white
+						border-bottom: 0px
+
+					.contentContainer
+						.name
+							text-align: left
+						
+						.availableConsoles
+							display: none
+
+						.price
+							background: transparent
+							font-size: 15px
+							font-weight: bold
+							justify-content: flex-start
+							order: 2
+							text-align: left
+							height: 15px
+
+						.exchange
+							order: 3
+							text-align: left
+							padding: 9px 0 3px 0
+							font-size: 15px
+
+							span
+								&:before
+									content: 'cambio'
+
+						.alsoAvailableOn
+							display: flex
+							order: 4
+
+							span
+								border-top: 1px solid $white
+
+								&:before
+									content: 'también disponible en xbox one'
+									color: white
+
+					&.only
+						.contentContainer
+							.alsoAvailableOn
+								span
+									border: 0
+
+									&:before
+										content: 'unicamente en play station 4'
+										color: white
+
+					&.noExchange
+						.contentContainer
+							.exchange
+								&:before,&:after
+									color: $darker_green
+
+								span
+									color: $darker_green
+								
+								div
+									display: inline-block
+
+/***************************************************************************
+														XBox section only
+***************************************************************************/
+
+#semi_body.xbox
+	background: $xbox_linear_gradient
+
+.searchResultMainContainer
+ 	&.xbox	
+		background-color: transparent
+
+		.container
+			.title
+				border-bottom: 1px solid white
+
+				&:before
+					content: '\e906'
+
+				&:after
+					content: 'estás en la sección de x-box'
+
+			ul
+				il
+					align-items: left
+					height: 310px
+
+					figure
+						border: 2px solid white
+						border-bottom: 0px
+
+					.contentContainer
+						background-color: white
+						color: $dark_green
+
+						.name
+							text-align: left
+						
+						.availableConsoles
+							display: none
+
+						.price
+							background: transparent
+							color: $dark_green
+							font-size: 15px
+							font-weight: bold
+							justify-content: flex-start
+							order: 2
+							text-align: left
+							height: 15px
+
+						.exchange
+							order: 3
+							text-align: left
+							padding: 9px 0 3px 0
+							font-size: 15px
+
+							span
+								&:before
+									content: 'cambio'
+
+						.alsoAvailableOn
+							display: flex
+							order: 4
+
+							span
+								border-top: 1px solid $dark_green
+
+								&:before
+									content: 'también disponible en ps4'
+									color: $dark_green
+
+					&.only
+						.contentContainer
+							.alsoAvailableOn
+								span
+									border: 0
+
+									&:before
+										content: 'unicamente en x-box one'
+										color: white
+
+					&.noExchange
+						.contentContainer
+							.exchange
+								&:before,&:after
+									color: $green
+
+								span
+									color: $green
+								
+								div
+									display: inline-block
+									opacity: .3
+
+					&:hover
+						figure
+							border: 2px solid $green_hover_xbox
+							border-bottom: 0
+
+						.contentContainer
+							background: $green_hover_xbox
+							color: white
+
+							.exchange
+								&:before,&:after
+									color: white
+									
+								span
+									&:after,&:before
+										color: white
+
+							.price
+								color: white
+
+							.alsoAvailableOn
+								span
+									border-top: 1px solid white
+
+									&:before
+										color: white
+
+						&.only
+							.contentContainer
+								.alsoAvailableOn
+									span
+										border: 0
+
+						&.noExchange
+							.contentContainer
+								.exchange
+									&:before,&:after
+										opacity: .5
+										
+									span:before
+										opacity: .5
+
+									div
+										opacity: .3

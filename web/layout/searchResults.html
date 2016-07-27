@@ -7,78 +7,138 @@
 	<link rel="stylesheet" type="text/css" href="app.css">
 </head>
 <body>
-	<header>
-		<div class="searchHeaderButtonContainer">
-		 	<div>
-				<div class="searchButtonSubContainer">
-					<button class="searchButton"></button>
-				</div>
-			</div>
-		 	<div></div>
-		</div>
-		<div class="isotypeContainer">
-			<figure>
-				<img class="isotype" src="./img/isotype.png"/>
-			</figure>
-			<div class="sloganContainer">
-				<span class="dot-decorator">Intercambiando juegos desde </span>
-				<span>
-					<img class="crossline" src="./img/crossline.png"/>
-					<span>1993.</span>
-				</span>
-				<span class="arrow-decorator"> 2016</span>
-			</div>
-		</div>
-		<a class="login arrow-decorator dot-decorator hidden" href="#">Ingresa con Facebook</a>
-		<a href="#" class="profileContainer"><span>Carlos Mejia</span><figure><img src="img/face.png" alt=""></figure></a>
-	</header>
-	<section class="searchResultsMainContainer">
-		<div class="container">
-			<div class="title"></div>
-			<ul>
-				<il class="xbox only">
-				<figure><img src="" alt=""></figure>
-				<span class="name">dark souls iii</span>
-				<div class="exchange">
-					<span>no hay cambio</span>
-					<div>line</div>
-				</div>
-				<div class="availableConsoles">
-					<div class="container">
-						<span></span>
-						<span></span>
+	<div id="semi_body" class="xbox">
+		<header class="negative">
+			<div class="searchHeaderButtonContainer">
+				<div>
+					<div class="searchButtonSubContainer">
+						<button class="searchButton"></button>
 					</div>
 				</div>
-				<div class="price">desde 50.000</div>
-				<div class="alsoAvailableOn"><span></span></div>
-				</il>
-			</ul>
-		</div>
-	</section>
-	<footer class="searchResults">
-		<div class="footerContainer">
-			<section class="moreLinks">
-				<a href="#">Sobre nosotros</a>
-				<a href="#">Contáctanos</a>
-			</section>
-			<div class="footerDecorator"></div>
-			<section class="socialLinks">
-				<a class="instagramLink" href="" onclick='return false'></a>
-				<a class="youtubeLink" href=""></a>
-				<a class="facebookLink" href="#"></a>
-				<a class="twitterLink" href="#"></a>
-				<a class="pinterestLink" href=""></a>
-				<span>www.truequegamer.com. ©2016 Derechos reservados. Bogotá D.C., Colombia.</span>
-			</section>
-			<div class="footerDecorator x-reflexion"></div>
-			<section class="bugLinksContainer">
-				<figure><img src="img/bug.png" alt=""></figure>
-				<span>Chan, chan, chan, chaaan</span>
-				<a href="">Informar bug!</a>
-			</section>
-		</div>
-	</footer>
-	<div class="decoration"></div>
+				<div></div>
+			</div>
+			<div class="isotypeContainer">
+				<figure class="negative">
+					<img class="isotype normal" src="./img/isotype.png"/>
+					<img class="isotype negative" src="./img/isotype_positive.png"/>
+				</figure>
+				<div class="sloganContainer negative">
+					<span class="dot-decorator">Intercambiando juegos desde </span>
+					<span>
+						<img class="crossline normal" src="./img/crossline.png"/>
+						<img class="crossline negative" src="./img/crossline_negative.png"/>
+						<span>1993.</span>
+					</span>
+					<span class="arrow-decorator"> 2016</span>
+				</div>
+			</div>
+			<a class="login arrow-decorator dot-decorator negative" href="#">Ingresa con Facebook</a>
+			<a href="#" class="profileContainer negative hidden"><span>Carlos Mejia</span><figure><img src="img/face.png" alt=""></figure></a>
+		</header>
+		<section class="searchResultsMainContainer xbox">
+			<div class="container">
+				<div class="title"></div>
+				<ul>
+					<il class="xbox only">
+						<figure><img src="img/cover.png" alt=""></figure>
+						<div class="contentContainer">
+							<span class="name">dark souls iii</span>
+							<div class="exchange">
+								<span></span>
+								<div></div>
+							</div>
+							<div class="availableConsoles">
+								<div class="container">
+									<span></span>
+									<span></span>
+								</div>
+							</div>
+							<div class="price">desde 50.000</div>
+							<div class="alsoAvailableOn"><span></span></div>
+						</div>
+					</il>
+					<il class="xbox noExchange">
+						<figure><img src="img/cover.png" alt=""></figure>
+						<div class="contentContainer">
+							<span class="name">dark souls iii</span>
+							<div class="exchange">
+								<span></span>
+								<div></div>
+							</div>
+							<div class="availableConsoles">
+								<div class="container">
+									<span></span>
+									<span></span>
+								</div>
+							</div>
+							<div class="price">desde 50.000</div>
+							<div class="alsoAvailableOn"><span></span></div>
+						</div>
+					</il>
+					<il class="xbox only noExchange">
+						<figure><img src="img/cover.png" alt=""></figure>
+						<div class="contentContainer">
+							<span class="name">dark souls iii</span>
+							<div class="exchange">
+								<span></span>
+								<div></div>
+							</div>
+							<div class="availableConsoles">
+								<div class="container">
+									<span></span>
+									<span></span>
+								</div>
+							</div>
+							<div class="price">desde 50.000</div>
+							<div class="alsoAvailableOn"><span></span></div>
+						</div>
+					</il>
+					<il class="xbox">
+						<figure><img src="img/cover.png" alt=""></figure>
+						<div class="contentContainer">
+							<span class="name">dark souls iii</span>
+							<div class="exchange">
+								<span></span>
+								<div></div>
+							</div>
+							<div class="availableConsoles">
+								<div class="container">
+									<span></span>
+									<span></span>
+								</div>
+							</div>
+							<div class="price">desde 50.000</div>
+							<div class="alsoAvailableOn"><span></span></div>
+						</div>
+					</il>
+				</ul>
+			</div>
+		</section>
+		<footer class="white">
+			<div class="footerContainer">
+				<section class="moreLinks">
+					<a href="#">Sobre nosotros</a>
+					<a href="#">Contáctanos</a>
+				</section>
+				<div class="footerDecorator"></div>
+				<section class="socialLinks">
+					<a class="instagramLink" href="" onclick='return false'></a>
+					<a class="youtubeLink" href=""></a>
+					<a class="facebookLink" href="#"></a>
+					<a class="twitterLink" href="#"></a>
+					<a class="pinterestLink" href=""></a>
+					<span>www.truequegamer.com. ©2016 Derechos reservados. Bogotá D.C., Colombia.</span>
+				</section>
+				<div class="footerDecorator x-reflexion"></div>
+				<section class="bugLinksContainer">
+					<figure><img src="img/bug.png" alt=""></figure>
+					<span>Chan, chan, chan, chaaan</span>
+					<a href="">Informar bug!</a>
+				</section>
+			</div>
+		</footer>
+	</div>
+	<div class="decoration white"></div>
 	<script src="js/index.js"></script>
 </body>
 </html>

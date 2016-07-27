@@ -535,6 +535,12 @@ a {
   padding-right: 5px;
   content: "\e900";
 }
+.negative .dot-decorator:before,
+.negative .arrow-decorator:before,
+.negative .dot-decorator:after,
+.negative .arrow-decorator:after {
+  color: #fff;
+}
 header,
 .mainContainer,
 footer,
@@ -586,6 +592,28 @@ header {
   background-image: url("./img/header-background.png");
   background-repeat: no-repeat;
   background-position: center left;
+  position: relative;
+}
+header:after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  height: 64px;
+  width: 190px;
+  background-image: url("./img/header-background-negative.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  right: 0;
+  bottom: -40px;
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipV;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
 }
 header .isotypeContainer {
   margin-top: 50px;
@@ -603,8 +631,15 @@ header .isotypeContainer {
   -ms-flex-direction: column;
   flex-direction: column;
 }
-header .isotypeContainer figure,
-header .isotypeContainer .sloganContainer {
+header.negative {
+  background-image: url("./img/header-background-negative.png");
+}
+header.negative:after {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+figure {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -620,7 +655,33 @@ header .isotypeContainer .sloganContainer {
   font-size: 17px;
   margin: 0 0 15px 0;
 }
+figure .isotype.normal {
+  display: inline-block;
+}
+figure .isotype.negative {
+  display: none;
+}
+figure.negative .isotype.normal {
+  display: none;
+}
+figure.negative .isotype.negative {
+  display: inline-block;
+}
 .sloganContainer {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  font-size: 17px;
+  margin: 0 0 15px 0;
   margin-top: 15px;
 }
 .sloganContainer span {
@@ -634,6 +695,21 @@ header .isotypeContainer .sloganContainer {
   left: -5px;
   z-index: 1;
 }
+.sloganContainer span:nth-child(2) img.normal {
+  display: inline-block;
+}
+.sloganContainer span:nth-child(2) img.negative {
+  display: none;
+}
+.sloganContainer.negative span {
+  color: #fff;
+}
+.sloganContainer.negative span:nth-child(2) img.crossline.normal {
+  display: none;
+}
+.sloganContainer.negative span:nth-child(2) img.crossline.negative {
+  display: inline-block;
+}
 .login {
   margin-top: 80px;
   margin-bottom: auto;
@@ -641,6 +717,9 @@ header .isotypeContainer .sloganContainer {
   width: 215px;
   top: 80px;
   height: auto;
+}
+.login.negative {
+  color: #fff;
 }
 .profileContainer {
   display: -webkit-box;
@@ -682,6 +761,10 @@ header .isotypeContainer .sloganContainer {
   font-size: 20px;
   border-bottom: 1px solid #009992;
   margin: 20px;
+}
+.profileContainer.negative span {
+  border-bottom: 1px solid #fff;
+  color: #fff;
 }
 .searchHeaderButtonContainer {
   width: 215px;
@@ -2016,6 +2099,29 @@ footer .footerContainer .bugLinksContainer span {
 footer .footerContainer .bugLinksContainer a {
   text-align: center;
 }
+footer.white_background {
+  background-color: #fff;
+}
+footer.white {
+  background-color: transparent;
+}
+footer.white .footerContainer {
+  border-top: 1px solid #fff;
+}
+footer.white .footerContainer .moreLinks a,
+footer.white .footerContainer .bugLinksContainer a {
+  color: #fff;
+}
+footer.white .footerContainer .moreLinks a:hover,
+footer.white .footerContainer .bugLinksContainer a:hover {
+  color: #e6334c;
+}
+footer.white .footerContainer span {
+  color: #fff;
+}
+footer.white .footerContainer .footerDecorator {
+  background-image: url("img/footer-decorator-negative.png");
+}
 .searchButtonSection {
   margin: 40px 0px;
 }
@@ -2044,6 +2150,9 @@ footer .footerContainer .bugLinksContainer a {
   background-image: url("./img/footer-background-decorator.png");
   background-repeat: repeat-x;
   background-position: center;
+}
+.decoration.white {
+  background-color: #fff;
 }
 .listDecorator {
   width: 25px;
@@ -2299,9 +2408,6 @@ button {
     visiblity: visible;
   }
 }
-footer.searchResults {
-  background-color: #fff;
-}
 .searchResultsMainContainer {
   background-color: #fff;
   -webkit-box-flex: 1;
@@ -2346,19 +2452,44 @@ footer.searchResults {
   padding: 0;
 }
 .searchResultsMainContainer .container .title {
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
   border: 0;
-  border-bottom: 1px solid #000;
-  display: block;
-  font-size: 19px;
-  padding: 35px 0;
+  color: #fff;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  font-size: 20px;
+  height: 40px;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  -o-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  padding: 25px 0;
   text-transform: uppercase;
   width: 100%;
 }
 .searchResultsMainContainer .container .title:before {
-  content: '(:';
+  content: '';
+  display: inline-block;
+  font-size: 40px;
+  font-family: TruequeGamer;
+  height: 40px;
+  width: 40px;
 }
 .searchResultsMainContainer .container .title:after {
-  content: 'aquí encontrarás juegos de PlayStation y de XBox';
+  content: '';
+  display: inline-block;
+  margin-left: 60px;
 }
 .searchResultsMainContainer .container ul {
   -webkit-box-align: start;
@@ -2367,6 +2498,8 @@ footer.searchResults {
   -ms-flex-align: start;
   -webkit-align-items: flex-start;
   align-items: flex-start;
+  color: #fff;
+  cursor: pointer;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -2402,7 +2535,6 @@ footer.searchResults {
   -ms-flex-align: start;
   -webkit-align-items: flex-start;
   align-items: flex-start;
-  border: 2px solid #000;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -2423,42 +2555,182 @@ footer.searchResults {
   -webkit-flex-grow: 0;
   flex-grow: 0;
   height: 340px;
+  margin-bottom: 34px;
   margin-right: 8px;
   overflow: hidden;
   width: 167px;
-  background: #dcdcdc;
 }
 .searchResultsMainContainer .container ul il figure {
-  height: 180px;
-  margin: 8px auto;
-  width: 142px;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  border-bottom: 0px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  margin: auto;
+  padding: 8px 0;
+  -webkit-transition: border 300ms;
+  -moz-transition: border 300ms;
+  -o-transition: border 300ms;
+  -ms-transition: border 300ms;
+  transition: border 300ms;
+  width: 100%;
 }
 .searchResultsMainContainer .container ul il figure img {
   height: 180px;
   width: 142px;
 }
-.searchResultsMainContainer .container ul il .name {
-  font-size: 15px;
-  margin: 18px 12.5px 5px 12.5px;
-  text-transform: uppercase;
-}
-.searchResultsMainContainer .container ul il .exchange {
-  font-size: 14px;
-  text-transform: uppercase;
-  margin: 5px 12.5px;
-}
-.searchResultsMainContainer .container ul il .exchange div {
-  visibility: hidden;
-  display: none;
-}
-.searchResultsMainContainer .container ul il .availableConsoles {
+.searchResultsMainContainer .container ul il .contentContainer {
+  background-color: #009992;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  text-align: center;
+  -webkit-transition: background-color 300ms, color 300ms;
+  -moz-transition: background-color 300ms, color 300ms;
+  -o-transition: background-color 300ms, color 300ms;
+  -ms-transition: background-color 300ms, color 300ms;
+  transition: background-color 300ms, color 300ms;
+  width: 100%;
+}
+.searchResultsMainContainer .container ul il .contentContainer .name {
+  font-size: 15px;
+  margin: 15px 12.5px 3px 12.5px;
+  -webkit-box-ordinal-group: 1;
+  -moz-box-ordinal-group: 1;
+  -o-box-ordinal-group: 1;
+  -ms-flex-order: 1;
+  -webkit-order: 1;
+  order: 1;
+  text-transform: uppercase;
+}
+.searchResultsMainContainer .container ul il .contentContainer .exchange {
+  font-size: 14px;
+  text-transform: uppercase;
+  margin: 3px 12.5px;
+  -webkit-box-ordinal-group: 2;
+  -moz-box-ordinal-group: 2;
+  -o-box-ordinal-group: 2;
+  -ms-flex-order: 2;
+  -webkit-order: 2;
+  order: 2;
+  position: relative;
+}
+.searchResultsMainContainer .container ul il .contentContainer .exchange:before,
+.searchResultsMainContainer .container ul il .contentContainer .exchange:after {
+  bottom: 2px;
+  color: #f29224;
+  font-family: TruequeGamer;
+  font-size: 5px;
+  font-style: normal;
+  position: relative;
+  -webkit-transition: color 300ms;
+  -moz-transition: color 300ms;
+  -o-transition: color 300ms;
+  -ms-transition: color 300ms;
+  transition: color 300ms;
+}
+.searchResultsMainContainer .container ul il .contentContainer .exchange:before {
+  content: '\e900';
+  padding-right: 5px;
+}
+.searchResultsMainContainer .container ul il .contentContainer .exchange:after {
+  content: '\e901';
+  bottom: 1px;
+  font-size: 7px;
+  padding-left: 2px;
+}
+.searchResultsMainContainer .container ul il .contentContainer .exchange span:before {
+  -webkit-transition: color 300ms;
+  -moz-transition: color 300ms;
+  -o-transition: color 300ms;
+  -ms-transition: color 300ms;
+  transition: color 300ms;
+}
+.searchResultsMainContainer .container ul il .contentContainer .exchange div {
+  background-image: url("img/crossline-exchange.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: none;
+  height: 22px;
+  left: 0;
+  position: absolute;
+  -webkit-transition: opacity 300ms, background-image 300ms;
+  -moz-transition: opacity 300ms, background-image 300ms;
+  -o-transition: opacity 300ms, background-image 300ms;
+  -ms-transition: opacity 300ms, background-image 300ms;
+  transition: opacity 300ms, background-image 300ms;
+  top: 7px;
+  width: 77px;
+}
+.searchResultsMainContainer .container ul il .contentContainer .availableConsoles {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  -webkit-box-ordinal-group: 3;
+  -moz-box-ordinal-group: 3;
+  -o-box-ordinal-group: 3;
+  -ms-flex-order: 3;
+  -webkit-order: 3;
+  order: 3;
   position: relative;
   width: 100%;
 }
-.searchResultsMainContainer .container ul il .availableConsoles .container {
+.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container {
   border-top: 1px solid #fff;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -2483,13 +2755,13 @@ footer.searchResults {
   justify-content: center;
   margin: 5px 9px 0px 9px;
 }
-.searchResultsMainContainer .container ul il .availableConsoles .container span {
+.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container span {
   display: inline-block;
   height: 28px;
-  margin: 6px 12.5px;
+  margin: 6px 7.5px;
   width: 36px;
 }
-.searchResultsMainContainer .container ul il .availableConsoles .container span:before {
+.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container span:before {
   color: #fff;
   font-family: TruequeGamer;
   font-size: 28px;
@@ -2502,14 +2774,13 @@ footer.searchResults {
   -ms-transition: opacity 300ms;
   transition: opacity 300ms;
 }
-.searchResultsMainContainer .container ul il .availableConsoles .container span:first-child:before {
+.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container span:first-child:before {
   content: '\e905';
 }
-.searchResultsMainContainer .container ul il .availableConsoles .container span:nth-child(2):before {
+.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container span:nth-child(2):before {
   content: '\e906';
-  padding-left: 5px;
 }
-.searchResultsMainContainer .container ul il .price {
+.searchResultsMainContainer .container ul il .contentContainer .price {
   -webkit-box-align: center;
   -moz-box-align: center;
   -o-box-align: center;
@@ -2526,6 +2797,13 @@ footer.searchResults {
   display: -ms-flexbox;
   display: box;
   display: flex;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
   font-size: 12px;
@@ -2536,6 +2814,12 @@ footer.searchResults {
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+  -webkit-box-ordinal-group: 4;
+  -moz-box-ordinal-group: 4;
+  -o-box-ordinal-group: 4;
+  -ms-flex-order: 4;
+  -webkit-order: 4;
+  order: 4;
   padding: 0 12.5px;
   -webkit-transition: background 1000ms;
   -moz-transition: background 1000ms;
@@ -2544,10 +2828,54 @@ footer.searchResults {
   transition: background 1000ms;
   text-align: center;
   text-transform: uppercase;
+  -webkit-transition: color 300ms;
+  -moz-transition: color 300ms;
+  -o-transition: color 300ms;
+  -ms-transition: color 300ms;
+  transition: color 300ms;
   width: 100%;
 }
-.searchResultsMainContainer .container ul il .alsoAvailableOn {
-  visiblity: hidden;
+.searchResultsMainContainer .container ul il .contentContainer .alsoAvailableOn {
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  display: none;
+  height: 24px;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-ordinal-group: 5;
+  -moz-box-ordinal-group: 5;
+  -o-box-ordinal-group: 5;
+  -ms-flex-order: 5;
+  -webkit-order: 5;
+  order: 5;
+}
+.searchResultsMainContainer .container ul il .contentContainer .alsoAvailableOn span {
+  font-size: 8px;
+  border-top: 1px solid #fff;
+  margin: 0 12.5px;
+  padding: 6px 0;
+  text-transform: uppercase;
+  -webkit-transition: border 300ms;
+  -moz-transition: border 300ms;
+  -o-transition: border 300ms;
+  -ms-transition: border 300ms;
+  transition: border 300ms;
+  width: 100%;
+}
+.searchResultsMainContainer .container ul il .contentContainer .alsoAvailableOn span:before {
+  -webkit-transition: color 300ms;
+  -moz-transition: color 300ms;
+  -o-transition: color 300ms;
+  -ms-transition: color 300ms;
+  transition: color 300ms;
 }
 .searchResultsMainContainer .container ul il.only .availableConsoles:before,
 .searchResultsMainContainer .container ul il.only .availableConsoles:after {
@@ -2557,6 +2885,7 @@ footer.searchResults {
   content: '';
   display: inline-block;
   height: 40px;
+  left: 0;
   margin-top: 6px;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -2566,6 +2895,7 @@ footer.searchResults {
 }
 .searchResultsMainContainer .container ul il.only .availableConsoles:after {
   filter: FlipH;
+  left: auto;
   right: 0;
   -webkit-transform: scaleX(-1);
   -moz-transform: scaleX(-1);
@@ -2573,6 +2903,13 @@ footer.searchResults {
   -ms-transform: scaleX(-1);
   transform: scaleX(-1);
   top: 0;
+}
+.searchResultsMainContainer .container ul il.only .alsoAvailableOn {
+  background-color: #e6334c;
+  border: 0px;
+}
+.searchResultsMainContainer .container ul il.only .alsoAvailableOn span {
+  border: 0px;
 }
 .searchResultsMainContainer .container ul il.ps .availableConsoles .container span:first-child:before {
   opacity: 1;
@@ -2603,4 +2940,364 @@ footer.searchResults {
 }
 .searchResultsMainContainer .container ul il.xbox.only .availableConsoles .container span:first-child {
   display: none;
+}
+.searchResultsMainContainer.both .title {
+  color: #009992;
+  border-bottom: 1px solid #009992;
+}
+.searchResultsMainContainer.both .title:before {
+  background-image: url("img/smile.png");
+  backgronud-position: center center;
+  background-repeat: no-repeat;
+}
+.searchResultsMainContainer.both .title:after {
+  content: 'aquí encontrarás juegos de PlayStation y de XBox';
+}
+.searchResultsMainContainer.both .container ul il {
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.searchResultsMainContainer.both .container ul il figure {
+  border: 2px solid #009992;
+}
+.searchResultsMainContainer.both .container ul il .contentContainer .exchange span:before {
+  content: 'cambio';
+}
+.searchResultsMainContainer.both .container ul il.noExchange .contentContainer .exchange span:before {
+  color: #00605b;
+  content: 'no hay cambio';
+}
+.searchResultsMainContainer.both .container ul il.noExchange .contentContainer .exchange:before,
+.searchResultsMainContainer.both .container ul il.noExchange .contentContainer .exchange:after {
+  content: '';
+  display: none;
+}
+#semi_body.ps {
+  background: -webkit-radial-gradient(circle, #183a68, #142033);
+  background: -moz-radial-gradient(circle, #183a68, #142033);
+  background: -o-radial-gradient(circle, #183a68, #142033);
+  background: -ms-radial-gradient(circle, #183a68, #142033);
+  background: radial-gradient(circle, #183a68, #142033);
+}
+.searchResultMainContainer,
+.ps {
+  background-color: transparent;
+}
+.searchResultMainContainer .container .title,
+.ps .container .title {
+  border-bottom: 1px solid #fff;
+}
+.searchResultMainContainer .container .title:before,
+.ps .container .title:before {
+  content: '\e905';
+}
+.searchResultMainContainer .container .title:after,
+.ps .container .title:after {
+  content: 'estás en la sección de play station';
+}
+.searchResultMainContainer .container ul il,
+.ps .container ul il {
+  -webkit-box-align: left;
+  -moz-box-align: left;
+  -o-box-align: left;
+  -ms-flex-align: left;
+  -webkit-align-items: left;
+  align-items: left;
+  height: 310px;
+}
+.searchResultMainContainer .container ul il figure,
+.ps .container ul il figure {
+  border: 2px solid #fff;
+  border-bottom: 0px;
+}
+.searchResultMainContainer .container ul il .contentContainer .name,
+.ps .container ul il .contentContainer .name {
+  text-align: left;
+}
+.searchResultMainContainer .container ul il .contentContainer .availableConsoles,
+.ps .container ul il .contentContainer .availableConsoles {
+  display: none;
+}
+.searchResultMainContainer .container ul il .contentContainer .price,
+.ps .container ul il .contentContainer .price {
+  background: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  -o-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  -webkit-box-ordinal-group: 2;
+  -moz-box-ordinal-group: 2;
+  -o-box-ordinal-group: 2;
+  -ms-flex-order: 2;
+  -webkit-order: 2;
+  order: 2;
+  text-align: left;
+  height: 15px;
+}
+.searchResultMainContainer .container ul il .contentContainer .exchange,
+.ps .container ul il .contentContainer .exchange {
+  -webkit-box-ordinal-group: 3;
+  -moz-box-ordinal-group: 3;
+  -o-box-ordinal-group: 3;
+  -ms-flex-order: 3;
+  -webkit-order: 3;
+  order: 3;
+  text-align: left;
+  padding: 9px 0 3px 0;
+  font-size: 15px;
+}
+.searchResultMainContainer .container ul il .contentContainer .exchange span:before,
+.ps .container ul il .contentContainer .exchange span:before {
+  content: 'cambio';
+}
+.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn,
+.ps .container ul il .contentContainer .alsoAvailableOn {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-ordinal-group: 4;
+  -moz-box-ordinal-group: 4;
+  -o-box-ordinal-group: 4;
+  -ms-flex-order: 4;
+  -webkit-order: 4;
+  order: 4;
+}
+.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn span,
+.ps .container ul il .contentContainer .alsoAvailableOn span {
+  border-top: 1px solid $white;
+}
+.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn span:before,
+.ps .container ul il .contentContainer .alsoAvailableOn span:before {
+  content: 'también disponible en xbox one';
+  color: #fff;
+}
+.searchResultMainContainer .container ul il.only .contentContainer .alsoAvailableOn span,
+.ps .container ul il.only .contentContainer .alsoAvailableOn span {
+  border: 0;
+}
+.searchResultMainContainer .container ul il.only .contentContainer .alsoAvailableOn span:before,
+.ps .container ul il.only .contentContainer .alsoAvailableOn span:before {
+  content: 'unicamente en play station 4';
+  color: #fff;
+}
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange:before,
+.ps .container ul il.noExchange .contentContainer .exchange:before,
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange:after,
+.ps .container ul il.noExchange .contentContainer .exchange:after {
+  color: #00605b;
+}
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange span,
+.ps .container ul il.noExchange .contentContainer .exchange span {
+  color: #00605b;
+}
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange div,
+.ps .container ul il.noExchange .contentContainer .exchange div {
+  display: inline-block;
+}
+#semi_body.xbox {
+  background: -webkit-linear-gradient(106deg, #1c7b33, #25632c);
+  background: -moz-linear-gradient(106deg, #1c7b33, #25632c);
+  background: -o-linear-gradient(106deg, #1c7b33, #25632c);
+  background: -ms-linear-gradient(106deg, #1c7b33, #25632c);
+  background: linear-gradient(-16deg, #1c7b33, #25632c);
+}
+.searchResultMainContainer,
+.xbox {
+  background-color: transparent;
+}
+.searchResultMainContainer .container .title,
+.xbox .container .title {
+  border-bottom: 1px solid #fff;
+}
+.searchResultMainContainer .container .title:before,
+.xbox .container .title:before {
+  content: '\e906';
+}
+.searchResultMainContainer .container .title:after,
+.xbox .container .title:after {
+  content: 'estás en la sección de x-box';
+}
+.searchResultMainContainer .container ul il,
+.xbox .container ul il {
+  -webkit-box-align: left;
+  -moz-box-align: left;
+  -o-box-align: left;
+  -ms-flex-align: left;
+  -webkit-align-items: left;
+  align-items: left;
+  height: 310px;
+}
+.searchResultMainContainer .container ul il figure,
+.xbox .container ul il figure {
+  border: 2px solid #fff;
+  border-bottom: 0px;
+}
+.searchResultMainContainer .container ul il .contentContainer,
+.xbox .container ul il .contentContainer {
+  background-color: #fff;
+  color: #009992;
+}
+.searchResultMainContainer .container ul il .contentContainer .name,
+.xbox .container ul il .contentContainer .name {
+  text-align: left;
+}
+.searchResultMainContainer .container ul il .contentContainer .availableConsoles,
+.xbox .container ul il .contentContainer .availableConsoles {
+  display: none;
+}
+.searchResultMainContainer .container ul il .contentContainer .price,
+.xbox .container ul il .contentContainer .price {
+  background: transparent;
+  color: #009992;
+  font-size: 15px;
+  font-weight: bold;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  -o-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  -webkit-box-ordinal-group: 2;
+  -moz-box-ordinal-group: 2;
+  -o-box-ordinal-group: 2;
+  -ms-flex-order: 2;
+  -webkit-order: 2;
+  order: 2;
+  text-align: left;
+  height: 15px;
+}
+.searchResultMainContainer .container ul il .contentContainer .exchange,
+.xbox .container ul il .contentContainer .exchange {
+  -webkit-box-ordinal-group: 3;
+  -moz-box-ordinal-group: 3;
+  -o-box-ordinal-group: 3;
+  -ms-flex-order: 3;
+  -webkit-order: 3;
+  order: 3;
+  text-align: left;
+  padding: 9px 0 3px 0;
+  font-size: 15px;
+}
+.searchResultMainContainer .container ul il .contentContainer .exchange span:before,
+.xbox .container ul il .contentContainer .exchange span:before {
+  content: 'cambio';
+}
+.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn,
+.xbox .container ul il .contentContainer .alsoAvailableOn {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-ordinal-group: 4;
+  -moz-box-ordinal-group: 4;
+  -o-box-ordinal-group: 4;
+  -ms-flex-order: 4;
+  -webkit-order: 4;
+  order: 4;
+}
+.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn span,
+.xbox .container ul il .contentContainer .alsoAvailableOn span {
+  border-top: 1px solid #009992;
+}
+.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn span:before,
+.xbox .container ul il .contentContainer .alsoAvailableOn span:before {
+  content: 'también disponible en ps4';
+  color: #009992;
+}
+.searchResultMainContainer .container ul il.only .contentContainer .alsoAvailableOn span,
+.xbox .container ul il.only .contentContainer .alsoAvailableOn span {
+  border: 0;
+}
+.searchResultMainContainer .container ul il.only .contentContainer .alsoAvailableOn span:before,
+.xbox .container ul il.only .contentContainer .alsoAvailableOn span:before {
+  content: 'unicamente en x-box one';
+  color: #fff;
+}
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange:before,
+.xbox .container ul il.noExchange .contentContainer .exchange:before,
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange:after,
+.xbox .container ul il.noExchange .contentContainer .exchange:after {
+  color: #98ceb7;
+}
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange span,
+.xbox .container ul il.noExchange .contentContainer .exchange span {
+  color: #98ceb7;
+}
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange div,
+.xbox .container ul il.noExchange .contentContainer .exchange div {
+  display: inline-block;
+  opacity: 0.3;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+  filter: alpha(opacity=30);
+}
+.searchResultMainContainer .container ul il:hover figure,
+.xbox .container ul il:hover figure {
+  border: 2px solid #8cc63f;
+  border-bottom: 0;
+}
+.searchResultMainContainer .container ul il:hover .contentContainer,
+.xbox .container ul il:hover .contentContainer {
+  background: #8cc63f;
+  color: #fff;
+}
+.searchResultMainContainer .container ul il:hover .contentContainer .exchange:before,
+.xbox .container ul il:hover .contentContainer .exchange:before,
+.searchResultMainContainer .container ul il:hover .contentContainer .exchange:after,
+.xbox .container ul il:hover .contentContainer .exchange:after {
+  color: #fff;
+}
+.searchResultMainContainer .container ul il:hover .contentContainer .exchange span:after,
+.xbox .container ul il:hover .contentContainer .exchange span:after,
+.searchResultMainContainer .container ul il:hover .contentContainer .exchange span:before,
+.xbox .container ul il:hover .contentContainer .exchange span:before {
+  color: #fff;
+}
+.searchResultMainContainer .container ul il:hover .contentContainer .price,
+.xbox .container ul il:hover .contentContainer .price {
+  color: #fff;
+}
+.searchResultMainContainer .container ul il:hover .contentContainer .alsoAvailableOn span,
+.xbox .container ul il:hover .contentContainer .alsoAvailableOn span {
+  border-top: 1px solid #fff;
+}
+.searchResultMainContainer .container ul il:hover .contentContainer .alsoAvailableOn span:before,
+.xbox .container ul il:hover .contentContainer .alsoAvailableOn span:before {
+  color: #fff;
+}
+.searchResultMainContainer .container ul il:hover.only .contentContainer .alsoAvailableOn span,
+.xbox .container ul il:hover.only .contentContainer .alsoAvailableOn span {
+  border: 0;
+}
+.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange:before,
+.xbox .container ul il:hover.noExchange .contentContainer .exchange:before,
+.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange:after,
+.xbox .container ul il:hover.noExchange .contentContainer .exchange:after {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange span:before,
+.xbox .container ul il:hover.noExchange .contentContainer .exchange span:before {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange div,
+.xbox .container ul il:hover.noExchange .contentContainer .exchange div {
+  opacity: 0.3;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+  filter: alpha(opacity=30);
 }

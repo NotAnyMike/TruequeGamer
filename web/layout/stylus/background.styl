@@ -25,7 +25,7 @@ a
 		bottom: 4px
 		font-family: TruequeGamer
 		font-style: normal
-		color: #F29224
+		color: $orange 
 
 .arrow-decorator
 	&:after
@@ -38,5 +38,10 @@ a
 	&:before
 		padding-right: 5px
 		content: "\e900"
+
+.negative
+	.dot-decorator,.arrow-decorator
+		&:before,&:after
+			color: white
 
 /******** End Decorators *******/

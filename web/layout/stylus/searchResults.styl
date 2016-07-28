@@ -2,7 +2,7 @@
 	background-color: white
 	flex-grow: 1
 	flex-shrink: 0
-	padding: 0
+	padding: 0 20px
 	margin: 0
 
 	.container
@@ -48,7 +48,7 @@
 			flex-wrap: wrap
 			justify-content: left
 			padding: 0
-			width: 100%
+			max-width: 1050px
 			margin-right: -8px
 			
 			il
@@ -87,7 +87,7 @@
 					flex-shrink: 0
 					flex-grow: 1
 					text-align: center
-					transition: background-color $time, color $time
+					transition: background-color $time
 					width: 100%
 			
 					.name
@@ -95,6 +95,7 @@
 						margin: 15px 12.5px 3px 12.5px
 						order: 1
 						text-transform: uppercase
+						transition: color $time
 
 					.exchange
 						font-size: 14px
@@ -104,13 +105,13 @@
 						position: relative
 						
 						&:before,&:after
-							bottom: 2px
+							bottom: 4px
 							color: $orange
 							font-family: TruequeGamer
 							font-size: 5px
 							font-style: normal
 							position: relative
-							transition: color $time
+							transition: color $time, opacity $time
 
 						&:before
 							content: '\e900'
@@ -122,21 +123,19 @@
 							font-size: 7px
 							padding-left: 2px
 
-						span:before
-							transition: color $time
-
-						div
-							background-image: url(img/crossline-exchange.png)
-							background-repeat: no-repeat
-							background-position: center center
-							display: none
-							height: 22px
-							left: 0
-							position: absolute
-							transition: opacity $time, background-image $time
-							top: 7px
-							width: 77px
+						span
+							position: relative
 							
+							&:before,&:after
+								transition: color $time, opacity $time
+
+							&:after
+								content: '\e909'
+								display: none
+								font-family: TruequeGamer
+								left: -15px
+								position: absolute
+								top: 2px
 
 					.availableConsoles
 						box-sizing: border-box
@@ -185,11 +184,26 @@
 						justify-content: center
 						order: 4
 						padding: 0 12.5px
-						transition: background 1000ms
+						position: relative
 						text-align: center
 						text-transform: uppercase
-						transition: color $time
+						transition: color $time, background $time
 						width: 100%
+							
+						&:before
+							content: ''
+							height: 100%
+							left: 0
+							opacity: 1
+							position: absolute
+							transition: opacity 300ms
+							top: 0
+							width: 100%
+							z-index: 0
+
+						span
+							transition: color $time
+							z-index: 1
 
 					.alsoAvailableOn
 						align-items: center
@@ -245,9 +259,9 @@
 							span:first-child:before
 								opacity: 1
 
-					.price
-						background: radial-gradient(circle, #183A68, #142033)
-
+					.price:before
+						background: $ps_radial_gradient
+						
 					&.only
 						.availableConsoles
 							.container
@@ -260,14 +274,35 @@
 							span:nth-child(2):before
 								opacity: 1
 
-					.price
-						background: linear-gradient(right, #1C7B33, #25632C)
+					.price:before
+						background: $xbox_linear_gradient
 
 					&.only
 						.availableConsoles
 							.container
 								span:first-child
 									display: none
+
+				&.noSell
+					.contentContainer
+						.price
+							span
+								&:before,&:after
+									transition: color $time, opacity $time
+
+								&:before
+									content: 'no venta'
+									color: $green
+									font-weight: normal
+									opacity: .5
+
+								&:after
+									content: '\e909'
+									color: $green
+									font-family: TruequeGamer
+									left: 5px
+									opacity: .5
+									position: absolute
 						
 /***************************************************************************
 														Both section
@@ -293,22 +328,57 @@
 
 					figure
 						border: 2px solid $dark_green
+						border-bottom: 0
 
 					.contentContainer
 						.exchange								
 							span:before
-								content: 'cambio'
+								content: 'trueque'
 
 					&.noExchange
 						.contentContainer
 							.exchange
 								span:before
 									color: $darker_green
-									content: 'no hay cambio'
+									content: 'no hay trueque'
 
 								&:before,&:after
 									content: ''
 									display: none
+
+					&.noSell
+						.contentContainer
+							.price
+								span
+									&:after
+										display: none
+									
+					&:hover
+						figure
+							border: 2px solid $red
+							border-bottom: 0px
+
+						.contentContainer
+							background-color: $red
+
+							.exchange
+								&:before,&:after
+									color: white
+
+						&.xbox,&.ps
+							.contentContainer
+								.price:before
+									opacity: 0
+
+						&.noExchange
+							.contentContainer
+								.exchange
+									&:before,&:after
+										opacity: .5
+
+									span:before,span:after
+										color: white
+										opacity: 0.5
 
 /***************************************************************************
 														PS section only
@@ -348,13 +418,15 @@
 							display: none
 
 						.price
-							background: transparent
 							font-size: 15px
 							font-weight: bold
 							justify-content: flex-start
 							order: 2
 							text-align: left
 							height: 15px
+							
+							&:before
+								background: transparent
 
 						.exchange
 							order: 3
@@ -364,7 +436,7 @@
 
 							span
 								&:before
-									content: 'cambio'
+									content: 'trueque'
 
 						.alsoAvailableOn
 							display: flex
@@ -396,8 +468,46 @@
 								span
 									color: $darker_green
 								
-								div
-									display: inline-block
+									&:after
+										display: inline-block
+
+					&.noSell
+						.contentContainer
+							.price
+								span
+									&:before,&:after
+										color: $darker_green	
+										opacity: 1
+
+					&:hover
+						figure
+							border: 2px solid $red
+							border-bottom: 0px
+
+						.contentContainer
+							background-color: $red
+
+							.exchange
+								&:before,&:after
+									color: white
+
+						&.noExchange
+							.contentContainer
+								.exchange
+									&:before,&:after
+										opacity: .5
+
+									span:before,span:after
+										color: white
+										opacity: 0.5
+
+						&.noSell
+							.contentContainer
+								.price
+									span
+										&:before,&:after
+											color: white
+											opacity: 0.5
 
 /***************************************************************************
 														XBox section only
@@ -440,14 +550,18 @@
 							display: none
 
 						.price
-							background: transparent
-							color: $dark_green
 							font-size: 15px
 							font-weight: bold
 							justify-content: flex-start
 							order: 2
 							text-align: left
 							height: 15px
+
+							&:before
+								background: transparent
+
+							span
+								color: $dark_green
 
 						.exchange
 							order: 3
@@ -457,7 +571,7 @@
 
 							span
 								&:before
-									content: 'cambio'
+									content: 'trueque'
 
 						.alsoAvailableOn
 							display: flex
@@ -489,9 +603,8 @@
 								span
 									color: $green
 								
-								div
-									display: inline-block
-									opacity: .3
+									&:after
+										display: inline-block
 
 					&:hover
 						figure
@@ -511,7 +624,8 @@
 										color: white
 
 							.price
-								color: white
+								span
+									color: white
 
 							.alsoAvailableOn
 								span
@@ -532,8 +646,12 @@
 									&:before,&:after
 										opacity: .5
 										
-									span:before
+									span:before,span:after
 										opacity: .5
 
-									div
-										opacity: .3
+						&.noSell
+							.contentContainer
+								.price
+									span
+										&:before,&:after
+											color: white

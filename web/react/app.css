@@ -419,66 +419,72 @@ textarea {
 }
 
 @font-face {
-    font-family: 'TruequeGamer';
-    src:    url('fonts/TruequeGamer.eot?w9xhpr');
-    src:    url('fonts/TruequeGamer.eot?w9xhpr#iefix') format('embedded-opentype'),
-        url('fonts/TruequeGamer.ttf?w9xhpr') format('truetype'),
-        url('fonts/TruequeGamer.woff?w9xhpr') format('woff'),
-        url('fonts/TruequeGamer.svg?w9xhpr#TruequeGamer') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'TruequeGamer';
+  src:  url('fonts/TruequeGamer.eot?depke');
+  src:  url('fonts/TruequeGamer.eot?depke#iefix') format('embedded-opentype'),
+    url('fonts/TruequeGamer.ttf?depke') format('truetype'),
+    url('fonts/TruequeGamer.woff?depke') format('woff'),
+    url('fonts/TruequeGamer.svg?depke#TruequeGamer') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'TruequeGamer' !important;
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'TruequeGamer' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-crossline---copie:before {
+  content: "\e90a";
+}
+.icon-crossline:before {
+  content: "\e909";
+}
 .icon-searchIcon:before {
-    content: "\e908";
+  content: "\e908";
 }
 .icon-face:before {
-    content: "\e907";
+  content: "\e907";
 }
 .icon-checkbox:before {
-    content: "\e902";
+  content: "\e902";
 }
 .icon-dot:before {
-    content: "\e900";
+  content: "\e900";
 }
 .icon-arrow:before {
-    content: "\e901";
+  content: "\e901";
 }
 .icon-ps:before {
-    content: "\e905";
+  content: "\e905";
 }
 .icon-xbox:before {
-    content: "\e906";
+  content: "\e906";
 }
 .icon-youtube-play:before {
-    content: "\e904";
+  content: "\e904";
 }
 .icon-pinterest-p:before {
-    content: "\e903";
+  content: "\e903";
 }
 .icon-facebook:before {
-    content: "\ea90";
+  content: "\ea90";
 }
 .icon-instagram:before {
-    content: "\ea92";
+  content: "\ea92";
 }
 .icon-twitter:before {
-    content: "\ea96";
+  content: "\ea96";
 }
 
 
@@ -486,6 +492,24 @@ html {
   height: 100%;
 }
 body {
+  color: #009992;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  font-family: 'Cabin', sans-serif;
+  height: 100%;
+  margin: 0;
+}
+#semi_body {
   background: -webkit-radial-gradient(circle, #fff3d7, #e9c699);
   background: -moz-radial-gradient(circle, #fff3d7, #e9c699);
   background: -o-radial-gradient(circle, #fff3d7, #e9c699);
@@ -561,7 +585,8 @@ footer,
   -webkit-flex-grow: 0;
   flex-grow: 0;
 }
-.mainContainer {
+.mainContainer,
+.searchResultsMainContainer {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -o-box-flex: 1;
@@ -690,25 +715,15 @@ figure.negative .isotype.negative {
 .sloganContainer span:nth-child(2) {
   position: relative;
 }
-.sloganContainer span:nth-child(2) img {
+.sloganContainer span:nth-child(2) span:before {
+  content: '\e90a';
+  font-family: TruequeGamer;
+  left: 0;
+  bottom: 3px;
   position: absolute;
-  left: -5px;
-  z-index: 1;
-}
-.sloganContainer span:nth-child(2) img.normal {
-  display: inline-block;
-}
-.sloganContainer span:nth-child(2) img.negative {
-  display: none;
 }
 .sloganContainer.negative span {
   color: #fff;
-}
-.sloganContainer.negative span:nth-child(2) img.crossline.normal {
-  display: none;
-}
-.sloganContainer.negative span:nth-child(2) img.crossline.negative {
-  display: inline-block;
 }
 .login {
   margin-top: 80px;
@@ -2419,7 +2434,7 @@ button {
   flex-grow: 1;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
-  padding: 0;
+  padding: 0 20px;
   margin: 0;
 }
 .searchResultsMainContainer .container {
@@ -2525,7 +2540,7 @@ button {
   -webkit-justify-content: left;
   justify-content: left;
   padding: 0;
-  width: 100%;
+  max-width: 1050px;
   margin-right: -8px;
 }
 .searchResultsMainContainer .container ul il {
@@ -2631,11 +2646,11 @@ button {
   -webkit-flex-grow: 1;
   flex-grow: 1;
   text-align: center;
-  -webkit-transition: background-color 300ms, color 300ms;
-  -moz-transition: background-color 300ms, color 300ms;
-  -o-transition: background-color 300ms, color 300ms;
-  -ms-transition: background-color 300ms, color 300ms;
-  transition: background-color 300ms, color 300ms;
+  -webkit-transition: background-color 300ms;
+  -moz-transition: background-color 300ms;
+  -o-transition: background-color 300ms;
+  -ms-transition: background-color 300ms;
+  transition: background-color 300ms;
   width: 100%;
 }
 .searchResultsMainContainer .container ul il .contentContainer .name {
@@ -2648,6 +2663,11 @@ button {
   -webkit-order: 1;
   order: 1;
   text-transform: uppercase;
+  -webkit-transition: color 300ms;
+  -moz-transition: color 300ms;
+  -o-transition: color 300ms;
+  -ms-transition: color 300ms;
+  transition: color 300ms;
 }
 .searchResultsMainContainer .container ul il .contentContainer .exchange {
   font-size: 14px;
@@ -2663,17 +2683,17 @@ button {
 }
 .searchResultsMainContainer .container ul il .contentContainer .exchange:before,
 .searchResultsMainContainer .container ul il .contentContainer .exchange:after {
-  bottom: 2px;
+  bottom: 4px;
   color: #f29224;
   font-family: TruequeGamer;
   font-size: 5px;
   font-style: normal;
   position: relative;
-  -webkit-transition: color 300ms;
-  -moz-transition: color 300ms;
-  -o-transition: color 300ms;
-  -ms-transition: color 300ms;
-  transition: color 300ms;
+  -webkit-transition: color 300ms, opacity 300ms;
+  -moz-transition: color 300ms, opacity 300ms;
+  -o-transition: color 300ms, opacity 300ms;
+  -ms-transition: color 300ms, opacity 300ms;
+  transition: color 300ms, opacity 300ms;
 }
 .searchResultsMainContainer .container ul il .contentContainer .exchange:before {
   content: '\e900';
@@ -2685,28 +2705,24 @@ button {
   font-size: 7px;
   padding-left: 2px;
 }
-.searchResultsMainContainer .container ul il .contentContainer .exchange span:before {
-  -webkit-transition: color 300ms;
-  -moz-transition: color 300ms;
-  -o-transition: color 300ms;
-  -ms-transition: color 300ms;
-  transition: color 300ms;
+.searchResultsMainContainer .container ul il .contentContainer .exchange span {
+  position: relative;
 }
-.searchResultsMainContainer .container ul il .contentContainer .exchange div {
-  background-image: url("img/crossline-exchange.png");
-  background-repeat: no-repeat;
-  background-position: center center;
+.searchResultsMainContainer .container ul il .contentContainer .exchange span:before,
+.searchResultsMainContainer .container ul il .contentContainer .exchange span:after {
+  -webkit-transition: color 300ms, opacity 300ms;
+  -moz-transition: color 300ms, opacity 300ms;
+  -o-transition: color 300ms, opacity 300ms;
+  -ms-transition: color 300ms, opacity 300ms;
+  transition: color 300ms, opacity 300ms;
+}
+.searchResultsMainContainer .container ul il .contentContainer .exchange span:after {
+  content: '\e909';
   display: none;
-  height: 22px;
-  left: 0;
+  font-family: TruequeGamer;
+  left: -15px;
   position: absolute;
-  -webkit-transition: opacity 300ms, background-image 300ms;
-  -moz-transition: opacity 300ms, background-image 300ms;
-  -o-transition: opacity 300ms, background-image 300ms;
-  -ms-transition: opacity 300ms, background-image 300ms;
-  transition: opacity 300ms, background-image 300ms;
-  top: 7px;
-  width: 77px;
+  top: 2px;
 }
 .searchResultsMainContainer .container ul il .contentContainer .availableConsoles {
   -webkit-box-sizing: border-box;
@@ -2821,19 +2837,40 @@ button {
   -webkit-order: 4;
   order: 4;
   padding: 0 12.5px;
-  -webkit-transition: background 1000ms;
-  -moz-transition: background 1000ms;
-  -o-transition: background 1000ms;
-  -ms-transition: background 1000ms;
-  transition: background 1000ms;
+  position: relative;
   text-align: center;
   text-transform: uppercase;
+  -webkit-transition: color 300ms, background 300ms;
+  -moz-transition: color 300ms, background 300ms;
+  -o-transition: color 300ms, background 300ms;
+  -ms-transition: color 300ms, background 300ms;
+  transition: color 300ms, background 300ms;
+  width: 100%;
+}
+.searchResultsMainContainer .container ul il .contentContainer .price:before {
+  content: '';
+  height: 100%;
+  left: 0;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  position: absolute;
+  -webkit-transition: opacity 300ms;
+  -moz-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  -ms-transition: opacity 300ms;
+  transition: opacity 300ms;
+  top: 0;
+  width: 100%;
+  z-index: 0;
+}
+.searchResultsMainContainer .container ul il .contentContainer .price span {
   -webkit-transition: color 300ms;
   -moz-transition: color 300ms;
   -o-transition: color 300ms;
   -ms-transition: color 300ms;
   transition: color 300ms;
-  width: 100%;
+  z-index: 1;
 }
 .searchResultsMainContainer .container ul il .contentContainer .alsoAvailableOn {
   -webkit-box-align: center;
@@ -2916,7 +2953,7 @@ button {
   -ms-filter: none;
   filter: none;
 }
-.searchResultsMainContainer .container ul il.ps .price {
+.searchResultsMainContainer .container ul il.ps .price:before {
   background: -webkit-radial-gradient(circle, #183a68, #142033);
   background: -moz-radial-gradient(circle, #183a68, #142033);
   background: -o-radial-gradient(circle, #183a68, #142033);
@@ -2931,15 +2968,41 @@ button {
   -ms-filter: none;
   filter: none;
 }
-.searchResultsMainContainer .container ul il.xbox .price {
-  background: -webkit-linear-gradient(right, #1c7b33, #25632c);
-  background: -moz-linear-gradient(right, #1c7b33, #25632c);
-  background: -o-linear-gradient(right, #1c7b33, #25632c);
-  background: -ms-linear-gradient(right, #1c7b33, #25632c);
-  background: linear-gradient(to left, #1c7b33, #25632c);
+.searchResultsMainContainer .container ul il.xbox .price:before {
+  background: -webkit-linear-gradient(106deg, #1c7b33, #25632c);
+  background: -moz-linear-gradient(106deg, #1c7b33, #25632c);
+  background: -o-linear-gradient(106deg, #1c7b33, #25632c);
+  background: -ms-linear-gradient(106deg, #1c7b33, #25632c);
+  background: linear-gradient(-16deg, #1c7b33, #25632c);
 }
 .searchResultsMainContainer .container ul il.xbox.only .availableConsoles .container span:first-child {
   display: none;
+}
+.searchResultsMainContainer .container ul il.noSell .contentContainer .price span:before,
+.searchResultsMainContainer .container ul il.noSell .contentContainer .price span:after {
+  -webkit-transition: color 300ms, opacity 300ms;
+  -moz-transition: color 300ms, opacity 300ms;
+  -o-transition: color 300ms, opacity 300ms;
+  -ms-transition: color 300ms, opacity 300ms;
+  transition: color 300ms, opacity 300ms;
+}
+.searchResultsMainContainer .container ul il.noSell .contentContainer .price span:before {
+  content: 'no venta';
+  color: #98ceb7;
+  font-weight: normal;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+.searchResultsMainContainer .container ul il.noSell .contentContainer .price span:after {
+  content: '\e909';
+  color: #98ceb7;
+  font-family: TruequeGamer;
+  left: 5px;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+  position: absolute;
 }
 .searchResultsMainContainer.both .title {
   color: #009992;
@@ -2963,18 +3026,52 @@ button {
 }
 .searchResultsMainContainer.both .container ul il figure {
   border: 2px solid #009992;
+  border-bottom: 0;
 }
 .searchResultsMainContainer.both .container ul il .contentContainer .exchange span:before {
-  content: 'cambio';
+  content: 'trueque';
 }
 .searchResultsMainContainer.both .container ul il.noExchange .contentContainer .exchange span:before {
   color: #00605b;
-  content: 'no hay cambio';
+  content: 'no hay trueque';
 }
 .searchResultsMainContainer.both .container ul il.noExchange .contentContainer .exchange:before,
 .searchResultsMainContainer.both .container ul il.noExchange .contentContainer .exchange:after {
   content: '';
   display: none;
+}
+.searchResultsMainContainer.both .container ul il.noSell .contentContainer .price span:after {
+  display: none;
+}
+.searchResultsMainContainer.both .container ul il:hover figure {
+  border: 2px solid #e6334c;
+  border-bottom: 0px;
+}
+.searchResultsMainContainer.both .container ul il:hover .contentContainer {
+  background-color: #e6334c;
+}
+.searchResultsMainContainer.both .container ul il:hover .contentContainer .exchange:before,
+.searchResultsMainContainer.both .container ul il:hover .contentContainer .exchange:after {
+  color: #fff;
+}
+.searchResultsMainContainer.both .container ul il:hover.xbox .contentContainer .price:before,
+.searchResultsMainContainer.both .container ul il:hover.ps .contentContainer .price:before {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.searchResultsMainContainer.both .container ul il:hover.noExchange .contentContainer .exchange:before,
+.searchResultsMainContainer.both .container ul il:hover.noExchange .contentContainer .exchange:after {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+.searchResultsMainContainer.both .container ul il:hover.noExchange .contentContainer .exchange span:before,
+.searchResultsMainContainer.both .container ul il:hover.noExchange .contentContainer .exchange span:after {
+  color: #fff;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
 }
 #semi_body.ps {
   background: -webkit-radial-gradient(circle, #183a68, #142033);
@@ -3024,7 +3121,6 @@ button {
 }
 .searchResultMainContainer .container ul il .contentContainer .price,
 .ps .container ul il .contentContainer .price {
-  background: transparent;
   font-size: 15px;
   font-weight: bold;
   -webkit-box-pack: start;
@@ -3042,6 +3138,10 @@ button {
   text-align: left;
   height: 15px;
 }
+.searchResultMainContainer .container ul il .contentContainer .price:before,
+.ps .container ul il .contentContainer .price:before {
+  background: transparent;
+}
 .searchResultMainContainer .container ul il .contentContainer .exchange,
 .ps .container ul il .contentContainer .exchange {
   -webkit-box-ordinal-group: 3;
@@ -3056,7 +3156,7 @@ button {
 }
 .searchResultMainContainer .container ul il .contentContainer .exchange span:before,
 .ps .container ul il .contentContainer .exchange span:before {
-  content: 'cambio';
+  content: 'trueque';
 }
 .searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn,
 .ps .container ul il .contentContainer .alsoAvailableOn {
@@ -3101,9 +3201,59 @@ button {
 .ps .container ul il.noExchange .contentContainer .exchange span {
   color: #00605b;
 }
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange div,
-.ps .container ul il.noExchange .contentContainer .exchange div {
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange span:after,
+.ps .container ul il.noExchange .contentContainer .exchange span:after {
   display: inline-block;
+}
+.searchResultMainContainer .container ul il.noSell .contentContainer .price span:before,
+.ps .container ul il.noSell .contentContainer .price span:before,
+.searchResultMainContainer .container ul il.noSell .contentContainer .price span:after,
+.ps .container ul il.noSell .contentContainer .price span:after {
+  color: #00605b;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.searchResultMainContainer .container ul il:hover figure,
+.ps .container ul il:hover figure {
+  border: 2px solid #e6334c;
+  border-bottom: 0px;
+}
+.searchResultMainContainer .container ul il:hover .contentContainer,
+.ps .container ul il:hover .contentContainer {
+  background-color: #e6334c;
+}
+.searchResultMainContainer .container ul il:hover .contentContainer .exchange:before,
+.ps .container ul il:hover .contentContainer .exchange:before,
+.searchResultMainContainer .container ul il:hover .contentContainer .exchange:after,
+.ps .container ul il:hover .contentContainer .exchange:after {
+  color: #fff;
+}
+.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange:before,
+.ps .container ul il:hover.noExchange .contentContainer .exchange:before,
+.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange:after,
+.ps .container ul il:hover.noExchange .contentContainer .exchange:after {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange span:before,
+.ps .container ul il:hover.noExchange .contentContainer .exchange span:before,
+.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange span:after,
+.ps .container ul il:hover.noExchange .contentContainer .exchange span:after {
+  color: #fff;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+.searchResultMainContainer .container ul il:hover.noSell .contentContainer .price span:before,
+.ps .container ul il:hover.noSell .contentContainer .price span:before,
+.searchResultMainContainer .container ul il:hover.noSell .contentContainer .price span:after,
+.ps .container ul il:hover.noSell .contentContainer .price span:after {
+  color: #fff;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
 }
 #semi_body.xbox {
   background: -webkit-linear-gradient(106deg, #1c7b33, #25632c);
@@ -3158,8 +3308,6 @@ button {
 }
 .searchResultMainContainer .container ul il .contentContainer .price,
 .xbox .container ul il .contentContainer .price {
-  background: transparent;
-  color: #009992;
   font-size: 15px;
   font-weight: bold;
   -webkit-box-pack: start;
@@ -3177,6 +3325,14 @@ button {
   text-align: left;
   height: 15px;
 }
+.searchResultMainContainer .container ul il .contentContainer .price:before,
+.xbox .container ul il .contentContainer .price:before {
+  background: transparent;
+}
+.searchResultMainContainer .container ul il .contentContainer .price span,
+.xbox .container ul il .contentContainer .price span {
+  color: #009992;
+}
 .searchResultMainContainer .container ul il .contentContainer .exchange,
 .xbox .container ul il .contentContainer .exchange {
   -webkit-box-ordinal-group: 3;
@@ -3191,7 +3347,7 @@ button {
 }
 .searchResultMainContainer .container ul il .contentContainer .exchange span:before,
 .xbox .container ul il .contentContainer .exchange span:before {
-  content: 'cambio';
+  content: 'trueque';
 }
 .searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn,
 .xbox .container ul il .contentContainer .alsoAvailableOn {
@@ -3236,12 +3392,9 @@ button {
 .xbox .container ul il.noExchange .contentContainer .exchange span {
   color: #98ceb7;
 }
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange div,
-.xbox .container ul il.noExchange .contentContainer .exchange div {
+.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange span:after,
+.xbox .container ul il.noExchange .contentContainer .exchange span:after {
   display: inline-block;
-  opacity: 0.3;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-  filter: alpha(opacity=30);
 }
 .searchResultMainContainer .container ul il:hover figure,
 .xbox .container ul il:hover figure {
@@ -3265,8 +3418,8 @@ button {
 .xbox .container ul il:hover .contentContainer .exchange span:before {
   color: #fff;
 }
-.searchResultMainContainer .container ul il:hover .contentContainer .price,
-.xbox .container ul il:hover .contentContainer .price {
+.searchResultMainContainer .container ul il:hover .contentContainer .price span,
+.xbox .container ul il:hover .contentContainer .price span {
   color: #fff;
 }
 .searchResultMainContainer .container ul il:hover .contentContainer .alsoAvailableOn span,
@@ -3290,14 +3443,16 @@ button {
   filter: alpha(opacity=50);
 }
 .searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange span:before,
-.xbox .container ul il:hover.noExchange .contentContainer .exchange span:before {
+.xbox .container ul il:hover.noExchange .contentContainer .exchange span:before,
+.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange span:after,
+.xbox .container ul il:hover.noExchange .contentContainer .exchange span:after {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange div,
-.xbox .container ul il:hover.noExchange .contentContainer .exchange div {
-  opacity: 0.3;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-  filter: alpha(opacity=30);
+.searchResultMainContainer .container ul il:hover.noSell .contentContainer .price span:before,
+.xbox .container ul il:hover.noSell .contentContainer .price span:before,
+.searchResultMainContainer .container ul il:hover.noSell .contentContainer .price span:after,
+.xbox .container ul il:hover.noSell .contentContainer .price span:after {
+  color: #fff;
 }

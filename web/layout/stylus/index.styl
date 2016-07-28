@@ -6,7 +6,7 @@ header, .mainContainer, footer, .decoration
 header, footer, .decoration
 	flex-grow: 0
 
-.mainContainer
+.mainContainer,.searchResultsMainContainer
 	flex-grow: 1
 
 header
@@ -78,29 +78,16 @@ figure
 	span:nth-child(2)
 		position: relative
 
-		img
+		span:before
+			content: '\e90a'
+			font-family: TruequeGamer
+			left:0
+			bottom: 3px
 			position: absolute
-			left: -5px
-			z-index: 1
 
-			&.normal
-				display: inline-block
-
-			&.negative
-				display: none
-			
 	&.negative
 		span
 			color: white
-
-		span:nth-child(2)
-			img
-				&.crossline
-					&.normal
-						display: none
-
-					&.negative
-						display: inline-block
 
 .login
 	margin-top: 80px

@@ -509,6 +509,9 @@ body {
   height: 100%;
   margin: 0;
 }
+#mainContainer {
+  height: 100%;
+}
 #semi_body {
   background: -webkit-radial-gradient(circle, #fff3d7, #e9c699);
   background: -moz-radial-gradient(circle, #fff3d7, #e9c699);
@@ -2506,7 +2509,7 @@ button {
   display: inline-block;
   margin-left: 60px;
 }
-.searchResultsMainContainer .container ul {
+ul {
   -webkit-box-align: start;
   -moz-box-align: start;
   -o-box-align: start;
@@ -2543,7 +2546,7 @@ button {
   max-width: 1050px;
   margin-right: -8px;
 }
-.searchResultsMainContainer .container ul il {
+ul il {
   -webkit-box-align: start;
   -moz-box-align: start;
   -o-box-align: start;
@@ -2575,7 +2578,7 @@ button {
   overflow: hidden;
   width: 167px;
 }
-.searchResultsMainContainer .container ul il figure {
+ul il figure {
   -webkit-box-align: center;
   -moz-box-align: center;
   -o-box-align: center;
@@ -2609,11 +2612,11 @@ button {
   transition: border 300ms;
   width: 100%;
 }
-.searchResultsMainContainer .container ul il figure img {
+ul il figure img {
   height: 180px;
   width: 142px;
 }
-.searchResultsMainContainer .container ul il .contentContainer {
+ul il .contentContainer {
   background-color: #009992;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -2653,7 +2656,7 @@ button {
   transition: background-color 300ms;
   width: 100%;
 }
-.searchResultsMainContainer .container ul il .contentContainer .name {
+ul il .contentContainer .name {
   font-size: 15px;
   margin: 15px 12.5px 3px 12.5px;
   -webkit-box-ordinal-group: 1;
@@ -2669,7 +2672,7 @@ button {
   -ms-transition: color 300ms;
   transition: color 300ms;
 }
-.searchResultsMainContainer .container ul il .contentContainer .exchange {
+ul il .contentContainer .exchange {
   font-size: 14px;
   text-transform: uppercase;
   margin: 3px 12.5px;
@@ -2681,8 +2684,8 @@ button {
   order: 2;
   position: relative;
 }
-.searchResultsMainContainer .container ul il .contentContainer .exchange:before,
-.searchResultsMainContainer .container ul il .contentContainer .exchange:after {
+ul il .contentContainer .exchange:before,
+ul il .contentContainer .exchange:after {
   bottom: 4px;
   color: #f29224;
   font-family: TruequeGamer;
@@ -2695,28 +2698,28 @@ button {
   -ms-transition: color 300ms, opacity 300ms;
   transition: color 300ms, opacity 300ms;
 }
-.searchResultsMainContainer .container ul il .contentContainer .exchange:before {
+ul il .contentContainer .exchange:before {
   content: '\e900';
   padding-right: 5px;
 }
-.searchResultsMainContainer .container ul il .contentContainer .exchange:after {
+ul il .contentContainer .exchange:after {
   content: '\e901';
   bottom: 1px;
   font-size: 7px;
   padding-left: 2px;
 }
-.searchResultsMainContainer .container ul il .contentContainer .exchange span {
+ul il .contentContainer .exchange span {
   position: relative;
 }
-.searchResultsMainContainer .container ul il .contentContainer .exchange span:before,
-.searchResultsMainContainer .container ul il .contentContainer .exchange span:after {
+ul il .contentContainer .exchange span:before,
+ul il .contentContainer .exchange span:after {
   -webkit-transition: color 300ms, opacity 300ms;
   -moz-transition: color 300ms, opacity 300ms;
   -o-transition: color 300ms, opacity 300ms;
   -ms-transition: color 300ms, opacity 300ms;
   transition: color 300ms, opacity 300ms;
 }
-.searchResultsMainContainer .container ul il .contentContainer .exchange span:after {
+ul il .contentContainer .exchange span:after {
   content: '\e909';
   display: none;
   font-family: TruequeGamer;
@@ -2724,7 +2727,7 @@ button {
   position: absolute;
   top: 2px;
 }
-.searchResultsMainContainer .container ul il .contentContainer .availableConsoles {
+ul il .contentContainer .availableConsoles {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -2746,7 +2749,7 @@ button {
   position: relative;
   width: 100%;
 }
-.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container {
+ul il .contentContainer .availableConsoles .container {
   border-top: 1px solid #fff;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -2771,13 +2774,13 @@ button {
   justify-content: center;
   margin: 5px 9px 0px 9px;
 }
-.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container span {
+ul il .contentContainer .availableConsoles .container span {
   display: inline-block;
   height: 28px;
   margin: 6px 7.5px;
   width: 36px;
 }
-.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container span:before {
+ul il .contentContainer .availableConsoles .container span:before {
   color: #fff;
   font-family: TruequeGamer;
   font-size: 28px;
@@ -2790,13 +2793,13 @@ button {
   -ms-transition: opacity 300ms;
   transition: opacity 300ms;
 }
-.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container span:first-child:before {
+ul il .contentContainer .availableConsoles .container span:first-child:before {
   content: '\e905';
 }
-.searchResultsMainContainer .container ul il .contentContainer .availableConsoles .container span:nth-child(2):before {
+ul il .contentContainer .availableConsoles .container span:nth-child(2):before {
   content: '\e906';
 }
-.searchResultsMainContainer .container ul il .contentContainer .price {
+ul il .contentContainer .price {
   -webkit-box-align: center;
   -moz-box-align: center;
   -o-box-align: center;
@@ -2847,7 +2850,7 @@ button {
   transition: color 300ms, background 300ms;
   width: 100%;
 }
-.searchResultsMainContainer .container ul il .contentContainer .price:before {
+ul il .contentContainer .price:before {
   content: '';
   height: 100%;
   left: 0;
@@ -2864,7 +2867,7 @@ button {
   width: 100%;
   z-index: 0;
 }
-.searchResultsMainContainer .container ul il .contentContainer .price span {
+ul il .contentContainer .price span {
   -webkit-transition: color 300ms;
   -moz-transition: color 300ms;
   -o-transition: color 300ms;
@@ -2872,7 +2875,7 @@ button {
   transition: color 300ms;
   z-index: 1;
 }
-.searchResultsMainContainer .container ul il .contentContainer .alsoAvailableOn {
+ul il .contentContainer .alsoAvailableOn {
   -webkit-box-align: center;
   -moz-box-align: center;
   -o-box-align: center;
@@ -2894,7 +2897,7 @@ button {
   -webkit-order: 5;
   order: 5;
 }
-.searchResultsMainContainer .container ul il .contentContainer .alsoAvailableOn span {
+ul il .contentContainer .alsoAvailableOn span {
   font-size: 8px;
   border-top: 1px solid #fff;
   margin: 0 12.5px;
@@ -2907,15 +2910,15 @@ button {
   transition: border 300ms;
   width: 100%;
 }
-.searchResultsMainContainer .container ul il .contentContainer .alsoAvailableOn span:before {
+ul il .contentContainer .alsoAvailableOn span:before {
   -webkit-transition: color 300ms;
   -moz-transition: color 300ms;
   -o-transition: color 300ms;
   -ms-transition: color 300ms;
   transition: color 300ms;
 }
-.searchResultsMainContainer .container ul il.only .availableConsoles:before,
-.searchResultsMainContainer .container ul il.only .availableConsoles:after {
+ul il.only .availableConsoles:before,
+ul il.only .availableConsoles:after {
   background-image: url("img/onlyConsoleDecorator.png");
   background-position: center right;
   background-repeat: no-repeat;
@@ -2930,7 +2933,7 @@ button {
   position: absolute;
   width: 15px;
 }
-.searchResultsMainContainer .container ul il.only .availableConsoles:after {
+ul il.only .availableConsoles:after {
   filter: FlipH;
   left: auto;
   right: 0;
@@ -2941,52 +2944,52 @@ button {
   transform: scaleX(-1);
   top: 0;
 }
-.searchResultsMainContainer .container ul il.only .alsoAvailableOn {
+ul il.only .alsoAvailableOn {
   background-color: #e6334c;
   border: 0px;
 }
-.searchResultsMainContainer .container ul il.only .alsoAvailableOn span {
+ul il.only .alsoAvailableOn span {
   border: 0px;
 }
-.searchResultsMainContainer .container ul il.ps .availableConsoles .container span:first-child:before {
+ul il.ps .availableConsoles .container span:first-child:before {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
-.searchResultsMainContainer .container ul il.ps .price:before {
+ul il.ps .price:before {
   background: -webkit-radial-gradient(circle, #183a68, #142033);
   background: -moz-radial-gradient(circle, #183a68, #142033);
   background: -o-radial-gradient(circle, #183a68, #142033);
   background: -ms-radial-gradient(circle, #183a68, #142033);
   background: radial-gradient(circle, #183a68, #142033);
 }
-.searchResultsMainContainer .container ul il.ps.only .availableConsoles .container span:nth-child(2) {
+ul il.ps.only .availableConsoles .container span:nth-child(2) {
   display: none;
 }
-.searchResultsMainContainer .container ul il.xbox .availableConsoles .container span:nth-child(2):before {
+ul il.xbox .availableConsoles .container span:nth-child(2):before {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
-.searchResultsMainContainer .container ul il.xbox .price:before {
+ul il.xbox .price:before {
   background: -webkit-linear-gradient(106deg, #1c7b33, #25632c);
   background: -moz-linear-gradient(106deg, #1c7b33, #25632c);
   background: -o-linear-gradient(106deg, #1c7b33, #25632c);
   background: -ms-linear-gradient(106deg, #1c7b33, #25632c);
   background: linear-gradient(-16deg, #1c7b33, #25632c);
 }
-.searchResultsMainContainer .container ul il.xbox.only .availableConsoles .container span:first-child {
+ul il.xbox.only .availableConsoles .container span:first-child {
   display: none;
 }
-.searchResultsMainContainer .container ul il.noSell .contentContainer .price span:before,
-.searchResultsMainContainer .container ul il.noSell .contentContainer .price span:after {
+ul il.noSell .contentContainer .price span:before,
+ul il.noSell .contentContainer .price span:after {
   -webkit-transition: color 300ms, opacity 300ms;
   -moz-transition: color 300ms, opacity 300ms;
   -o-transition: color 300ms, opacity 300ms;
   -ms-transition: color 300ms, opacity 300ms;
   transition: color 300ms, opacity 300ms;
 }
-.searchResultsMainContainer .container ul il.noSell .contentContainer .price span:before {
+ul il.noSell .contentContainer .price span:before {
   content: 'no venta';
   color: #98ceb7;
   font-weight: normal;
@@ -2994,7 +2997,7 @@ button {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-.searchResultsMainContainer .container ul il.noSell .contentContainer .price span:after {
+ul il.noSell .contentContainer .price span:after {
   content: '\e909';
   color: #98ceb7;
   font-family: TruequeGamer;
@@ -3016,7 +3019,7 @@ button {
 .searchResultsMainContainer.both .title:after {
   content: 'aquí encontrarás juegos de PlayStation y de XBox';
 }
-.searchResultsMainContainer.both .container ul il {
+ul.both il {
   -webkit-box-align: center;
   -moz-box-align: center;
   -o-box-align: center;
@@ -3024,50 +3027,50 @@ button {
   -webkit-align-items: center;
   align-items: center;
 }
-.searchResultsMainContainer.both .container ul il figure {
+ul.both il figure {
   border: 2px solid #009992;
   border-bottom: 0;
 }
-.searchResultsMainContainer.both .container ul il .contentContainer .exchange span:before {
+ul.both il .contentContainer .exchange span:before {
   content: 'trueque';
 }
-.searchResultsMainContainer.both .container ul il.noExchange .contentContainer .exchange span:before {
+ul.both il.noExchange .contentContainer .exchange span:before {
   color: #00605b;
   content: 'no hay trueque';
 }
-.searchResultsMainContainer.both .container ul il.noExchange .contentContainer .exchange:before,
-.searchResultsMainContainer.both .container ul il.noExchange .contentContainer .exchange:after {
+ul.both il.noExchange .contentContainer .exchange:before,
+ul.both il.noExchange .contentContainer .exchange:after {
   content: '';
   display: none;
 }
-.searchResultsMainContainer.both .container ul il.noSell .contentContainer .price span:after {
+ul.both il.noSell .contentContainer .price span:after {
   display: none;
 }
-.searchResultsMainContainer.both .container ul il:hover figure {
+ul.both il:hover figure {
   border: 2px solid #e6334c;
   border-bottom: 0px;
 }
-.searchResultsMainContainer.both .container ul il:hover .contentContainer {
+ul.both il:hover .contentContainer {
   background-color: #e6334c;
 }
-.searchResultsMainContainer.both .container ul il:hover .contentContainer .exchange:before,
-.searchResultsMainContainer.both .container ul il:hover .contentContainer .exchange:after {
+ul.both il:hover .contentContainer .exchange:before,
+ul.both il:hover .contentContainer .exchange:after {
   color: #fff;
 }
-.searchResultsMainContainer.both .container ul il:hover.xbox .contentContainer .price:before,
-.searchResultsMainContainer.both .container ul il:hover.ps .contentContainer .price:before {
+ul.both il:hover.xbox .contentContainer .price:before,
+ul.both il:hover.ps .contentContainer .price:before {
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
-.searchResultsMainContainer.both .container ul il:hover.noExchange .contentContainer .exchange:before,
-.searchResultsMainContainer.both .container ul il:hover.noExchange .contentContainer .exchange:after {
+ul.both il:hover.noExchange .contentContainer .exchange:before,
+ul.both il:hover.noExchange .contentContainer .exchange:after {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-.searchResultsMainContainer.both .container ul il:hover.noExchange .contentContainer .exchange span:before,
-.searchResultsMainContainer.both .container ul il:hover.noExchange .contentContainer .exchange span:after {
+ul.both il:hover.noExchange .contentContainer .exchange span:before,
+ul.both il:hover.noExchange .contentContainer .exchange span:after {
   color: #fff;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -3096,8 +3099,7 @@ button {
 .ps .container .title:after {
   content: 'estás en la sección de play station';
 }
-.searchResultMainContainer .container ul il,
-.ps .container ul il {
+ul.ps il {
   -webkit-box-align: left;
   -moz-box-align: left;
   -o-box-align: left;
@@ -3106,21 +3108,17 @@ button {
   align-items: left;
   height: 310px;
 }
-.searchResultMainContainer .container ul il figure,
-.ps .container ul il figure {
+ul.ps il figure {
   border: 2px solid #fff;
   border-bottom: 0px;
 }
-.searchResultMainContainer .container ul il .contentContainer .name,
-.ps .container ul il .contentContainer .name {
+ul.ps il .contentContainer .name {
   text-align: left;
 }
-.searchResultMainContainer .container ul il .contentContainer .availableConsoles,
-.ps .container ul il .contentContainer .availableConsoles {
+ul.ps il .contentContainer .availableConsoles {
   display: none;
 }
-.searchResultMainContainer .container ul il .contentContainer .price,
-.ps .container ul il .contentContainer .price {
+ul.ps il .contentContainer .price {
   font-size: 15px;
   font-weight: bold;
   -webkit-box-pack: start;
@@ -3138,12 +3136,10 @@ button {
   text-align: left;
   height: 15px;
 }
-.searchResultMainContainer .container ul il .contentContainer .price:before,
-.ps .container ul il .contentContainer .price:before {
+ul.ps il .contentContainer .price:before {
   background: transparent;
 }
-.searchResultMainContainer .container ul il .contentContainer .exchange,
-.ps .container ul il .contentContainer .exchange {
+ul.ps il .contentContainer .exchange {
   -webkit-box-ordinal-group: 3;
   -moz-box-ordinal-group: 3;
   -o-box-ordinal-group: 3;
@@ -3154,12 +3150,10 @@ button {
   padding: 9px 0 3px 0;
   font-size: 15px;
 }
-.searchResultMainContainer .container ul il .contentContainer .exchange span:before,
-.ps .container ul il .contentContainer .exchange span:before {
+ul.ps il .contentContainer .exchange span:before {
   content: 'trueque';
 }
-.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn,
-.ps .container ul il .contentContainer .alsoAvailableOn {
+ul.ps il .contentContainer .alsoAvailableOn {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -3173,83 +3167,63 @@ button {
   -webkit-order: 4;
   order: 4;
 }
-.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn span,
-.ps .container ul il .contentContainer .alsoAvailableOn span {
+ul.ps il .contentContainer .alsoAvailableOn span {
   border-top: 1px solid $white;
 }
-.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn span:before,
-.ps .container ul il .contentContainer .alsoAvailableOn span:before {
+ul.ps il .contentContainer .alsoAvailableOn span:before {
   content: 'también disponible en xbox one';
   color: #fff;
 }
-.searchResultMainContainer .container ul il.only .contentContainer .alsoAvailableOn span,
-.ps .container ul il.only .contentContainer .alsoAvailableOn span {
+ul.ps il.only .contentContainer .alsoAvailableOn span {
   border: 0;
 }
-.searchResultMainContainer .container ul il.only .contentContainer .alsoAvailableOn span:before,
-.ps .container ul il.only .contentContainer .alsoAvailableOn span:before {
+ul.ps il.only .contentContainer .alsoAvailableOn span:before {
   content: 'unicamente en play station 4';
   color: #fff;
 }
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange:before,
-.ps .container ul il.noExchange .contentContainer .exchange:before,
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange:after,
-.ps .container ul il.noExchange .contentContainer .exchange:after {
+ul.ps il.noExchange .contentContainer .exchange:before,
+ul.ps il.noExchange .contentContainer .exchange:after {
   color: #00605b;
 }
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange span,
-.ps .container ul il.noExchange .contentContainer .exchange span {
+ul.ps il.noExchange .contentContainer .exchange span {
   color: #00605b;
 }
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange span:after,
-.ps .container ul il.noExchange .contentContainer .exchange span:after {
+ul.ps il.noExchange .contentContainer .exchange span:after {
   display: inline-block;
 }
-.searchResultMainContainer .container ul il.noSell .contentContainer .price span:before,
-.ps .container ul il.noSell .contentContainer .price span:before,
-.searchResultMainContainer .container ul il.noSell .contentContainer .price span:after,
-.ps .container ul il.noSell .contentContainer .price span:after {
+ul.ps il.noSell .contentContainer .price span:before,
+ul.ps il.noSell .contentContainer .price span:after {
   color: #00605b;
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
-.searchResultMainContainer .container ul il:hover figure,
-.ps .container ul il:hover figure {
+ul.ps il:hover figure {
   border: 2px solid #e6334c;
   border-bottom: 0px;
 }
-.searchResultMainContainer .container ul il:hover .contentContainer,
-.ps .container ul il:hover .contentContainer {
+ul.ps il:hover .contentContainer {
   background-color: #e6334c;
 }
-.searchResultMainContainer .container ul il:hover .contentContainer .exchange:before,
-.ps .container ul il:hover .contentContainer .exchange:before,
-.searchResultMainContainer .container ul il:hover .contentContainer .exchange:after,
-.ps .container ul il:hover .contentContainer .exchange:after {
+ul.ps il:hover .contentContainer .exchange:before,
+ul.ps il:hover .contentContainer .exchange:after {
   color: #fff;
 }
-.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange:before,
-.ps .container ul il:hover.noExchange .contentContainer .exchange:before,
-.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange:after,
-.ps .container ul il:hover.noExchange .contentContainer .exchange:after {
+ul.ps il:hover.noExchange .contentContainer .exchange:before,
+ul.ps il:hover.noExchange .contentContainer .exchange:after {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange span:before,
-.ps .container ul il:hover.noExchange .contentContainer .exchange span:before,
-.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange span:after,
-.ps .container ul il:hover.noExchange .contentContainer .exchange span:after {
+ul.ps il:hover.noExchange .contentContainer .exchange span:before,
+ul.ps il:hover.noExchange .contentContainer .exchange span:after {
   color: #fff;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-.searchResultMainContainer .container ul il:hover.noSell .contentContainer .price span:before,
-.ps .container ul il:hover.noSell .contentContainer .price span:before,
-.searchResultMainContainer .container ul il:hover.noSell .contentContainer .price span:after,
-.ps .container ul il:hover.noSell .contentContainer .price span:after {
+ul.ps il:hover.noSell .contentContainer .price span:before,
+ul.ps il:hover.noSell .contentContainer .price span:after {
   color: #fff;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -3278,8 +3252,7 @@ button {
 .xbox .container .title:after {
   content: 'estás en la sección de x-box';
 }
-.searchResultMainContainer .container ul il,
-.xbox .container ul il {
+ul.xbox il {
   -webkit-box-align: left;
   -moz-box-align: left;
   -o-box-align: left;
@@ -3288,26 +3261,21 @@ button {
   align-items: left;
   height: 310px;
 }
-.searchResultMainContainer .container ul il figure,
-.xbox .container ul il figure {
+ul.xbox il figure {
   border: 2px solid #fff;
   border-bottom: 0px;
 }
-.searchResultMainContainer .container ul il .contentContainer,
-.xbox .container ul il .contentContainer {
+ul.xbox il .contentContainer {
   background-color: #fff;
   color: #009992;
 }
-.searchResultMainContainer .container ul il .contentContainer .name,
-.xbox .container ul il .contentContainer .name {
+ul.xbox il .contentContainer .name {
   text-align: left;
 }
-.searchResultMainContainer .container ul il .contentContainer .availableConsoles,
-.xbox .container ul il .contentContainer .availableConsoles {
+ul.xbox il .contentContainer .availableConsoles {
   display: none;
 }
-.searchResultMainContainer .container ul il .contentContainer .price,
-.xbox .container ul il .contentContainer .price {
+ul.xbox il .contentContainer .price {
   font-size: 15px;
   font-weight: bold;
   -webkit-box-pack: start;
@@ -3325,16 +3293,13 @@ button {
   text-align: left;
   height: 15px;
 }
-.searchResultMainContainer .container ul il .contentContainer .price:before,
-.xbox .container ul il .contentContainer .price:before {
+ul.xbox il .contentContainer .price:before {
   background: transparent;
 }
-.searchResultMainContainer .container ul il .contentContainer .price span,
-.xbox .container ul il .contentContainer .price span {
+ul.xbox il .contentContainer .price span {
   color: #009992;
 }
-.searchResultMainContainer .container ul il .contentContainer .exchange,
-.xbox .container ul il .contentContainer .exchange {
+ul.xbox il .contentContainer .exchange {
   -webkit-box-ordinal-group: 3;
   -moz-box-ordinal-group: 3;
   -o-box-ordinal-group: 3;
@@ -3345,12 +3310,10 @@ button {
   padding: 9px 0 3px 0;
   font-size: 15px;
 }
-.searchResultMainContainer .container ul il .contentContainer .exchange span:before,
-.xbox .container ul il .contentContainer .exchange span:before {
+ul.xbox il .contentContainer .exchange span:before {
   content: 'trueque';
 }
-.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn,
-.xbox .container ul il .contentContainer .alsoAvailableOn {
+ul.xbox il .contentContainer .alsoAvailableOn {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -3364,95 +3327,71 @@ button {
   -webkit-order: 4;
   order: 4;
 }
-.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn span,
-.xbox .container ul il .contentContainer .alsoAvailableOn span {
+ul.xbox il .contentContainer .alsoAvailableOn span {
   border-top: 1px solid #009992;
 }
-.searchResultMainContainer .container ul il .contentContainer .alsoAvailableOn span:before,
-.xbox .container ul il .contentContainer .alsoAvailableOn span:before {
+ul.xbox il .contentContainer .alsoAvailableOn span:before {
   content: 'también disponible en ps4';
   color: #009992;
 }
-.searchResultMainContainer .container ul il.only .contentContainer .alsoAvailableOn span,
-.xbox .container ul il.only .contentContainer .alsoAvailableOn span {
+ul.xbox il.only .contentContainer .alsoAvailableOn span {
   border: 0;
 }
-.searchResultMainContainer .container ul il.only .contentContainer .alsoAvailableOn span:before,
-.xbox .container ul il.only .contentContainer .alsoAvailableOn span:before {
+ul.xbox il.only .contentContainer .alsoAvailableOn span:before {
   content: 'unicamente en x-box one';
   color: #fff;
 }
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange:before,
-.xbox .container ul il.noExchange .contentContainer .exchange:before,
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange:after,
-.xbox .container ul il.noExchange .contentContainer .exchange:after {
+ul.xbox il.noExchange .contentContainer .exchange:before,
+ul.xbox il.noExchange .contentContainer .exchange:after {
   color: #98ceb7;
 }
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange span,
-.xbox .container ul il.noExchange .contentContainer .exchange span {
+ul.xbox il.noExchange .contentContainer .exchange span {
   color: #98ceb7;
 }
-.searchResultMainContainer .container ul il.noExchange .contentContainer .exchange span:after,
-.xbox .container ul il.noExchange .contentContainer .exchange span:after {
+ul.xbox il.noExchange .contentContainer .exchange span:after {
   display: inline-block;
 }
-.searchResultMainContainer .container ul il:hover figure,
-.xbox .container ul il:hover figure {
+ul.xbox il:hover figure {
   border: 2px solid #8cc63f;
   border-bottom: 0;
 }
-.searchResultMainContainer .container ul il:hover .contentContainer,
-.xbox .container ul il:hover .contentContainer {
+ul.xbox il:hover .contentContainer {
   background: #8cc63f;
   color: #fff;
 }
-.searchResultMainContainer .container ul il:hover .contentContainer .exchange:before,
-.xbox .container ul il:hover .contentContainer .exchange:before,
-.searchResultMainContainer .container ul il:hover .contentContainer .exchange:after,
-.xbox .container ul il:hover .contentContainer .exchange:after {
+ul.xbox il:hover .contentContainer .exchange:before,
+ul.xbox il:hover .contentContainer .exchange:after {
   color: #fff;
 }
-.searchResultMainContainer .container ul il:hover .contentContainer .exchange span:after,
-.xbox .container ul il:hover .contentContainer .exchange span:after,
-.searchResultMainContainer .container ul il:hover .contentContainer .exchange span:before,
-.xbox .container ul il:hover .contentContainer .exchange span:before {
+ul.xbox il:hover .contentContainer .exchange span:after,
+ul.xbox il:hover .contentContainer .exchange span:before {
   color: #fff;
 }
-.searchResultMainContainer .container ul il:hover .contentContainer .price span,
-.xbox .container ul il:hover .contentContainer .price span {
+ul.xbox il:hover .contentContainer .price span {
   color: #fff;
 }
-.searchResultMainContainer .container ul il:hover .contentContainer .alsoAvailableOn span,
-.xbox .container ul il:hover .contentContainer .alsoAvailableOn span {
+ul.xbox il:hover .contentContainer .alsoAvailableOn span {
   border-top: 1px solid #fff;
 }
-.searchResultMainContainer .container ul il:hover .contentContainer .alsoAvailableOn span:before,
-.xbox .container ul il:hover .contentContainer .alsoAvailableOn span:before {
+ul.xbox il:hover .contentContainer .alsoAvailableOn span:before {
   color: #fff;
 }
-.searchResultMainContainer .container ul il:hover.only .contentContainer .alsoAvailableOn span,
-.xbox .container ul il:hover.only .contentContainer .alsoAvailableOn span {
+ul.xbox il:hover.only .contentContainer .alsoAvailableOn span {
   border: 0;
 }
-.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange:before,
-.xbox .container ul il:hover.noExchange .contentContainer .exchange:before,
-.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange:after,
-.xbox .container ul il:hover.noExchange .contentContainer .exchange:after {
+ul.xbox il:hover.noExchange .contentContainer .exchange:before,
+ul.xbox il:hover.noExchange .contentContainer .exchange:after {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange span:before,
-.xbox .container ul il:hover.noExchange .contentContainer .exchange span:before,
-.searchResultMainContainer .container ul il:hover.noExchange .contentContainer .exchange span:after,
-.xbox .container ul il:hover.noExchange .contentContainer .exchange span:after {
+ul.xbox il:hover.noExchange .contentContainer .exchange span:before,
+ul.xbox il:hover.noExchange .contentContainer .exchange span:after {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-.searchResultMainContainer .container ul il:hover.noSell .contentContainer .price span:before,
-.xbox .container ul il:hover.noSell .contentContainer .price span:before,
-.searchResultMainContainer .container ul il:hover.noSell .contentContainer .price span:after,
-.xbox .container ul il:hover.noSell .contentContainer .price span:after {
+ul.xbox il:hover.noSell .contentContainer .price span:before,
+ul.xbox il:hover.noSell .contentContainer .price span:after {
   color: #fff;
 }

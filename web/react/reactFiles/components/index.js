@@ -54,7 +54,7 @@ module.exports = React.createClass({
 			chat = <Chat />;
 		}
 		return (
-				<div>
+				<div id="semi_body">
 					<Header user={this.state.user} />
 					<MainContainer />
 					<Footer />

@@ -1,5 +1,12 @@
+const consoles = {
+		xbox: 'xbox',
+		ps: 'ps',
+		both: 'both',
+};
+
 const Constants = {
 	bogota: 'bogota',
+	consoles: consoles,
 	actionType: {
 		changeFilterState: 'change_filter_status',
 		changeSearchInput: 'change_search_input',
@@ -17,9 +24,25 @@ const Constants = {
 		used: 'used',
 		exchange: 'exchange',
 		to_sell: 'to_sell',
-		xbox: 'xbox',
-		ps: 'ps'
-	}
+		xbox: consoles.xbox,
+		ps: consoles.ps,
+	},
+	searchResults: {
+		types: [consoles.ps, consoles.xbox, consoles.both],
+	},
+	header: {
+		versions: {
+			normal: 'normal',
+			negative: 'negative',
+		},
+	},
+	footer: {
+		versions: {
+			normal: 'normal',
+			white: 'white',
+			whiteBackground: 'white_background'
+		}
+	},
 };
 
 module.exports = Constants;

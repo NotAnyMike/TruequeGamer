@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'TruequeGamer';
-  src:  url('fonts/TruequeGamer.eot?nqudv7');
-  src:  url('fonts/TruequeGamer.eot?nqudv7#iefix') format('embedded-opentype'),
-    url('fonts/TruequeGamer.ttf?nqudv7') format('truetype'),
-    url('fonts/TruequeGamer.woff?nqudv7') format('woff'),
-    url('fonts/TruequeGamer.svg?nqudv7#TruequeGamer') format('svg');
+  src:  url('fonts/TruequeGamer.eot?depke');
+  src:  url('fonts/TruequeGamer.eot?depke#iefix') format('embedded-opentype'),
+    url('fonts/TruequeGamer.ttf?depke') format('truetype'),
+    url('fonts/TruequeGamer.woff?depke') format('woff'),
+    url('fonts/TruequeGamer.svg?depke#TruequeGamer') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-crossline---copie:before {
+  content: "\e90a";
+}
 .icon-crossline:before {
   content: "\e909";
 }

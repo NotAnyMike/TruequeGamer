@@ -38,7 +38,7 @@ module.exports = React.createClass({
 						<a href="">Informar bug!</a>
 					</section>
 				</div>
-				<div className="decoration white"></div>
+				<div className={"decoration" + (this.props.version === Constants.footer.versions.whiteBackground ? " normal" : " white")}></div>
 			</footer>
 		);
 	},

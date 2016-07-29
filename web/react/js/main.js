@@ -26926,7 +26926,7 @@ module.exports = React.createClass({
 					)
 				)
 			),
-			React.createElement('div', { className: 'decoration white' })
+			React.createElement('div', { className: "decoration" + (this.props.version === Constants.footer.versions.whiteBackground ? " normal" : " white") })
 		);
 	}
 
@@ -26934,16 +26934,61 @@ module.exports = React.createClass({
 
 },{"../utils/constants.js":277,"./socialLink.js":270,"react":239}],252:[function(require,module,exports){
 const React = require('react'),
-      AvailableConsoles = require('./availableConsoles.js');
+      AvailableConsoles = require('./availableConsoles.js'),
+      Constants = require('../utils/constants.js');
 
 const GameItem = React.createClass({
 	displayName: 'GameItem',
 
 
+	propTypes: {
+		psNoSell: React.PropTypes.bool,
+		xboxNoSell: React.PropTypes.bool,
+		psNoExchange: React.PropTypes.bool,
+		xboxNoExchange: React.PropTypes.bool,
+		only: React.PropTypes.bool,
+		notOnly: React.PropTypes.bool,
+		console: React.PropTypes.oneOf([Constants.consoles.xbox, Constants.consoles.ps]),
+		isHover: React.PropTypes.bool
+	},
+
+	getInitialState: function () {
+		return { isHover: false };
+	},
+
+	getDefaultProps: function () {
+		return {
+			psNoSell: false,
+			xboxNoSell: false,
+			psNoExchange: false,
+			xboxNoExchange: false,
+			only: false,
+			notOnly: false,
+			console: null
+		};
+	},
+
+	_onMouseOver: function () {
+		this.setState({ isHover: true });
+	},
+
+	_onMouseOut: function () {
+		this.setState({ isHover: false });
+	},
+
 	render: function () {
+		var console = this.props.console;
+		if (this.state.isHover && console !== null && !this.state.only) {
+			if (console === Constants.consoles.xbox) {
+				console = Constants.consoles.ps;
+			} else if (console === Constants.consoles.ps) {
+				console = Constants.consoles.xbox;
+			}
+		}
+
 		return React.createElement(
 			'il',
-			{ className: 'xbox noSell' },
+			{ className: console + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "") + (this.props.psNoSell ? " psNoSell" : "") + (this.props.xboxNoSell ? " xboxNoSell" : "") + (this.props.psNoExchange ? " psNoExchange" : "") + (this.props.xboxNoExchange ? " xboxNoExchange" : "") },
 			React.createElement(
 				'figure',
 				null,
@@ -26960,13 +27005,38 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'exchange' },
+					React.createElement('span', null),
 					React.createElement('span', null)
 				),
-				React.createElement(AvailableConsoles, null),
+				React.createElement(
+					'div',
+					{ className: 'availableConsoles' },
+					React.createElement(
+						'div',
+						{ className: 'container' },
+						React.createElement('span', {
+							onMouseOver: this.props.console === Constants.consoles.xbox ? this._onMouseOver : null,
+							onMouseOut: this.props.console === Constants.consoles.xbox ? this._onMouseOut : null
+						}),
+						React.createElement('span', {
+							onMouseOver: this.props.console === Constants.consoles.ps ? this._onMouseOver : null,
+							onMouseOut: this.props.console === Constants.consoles.ps ? this._onMouseOut : null
+						})
+					)
+				),
 				React.createElement(
 					'div',
 					{ className: 'price' },
-					React.createElement('span', null)
+					React.createElement(
+						'span',
+						null,
+						this.props.psNoSell ? "" : "desde 70.000"
+					),
+					React.createElement(
+						'span',
+						null,
+						this.props.xboxNoSell ? "" : "desde 80.000"
+					)
 				),
 				React.createElement(
 					'div',
@@ -26981,7 +27051,7 @@ const GameItem = React.createClass({
 
 module.exports = GameItem;
 
-},{"./availableConsoles.js":240,"react":239}],253:[function(require,module,exports){
+},{"../utils/constants.js":277,"./availableConsoles.js":240,"react":239}],253:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27486,20 +27556,39 @@ const SearchResultsList = React.createClass({
 	},
 
 	render: function () {
+		var xbox = 'xbox';
+		var ps = 'ps';
 		return React.createElement(
 			'ul',
 			{ className: this.props.console },
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null),
-			React.createElement(GameItem, null)
+			React.createElement(GameItem, { console: ps }),
+			React.createElement(GameItem, { console: ps, notOnly: true }),
+			React.createElement(GameItem, { console: ps, only: true }),
+			React.createElement(GameItem, { console: ps, psNoExchange: true }),
+			React.createElement(GameItem, { console: ps, psNoExchange: true, notOnly: true }),
+			React.createElement(GameItem, { console: ps, only: true, psNoExchange: true }),
+			React.createElement(GameItem, { console: ps, xboxNoExchange: true }),
+			React.createElement(GameItem, { console: ps, xboxNoExchange: true, notOnly: true }),
+			React.createElement(GameItem, { console: ps, psNoExchange: true, xboxNoExchange: true }),
+			React.createElement(GameItem, { console: ps, psNoExchange: true, xboxNoExchange: true, notOnly: true }),
+			React.createElement(GameItem, { console: ps, xboxNoSell: true }),
+			React.createElement(GameItem, { console: ps, xboxNoSell: true, notOnly: true }),
+			React.createElement(GameItem, { console: ps, psNoExchange: true, xboxNoSell: true }),
+			React.createElement(GameItem, { console: ps, psNoExchange: true, xboxNoSell: true, notOnly: true }),
+			React.createElement(GameItem, { console: xbox }),
+			React.createElement(GameItem, { console: xbox, notOnly: true }),
+			React.createElement(GameItem, { console: xbox, only: true }),
+			React.createElement(GameItem, { console: xbox, xboxNoExchange: true }),
+			React.createElement(GameItem, { console: xbox, xboxNoExchange: true, notOnly: true }),
+			React.createElement(GameItem, { console: xbox, only: true, xboxNoExchange: true }),
+			React.createElement(GameItem, { console: xbox, psNoExchange: true }),
+			React.createElement(GameItem, { console: xbox, psNoExchange: true, notOnly: true }),
+			React.createElement(GameItem, { console: xbox, xboxNoExchange: true, psNoExchange: true }),
+			React.createElement(GameItem, { console: xbox, xboxNoExchange: true, psNoExchange: true, notOnly: true }),
+			React.createElement(GameItem, { console: xbox, psNoSell: true }),
+			React.createElement(GameItem, { console: xbox, psNoSell: true, notOnly: true }),
+			React.createElement(GameItem, { console: xbox, xboxNoExchange: true, psNoSell: true }),
+			React.createElement(GameItem, { console: xbox, xboxNoExchange: true, psNoSell: true, notOnly: true })
 		);
 	}
 
@@ -27730,7 +27819,7 @@ var Index = require('./components/index.js'),
 ReactDOM.render(React.createElement(
 		Router,
 		{ history: browserHistory },
-		React.createElement(Route, { path: '/', component: Testing, console: Constants.consoles.xbox }),
+		React.createElement(Route, { path: '/', component: Testing, console: Constants.consoles.both }),
 		React.createElement(Route, { path: '/contactUs', component: ContactUs })
 ), document.getElementById('mainContainer'));
 

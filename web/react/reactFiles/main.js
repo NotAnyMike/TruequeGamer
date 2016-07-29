@@ -17,7 +17,7 @@ var Index = require('./components/index.js'),
 ReactDOM.render(
 	//<Index />,
 	(<Router history={browserHistory}>
-			<Route path="/" component={Testing} console={Constants.consoles.xbox}/>
+			<Route path="/" component={Testing} console={Constants.consoles.both}/>
 			<Route path="/contactUs" component={ContactUs} />
 			{/**<Route path="/search/ps4-xbox/(:search)" console={Constants.consoles.both} component={SearchResults} />*/}
 		</Router>),

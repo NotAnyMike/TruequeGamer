@@ -489,7 +489,7 @@ textarea {
 
 
 html {
-  height: 100%;
+  min-height: 100%;
 }
 body {
   color: #009992;
@@ -2686,7 +2686,7 @@ ul il .contentContainer .exchange {
 }
 ul il .contentContainer .exchange:before,
 ul il .contentContainer .exchange:after {
-  bottom: 4px;
+  bottom: 0px;
   color: #f29224;
   font-family: TruequeGamer;
   font-size: 5px;
@@ -2700,16 +2700,21 @@ ul il .contentContainer .exchange:after {
 }
 ul il .contentContainer .exchange:before {
   content: '\e900';
-  padding-right: 5px;
+  padding-right: 74px;
 }
 ul il .contentContainer .exchange:after {
   content: '\e901';
-  bottom: 1px;
+  bottom: -1px;
   font-size: 7px;
   padding-left: 2px;
 }
 ul il .contentContainer .exchange span {
   position: relative;
+  -webkit-transition: opacity 300ms;
+  -moz-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  -ms-transition: opacity 300ms;
+  transition: opacity 300ms;
 }
 ul il .contentContainer .exchange span:before,
 ul il .contentContainer .exchange span:after {
@@ -2868,12 +2873,23 @@ ul il .contentContainer .price:before {
   z-index: 0;
 }
 ul il .contentContainer .price span {
-  -webkit-transition: color 300ms;
-  -moz-transition: color 300ms;
-  -o-transition: color 300ms;
-  -ms-transition: color 300ms;
-  transition: color 300ms;
+  display: none;
+  left: 0;
+  line-height: 33px;
+  -webkit-transition: color 300ms, opacity 300ms;
+  -moz-transition: color 300ms, opacity 300ms;
+  -o-transition: color 300ms, opacity 300ms;
+  -ms-transition: color 300ms, opacity 300ms;
+  transition: color 300ms, opacity 300ms;
   z-index: 1;
+}
+ul il .contentContainer .price span:before,
+ul il .contentContainer .price span:after {
+  -webkit-transition: opacity 300ms, color 300ms;
+  -moz-transition: opacity 300ms, color 300ms;
+  -o-transition: opacity 300ms, color 300ms;
+  -ms-transition: opacity 300ms, color 300ms;
+  transition: opacity 300ms, color 300ms;
 }
 ul il .contentContainer .alsoAvailableOn {
   -webkit-box-align: center;
@@ -2963,6 +2979,26 @@ ul il.ps .price:before {
   background: -ms-radial-gradient(circle, #183a68, #142033);
   background: radial-gradient(circle, #183a68, #142033);
 }
+ul il.ps .price span:first-child {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+ul il.ps .price span:nth-child(2) {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+ul il.ps .exchange span:first-child {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+ul il.ps .exchange span:nth-child(2) {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
 ul il.ps.only .availableConsoles .container span:nth-child(2) {
   display: none;
 }
@@ -2978,34 +3014,58 @@ ul il.xbox .price:before {
   background: -ms-linear-gradient(106deg, #1c7b33, #25632c);
   background: linear-gradient(-16deg, #1c7b33, #25632c);
 }
+ul il.xbox .price span:first-child {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+ul il.xbox .price span:nth-child(2) {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+ul il.xbox .exchange span:first-child {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+ul il.xbox .exchange span:nth-child(2) {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
 ul il.xbox.only .availableConsoles .container span:first-child {
   display: none;
 }
-ul il.noSell .contentContainer .price span:before,
-ul il.noSell .contentContainer .price span:after {
-  -webkit-transition: color 300ms, opacity 300ms;
-  -moz-transition: color 300ms, opacity 300ms;
-  -o-transition: color 300ms, opacity 300ms;
-  -ms-transition: color 300ms, opacity 300ms;
-  transition: color 300ms, opacity 300ms;
-}
-ul il.noSell .contentContainer .price span:before {
+ul il.xboxNoSell .contentContainer .price span:nth-child(2):before {
   content: 'no venta';
-  color: #98ceb7;
-  font-weight: normal;
-  opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
 }
-ul il.noSell .contentContainer .price span:after {
+ul il.xboxNoSell .contentContainer .price span:nth-child(2):after {
   content: '\e909';
-  color: #98ceb7;
-  font-family: TruequeGamer;
-  left: 5px;
-  opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
-  position: absolute;
+}
+ul il.psNoSell .contentContainer .price span:first-child:before {
+  content: 'no venta';
+}
+ul il.psNoSell .contentContainer .price span:first-child:after {
+  content: '\e909';
+}
+ul il.psNoExchange .contentContainer .exchange span:first-child:before {
+  content: 'no hay trueque';
+}
+ul il.psNoExchange.ps .contentContainer .exchange:before,
+ul il.psNoExchange.ps .contentContainer .exchange:after {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+ul il.xboxNoExchange .contentContainer .exchange span:nth-child(2):before {
+  content: 'no hay trueque';
+}
+ul il.xboxNoExchange.xbox .contentContainer .exchange:before,
+ul il.xboxNoExchange.xbox .contentContainer .exchange:after {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
 }
 .searchResultsMainContainer.both .title {
   color: #009992;
@@ -3031,20 +3091,34 @@ ul.both il figure {
   border: 2px solid #009992;
   border-bottom: 0;
 }
+ul.both il .contentContainer .exchange {
+  height: 24px;
+  position: relative;
+}
+ul.both il .contentContainer .exchange span {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  top: 0;
+  left: 0;
+  line-height: 24px;
+}
 ul.both il .contentContainer .exchange span:before {
   content: 'trueque';
 }
-ul.both il.noExchange .contentContainer .exchange span:before {
+ul.both il .contentContainer .price span {
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+}
+ul.both il .contentContainer .price span:after {
+  display: none;
+}
+ul.both il.ps.psNoExchange .contentContainer .exchange span:first-child:before {
   color: #00605b;
-  content: 'no hay trueque';
 }
-ul.both il.noExchange .contentContainer .exchange:before,
-ul.both il.noExchange .contentContainer .exchange:after {
-  content: '';
-  display: none;
-}
-ul.both il.noSell .contentContainer .price span:after {
-  display: none;
+ul.both il.xbox.xboxNoExchange .contentContainer .exchange span:nth-child(2):before {
+  color: #00605b;
 }
 ul.both il:hover figure {
   border: 2px solid #e6334c;
@@ -3063,14 +3137,25 @@ ul.both il:hover.ps .contentContainer .price:before {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
-ul.both il:hover.noExchange .contentContainer .exchange:before,
-ul.both il:hover.noExchange .contentContainer .exchange:after {
+ul.both il:hover.ps.psNoExchange .contentContainer .exchange span:first-child:before {
+  color: #fff;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-ul.both il:hover.noExchange .contentContainer .exchange span:before,
-ul.both il:hover.noExchange .contentContainer .exchange span:after {
+ul.both il:hover.xbox.xboxNoExchange .contentContainer .exchange span:nth-child(2):before {
+  color: #fff;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+ul.both il:hover.ps.psNoSell .contentContainer .price span:first-child:before {
+  color: #fff;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+ul.both il:hover.xbox.xboxNoSell .contentContainer .price span:nth-child(2):before {
   color: #fff;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -3139,6 +3224,12 @@ ul.ps il .contentContainer .price {
 ul.ps il .contentContainer .price:before {
   background: transparent;
 }
+ul.ps il .contentContainer .price span:first-child {
+  display: inline-block;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
 ul.ps il .contentContainer .exchange {
   -webkit-box-ordinal-group: 3;
   -moz-box-ordinal-group: 3;
@@ -3150,8 +3241,26 @@ ul.ps il .contentContainer .exchange {
   padding: 9px 0 3px 0;
   font-size: 15px;
 }
-ul.ps il .contentContainer .exchange span:before {
+ul.ps il .contentContainer .exchange:before,
+ul.ps il .contentContainer .exchange:after {
+  bottom: 2px;
+}
+ul.ps il .contentContainer .exchange:before {
+  padding-right: 6px;
+}
+ul.ps il .contentContainer .exchange:after {
+  padding-left: 6px;
+}
+ul.ps il .contentContainer .exchange span:first-child {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+ul.ps il .contentContainer .exchange span:first-child:before {
   content: 'trueque';
+}
+ul.ps il .contentContainer .exchange span:nth-child(2) {
+  display: none;
 }
 ul.ps il .contentContainer .alsoAvailableOn {
   display: -webkit-box;
@@ -3171,6 +3280,9 @@ ul.ps il .contentContainer .alsoAvailableOn span {
   border-top: 1px solid $white;
 }
 ul.ps il .contentContainer .alsoAvailableOn span:before {
+  color: #fff;
+}
+ul.ps il.notOnly .contentContainer .alsoAvailableOn span:before {
   content: 'también disponible en xbox one';
   color: #fff;
 }
@@ -3181,22 +3293,34 @@ ul.ps il.only .contentContainer .alsoAvailableOn span:before {
   content: 'unicamente en play station 4';
   color: #fff;
 }
-ul.ps il.noExchange .contentContainer .exchange:before,
-ul.ps il.noExchange .contentContainer .exchange:after {
-  color: #00605b;
-}
-ul.ps il.noExchange .contentContainer .exchange span {
-  color: #00605b;
-}
-ul.ps il.noExchange .contentContainer .exchange span:after {
-  display: inline-block;
-}
-ul.ps il.noSell .contentContainer .price span:before,
-ul.ps il.noSell .contentContainer .price span:after {
-  color: #00605b;
+ul.ps il.psNoExchange .contentContainer .exchange:before,
+ul.ps il.psNoExchange .contentContainer .exchange:after {
   opacity: 1;
   -ms-filter: none;
   filter: none;
+  color: #00605b;
+}
+ul.ps il.psNoExchange .contentContainer .exchange span:before,
+ul.ps il.psNoExchange .contentContainer .exchange span:after {
+  color: #00605b;
+  display: inline-block;
+}
+ul.ps il.psNoSell .contentContainer .price span {
+  position: relative;
+}
+ul.ps il.psNoSell .contentContainer .price span:before,
+ul.ps il.psNoSell .contentContainer .price span:after {
+  color: #00605b;
+}
+ul.ps il.psNoSell .contentContainer .price span:before {
+  font-weight: normal;
+}
+ul.ps il.psNoSell .contentContainer .price span:after {
+  font-family: TruequeGamer;
+  display: inline-block;
+  position: absolute;
+  left: -6px;
+  top: 0;
 }
 ul.ps il:hover figure {
   border: 2px solid #e6334c;
@@ -3209,21 +3333,25 @@ ul.ps il:hover .contentContainer .exchange:before,
 ul.ps il:hover .contentContainer .exchange:after {
   color: #fff;
 }
-ul.ps il:hover.noExchange .contentContainer .exchange:before,
-ul.ps il:hover.noExchange .contentContainer .exchange:after {
-  opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
+ul.ps il:hover .contentContainer .exchange span:before,
+ul.ps il:hover .contentContainer .exchange span:after {
+  color: #fff;
 }
-ul.ps il:hover.noExchange .contentContainer .exchange span:before,
-ul.ps il:hover.noExchange .contentContainer .exchange span:after {
+ul.ps il:hover.psNoSell .contentContainer .price span:before,
+ul.ps il:hover.psNoSell .contentContainer .price span:after {
   color: #fff;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-ul.ps il:hover.noSell .contentContainer .price span:before,
-ul.ps il:hover.noSell .contentContainer .price span:after {
+ul.ps il:hover.psNoExchange .contentContainer .exchange:before,
+ul.ps il:hover.psNoExchange .contentContainer .exchange:after {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+ul.ps il:hover.psNoExchange .contentContainer .exchange span:before,
+ul.ps il:hover.psNoExchange .contentContainer .exchange span:after {
   color: #fff;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -3299,6 +3427,12 @@ ul.xbox il .contentContainer .price:before {
 ul.xbox il .contentContainer .price span {
   color: #009992;
 }
+ul.xbox il .contentContainer .price span:nth-child(2) {
+  display: inline-block;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
 ul.xbox il .contentContainer .exchange {
   -webkit-box-ordinal-group: 3;
   -moz-box-ordinal-group: 3;
@@ -3310,8 +3444,26 @@ ul.xbox il .contentContainer .exchange {
   padding: 9px 0 3px 0;
   font-size: 15px;
 }
-ul.xbox il .contentContainer .exchange span:before {
+ul.xbox il .contentContainer .exchange:before,
+ul.xbox il .contentContainer .exchange:after {
+  bottom: 2px;
+}
+ul.xbox il .contentContainer .exchange:before {
+  padding-right: 6px;
+}
+ul.xbox il .contentContainer .exchange:after {
+  padding-left: 6px;
+}
+ul.xbox il .contentContainer .exchange span:nth-child(2) {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+ul.xbox il .contentContainer .exchange span:nth-child(2):before {
   content: 'trueque';
+}
+ul.xbox il .contentContainer .exchange span:first-child {
+  display: none;
 }
 ul.xbox il .contentContainer .alsoAvailableOn {
   display: -webkit-box;
@@ -3331,6 +3483,9 @@ ul.xbox il .contentContainer .alsoAvailableOn span {
   border-top: 1px solid #009992;
 }
 ul.xbox il .contentContainer .alsoAvailableOn span:before {
+  color: #009992;
+}
+ul.xbox il.notOnly .contentContainer .alsoAvailableOn span:before {
   content: 'también disponible en ps4';
   color: #009992;
 }
@@ -3341,15 +3496,38 @@ ul.xbox il.only .contentContainer .alsoAvailableOn span:before {
   content: 'unicamente en x-box one';
   color: #fff;
 }
-ul.xbox il.noExchange .contentContainer .exchange:before,
-ul.xbox il.noExchange .contentContainer .exchange:after {
+ul.xbox il.xboxNoExchange .contentContainer .exchange:before,
+ul.xbox il.xboxNoExchange .contentContainer .exchange:after,
+ul.xbox il.xboxNoExchange .contentContainer .exchange:nth-child(2) {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
   color: #98ceb7;
 }
-ul.xbox il.noExchange .contentContainer .exchange span {
+ul.xbox il.xboxNoExchange .contentContainer .exchange span:before,
+ul.xbox il.xboxNoExchange .contentContainer .exchange span:after {
   color: #98ceb7;
-}
-ul.xbox il.noExchange .contentContainer .exchange span:after {
   display: inline-block;
+}
+ul.xbox il.xboxNoExchange .contentContainer .exchange span:after {
+  left: -10px;
+}
+ul.xbox il.xboxNoSell .contentContainer .price span {
+  position: relative;
+}
+ul.xbox il.xboxNoSell .contentContainer .price span:before,
+ul.xbox il.xboxNoSell .contentContainer .price span:after {
+  color: #98ceb7;
+}
+ul.xbox il.xboxNoSell .contentContainer .price span:before {
+  font-weight: normal;
+}
+ul.xbox il.xboxNoSell .contentContainer .price span:after {
+  font-family: TruequeGamer;
+  display: inline-block;
+  position: absolute;
+  left: -6px;
+  top: 0;
 }
 ul.xbox il:hover figure {
   border: 2px solid #8cc63f;
@@ -3376,22 +3554,27 @@ ul.xbox il:hover .contentContainer .alsoAvailableOn span {
 ul.xbox il:hover .contentContainer .alsoAvailableOn span:before {
   color: #fff;
 }
+ul.xbox il:hover.xboxNoSell .contentContainer .price span:before,
+ul.xbox il:hover.xboxNoSell .contentContainer .price span:after {
+  color: #fff;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+ul.xbox il:hover.xboxNoExchange .contentContainer .exchange span:before,
+ul.xbox il:hover.xboxNoExchange .contentContainer .exchange span:after {
+  color: #fff;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
+ul.xbox il:hover.xboxNoExchange .contentContainer .exchange:before,
+ul.xbox il:hover.xboxNoExchange .contentContainer .exchange:after {
+  color: #fff;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
 ul.xbox il:hover.only .contentContainer .alsoAvailableOn span {
   border: 0;
-}
-ul.xbox il:hover.noExchange .contentContainer .exchange:before,
-ul.xbox il:hover.noExchange .contentContainer .exchange:after {
-  opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
-}
-ul.xbox il:hover.noExchange .contentContainer .exchange span:before,
-ul.xbox il:hover.noExchange .contentContainer .exchange span:after {
-  opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
-}
-ul.xbox il:hover.noSell .contentContainer .price span:before,
-ul.xbox il:hover.noSell .contentContainer .price span:after {
-  color: #fff;
 }

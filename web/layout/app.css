@@ -420,11 +420,11 @@ textarea {
 
 @font-face {
   font-family: 'TruequeGamer';
-  src:  url('fonts/TruequeGamer.eot?depke');
-  src:  url('fonts/TruequeGamer.eot?depke#iefix') format('embedded-opentype'),
-    url('fonts/TruequeGamer.ttf?depke') format('truetype'),
-    url('fonts/TruequeGamer.woff?depke') format('woff'),
-    url('fonts/TruequeGamer.svg?depke#TruequeGamer') format('svg');
+  src:  url('fonts/TruequeGamer.eot?567eci');
+  src:  url('fonts/TruequeGamer.eot?567eci#iefix') format('embedded-opentype'),
+    url('fonts/TruequeGamer.ttf?567eci') format('truetype'),
+    url('fonts/TruequeGamer.woff?567eci') format('woff'),
+    url('fonts/TruequeGamer.svg?567eci#TruequeGamer') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -444,6 +444,9 @@ textarea {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-extraDecorator:before {
+  content: "\e90b";
+}
 .icon-crossline---copie:before {
   content: "\e90a";
 }
@@ -508,9 +511,11 @@ body {
   font-family: 'Cabin', sans-serif;
   height: 100%;
   margin: 0;
+  min-height: 100vh;
 }
 #mainContainer {
   height: 100%;
+  min-height: 100vh;
 }
 #semi_body {
   background: -webkit-radial-gradient(circle, #fff3d7, #e9c699);
@@ -534,6 +539,8 @@ body {
   font-family: 'Cabin', sans-serif;
   height: 100%;
   margin: 0;
+  min-height: 100vh;
+  width: 100%;
 }
 a {
   font-style: italic;
@@ -617,9 +624,6 @@ header {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  background-image: url("./img/header-background.png");
-  background-repeat: no-repeat;
-  background-position: center left;
   position: relative;
 }
 header:after {
@@ -869,12 +873,12 @@ figure.negative .isotype.negative {
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: justify;
-  -moz-box-pack: justify;
-  -o-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  -o-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
 }
 .mainContainer .searchFieldContainer {
   margin: 15px;
@@ -914,11 +918,10 @@ figure.negative .isotype.negative {
   color: #fff;
 }
 .mainContainer .filterMainContainer {
-  width: 900px;
+/*width: 900px*/
+  width: auto;
 }
 .consoleContainer {
-  width: 100%;
-  min-width: 900px;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -931,13 +934,21 @@ figure.negative .isotype.negative {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -moz-box-pack: justify;
-  -o-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -o-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   margin: 25px 0;
+/*min-width: 900px
+	width: 100%*/
 }
 button.consoleCheckbox {
   -webkit-box-align: center;
@@ -960,7 +971,7 @@ button.consoleCheckbox {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  height: 110px;
+  height: 85px;
   -webkit-box-pack: center;
   -moz-box-pack: center;
   -o-box-pack: center;
@@ -974,7 +985,7 @@ button.consoleCheckbox {
   -o-transition: background-color 300ms, opacity 300ms;
   -ms-transition: background-color 300ms, opacity 300ms;
   transition: background-color 300ms, opacity 300ms;
-  width: 222px;
+  width: 250px;
 }
 button.consoleCheckbox:before {
   bottom: 0;
@@ -997,6 +1008,21 @@ button.consoleCheckbox:before {
   transition: opacity 300ms;
   width: 22px;
 }
+button.consoleCheckbox:after {
+  bottom: 0;
+  color: #98ceb7;
+  content: '\e90b';
+  display: inline-block;
+  font-family: TruequeGamer;
+  height: 15px;
+  position: absolute;
+  -webkit-transition: bottom ease 300ms, color 300ms;
+  -moz-transition: bottom ease 300ms, color 300ms;
+  -o-transition: bottom ease 300ms, color 300ms;
+  -ms-transition: bottom ease 300ms, color 300ms;
+  transition: bottom ease 300ms, color 300ms;
+  width: 24px;
+}
 button.consoleCheckbox:hover:before {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -1016,6 +1042,7 @@ button.consoleCheckbox .consoleNameTitle {
   box-flex: 0;
   -webkit-flex-grow: 0;
   flex-grow: 0;
+  margin: 10px;
 }
 button.consoleCheckbox .consoleNameTitle:before {
   text-transform: uppercase;
@@ -1026,7 +1053,9 @@ button.consoleCheckbox .consoleNameTitle:before {
   -o-transition: all 300ms;
   -ms-transition: all 300ms;
   transition: all 300ms;
-  padding: 10px 0;
+}
+button.consoleCheckbox.ps4:after {
+  left: -44px;
 }
 button.consoleCheckbox.ps4 .isotype:before {
   content: '\e905';
@@ -1034,29 +1063,19 @@ button.consoleCheckbox.ps4 .isotype:before {
 button.consoleCheckbox.ps4 .consoleNameTitle:before {
   content: 'play station 4';
 }
-button.consoleCheckbox.ps3 .isotype:before {
-  content: '\e905';
-}
-button.consoleCheckbox.ps3 .consoleNameTitle:before {
-  content: 'play station 3';
+button.consoleCheckbox.xboxone:after {
+  right: -44px;
 }
 button.consoleCheckbox.xboxone .isotype:before {
   content: '\e906';
 }
 button.consoleCheckbox.xboxone .consoleNameTitle:before {
-  content: 'xbox one';
-}
-button.consoleCheckbox.xbox360 .isotype:before {
-  content: '\e906';
-}
-button.consoleCheckbox.xbox360 .consoleNameTitle:before {
-  content: 'xbox 360';
+  content: 'x-box one';
 }
 button.consoleCheckbox .isotype {
   background-repeat: no-repeat;
   background-position: center center;
   display: inline-block;
-  width: auto;
   height: 30px;
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
@@ -1065,6 +1084,8 @@ button.consoleCheckbox .isotype {
   box-flex: 0;
   -webkit-flex-grow: 0;
   flex-grow: 0;
+  margin: 10px;
+  width: auto;
 }
 button.consoleCheckbox .isotype:before {
   font-family: TruequeGamer;
@@ -1075,7 +1096,6 @@ button.consoleCheckbox .isotype:before {
   -o-transition: all 300ms;
   -ms-transition: all 300ms;
   transition: all 300ms;
-  padding: 10px 0;
 }
 button.consoleCheckbox.checked {
   background-color: #e6334c;
@@ -1084,6 +1104,10 @@ button.consoleCheckbox.checked:before {
   opacity: 1;
   -ms-filter: none;
   filter: none;
+}
+button.consoleCheckbox.checked:after {
+  bottom: 30px;
+  color: #e6334c;
 }
 button.consoleCheckbox.checked .isotype:before,
 button.consoleCheckbox.checked span:before {
@@ -1095,6 +1119,18 @@ button.consoleCheckbox.checked:hover span:before {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
+}
+.ps3 .isotype:before {
+  content: '\e905';
+}
+.ps3 .consoleNameTitle:before {
+  content: 'play station 3';
+}
+.xbox360 .isotype:before {
+  content: '\e906';
+}
+.xbox360 .consoleNameTitle:before {
+  content: 'xbox 360';
 }
 .extraFilterContainer {
   margin: 10px 0;
@@ -1122,10 +1158,10 @@ button.consoleCheckbox.checked:hover span:before {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
-  min-width: 900px;
+/*min-width: 900px*/
 }
 .extraFilterContainer section {
-  width: 312px;
+/*width: 312px*/
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -1138,12 +1174,18 @@ button.consoleCheckbox.checked:hover span:before {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -moz-box-pack: justify;
-  -o-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -o-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
 }
 .extraFilterContainer section.locationSection {
   width: 178px;
@@ -1184,17 +1226,22 @@ button.consoleCheckbox.checked:hover span:before {
   cursor: pointer;
 }
 button.extraFilterButton {
-  width: 150px;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
   height: 40px;
   background-color: #00605b;
   border: 0px;
-  font-size: 15px;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: box;
   display: flex;
+  font-size: 15px;
   -webkit-box-pack: justify;
   -moz-box-pack: justify;
   -o-box-pack: justify;
@@ -1207,18 +1254,14 @@ button.extraFilterButton {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
+  margin: 5px;
   padding: 0 13px;
-  -webkit-box-align: center;
-  -moz-box-align: center;
-  -o-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
   -webkit-transition: all 300ms;
   -moz-transition: all 300ms;
   -o-transition: all 300ms;
   -ms-transition: all 300ms;
   transition: all 300ms;
+  width: 150px;
 }
 button.extraFilterButton span {
   color: #009992;
@@ -2205,11 +2248,17 @@ footer.white .footerContainer .footerDecorator {
   background-color: #fff;
 }
 .listDecorator {
-  width: 25px;
   height: 28px;
-  background-image: url("img/listDecorator.png");
-  background-repeat: no-repeat;
-  background-position: center center;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  width: 25px;
+}
+.listDecorator:before {
+  color: #f29224;
+  content: '\e900';
+  font-family: TruequeGamer;
+  font-size: 6px;
+  margin-left: 9px;
 }
 .cityButton {
   width: 135px;

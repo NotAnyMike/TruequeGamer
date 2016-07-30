@@ -13,9 +13,6 @@ header
 	display: flex
 	justify-content: center
 	flex-direction: row
-	background-image: url(./img/header-background.png)
-	background-repeat: no-repeat
-	background-position: center left
 	position: relative
 
 	&:after
@@ -176,7 +173,7 @@ figure
 	background-repeat: no-repeat
 	display: flex
 	flex-direction: column
-	justify-content: space-between
+	justify-content: flex-start
 		
 	.searchFieldContainer
 		margin: 15px
@@ -213,15 +210,17 @@ figure
 					color: white
 					
 	.filterMainContainer
-		width: 900px
+		/*width: 900px*/
+		width: auto
 
 .consoleContainer
-	width: 100%
-	min-width: 900px
 	display: flex
 	flex-direction: row
-	justify-content: space-between
+	flex-wrap: wrap
+	justify-content: center
 	margin: 25px 0
+	/*min-width: 900px
+	width: 100%*/
 			
 button.consoleCheckbox
 	align-items: center
@@ -229,12 +228,12 @@ button.consoleCheckbox
 	background-color: #00605B
 	display: flex
 	flex-direction: row
-	height: 110px	
+	height: 85px	
 	justify-content: center
 	margin: 2.5px
 	position: relative
 	transition: background-color $time, opacity $time
-	width: 222px
+	width: 250px
 
 	&:before
 		bottom: 0
@@ -251,6 +250,16 @@ button.consoleCheckbox
 		transition: opacity $time
 		width: 22px
 
+	&:after
+		bottom: 0
+		color: $green
+		content: '\e90b'
+		display: inline-block
+		font-family: TruequeGamer
+		height: 15px
+		position: absolute
+		transition: bottom ease $time, color $time
+		width: 24px
 
 	&:hover
 		&:before
@@ -264,62 +273,58 @@ button.consoleCheckbox
 	
 	.consoleNameTitle
 		flex-grow: 0
+		margin: 10px
 
 		&:before
 			text-transform: uppercase
 			color: $dark_green
 			font-size: 15px
 			transition: all $time
-			padding: 10px 0
 
 	&.ps4
+		&:after
+			left: -44px
+
 		.isotype:before
 			content: '\e905'
 
 		.consoleNameTitle:before
 			content: 'play station 4'
-			
-	&.ps3
-		.isotype:before
-			content: '\e905'
-
-		.consoleNameTitle:before
-			content: 'play station 3'
 
 	&.xboxone
+		&:after
+			right: -44px
+			
 		.isotype:before
 			content: '\e906'
 
 		.consoleNameTitle:before
-			content: 'xbox one'
-
-	&.xbox360
-		.isotype:before
-			content: '\e906'
-
-		.consoleNameTitle:before
-			content: 'xbox 360'
+			content: 'x-box one'
 
 	.isotype
 		background-repeat: no-repeat
 		background-position: center center
 		display: inline-block
-		width: auto
 		height: 30px
 		flex-grow: 0
+		margin: 10px
+		width: auto
 			
 		&:before
 			font-family: TruequeGamer
 			font-size: 33px
 			color: $dark_green
 			transition: all 300ms
-			padding: 10px 0
 
 	&.checked
 		background-color: $red
 
 		&:before
 			opacity: 1
+
+		&:after
+			bottom: 30px
+			color: $red
 
 		.isotype:before, span:before
 			color: white
@@ -329,19 +334,36 @@ button.consoleCheckbox
 			.isotype:before, span:before
 				opacity: 0.5
 
+/******* these will no longer have support ******/
+	&.ps3
+		.isotype:before
+			content: '\e905'
+
+		.consoleNameTitle:before
+			content: 'play station 3'
+
+	&.xbox360
+		.isotype:before
+			content: '\e906'
+
+		.consoleNameTitle:before
+			content: 'xbox 360'
+/************************************************/
+
 .extraFilterContainer
 	margin: 10px 0
 	display: flex
 	flex-direction: row
 	justify-content: space-between
 	align-items: center
-	min-width: 900px
+	/*min-width: 900px*/
 	
 	section
-		width: 312px
+		/*width: 312px*/
 		display: flex
 		flex-direction: row
-		justify-content: space-between
+		flex-wrap: wrap
+		justify-content: center
 
 		&.locationSection
 			width: 178px
@@ -361,17 +383,18 @@ button.consoleCheckbox
 				cursor: pointer
 
 button.extraFilterButton
-	width: 150px
+	align-items: center
 	height: 40px
 	background-color: #00605B
 	border: 0px
-	font-size: 15px
 	display: flex
+	font-size: 15px
 	justify-content: space-between
 	flex-direction: row
+	margin: 5px
 	padding: 0 13px
-	align-items: center
 	transition: all 300ms
+	width: 150px
 
 	span
 		color: $dark_green
@@ -934,11 +957,16 @@ footer
 
 
 .listDecorator
-	width: 25px
 	height: 28px
-	background-image: url(img/listDecorator.png) 
-	background-repeat: no-repeat 
-	background-position: center center
+	flex-shrink: 0
+	width: 25px
+
+	&:before
+		color: $orange
+		content: '\e900'
+		font-family: TruequeGamer
+		font-size: 6px
+		margin-left: 9px
 
 .cityButton
 	width: 135px

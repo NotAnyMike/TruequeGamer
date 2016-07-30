@@ -26692,9 +26692,7 @@ module.exports = React.createClass({
 			'section',
 			{ className: 'consoleContainer' },
 			React.createElement(ConsoleCheckbox, { console: 'ps4', filterType: Constants.filter.ps }),
-			React.createElement(ConsoleCheckbox, { console: 'xboxone', filterType: Constants.filter.xbox }),
-			React.createElement(ConsoleCheckbox, { console: 'ps3', filterType: Constants.filter.ps }),
-			React.createElement(ConsoleCheckbox, { console: 'xbox360', filterType: Constants.filter.xbox })
+			React.createElement(ConsoleCheckbox, { console: 'xboxone', filterType: Constants.filter.xbox })
 		);
 	}
 
@@ -26926,7 +26924,7 @@ module.exports = React.createClass({
 					)
 				)
 			),
-			React.createElement('div', { className: "decoration" + (this.props.version === Constants.footer.versions.whiteBackground ? " normal" : " white") })
+			React.createElement('div', { className: "decoration" + (this.props.version === Constants.footer.versions.whiteBackground || this.props.version === Constants.footer.versions.normal ? " normal" : " white") })
 		);
 	}
 

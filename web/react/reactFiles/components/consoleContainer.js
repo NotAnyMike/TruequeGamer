@@ -11,8 +11,6 @@ module.exports = React.createClass({
 			<section className="consoleContainer">
 				<ConsoleCheckbox console="ps4" filterType={Constants.filter.ps} />
 				<ConsoleCheckbox console="xboxone" filterType={Constants.filter.xbox} />
-				<ConsoleCheckbox console="ps3" filterType={Constants.filter.ps} />
-				<ConsoleCheckbox console="xbox360" filterType={Constants.filter.xbox} />
 			</section>
 		);
 	}

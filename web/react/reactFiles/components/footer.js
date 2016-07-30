@@ -33,7 +33,7 @@ module.exports = React.createClass({
 					</section>
 					<div className="footerDecorator x-reflexion"></div>
 					<section className="bugLinksContainer">
-						<figure><img src="img/bug.png" alt=""/></figure>
+						<figure><img src="/img/bug.png" alt=""/></figure>
 						<span>Chan, chan, chan, chaaan</span>
 						<a href="">Informar bug!</a>
 					</section>

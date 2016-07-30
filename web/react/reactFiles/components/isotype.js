@@ -16,8 +16,8 @@ module.exports = React.createClass({
 	render: function(){
 		return (
 			<figure className={this.props.version}>
-					<img className="isotype normal" src="./img/isotype.png"/>
-					<img className="isotype negative" src="./img/isotype_positive.png"/>
+					<img className="isotype normal" src="/img/isotype.png"/>
+					<img className="isotype negative" src="/img/isotype_positive.png"/>
 			</figure>
 		);
 	},

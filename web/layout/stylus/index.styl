@@ -171,10 +171,12 @@ figure
 			content: '\e908'
 
 .mainContainer
+	align-items: center
+	background-image: url("/img/header-background.png")
+	background-repeat: no-repeat
 	display: flex
 	flex-direction: column
 	justify-content: space-between
-	align-items: center
 		
 	.searchFieldContainer
 		margin: 15px
@@ -222,17 +224,38 @@ figure
 	margin: 25px 0
 			
 button.consoleCheckbox
-	width: 222px
-	height: 110px	
+	align-items: center
 	border: 0px
 	background-color: #00605B
 	display: flex
-	flex-direction: column
+	flex-direction: row
+	height: 110px	
 	justify-content: center
-	align-items: center
-	transition: all 300ms
+	margin: 2.5px
+	position: relative
+	transition: background-color $time, opacity $time
+	width: 222px
+
+	&:before
+		bottom: 0
+		color: white
+		content: '\e902'
+		display: inline-block
+		font-family: TruequeGamer
+		font-size: 22px
+		height: 22px
+		opacity: 0
+		padding-right: 5px
+		position: absolute
+		right: 0
+		transition: opacity $time
+		width: 22px
+
 
 	&:hover
+		&:before
+			opacity: .5
+
 		.isotype:before
 			color: white
 
@@ -241,13 +264,12 @@ button.consoleCheckbox
 	
 	.consoleNameTitle
 		flex-grow: 0
-		margin-bottom: auto
 
 		&:before
 			text-transform: uppercase
 			color: $dark_green
 			font-size: 15px
-			transition: all 300ms
+			transition: all $time
 			padding: 10px 0
 
 	&.ps4
@@ -284,9 +306,7 @@ button.consoleCheckbox
 		display: inline-block
 		width: auto
 		height: 30px
-		margin: 15px
 		flex-grow: 0
-		margin-top: auto
 			
 		&:before
 			font-family: TruequeGamer
@@ -297,6 +317,9 @@ button.consoleCheckbox
 
 	&.checked
 		background-color: $red
+
+		&:before
+			opacity: 1
 
 		.isotype:before, span:before
 			color: white

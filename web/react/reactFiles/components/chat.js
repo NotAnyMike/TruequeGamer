@@ -22,7 +22,7 @@ var Chat = React.createClass({
 	},
 
 	componentWillUnmount: function(){
-		ChatStore.removeOnMessageAddedListerner(this.onMessageAdded);
+		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 	},
 	
 	onMessageAdded: function(){

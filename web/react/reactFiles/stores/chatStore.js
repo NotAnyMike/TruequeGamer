@@ -88,7 +88,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 	},
 
 	removeOnMessageAddedListener: function(callback){
-		this.removeListener(callback);
+		this.removeListener(Constants.eventType.messageAdded, callback);
 	},
 
 });

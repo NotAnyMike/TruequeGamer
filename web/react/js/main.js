@@ -26414,7 +26414,7 @@ var Chat = React.createClass({
 	},
 
 	componentWillUnmount: function () {
-		ChatStore.removeOnMessageAddedListerner(this.onMessageAdded);
+		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 	},
 
 	onMessageAdded: function () {
@@ -26731,26 +26731,18 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	getInitialState: function () {
-		return {
-			checked: true
-		};
-	},
-
-	componentDidMount: function () {},
-
 	propTypes: {
+		checked: React.PropTypes.bool.isRequired,
 		filterType: React.PropTypes.oneOf([Constants.filter.not_used, Constants.filter.used, Constants.filter.exchange, Constants.filter.to_sell]).isRequired
 	},
 
 	clickHandler: function () {
-		var new_state = !this.state.checked;
-		this.setState({ checked: new_state });
+		var new_state = !this.props.checked;
 		Actions.changeFilterState(this.props.filterType, new_state);
 	},
 
 	render: function () {
-		var className = 'extraFilterButton' + (this.state.checked ? ' checked' : '');
+		var className = 'extraFilterButton' + (this.props.checked ? ' checked' : '');
 		var title = '';
 		switch (this.props.filterType) {
 			case Constants.filter.not_used:
@@ -26791,6 +26783,10 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
+	propTypes: {
+		searchValues: React.PropTypes.object.isRequired
+	},
+
 	render: function () {
 		return React.createElement(
 			'div',
@@ -26798,15 +26794,15 @@ module.exports = React.createClass({
 			React.createElement(
 				'section',
 				null,
-				React.createElement(ExtraFilterButton, { filterType: Constants.filter.not_used }),
-				React.createElement(ExtraFilterButton, { filterType: Constants.filter.used })
+				React.createElement(ExtraFilterButton, { filterType: Constants.filter.not_used, checked: this.props.searchValues.not_used }),
+				React.createElement(ExtraFilterButton, { filterType: Constants.filter.used, checked: this.props.searchValues.used })
 			),
 			React.createElement('div', { className: 'listDecorator' }),
 			React.createElement(
 				'section',
 				null,
-				React.createElement(ExtraFilterButton, { filterType: Constants.filter.exchange }),
-				React.createElement(ExtraFilterButton, { filterType: Constants.filter.to_sell })
+				React.createElement(ExtraFilterButton, { filterType: Constants.filter.exchange, checked: this.props.searchValues.exchange }),
+				React.createElement(ExtraFilterButton, { filterType: Constants.filter.to_sell, checked: this.props.searchValues.to_sell })
 			),
 			React.createElement('div', { className: 'listDecorator' }),
 			React.createElement(
@@ -26839,12 +26835,16 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
+	propTypes: {
+		searchValues: React.PropTypes.object.isRequired
+	},
+
 	render: function () {
 		return React.createElement(
 			'div',
 			{ className: 'filterMainContainer' },
 			React.createElement(ConsoleContainer, null),
-			React.createElement(ExtraFilterContainer, null)
+			React.createElement(ExtraFilterContainer, { searchValues: this.props.searchValues })
 		);
 	}
 
@@ -26912,7 +26912,7 @@ module.exports = React.createClass({
 					React.createElement(
 						'figure',
 						null,
-						React.createElement('img', { src: 'img/bug.png', alt: '' })
+						React.createElement('img', { src: '/img/bug.png', alt: '' })
 					),
 					React.createElement(
 						'span',
@@ -26992,7 +26992,7 @@ const GameItem = React.createClass({
 			React.createElement(
 				'figure',
 				null,
-				React.createElement('img', { src: 'img/cover.png', alt: '' })
+				React.createElement('img', { src: '/img/cover.png', alt: '' })
 			),
 			React.createElement(
 				'div',
@@ -27096,7 +27096,8 @@ var React = require('react'),
     Chat = require('./chat.js'),
     Actions = require('../utils/actions.js'),
     Constants = require('../utils/constants.js'),
-    Functions = require('../utils/functions.js');
+    Functions = require('../utils/functions.js'),
+    browserHistory = require('react-router').browserHistory;
 
 var Link = require('react-router').Link;
 
@@ -27105,36 +27106,31 @@ module.exports = React.createClass({
 
 
 	getInitialState: function () {
-		return {
-			search: {
-				text: '',
-				xbox: true,
-				ps: true,
-				not_used: true,
-				used: true,
-				exchange: true,
-				to_sell: true,
-				city: Constants.bogota
-			},
-			user: {
-				logged: true,
-				user: '',
-				pic: ''
-			}
-		};
+		var store = AppStore.getStore();
+		return store;
 	},
 
 	componentDidMount: function () {
 		AppStore.addSearchButtonClickedListener(this.onSearch);
+		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		Functions.startAnalytics();
+	},
+
+	componentWillUnmount: function () {
+		AppStore.removeSearchButtonClickedListener(this.onSearch);
+		AppStore.removeOnFilterRefreshListener(this.onFilterRefresh);
+	},
+
+	onFilterRefresh: function () {
+		var search = AppStore.getSearchValues();
+		this.setState({ search: search });
 	},
 
 	onSearch: function () {
 		var store = AppStore.getStore();
-		console.log('title: ' + store.text + ' xbox: ' + store.xbox + ' ps: ' + store.ps + ' not_used: ' + store.not_used + ' used: ' + store.used + ' exchange: ' + store.exchange + ' to_sell: ' + store.to_sell + ' city: ' + store.city);
+		console.log('title: ' + store.search.text + ' xbox: ' + store.search.xbox + ' ps: ' + store.search.ps + ' not_used: ' + store.search.not_used + ' used: ' + store.search.used + ' exchange: ' + store.search.exchange + ' to_sell: ' + store.search.to_sell + ' city: ' + store.search.city);
+		browserHistory.push('/search/ps-xbox/hola');
 	},
-
-	componentWillUnmount: function () {},
 
 	render: function () {
 		var chat;
@@ -27145,7 +27141,7 @@ module.exports = React.createClass({
 			'div',
 			{ id: 'semi_body' },
 			React.createElement(Header, { user: this.state.user }),
-			React.createElement(MainContainer, null),
+			React.createElement(MainContainer, { searchValues: this.state.search }),
 			React.createElement(Footer, null),
 			chat
 		);
@@ -27218,8 +27214,8 @@ module.exports = React.createClass({
 		return React.createElement(
 			'figure',
 			{ className: this.props.version },
-			React.createElement('img', { className: 'isotype normal', src: './img/isotype.png' }),
-			React.createElement('img', { className: 'isotype negative', src: './img/isotype_positive.png' })
+			React.createElement('img', { className: 'isotype normal', src: '/img/isotype.png' }),
+			React.createElement('img', { className: 'isotype negative', src: '/img/isotype_positive.png' })
 		);
 	}
 
@@ -27321,12 +27317,16 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
+	propTypes: {
+		searchValues: React.PropTypes.object.isRequired
+	},
+
 	render: function () {
 		return React.createElement(
 			'div',
 			{ className: 'mainContainer' },
 			React.createElement(SearchField, null),
-			React.createElement(FilterMainContainer, null),
+			React.createElement(FilterMainContainer, { searchValues: this.props.searchValues }),
 			React.createElement(SearchButton, null)
 		);
 	}
@@ -27464,6 +27464,10 @@ module.exports = React.createClass({
 		SuggestionStore.addSuggestionsRefreshListener(this._onSuggestionRefresh);
 	},
 
+	componentWillUnmount: function () {
+		SuggestionStore.removeSuggestionsRefreshListener(this._onSuggestionRefresh);
+	},
+
 	_onSuggestionRefresh: function () {
 		var suggestions = SuggestionStore.getSuggestions();
 		this.setState({ suggestions: suggestions });
@@ -27560,7 +27564,7 @@ const SearchResultsList = React.createClass({
 		var ps = 'ps';
 		return React.createElement(
 			'ul',
-			{ className: this.props.console },
+			{ className: "gameList " + this.props.console },
 			React.createElement(GameItem, { console: ps }),
 			React.createElement(GameItem, { console: ps, notOnly: true }),
 			React.createElement(GameItem, { console: ps, only: true }),
@@ -27812,18 +27816,25 @@ var browserHistory = require('react-router').browserHistory;
 
 var Index = require('./components/index.js'),
     ContactUs = require('./components/contactUs.js'),
-    SearchResults = require('./components/contactUs.js'),
+    SearchResults = require('./components/searchResults.js'),
     Testing = require('./components/searchResults.js'),
     Constants = require('./utils/constants.js');
 
-ReactDOM.render(React.createElement(
+ReactDOM.render(
+//<Index />,
+React.createElement(
 		Router,
 		{ history: browserHistory },
-		React.createElement(Route, { path: '/', component: Testing, console: Constants.consoles.both }),
-		React.createElement(Route, { path: '/contactUs', component: ContactUs })
+		React.createElement(Route, { path: '/', component: Index }),
+		React.createElement(Route, { path: '/contactUs', component: ContactUs }),
+		React.createElement(Route, { path: '/search/ps-xbox/(:search)', console: Constants.consoles.both, component: SearchResults }),
+		React.createElement(Route, { path: '/search/ps/(:search)', console: Constants.consoles.ps, component: SearchResults }),
+		React.createElement(Route, { path: '/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults })
 ), document.getElementById('mainContainer'));
 
 },{"./components/contactUs.js":247,"./components/index.js":254,"./components/searchResults.js":264,"./utils/constants.js":277,"react":239,"react-dom":7,"react-router":37}],273:[function(require,module,exports){
+'use strict';
+
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
     assign = require('object-assign');
@@ -27853,54 +27864,72 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 	changeFilterState: function (filterName, new_state) {
 		switch (filterName) {
 			case Constants.filter.not_used:
-				_store.searchnot_used = new_state;
+				_store.search.not_used = new_state;
+				if (new_state === false && _store.search.used === false) {
+					_store.search.used = true;
+				}
 				break;
 			case Constants.filter.used:
-				_store.searchused = new_state;
+				_store.search.used = new_state;
+				if (new_state === false && _store.search.not_used === false) {
+					_store.search.not_used = true;
+				}
 				break;
 			case Constants.filter.xbox:
-				_store.searchxbox = new_state;
+				_store.search.xbox = new_state;
+				if (new_state === false && _store.search.ps === false) {
+					_store.search.ps = true;
+				}
 				break;
 			case Constants.filter.ps:
-				_store.searchps = new_state;
+				_store.search.ps = new_state;
+				if (new_state === false && _store.search.xbox === false) {
+					_store.search.xbox = true;
+				}
 				break;
 			case Constants.filter.to_sell:
-				_store.searchto_sell = new_state;
+				_store.search.to_sell = new_state;
+				if (new_state === false && _store.search.exchange === false) {
+					_store.search.exchange = true;
+				}
 				break;
 			case Constants.filter.exchange:
-				_store.searchexchange = new_state;
+				_store.search.exchange = new_state;
+				if (new_state === false && _store.search.to_sell === false) {
+					_store.search.to_sell = true;
+				}
 				break;
 		};
+		this.emit(Constants.eventType.filterRefresh);
 	},
 
 	getFilterState: function (filterName) {
 		var toReturn = false;
 		switch (filterName) {
 			case Constants.filter.not_used:
-				toReturn = _store.searchnot_used;
+				toReturn = _store.search.not_used;
 				break;
 			case Constants.filter.used:
-				toReturn = _store.searchused;
+				toReturn = _store.search.used;
 				break;
 			case Constants.filter.xbox:
-				toReturn = _store.searchxbox;
+				toReturn = _store.search.xbox;
 				break;
 			case Constants.filter.ps:
-				toReturn = _store.searchps;
+				toReturn = _store.search.ps;
 				break;
 			case Constants.filter.to_sell:
-				toReturn = _store.searchto_sell;
+				toReturn = _store.search.to_sell;
 				break;
 			case Constants.filter.exchange:
-				toReturn = _store.searchexchange;
+				toReturn = _store.search.exchange;
 				break;
 		};
-
 		return toReturn;
 	},
 
 	changeSearchInput: function (value) {
-		_store.searchtext = value;
+		_store.search.text = value;
 	},
 
 	searchButtonClicked: function () {
@@ -27912,11 +27941,23 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 	},
 
 	removeSearchButtonClickedListener: function (callback) {
-		this.removeListener(callback);
+		this.removeListener(Constants.eventType.search, callback);
+	},
+
+	addOnFilterRefreshListener: function (callback) {
+		this.on(Constants.eventType.filterRefresh, callback);
+	},
+
+	removeOnFilterRefreshListener: function (callback) {
+		this.removeListener(Constants.eventType.filterRefresh, callback);
 	},
 
 	getStore: function () {
 		return _store;
+	},
+
+	getSearchValues: function () {
+		return _store.search;
 	}
 
 });
@@ -28021,7 +28062,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 	},
 
 	removeOnMessageAddedListener: function (callback) {
-		this.removeListener(callback);
+		this.removeListener(Constants.eventType.messageAdded, callback);
 	}
 
 });
@@ -28145,6 +28186,7 @@ const Constants = {
 		sendMessage: 'send_message'
 	},
 	eventType: {
+		filterRefresh: 'filter_refresh',
 		suggestionsRefresh: 'suggestions_refresh',
 		search: 'search',
 		messageAdded: 'message_added'

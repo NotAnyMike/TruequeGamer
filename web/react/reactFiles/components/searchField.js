@@ -17,6 +17,10 @@ module.exports = React.createClass({
 		SuggestionStore.addSuggestionsRefreshListener(this._onSuggestionRefresh);
 	},
 
+	componentWillUnmount: function(){
+		SuggestionStore.removeSuggestionsRefreshListener(this._onSuggestionRefresh);
+	},	
+
 	_onSuggestionRefresh: function(){
 		var suggestions = SuggestionStore.getSuggestions();
 		this.setState({ suggestions: suggestions });

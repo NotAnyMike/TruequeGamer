@@ -7,11 +7,15 @@ var React = require('react'),
 
 module.exports = React.createClass({
 
+	propTypes: {
+		searchValues: React.PropTypes.object.isRequired
+	},
+
 	render: function(){
 		return (
 				<div className="mainContainer">
 					<SearchField />
-					<FilterMainContainer />
+					<FilterMainContainer searchValues={this.props.searchValues}/>
 					<SearchButton />
 				</div>
 		);

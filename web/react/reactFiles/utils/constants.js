@@ -15,6 +15,7 @@ const Constants = {
 		sendMessage: 'send_message',
 	},
 	eventType: {
+		filterRefresh: 'filter_refresh',
 		suggestionsRefresh: 'suggestions_refresh',
 		search: 'search',
 		messageAdded: 'message_added',

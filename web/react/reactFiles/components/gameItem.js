@@ -59,7 +59,7 @@ const GameItem = React.createClass({
 				(this.props.psNoExchange ? " psNoExchange" : "") +
 				(this.props.xboxNoExchange ? " xboxNoExchange" : "")
 			}>
-				<figure><img src="img/cover.png" alt=""/></figure>
+				<figure><img src="/img/cover.png" alt=""/></figure>
 				<div className="contentContainer">
 					<span className="name">dark souls iii</span>
 					<div className="exchange">

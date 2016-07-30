@@ -9,45 +9,40 @@ var React = require('react'),
 		Chat = require('./chat.js'),
 		Actions = require('../utils/actions.js'),
 		Constants = require('../utils/constants.js'),
-		Functions = require('../utils/functions.js');
+		Functions = require('../utils/functions.js'),
+		browserHistory = require('react-router').browserHistory;
 
 var Link = require('react-router').Link;
 
 module.exports = React.createClass({
 
 	getInitialState: function(){
-		return ({
-			search: {
-				text: '',
-				xbox: true,
-				ps: true,
-				not_used: true,
-				used: true,
-				exchange: true,
-				to_sell: true,
-				city: Constants.bogota	
-			},
-			user: {
-				logged: true,
-				user: '',
-				pic: ''
-			}
-		});
+		var store = AppStore.getStore();
+		return store;
 	},
 
 	componentDidMount: function(){
 		AppStore.addSearchButtonClickedListener(this.onSearch);
+		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		Functions.startAnalytics();
 	},
 
-	onSearch: function(){
-		var store = AppStore.getStore();
-		console.log('title: ' + store.text + ' xbox: ' + store.xbox + ' ps: ' + store.ps + ' not_used: ' + store.not_used + ' used: ' + store.used + ' exchange: ' + store.exchange + ' to_sell: ' + store.to_sell + ' city: ' + store.city);
+	componentWillUnmount: function(){
+		AppStore.removeSearchButtonClickedListener(this.onSearch);
+		AppStore.removeOnFilterRefreshListener(this.onFilterRefresh);
 	},
 
-	componentWillUnmount: function(){
+	onFilterRefresh: function(){
+		var search = AppStore.getSearchValues();
+		this.setState({search: search});
 	},
 	
+	onSearch: function(){
+		var store = AppStore.getStore();
+		console.log('title: ' + store.search.text + ' xbox: ' + store.search.xbox + ' ps: ' + store.search.ps + ' not_used: ' + store.search.not_used + ' used: ' + store.search.used + ' exchange: ' + store.search.exchange + ' to_sell: ' + store.search.to_sell + ' city: ' + store.search.city);
+		browserHistory.push('/search/ps-xbox/hola');
+	},
+
 	render: function(){
 		var chat;
 		if(this.state.user.logged) {
@@ -56,7 +51,7 @@ module.exports = React.createClass({
 		return (
 				<div id="semi_body">
 					<Header user={this.state.user} />
-					<MainContainer />
+					<MainContainer searchValues={this.state.search}/>
 					<Footer />
 					{chat}
 				</div>

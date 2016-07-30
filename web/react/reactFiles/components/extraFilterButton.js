@@ -5,17 +5,9 @@ var React = require('react'),
 		Actions = require('../utils/actions.js');
 
 module.exports = React.createClass({
-
-	getInitialState: function(){
-		return  {
-			checked: true
-		}
-	},
-
-	componentDidMount: function(){
-	},
 	
 	propTypes: {
+		checked: React.PropTypes.bool.isRequired,
 		filterType: React.PropTypes.oneOf([
 										Constants.filter.not_used, 
 										Constants.filter.used, 
@@ -25,13 +17,12 @@ module.exports = React.createClass({
 	},
 
 	clickHandler : function(){
-		var new_state = !this.state.checked;
-		this.setState({checked: new_state});
+		var new_state = !this.props.checked;
 		Actions.changeFilterState(this.props.filterType, new_state);
 	},
 
 	render: function(){
-		var className = 'extraFilterButton' + (this.state.checked ? ' checked' : '');
+		var className = 'extraFilterButton' + (this.props.checked ? ' checked' : '');
 		var title = '';
 		switch(this.props.filterType){
 			case Constants.filter.not_used:

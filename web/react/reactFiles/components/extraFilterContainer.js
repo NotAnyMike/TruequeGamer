@@ -6,17 +6,21 @@ var React = require('react'),
 
 module.exports = React.createClass({
 
+	propTypes: {
+		searchValues: React.PropTypes.object.isRequired
+	},
+
 	render: function(){
 		return (
 			<div className="extraFilterContainer">
 				<section>
-					<ExtraFilterButton filterType={Constants.filter.not_used} />
-					<ExtraFilterButton filterType={Constants.filter.used} />
+					<ExtraFilterButton filterType={Constants.filter.not_used} checked={this.props.searchValues.not_used} />
+					<ExtraFilterButton filterType={Constants.filter.used} checked={this.props.searchValues.used} />
 				</section>
 				<div className="listDecorator"></div>
 				<section>
-					<ExtraFilterButton filterType={Constants.filter.exchange} />
-					<ExtraFilterButton filterType={Constants.filter.to_sell}  />
+					<ExtraFilterButton filterType={Constants.filter.exchange} checked={this.props.searchValues.exchange} />
+					<ExtraFilterButton filterType={Constants.filter.to_sell} checked={this.props.searchValues.to_sell} />
 				</section>
 				<div className="listDecorator"></div>
 				<section className="locationSection">

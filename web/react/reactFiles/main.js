@@ -10,16 +10,18 @@ var browserHistory = require('react-router').browserHistory;
 
 var Index = require('./components/index.js'),
 		ContactUs = require('./components/contactUs.js'),
-		SearchResults = require('./components/contactUs.js'),
+		SearchResults = require('./components/searchResults.js'),
 		Testing = require('./components/searchResults.js'),
 		Constants = require('./utils/constants.js');
 
 ReactDOM.render(
 	//<Index />,
 	(<Router history={browserHistory}>
-			<Route path="/" component={Testing} console={Constants.consoles.both}/>
+			<Route path="/" component={Index}/>
 			<Route path="/contactUs" component={ContactUs} />
-			{/**<Route path="/search/ps4-xbox/(:search)" console={Constants.consoles.both} component={SearchResults} />*/}
+			<Route path="/search/ps-xbox/(:search)" console={Constants.consoles.both} component={SearchResults} />
+			<Route path="/search/ps/(:search)" console={Constants.consoles.ps} component={SearchResults} />
+			<Route path="/search/xbox/(:search)" console={Constants.consoles.xbox} component={SearchResults} />
 		</Router>),
 	document.getElementById('mainContainer')
 );

@@ -12,7 +12,7 @@ const SearchResultsList = React.createClass({
 		var xbox = 'xbox';
 		var ps = 'ps';
 		return (
-			<ul className={this.props.console}>
+			<ul className={"gameList " + this.props.console}>
 				<GameItem console={ps}/>
 				<GameItem console={ps} notOnly={true}/>
 				<GameItem console={ps} only={true}/>

@@ -2,7 +2,8 @@
 
 var React = require('react'),
 		Actions = require('../utils/actions.js'),
-		SuggestionStore = require('../stores/suggestionStore.js');
+		SuggestionStore = require('../stores/suggestionStore.js'),
+		SuggestionItem = require('./suggestionItem.js');
 
 module.exports = React.createClass({
 
@@ -36,13 +37,25 @@ module.exports = React.createClass({
 		};
 	},
 
+	_onKeyDownHandler: function(e){
+		if(e.keyCode === 13){
+			//send
+			Actions.searchButtonClicked();
+		}
+	},
+
+	suggestionSelectedHandler: function(value){
+		this.setState({value: value});
+	},
+
 	render: function(){
+		var clickHandler = this.suggestionSelectedHandler;
 		return (
 			<div className="searchFieldContainer">
-							<input type="text" placeholder="Nombre del juego a buscar" onChange={this._changeHandler}/>
+							<input type="text" placeholder="Nombre del juego a buscar" onChange={this._changeHandler} value={this.state.value} onKeyDown={this._onKeyDownHandler}/>
 							<ul>
 								{this.state.suggestions.map(function(element){
-										return <li key={element}>{element}</li>;
+										return <SuggestionItem key={element} text={element} onClickHandler={clickHandler} />;
 								})}
 							</ul>
 			</div>

@@ -5,14 +5,20 @@ const React = require('react'),
 const GameItem = React.createClass({
 
 	propTypes: {
+		name: React.PropTypes.string.isRequired,
+		cover: React.PropTypes.string.isRequired,
+		both: React.PropTypes.bool.isRequired,
 		psNoSell: React.PropTypes.bool,
 		xboxNoSell: React.PropTypes.bool,
 		psNoExchange: React.PropTypes.bool,
 		xboxNoExchange: React.PropTypes.bool,
 		only: React.PropTypes.bool,
 		notOnly: React.PropTypes.bool,
-		console: React.PropTypes.oneOf([Constants.consoles.xbox, Constants.consoles.ps]),
-		isHover : React.PropTypes.bool,
+		console: React.PropTypes.oneOf([Constants.consoles.xbox, Constants.consoles.ps, Constants.consoles.both]),
+		psPrice: React.PropTypes.number,
+		psOnlyPrice: React.PropTypes.bool,
+		xboxPrice: React.PropTypes.number,
+		xboxOnlyPrice: React.PropTypes.bool,
 	},
 
 	getInitialState: function(){
@@ -40,28 +46,32 @@ const GameItem = React.createClass({
 	},
 	
 	render: function(){
-		var console = this.props.console;
-		if(this.state.isHover && console !== null && !this.state.only){
-			if(console === Constants.consoles.xbox){
-				console = Constants.consoles.ps;
-			}else if(console === Constants.consoles.ps){
-				console = Constants.consoles.xbox;
+		var consoleVar = this.props.console;
+		if(this.props.both && this.state.isHover && consoleVar !== null){
+			if(consoleVar === Constants.consoles.xbox){
+				consoleVar = Constants.consoles.ps;
+			}else if(consoleVar === Constants.consoles.ps){
+				consoleVar = Constants.consoles.xbox;
 			}
 		}	
 
-		return (
-			<il className={
-				console +
+		var className = consoleVar +
 				(this.props.only ? " only" : "") +
-				(this.props.notOnly ? " notOnly" : "") +
-				(this.props.psNoSell ? " psNoSell" : "") +
-				(this.props.xboxNoSell ? " xboxNoSell" : "") +
-				(this.props.psNoExchange ? " psNoExchange" : "") +
-				(this.props.xboxNoExchange ? " xboxNoExchange" : "")
-			}>
-				<figure><img src="/img/cover.png" alt=""/></figure>
+				(this.props.notOnly ? " notOnly" : "");
+		if(this.props.both || this.props.console === Constants.consoles.xbox){
+			className += (this.props.xboxNoExchange ? " xboxNoExchange" : "") +
+				(this.props.xboxNoSell ? " xboxNoSell" : "");
+		}
+		if(this.props.both || this.props.console === Constants.consoles.ps){
+			className += (this.props.psNoExchange ? " psNoExchange" : "") +
+				(this.props.psNoSell ? " psNoSell" : "");
+		}
+
+		return (
+			<il className={className}>
+				<figure><img src={this.props.cover} alt=""/></figure>
 				<div className="contentContainer">
-					<span className="name">dark souls iii</span>
+					<span className="name">{this.props.name}</span>
 					<div className="exchange">
 						<span></span>
 						<span></span>
@@ -80,10 +90,10 @@ const GameItem = React.createClass({
 					</div>
 					<div className="price">
 						<span>
-							{this.props.psNoSell ? "" : "desde 70.000"}
+							{this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + this.props.psPrice}
 						</span>
 						<span>
-							{this.props.xboxNoSell ? "" : "desde 80.000"}
+							{this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + this.props.xboxPrice}
 						</span>
 					</div>
 					<div className="alsoAvailableOn"><span></span></div>

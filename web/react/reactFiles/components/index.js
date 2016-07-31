@@ -39,14 +39,24 @@ module.exports = React.createClass({
 	
 	onSearch: function(){
 		var store = AppStore.getStore();
-		console.log('title: ' + store.search.text + ' xbox: ' + store.search.xbox + ' ps: ' + store.search.ps + ' not_used: ' + store.search.not_used + ' used: ' + store.search.used + ' exchange: ' + store.search.exchange + ' to_sell: ' + store.search.to_sell + ' city: ' + store.search.city);
-		browserHistory.push('/search/ps-xbox/hola');
+		//console.log('title: ' + store.search.text + ' xbox: ' + store.search.xbox + ' ps: ' + store.search.ps + ' not_used: ' + store.search.not_used + ' used: ' + store.search.used + ' exchange: ' + store.search.exchange + ' to_sell: ' + store.search.to_sell + ' city: ' + store.search.city);
+		var route = "";
+		if(store.search.ps){
+			if(store.search.xbox){
+				route = Constants.routes.search.both;
+			}else{
+				route = Constants.routes.search.ps;
+			}
+		}else{
+			route = Constants.routes.search.xbox;
+		}
+		browserHistory.push(route + store.search.text);
 	},
 
 	render: function(){
 		var chat;
 		if(this.state.user.logged) {
-			chat = <Chat />;
+			chat = <Chat user={this.state.user}/>;
 		}
 		return (
 				<div id="semi_body">

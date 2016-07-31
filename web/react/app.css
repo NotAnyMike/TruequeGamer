@@ -663,9 +663,6 @@ header .isotypeContainer {
   -ms-flex-direction: column;
   flex-direction: column;
 }
-header.negative {
-  background-image: url("./img/header-background-negative.png");
-}
 header.negative:after {
   opacity: 1;
   -ms-filter: none;
@@ -917,6 +914,9 @@ figure.negative .isotype.negative {
 .mainContainer .searchFieldContainer ul li:hover {
   background-color: #009992;
   color: #fff;
+}
+.mainContainer .searchFieldContainer ul:hover {
+  display: inline-block;
 }
 .mainContainer .filterMainContainer {
 /*width: 900px*/
@@ -2592,12 +2592,12 @@ button {
   margin-left: 60px;
 }
 ul.gameList {
-  -webkit-box-align: start;
-  -moz-box-align: start;
-  -o-box-align: start;
-  -ms-flex-align: start;
-  -webkit-align-items: flex-start;
-  align-items: flex-start;
+  -webkit-box-align: streach;
+  -moz-box-align: streach;
+  -o-box-align: streach;
+  -ms-flex-align: streach;
+  -webkit-align-items: streach;
+  align-items: streach;
   color: #fff;
   cursor: pointer;
   display: -webkit-box;
@@ -2654,7 +2654,7 @@ ul.gameList il {
   box-flex: 0;
   -webkit-flex-grow: 0;
   flex-grow: 0;
-  height: 340px;
+  min-height: 340px;
   margin-bottom: 34px;
   margin-right: 8px;
   overflow: hidden;
@@ -2739,6 +2739,13 @@ ul.gameList il .contentContainer {
   width: 100%;
 }
 ul.gameList il .contentContainer .name {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
   font-size: 15px;
   margin: 15px 12.5px 3px 12.5px;
   -webkit-box-ordinal-group: 1;
@@ -2818,13 +2825,13 @@ ul.gameList il .contentContainer .availableConsoles {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -o-box-flex: 1;
-  -ms-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex-grow: 1;
-  flex-grow: 1;
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  -o-box-flex: 0;
+  -ms-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex-grow: 0;
+  flex-grow: 0;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
   -webkit-box-ordinal-group: 3;
@@ -2903,13 +2910,13 @@ ul.gameList il .contentContainer .price {
   display: -ms-flexbox;
   display: box;
   display: flex;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -o-box-flex: 1;
-  -ms-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex-grow: 1;
-  flex-grow: 1;
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  -o-box-flex: 0;
+  -ms-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex-grow: 0;
+  flex-grow: 0;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
   font-size: 12px;

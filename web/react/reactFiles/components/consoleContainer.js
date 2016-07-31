@@ -5,12 +5,24 @@ var React = require('react'),
 		Constants = require('../utils/constants.js');
 
 module.exports = React.createClass({
+
+	propTypes: {
+		xbox: React.PropTypes.bool.isRequired,
+		ps: React.PropTypes.bool.isRequired,
+	},
+
+	getDefaultProps: function(){
+		return ({
+			xbox: false,
+			ps: false,
+		});
+	},	
 	
 	render: function(){
 		return (
 			<section className="consoleContainer">
-				<ConsoleCheckbox console="ps4" filterType={Constants.filter.ps} />
-				<ConsoleCheckbox console="xboxone" filterType={Constants.filter.xbox} />
+				<ConsoleCheckbox console={Constants.consoles.ps} filterType={Constants.filter.ps} checked={this.props.ps}/>
+				<ConsoleCheckbox console={Constants.consoles.xbox} filterType={Constants.filter.xbox} checked={this.props.xbox} />
 			</section>
 		);
 	}

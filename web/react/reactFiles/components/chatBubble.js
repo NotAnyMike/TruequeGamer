@@ -10,7 +10,7 @@ var ChatBubble = React.createClass({
 	render: function(){
 		return (			
 			<section className="chatBubble" onClick={this.props.showChatFn}>
-				<img src="img/chatBubble.png" alt=""/>
+				<img src="/img/chatBubble.png" alt=""/>
 				<div className="messagesNumber">
 					<span>{this.props.unread}</span>
 				</div>

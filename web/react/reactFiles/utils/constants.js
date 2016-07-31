@@ -44,6 +44,14 @@ const Constants = {
 			whiteBackground: 'white_background'
 		}
 	},
+	routes: {
+		index: '/',
+		search: {
+			ps: '/search/ps/',
+			xbox: '/search/xbox/',
+			both: '/search/ps-xbox/',
+		}
+	}
 };
 
 module.exports = Constants;

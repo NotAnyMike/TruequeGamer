@@ -13,7 +13,7 @@ module.exports = React.createClass({
 	render: function(){
 		return (
 			<div className="filterMainContainer">
-				<ConsoleContainer />
+				<ConsoleContainer xbox={this.props.searchValues.xbox} ps={this.props.searchValues.ps} />
 				<ExtraFilterContainer searchValues={this.props.searchValues}/>
 			</div>
 		);

@@ -5,7 +5,8 @@ const React = require('react'),
 const SearchResultsMainContainer = React.createClass({
 
 	propTypes: {
-		console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired
+		console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired,
+		list: React.PropTypes.array.isRequired,
 	},
 
 	render: function(){
@@ -13,7 +14,7 @@ const SearchResultsMainContainer = React.createClass({
 			<section className={"searchResultsMainContainer " + this.props.console}>
 				<div className="container">
 					<div className="title"></div>
-					<SearchResultsList console={this.props.console} />
+					<SearchResultsList console={this.props.console} list={this.props.list} />
 				</div>
 			</section>
 		);

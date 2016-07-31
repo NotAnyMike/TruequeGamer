@@ -17,7 +17,7 @@ var ItemChat = React.createClass({
 	render: function(){
 		return (
 			<li className={this.props.message.read ? "" : "unread"} onClick={() => this.props.openCertainChatFn(this.props.id)} >
-				<figure><img src={"img/" + this.props.user.pic + ".png"} alt="" /></figure>
+				<figure><img src={"/img/" + this.props.user.pic + ".png"} alt="" /></figure>
 				<div className="content">
 					<span className="name">{this.props.user.name}</span>
 					<span className="time">{this.props.message.time}</span>

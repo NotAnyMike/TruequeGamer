@@ -124,7 +124,7 @@ gulp.task('css-prod', ['stylus-dev'], function(){
 });
 
 gulp.task('img', function(){
-	return gulp.src('web/react/img/*')
+	return gulp.src('web/react/img/**')
 		.pipe(imagemin())
 		.pipe(gulp.dest('web/public/img'));
 });

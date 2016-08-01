@@ -26487,8 +26487,12 @@ module.exports = React.createClass({
 		return React.createElement(
 			'button',
 			{ className: className, onClick: this.handleClick },
-			React.createElement('div', { className: 'isotype' }),
-			React.createElement('span', { className: 'consoleNameTitle' })
+			React.createElement(
+				'div',
+				{ className: 'consoleCheckboxContainer' },
+				React.createElement('div', { className: 'isotype' }),
+				React.createElement('span', { className: 'consoleNameTitle' })
+			)
 		);
 	}
 });

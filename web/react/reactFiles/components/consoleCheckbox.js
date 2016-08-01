@@ -24,9 +24,11 @@ module.exports = React.createClass({
 		else consoleClassName = "xboxone";
 		var className = "consoleCheckbox " + consoleClassName + (this.props.checked ? ' checked' : '');
 		return (
-			<button className={className} onClick={this.handleClick}>
-					<div className="isotype"></div>
-					<span className="consoleNameTitle"></span>
+				<button className={className} onClick={this.handleClick}>
+					<div className="consoleCheckboxContainer">
+						<div className="isotype"></div>
+						<span className="consoleNameTitle"></span>
+					</div>
 				</button>
 			);
 	}

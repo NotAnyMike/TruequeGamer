@@ -1027,6 +1027,16 @@ button.consoleCheckbox:after {
   transition: bottom ease 300ms, color 300ms;
   width: 24px;
 }
+button.consoleCheckbox .consoleCheckboxContainer {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  margin: 0 auto;
+  width: -moz-fit-content;
+}
 button.consoleCheckbox:hover:before {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";

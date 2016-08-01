@@ -2970,6 +2970,7 @@ ul.gameList il .contentContainer .price span {
   -o-transition: color 300ms, opacity 300ms;
   -ms-transition: color 300ms, opacity 300ms;
   transition: color 300ms, opacity 300ms;
+  top: 0;
   z-index: 1;
 }
 ul.gameList il .contentContainer .price span:before,
@@ -3238,17 +3239,21 @@ ul.both.gameList il:hover.xbox.xboxNoExchange .contentContainer .exchange span:n
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
+ul.both.gameList il:hover.ps.psNoSell .contentContainer .price span:first-child {
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+}
 ul.both.gameList il:hover.ps.psNoSell .contentContainer .price span:first-child:before {
   color: #fff;
+}
+ul.both.gameList il:hover.xbox.xboxNoSell .contentContainer .price span:nth-child(2) {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
 ul.both.gameList il:hover.xbox.xboxNoSell .contentContainer .price span:nth-child(2):before {
   color: #fff;
-  opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
 }
 #semi_body.ps {
   background: -webkit-radial-gradient(circle, #183a68, #142033);
@@ -3366,7 +3371,7 @@ ul.ps.gameList il .contentContainer .alsoAvailableOn {
   order: 4;
 }
 ul.ps.gameList il .contentContainer .alsoAvailableOn span {
-  border-top: 1px solid $white;
+  border-top: 1px solid #fff;
 }
 ul.ps.gameList il .contentContainer .alsoAvailableOn span:before {
   color: #fff;
@@ -3666,4 +3671,14 @@ ul.xbox.gameList il:hover.xboxNoExchange .contentContainer .exchange:after {
 }
 ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   border: 0;
+}
+.xboxNoExchange.ps .contentContainer .exchange span:nth-child(2):before {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.psNoExchange.xbox .contentContainer .exchange span:first-child:before {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
 }

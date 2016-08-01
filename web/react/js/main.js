@@ -26364,13 +26364,15 @@ arguments[4][6][0].apply(exports,arguments)
 module.exports = require('./lib/React');
 
 },{"./lib/React":96}],240:[function(require,module,exports){
-const React = require('react');
+"use strict";
 
-const AvailableConsoles = React.createClass({
+var React = require('react');
+
+var AvailableConsoles = React.createClass({
 	displayName: "AvailableConsoles",
 
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			"div",
 			{ className: "availableConsoles" },
@@ -26388,6 +26390,8 @@ const AvailableConsoles = React.createClass({
 module.exports = AvailableConsoles;
 
 },{"react":239}],241:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     ChatContainer = require('./chatContainer.js'),
     ChatBubble = require('./chatBubble.js'),
@@ -26398,7 +26402,7 @@ var Chat = React.createClass({
 	displayName: 'Chat',
 
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		var store = ChatStore.getStore();
 		return {
 			store: store,
@@ -26409,21 +26413,21 @@ var Chat = React.createClass({
 		};
 	},
 
-	componentDidMount: function () {
+	componentDidMount: function componentDidMount() {
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 	},
 
-	componentWillUnmount: function () {
+	componentWillUnmount: function componentWillUnmount() {
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 	},
 
-	onMessageAdded: function () {
+	onMessageAdded: function onMessageAdded() {
 		this.setState({
 			store: ChatStore.getStore()
 		});
 	},
 
-	showChatFn: function () {
+	showChatFn: function showChatFn() {
 		var singleChatVisible;
 		if (this.state.singleChatVisible === null) {
 			singleChatVisible = null;
@@ -26436,20 +26440,22 @@ var Chat = React.createClass({
 		});
 	},
 
-	closeChatFn: function () {
+	closeChatFn: function closeChatFn() {
+		var singleChatVisibility = null;
+		if (this.state.singleChatVisible) singleChatVisibility = false;
 		this.setState({
 			visible: false,
-			singleChatVisible: false
+			singleChatVisible: singleChatVisibility
 		});
 	},
 
-	closeSingleChatFn: function () {
+	closeSingleChatFn: function closeSingleChatFn() {
 		this.setState({
 			singleChatVisible: false
 		});
 	},
 
-	openCertainChatFn: function (id) {
+	openCertainChatFn: function openCertainChatFn(id) {
 		//get the position of the chat with id id
 		if (this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null) {
 			this.setState({
@@ -26461,7 +26467,7 @@ var Chat = React.createClass({
 		}
 	},
 
-	sendFn: function () {
+	sendFn: function sendFn() {
 		var text = this.state.textToSend.replace(/\s+/g, '');
 		if (text !== '') {
 			this.setState({ textToSend: '' });
@@ -26469,7 +26475,7 @@ var Chat = React.createClass({
 		}
 	},
 
-	onChangeInputChatFn: function (e) {
+	onChangeInputChatFn: function onChangeInputChatFn(e) {
 		var value;
 		//Firefox does not support .innerText
 		if (!e.target.innerText) {
@@ -26480,15 +26486,19 @@ var Chat = React.createClass({
 		this.setState({ textToSend: value });
 	},
 
-	onKeyDownFn: function (e) {
+	onKeyDownFn: function onKeyDownFn(e) {
 		if (e.keyCode === 13 && !e.shiftKey) {
 			e.preventDefault();
 			this.sendFn();
 		}
 	},
 
-	render: function () {
-		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
+	render: function render() {
+		var _this = this;
+
+		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(function (x) {
+			return x.id === _this.state.activeChat;
+		}));
 		return React.createElement(
 			'div',
 			null,
@@ -26513,6 +26523,8 @@ var Chat = React.createClass({
 module.exports = Chat;
 
 },{"../stores/chatStore.js":275,"../utils/actions.js":277,"./chatBubble.js":242,"./chatContainer.js":243,"react":239}],242:[function(require,module,exports){
+"use strict";
+
 var React = require('react');
 
 var ChatBubble = React.createClass({
@@ -26524,7 +26536,7 @@ var ChatBubble = React.createClass({
 		showChatFn: React.PropTypes.func.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			"section",
 			{ className: "chatBubble", onClick: this.props.showChatFn },
@@ -26546,6 +26558,8 @@ var ChatBubble = React.createClass({
 module.exports = ChatBubble;
 
 },{"react":239}],243:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     ChatList = require('./chatList.js'),
     SingleChat = require('./singleChat.js');
@@ -26567,7 +26581,7 @@ var ChatContainer = React.createClass({
 		onKeyDownFn: React.PropTypes.func.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 		return React.createElement(
@@ -26590,6 +26604,8 @@ var ChatContainer = React.createClass({
 module.exports = ChatContainer;
 
 },{"./chatList.js":244,"./singleChat.js":267,"react":239}],244:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     ItemChat = require('./itemChat.js');
 
@@ -26603,7 +26619,7 @@ var ChatList = React.createClass({
 		openCertainChatFn: React.PropTypes.func.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'container' },
@@ -26637,6 +26653,8 @@ var ChatList = React.createClass({
 module.exports = ChatList;
 
 },{"./itemChat.js":258,"react":239}],245:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     Constants = require('../utils/constants.js'),
     Actions = require('../utils/actions.js');
@@ -26645,7 +26663,7 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	handleClick: function () {
+	handleClick: function handleClick() {
 		Actions.changeFilterState(this.props.console, !this.props.checked);
 	},
 
@@ -26656,7 +26674,7 @@ module.exports = React.createClass({
 		filterType: React.PropTypes.oneOf([Constants.filter.ps, Constants.filter.xbox]).isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		var consoleClassName = "";
 		if (this.props.console === Constants.consoles.ps) consoleClassName = "ps4";else consoleClassName = "xboxone";
 		var className = "consoleCheckbox " + consoleClassName + (this.props.checked ? ' checked' : '');
@@ -26685,14 +26703,14 @@ module.exports = React.createClass({
 		ps: React.PropTypes.bool.isRequired
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return {
 			xbox: false,
 			ps: false
 		};
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'section',
 			{ className: 'consoleContainer' },
@@ -26704,6 +26722,8 @@ module.exports = React.createClass({
 });
 
 },{"../utils/constants.js":278,"./consoleCheckbox.js":245,"react":239}],247:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     Link = require('react-router').Link;
 
@@ -26711,7 +26731,7 @@ var ContactUs = React.createClass({
 	displayName: 'ContactUs',
 
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			Link,
 			{ to: '/' },
@@ -26739,12 +26759,12 @@ module.exports = React.createClass({
 		filterType: React.PropTypes.oneOf([Constants.filter.not_used, Constants.filter.used, Constants.filter.exchange, Constants.filter.to_sell]).isRequired
 	},
 
-	clickHandler: function () {
+	clickHandler: function clickHandler() {
 		var new_state = !this.props.checked;
 		Actions.changeFilterState(this.props.filterType, new_state);
 	},
 
-	render: function () {
+	render: function render() {
 		var className = 'extraFilterButton' + (this.props.checked ? ' checked' : '');
 		var title = '';
 		switch (this.props.filterType) {
@@ -26790,7 +26810,7 @@ module.exports = React.createClass({
 		searchValues: React.PropTypes.object.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'extraFilterContainer' },
@@ -26842,7 +26862,7 @@ module.exports = React.createClass({
 		searchValues: React.PropTypes.object.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'filterMainContainer' },
@@ -26868,11 +26888,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.footer.versions.normal, Constants.footer.versions.white, Constants.footer.versions.whiteBackground])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.footer.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'footer',
 			{ className: this.props.version },
@@ -26936,11 +26956,14 @@ module.exports = React.createClass({
 });
 
 },{"../utils/constants.js":278,"./socialLink.js":270,"react":239}],252:[function(require,module,exports){
-const React = require('react'),
-      AvailableConsoles = require('./availableConsoles.js'),
-      Constants = require('../utils/constants.js');
+'use strict';
 
-const GameItem = React.createClass({
+var React = require('react'),
+    AvailableConsoles = require('./availableConsoles.js'),
+    Constants = require('../utils/constants.js'),
+    Functions = require('../utils/functions.js');
+
+var GameItem = React.createClass({
 	displayName: 'GameItem',
 
 
@@ -26961,11 +26984,11 @@ const GameItem = React.createClass({
 		xboxOnlyPrice: React.PropTypes.bool
 	},
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		return { isHover: false };
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return {
 			psNoSell: false,
 			xboxNoSell: false,
@@ -26977,15 +27000,15 @@ const GameItem = React.createClass({
 		};
 	},
 
-	_onMouseOver: function () {
+	_onMouseOver: function _onMouseOver() {
 		this.setState({ isHover: true });
 	},
 
-	_onMouseOut: function () {
+	_onMouseOut: function _onMouseOut() {
 		this.setState({ isHover: false });
 	},
 
-	render: function () {
+	render: function render() {
 		var consoleVar = this.props.console;
 		if (this.props.both && this.state.isHover && consoleVar !== null) {
 			if (consoleVar === Constants.consoles.xbox) {
@@ -27047,12 +27070,12 @@ const GameItem = React.createClass({
 					React.createElement(
 						'span',
 						null,
-						this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + this.props.psPrice
+						this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice)
 					),
 					React.createElement(
 						'span',
 						null,
-						this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + this.props.xboxPrice
+						this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice)
 					)
 				),
 				React.createElement(
@@ -27068,7 +27091,7 @@ const GameItem = React.createClass({
 
 module.exports = GameItem;
 
-},{"../utils/constants.js":278,"./availableConsoles.js":240,"react":239}],253:[function(require,module,exports){
+},{"../utils/constants.js":278,"../utils/functions.js":279,"./availableConsoles.js":240,"react":239}],253:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27085,11 +27108,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.header.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'header',
 			{ className: this.props.version },
@@ -27122,28 +27145,28 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		var store = AppStore.getStore();
 		return store;
 	},
 
-	componentDidMount: function () {
+	componentDidMount: function componentDidMount() {
 		AppStore.addSearchButtonClickedListener(this.onSearch);
 		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		Functions.startAnalytics();
 	},
 
-	componentWillUnmount: function () {
+	componentWillUnmount: function componentWillUnmount() {
 		AppStore.removeSearchButtonClickedListener(this.onSearch);
 		AppStore.removeOnFilterRefreshListener(this.onFilterRefresh);
 	},
 
-	onFilterRefresh: function () {
+	onFilterRefresh: function onFilterRefresh() {
 		var search = AppStore.getSearchValues();
 		this.setState({ search: search });
 	},
 
-	onSearch: function () {
+	onSearch: function onSearch() {
 		var store = AppStore.getStore();
 		//console.log('title: ' + store.search.text + ' xbox: ' + store.search.xbox + ' ps: ' + store.search.ps + ' not_used: ' + store.search.not_used + ' used: ' + store.search.used + ' exchange: ' + store.search.exchange + ' to_sell: ' + store.search.to_sell + ' city: ' + store.search.city);
 		var route = "";
@@ -27159,7 +27182,7 @@ module.exports = React.createClass({
 		browserHistory.push(route + store.search.text);
 	},
 
-	render: function () {
+	render: function render() {
 		var chat;
 		if (this.state.user.logged) {
 			chat = React.createElement(Chat, { user: this.state.user });
@@ -27177,6 +27200,8 @@ module.exports = React.createClass({
 });
 
 },{"../stores/appStore.js":274,"../stores/suggestionStore.js":276,"../utils/actions.js":277,"../utils/constants.js":278,"../utils/functions.js":279,"./chat.js":241,"./footer.js":251,"./header.js":253,"./mainContainer.js":259,"react":239,"react-router":37}],255:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     ReactDOM = require('react-dom');
 
@@ -27191,7 +27216,7 @@ var InputChat = React.createClass({
 		onChangeInputChatFn: React.PropTypes.func.isRequired
 	},
 
-	shouldComponentUpdate: function (nextProps, nextState) {
+	shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
 		if (nextProps.visible === false || nextProps.visible === null || nextProps.value !== '' && this.props.onKeyDownFn === nextProps.onKeyDownFn && this.props.onChangeInputChat === nextProps.onChangeInputChat && this.props.visible === nextProps.visible) {
 			return false;
 		} else {
@@ -27199,13 +27224,13 @@ var InputChat = React.createClass({
 		}
 	},
 
-	componentDidUpdate: function () {
+	componentDidUpdate: function componentDidUpdate() {
 		if (this.props.visible) {
 			ReactDOM.findDOMNode(this).focus();
 		}
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement('span', { id: 'chatInputDiv',
 			className: 'content',
 			contentEditable: true,
@@ -27222,8 +27247,8 @@ module.exports = InputChat;
 },{"react":239,"react-dom":7}],256:[function(require,module,exports){
 'use strict';
 
-const React = require('react'),
-      Constants = require('../utils/constants.js');
+var React = require('react'),
+    Constants = require('../utils/constants.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -27233,11 +27258,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.header.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'figure',
 			{ className: this.props.version },
@@ -27264,11 +27289,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.header.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'isotypeContainer' },
@@ -27280,13 +27305,15 @@ module.exports = React.createClass({
 });
 
 },{"../utils/constants.js":278,"./isotype.js":256,"./slogan.js":269,"react":239}],258:[function(require,module,exports){
+"use strict";
+
 var React = require('react');
 
 var ItemChat = React.createClass({
 	displayName: "ItemChat",
 
 
-	setInitialState: function () {
+	setInitialState: function setInitialState() {
 		return {};
 	},
 
@@ -27297,10 +27324,14 @@ var ItemChat = React.createClass({
 		id: React.PropTypes.number.isRequired
 	},
 
-	render: function () {
+	render: function render() {
+		var _this = this;
+
 		return React.createElement(
 			"li",
-			{ className: this.props.message.read ? "" : "unread", onClick: () => this.props.openCertainChatFn(this.props.id) },
+			{ className: this.props.message.read ? "" : "unread", onClick: function onClick() {
+					return _this.props.openCertainChatFn(_this.props.id);
+				} },
 			React.createElement(
 				"figure",
 				null,
@@ -27348,7 +27379,7 @@ module.exports = React.createClass({
 		searchValues: React.PropTypes.object.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'mainContainer' },
@@ -27363,8 +27394,8 @@ module.exports = React.createClass({
 },{"./filterMainContainer.js":250,"./searchButton.js":261,"./searchField.js":263,"react":239}],260:[function(require,module,exports){
 'use strict';
 
-const React = require('react'),
-      Constants = require('../utils/constants.js');
+var React = require('react'),
+    Constants = require('../utils/constants.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -27375,7 +27406,7 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	render: function () {
+	render: function render() {
 		var toReturn = React.createElement(
 			'a',
 			{ className: "login arrow-decorator dot-decorator " + this.props.version, href: '#' },
@@ -27412,7 +27443,7 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'dot-decorator arrow-decorator searchButtonSection' },
@@ -27424,7 +27455,7 @@ module.exports = React.createClass({
 		);
 	},
 
-	_clickHandler: function () {
+	_clickHandler: function _clickHandler() {
 		Actions.searchButtonClicked();
 	}
 
@@ -27439,7 +27470,7 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'searchHeaderButtonContainer' },
@@ -27470,27 +27501,27 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		return {
 			value: '',
 			suggestions: []
 		};
 	},
 
-	componentDidMount: function () {
+	componentDidMount: function componentDidMount() {
 		SuggestionStore.addSuggestionsRefreshListener(this._onSuggestionRefresh);
 	},
 
-	componentWillUnmount: function () {
+	componentWillUnmount: function componentWillUnmount() {
 		SuggestionStore.removeSuggestionsRefreshListener(this._onSuggestionRefresh);
 	},
 
-	_onSuggestionRefresh: function () {
+	_onSuggestionRefresh: function _onSuggestionRefresh() {
 		var suggestions = SuggestionStore.getSuggestions();
 		this.setState({ suggestions: suggestions });
 	},
 
-	_changeHandler: function (e) {
+	_changeHandler: function _changeHandler(e) {
 		var new_value = e.target.value;
 		this.setState({ value: new_value });
 		if (new_value.length > 3) {
@@ -27500,18 +27531,19 @@ module.exports = React.createClass({
 		};
 	},
 
-	_onKeyDownHandler: function (e) {
+	_onKeyDownHandler: function _onKeyDownHandler(e) {
 		if (e.keyCode === 13) {
 			//send
 			Actions.searchButtonClicked();
 		}
 	},
 
-	suggestionSelectedHandler: function (value) {
+	suggestionSelectedHandler: function suggestionSelectedHandler(value) {
 		this.setState({ value: value });
+		Actions.changeSearchInput(value);
 	},
 
-	render: function () {
+	render: function render() {
 		var clickHandler = this.suggestionSelectedHandler;
 		return React.createElement(
 			'div',
@@ -27529,15 +27561,17 @@ module.exports = React.createClass({
 });
 
 },{"../stores/suggestionStore.js":276,"../utils/actions.js":277,"./suggestionItem.js":271,"react":239}],264:[function(require,module,exports){
-const React = require('react'),
-      SearchResultsMainContainer = require('./searchResultsMainContainer.js'),
-      Header = require('./header.js'),
-      Footer = require('./footer.js'),
-      Constants = require('../utils/constants.js'),
-      AppStore = require('../stores/appStore.js'),
-      Chat = require('./chat.js');
+'use strict';
 
-const SearchResults = React.createClass({
+var React = require('react'),
+    SearchResultsMainContainer = require('./searchResultsMainContainer.js'),
+    Header = require('./header.js'),
+    Footer = require('./footer.js'),
+    Constants = require('../utils/constants.js'),
+    AppStore = require('../stores/appStore.js'),
+    Chat = require('./chat.js');
+
+var SearchResults = React.createClass({
 	displayName: 'SearchResults',
 
 
@@ -27546,13 +27580,13 @@ const SearchResults = React.createClass({
 		//console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired
 	},
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		AppStore.search(this.props.route.console, this.props.params.search);
 		var store = AppStore.getStore();
 		return store;
 	},
 
-	render: function () {
+	render: function render() {
 		var headerVersion;
 		if (this.props.route.console === Constants.consoles.both) {
 			headerVersion = Constants.header.versions.normal;
@@ -27587,11 +27621,13 @@ const SearchResults = React.createClass({
 module.exports = SearchResults;
 
 },{"../stores/appStore.js":274,"../utils/constants.js":278,"./chat.js":241,"./footer.js":251,"./header.js":253,"./searchResultsMainContainer.js":266,"react":239}],265:[function(require,module,exports){
-const React = require('react'),
-      GameItem = require('./gameItem.js'),
-      Constants = require('../utils/constants.js');
+'use strict';
 
-const SearchResultsList = React.createClass({
+var React = require('react'),
+    GameItem = require('./gameItem.js'),
+    Constants = require('../utils/constants.js');
+
+var SearchResultsList = React.createClass({
 	displayName: 'SearchResultsList',
 
 
@@ -27600,9 +27636,9 @@ const SearchResultsList = React.createClass({
 		list: React.PropTypes.array.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 
-		var console = this.props.console;
+		var consoleVar = this.props.console;
 
 		return React.createElement(
 			'ul',
@@ -27610,7 +27646,9 @@ const SearchResultsList = React.createClass({
 			this.props.list.map(function (element) {
 
 				var consoleProp = Constants.consoles.ps;
-				if (console === Constants.consoles.both && element.xboxPrice && (!element.psPrice || element.xboxPrice < element.psPrice)) {
+				if (consoleVar !== Constants.consoles.both) {
+					consoleProp = consoleVar;
+				} else if (element.xboxPrice && (!element.psPrice || element.xboxPrice < element.psPrice)) {
 					consoleProp = Constants.consoles.xbox;
 				}
 
@@ -27618,8 +27656,8 @@ const SearchResultsList = React.createClass({
 					console: consoleProp,
 					psNoExchange: !element.psExchange,
 					xboxNoExchange: !element.xboxExchange,
-					notOnly: console === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs,
-					only: console === Constants.consoles.ps ? element.psOnly : element.xboxOnly,
+					notOnly: consoleVar === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs,
+					only: consoleVar === Constants.consoles.ps ? element.psOnly : element.xboxOnly,
 					psPrice: element.psPrice,
 					psOnlyPrice: element.psOnlyPrice,
 					xboxPrice: element.xboxPrice,
@@ -27628,7 +27666,7 @@ const SearchResultsList = React.createClass({
 					xboxNoSell: element.xboxPrice === null ? true : false,
 					cover: element.cover,
 					name: element.name,
-					both: console === Constants.consoles.both ? true : false,
+					both: consoleVar === Constants.consoles.both ? true : false,
 					key: element.id
 				});
 			})
@@ -27640,11 +27678,13 @@ const SearchResultsList = React.createClass({
 module.exports = SearchResultsList;
 
 },{"../utils/constants.js":278,"./gameItem.js":252,"react":239}],266:[function(require,module,exports){
-const React = require('react'),
-      SearchResultsList = require('./searchResultsList.js'),
-      Constants = require('../utils/constants.js');
+'use strict';
 
-const SearchResultsMainContainer = React.createClass({
+var React = require('react'),
+    SearchResultsList = require('./searchResultsList.js'),
+    Constants = require('../utils/constants.js');
+
+var SearchResultsMainContainer = React.createClass({
 	displayName: 'SearchResultsMainContainer',
 
 
@@ -27653,7 +27693,7 @@ const SearchResultsMainContainer = React.createClass({
 		list: React.PropTypes.array.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'section',
 			{ className: "searchResultsMainContainer " + this.props.console },
@@ -27671,6 +27711,8 @@ const SearchResultsMainContainer = React.createClass({
 module.exports = SearchResultsMainContainer;
 
 },{"../utils/constants.js":278,"./searchResultsList.js":265,"react":239}],267:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     SingleMessage = require('./singleMessage.js'),
     InputChat = require('./inputChat.js');
@@ -27689,7 +27731,7 @@ var SingleChat = React.createClass({
 		onChangeInputChatFn: React.PropTypes.func.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 
@@ -27735,6 +27777,8 @@ var SingleChat = React.createClass({
 module.exports = SingleChat;
 
 },{"./inputChat.js":255,"./singleMessage.js":268,"react":239}],268:[function(require,module,exports){
+"use strict";
+
 var React = require('react');
 
 var SingleMessage = React.createClass({
@@ -27746,7 +27790,7 @@ var SingleMessage = React.createClass({
 		user: React.PropTypes.object.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			"li",
 			{ className: this.props.message.mine ? "own" : "" },
@@ -27774,8 +27818,8 @@ module.exports = SingleMessage;
 },{"react":239}],269:[function(require,module,exports){
 'use strict';
 
-const React = require('react'),
-      Constants = require('../utils/constants.js');
+var React = require('react'),
+    Constants = require('../utils/constants.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -27785,11 +27829,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.header.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: "sloganContainer " + this.props.version },
@@ -27830,7 +27874,7 @@ module.exports = React.createClass({
 		type: React.PropTypes.oneOf(['instagram', 'facebook', 'youtube', 'twitter', 'pinterest']).isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement('a', { className: this.props.type + "Link", href: '#' });
 	}
 
@@ -27839,9 +27883,9 @@ module.exports = React.createClass({
 },{"react":239}],271:[function(require,module,exports){
 'use strict';
 
-const React = require('react');
+var React = require('react');
 
-const SuggestionItem = React.createClass({
+var SuggestionItem = React.createClass({
 	displayName: 'SuggestionItem',
 
 
@@ -27850,11 +27894,11 @@ const SuggestionItem = React.createClass({
 		onClickHandler: React.PropTypes.func.isRequired
 	},
 
-	_onClickHandler: function () {
+	_onClickHandler: function _onClickHandler() {
 		this.props.onClickHandler(this.props.text);
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'li',
 			{ onClick: this._onClickHandler },
@@ -27866,6 +27910,8 @@ const SuggestionItem = React.createClass({
 module.exports = SuggestionItem;
 
 },{"react":239}],272:[function(require,module,exports){
+'use strict';
+
 var Dispatcher = require('flux').Dispatcher;
 
 var AppDispatcher = new Dispatcher();
@@ -27898,7 +27944,11 @@ React.createElement(
 		React.createElement(Route, { path: '/contactUs', component: ContactUs }),
 		React.createElement(Route, { path: '/search/ps-xbox/(:search)', console: Constants.consoles.both, component: SearchResults }),
 		React.createElement(Route, { path: '/search/ps/(:search)', console: Constants.consoles.ps, component: SearchResults }),
-		React.createElement(Route, { path: '/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults })
+		React.createElement(Route, { path: '/test/', component: Index }),
+		React.createElement(Route, { path: '/test/search/ps-xbox/(:search)', console: Constants.consoles.both, component: SearchResults }),
+		React.createElement(Route, { path: '/test/search/ps/(:search)', console: Constants.consoles.ps, component: SearchResults }),
+		React.createElement(Route, { path: '/test/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults }),
+		React.createElement(Route, { path: '/test/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults })
 ), document.getElementById('mainContainer'));
 
 },{"./components/contactUs.js":247,"./components/index.js":254,"./components/searchResults.js":264,"./utils/constants.js":278,"react":239,"react-dom":7,"react-router":37}],274:[function(require,module,exports){
@@ -28145,7 +28195,7 @@ var _store = {
 
 var SearchStore = assign({}, EventEmitter.prototype, {
 
-	changeFilterState: function (filterName, new_state) {
+	changeFilterState: function changeFilterState(filterName, new_state) {
 		switch (filterName) {
 			case Constants.filter.ps:
 				_store.search.ps = new_state;
@@ -28199,7 +28249,7 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 		this.emit(Constants.eventType.filterRefresh);
 	},
 
-	getFilterState: function (filterName) {
+	getFilterState: function getFilterState(filterName) {
 		var toReturn = false;
 		switch (filterName) {
 			case Constants.filter.not_used:
@@ -28224,39 +28274,39 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 		return toReturn;
 	},
 
-	changeSearchInput: function (value) {
+	changeSearchInput: function changeSearchInput(value) {
 		_store.search.text = value;
 	},
 
-	searchButtonClicked: function () {
+	searchButtonClicked: function searchButtonClicked() {
 		this.emit(Constants.eventType.search);
 	},
 
-	addSearchButtonClickedListener: function (callback) {
+	addSearchButtonClickedListener: function addSearchButtonClickedListener(callback) {
 		this.on(Constants.eventType.search, callback);
 	},
 
-	removeSearchButtonClickedListener: function (callback) {
+	removeSearchButtonClickedListener: function removeSearchButtonClickedListener(callback) {
 		this.removeListener(Constants.eventType.search, callback);
 	},
 
-	addOnFilterRefreshListener: function (callback) {
+	addOnFilterRefreshListener: function addOnFilterRefreshListener(callback) {
 		this.on(Constants.eventType.filterRefresh, callback);
 	},
 
-	removeOnFilterRefreshListener: function (callback) {
+	removeOnFilterRefreshListener: function removeOnFilterRefreshListener(callback) {
 		this.removeListener(Constants.eventType.filterRefresh, callback);
 	},
 
-	getStore: function () {
+	getStore: function getStore() {
 		return _store;
 	},
 
-	getSearchValues: function () {
+	getSearchValues: function getSearchValues() {
 		return _store.search;
 	},
 
-	search: function (gameConsole, game) {
+	search: function search(gameConsole, game) {
 		console.log("search for " + gameConsole + " the game with name " + game);
 	}
 
@@ -28282,6 +28332,8 @@ AppDispatcher.register(function (payload) {
 module.exports = SearchStore;
 
 },{"../dispatcher.js":272,"../utils/constants.js":278,"events":1,"object-assign":6}],275:[function(require,module,exports){
+'use strict';
+
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
     assign = require('object-assign'),
@@ -28377,11 +28429,11 @@ var _store = {
 
 var ChatStore = assign({}, EventEmitter.prototype, {
 
-	getStore: function () {
+	getStore: function getStore() {
 		return _store;
 	},
 
-	_entryPoint: function (payload) {
+	_entryPoint: function _entryPoint(payload) {
 		switch (payload.actionType) {
 			case Constants.actionType.sendMessage:
 				ChatStore.sendMessage(payload.chat_id, payload.value);
@@ -28389,8 +28441,10 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	sendMessage: function (chat_id, value) {
-		var index = _store.chats.indexOf(_store.chats.find(element => element.id === chat_id));
+	sendMessage: function sendMessage(chat_id, value) {
+		var index = _store.chats.indexOf(_store.chats.find(function (element) {
+			return element.id === chat_id;
+		}));
 		_store.chats[index].messages.push({
 			id: _store.chats[index].messages[_store.chats[index].messages.length - 1].id + 1,
 			value: value,
@@ -28401,11 +28455,11 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		this.emit(Constants.eventType.messageAdded);
 	},
 
-	addOnMessageAddedListener: function (callback) {
+	addOnMessageAddedListener: function addOnMessageAddedListener(callback) {
 		this.on(Constants.eventType.messageAdded, callback);
 	},
 
-	removeOnMessageAddedListener: function (callback) {
+	removeOnMessageAddedListener: function removeOnMessageAddedListener(callback) {
 		this.removeListener(Constants.eventType.messageAdded, callback);
 	}
 
@@ -28419,6 +28473,8 @@ AppDispatcher.register(function (payload) {
 module.exports = ChatStore;
 
 },{"../dispatcher.js":272,"../utils/constants.js":278,"events":1,"object-assign":6}],276:[function(require,module,exports){
+'use strict';
+
 var EventEmitter = require('events').EventEmitter,
     AppDispatcher = require('../dispatcher'),
     Constants = require('../utils/constants.js'),
@@ -28441,7 +28497,7 @@ var SuggestionStore = assign({}, EventEmitter.prototype, {
 		return true;
 	}),
 
-	_onChangeSearchInput: function (text) {
+	_onChangeSearchInput: function _onChangeSearchInput(text) {
 		//get the list from the server
 		//for now one let's just add 1 2 and 3 to the text
 		_store.suggestions = [text + ' 1', text + ' 2', text + ' GO'];
@@ -28449,19 +28505,19 @@ var SuggestionStore = assign({}, EventEmitter.prototype, {
 		this.onSuggestionsRefresh();
 	},
 
-	onSuggestionsRefresh: function () {
+	onSuggestionsRefresh: function onSuggestionsRefresh() {
 		this.emit(Constants.eventType.suggestionsRefresh);
 	},
 
-	addSuggestionsRefreshListener: function (callback) {
+	addSuggestionsRefreshListener: function addSuggestionsRefreshListener(callback) {
 		this.on(Constants.eventType.suggestionsRefresh, callback);
 	},
 
-	removeSuggestionsRefreshListener: function (callback) {
+	removeSuggestionsRefreshListener: function removeSuggestionsRefreshListener(callback) {
 		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
 	},
 
-	getSuggestions: function () {
+	getSuggestions: function getSuggestions() {
 		return _store.suggestions;
 	}
 
@@ -28472,6 +28528,8 @@ SuggestionStore.run;
 module.exports = SuggestionStore;
 
 },{"../dispatcher":272,"../utils/constants.js":278,"events":1,"object-assign":6}],277:[function(require,module,exports){
+'use strict';
+
 var Dispatcher = require('flux').Dispatcher,
     Constants = require('./constants.js');
 
@@ -28479,7 +28537,7 @@ var AppDispatcher = require('../dispatcher.js');
 
 var Actions = {
 
-	changeFilterState: function (filter, value) {
+	changeFilterState: function changeFilterState(filter, value) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.changeFilterState,
 			filter: filter,
@@ -28487,24 +28545,24 @@ var Actions = {
 		});
 	},
 
-	changeSearchInput: function (text) {
+	changeSearchInput: function changeSearchInput(text) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.changeSearchInput,
 			value: text
 		});
 	},
 
-	searchButtonClicked: function () {
+	searchButtonClicked: function searchButtonClicked() {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.searchButtonClicked
 		});
 	},
 
-	sendMessage: function (chat_id, value) {
+	sendMessage: function sendMessage(chat_id, value) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.sendMessage,
 			chat_id: chat_id,
-			value
+			value: value
 		});
 	}
 
@@ -28513,13 +28571,15 @@ var Actions = {
 module.exports = Actions;
 
 },{"../dispatcher.js":272,"./constants.js":278,"flux":3}],278:[function(require,module,exports){
-const consoles = {
+'use strict';
+
+var consoles = {
 	xbox: 'xbox',
 	ps: 'ps',
 	both: 'both'
 };
 
-const Constants = {
+var Constants = {
 	bogota: 'bogota',
 	consoles: consoles,
 	actionType: {
@@ -28572,8 +28632,10 @@ const Constants = {
 module.exports = Constants;
 
 },{}],279:[function(require,module,exports){
-const Functions = {
-	startAnalytics: function () {
+'use strict';
+
+var Functions = {
+	startAnalytics: function startAnalytics() {
 		{
 			(function (i, s, o, g, r, a, m) {
 				i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
@@ -28583,6 +28645,18 @@ const Functions = {
 			ga('create', 'UA-77835108-2', 'auto');
 			ga('send', 'pageview');
 		}
+	},
+
+	addDecimalPoints: function addDecimalPoints(nStr) {
+		nStr += '';
+		var x = nStr.split('.');
+		var x1 = x[0];
+		var x2 = x.length > 1 ? '.' + x[1] : '';
+		var rgx = /(\d+)(\d{3})/;
+		while (rgx.test(x1)) {
+			x1 = x1.replace(rgx, '$1' + '.' + '$2');
+		}
+		return x1 + x2;
 	}
 };
 

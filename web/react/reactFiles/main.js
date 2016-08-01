@@ -21,7 +21,11 @@ ReactDOM.render(
 			<Route path="/contactUs" component={ContactUs} />
 			<Route path="/search/ps-xbox/(:search)" console={Constants.consoles.both} component={SearchResults} />
 			<Route path="/search/ps/(:search)" console={Constants.consoles.ps} component={SearchResults} />
-			<Route path="/search/xbox/(:search)" console={Constants.consoles.xbox} component={SearchResults} />
+			<Route path="/test/" component={Index}/>
+			<Route path="/test/search/ps-xbox/(:search)" console={Constants.consoles.both} component={SearchResults} />
+			<Route path="/test/search/ps/(:search)" console={Constants.consoles.ps} component={SearchResults} />
+			<Route path="/test/search/xbox/(:search)" console={Constants.consoles.xbox} component={SearchResults} />
+			<Route path="/test/search/xbox/(:search)" console={Constants.consoles.xbox} component={SearchResults} />
 		</Router>),
 	document.getElementById('mainContainer')
 );

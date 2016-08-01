@@ -45,9 +45,11 @@ var Chat = React.createClass({
 	},
 
 	closeChatFn: function(){
+		var singleChatVisibility = null;
+		if(this.state.singleChatVisible) singleChatVisibility = false;
 		this.setState({
 			visible: false,
-			singleChatVisible: false
+			singleChatVisible: singleChatVisibility,
 		});
 	},
 

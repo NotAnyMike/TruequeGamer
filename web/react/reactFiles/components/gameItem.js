@@ -1,6 +1,7 @@
 const React = require('react'),
 			AvailableConsoles = require('./availableConsoles.js'),
-			Constants = require('../utils/constants.js');
+			Constants = require('../utils/constants.js'),
+			Functions = require('../utils/functions.js');
 
 const GameItem = React.createClass({
 
@@ -90,10 +91,10 @@ const GameItem = React.createClass({
 					</div>
 					<div className="price">
 						<span>
-							{this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + this.props.psPrice}
+							{this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice)}
 						</span>
 						<span>
-							{this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + this.props.xboxPrice}
+							{this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice)}
 						</span>
 					</div>
 					<div className="alsoAvailableOn"><span></span></div>

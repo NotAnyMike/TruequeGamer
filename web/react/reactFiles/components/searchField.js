@@ -46,6 +46,7 @@ module.exports = React.createClass({
 
 	suggestionSelectedHandler: function(value){
 		this.setState({value: value});
+		Actions.changeSearchInput(value);
 	},
 
 	render: function(){

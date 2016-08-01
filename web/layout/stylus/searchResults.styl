@@ -208,6 +208,7 @@ ul.gameList
 					left: 0
 					line-height: 33px
 					transition: color $time, opacity $time
+					top: 0
 					z-index: 1
 
 					&:before,&:after
@@ -468,17 +469,19 @@ ul.both.gameList
 				.contentContainer
 					.price
 						span:first-child
+							opacity: 0.5
+
 							&:before
 								color: white
-								opacity: 0.5
 
 			&.xbox.xboxNoSell
 				.contentContainer
 					.price
 						span:nth-child(2)
+							opacity: 0.5
+						
 							&:before
 								color: white
-								opacity: 0.5
 
 /***************************************************************************
 														PS section only
@@ -563,7 +566,7 @@ ul.ps.gameList
 				order: 4
 
 				span
-					border-top: 1px solid $white
+					border-top: 1px solid white
 
 					&:before
 						color: white
@@ -852,3 +855,17 @@ ul.xbox.gameList
 					.alsoAvailableOn
 						span
 							border: 0
+
+.xboxNoExchange.ps
+	.contentContainer
+		.exchange
+			span:nth-child(2)
+				&:before
+					opacity: 0
+
+.psNoExchange.xbox
+	.contentContainer
+		.exchange
+			span:first-child
+				&:before
+					opacity: 0	

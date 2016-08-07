@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
+    'rest_framework',
     'games',
 ]
 
@@ -124,3 +126,15 @@ PROJECT_DIR  = os.path.dirname(__file__)
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_FACEBOOK_KEY = '850236848445158'
+SOCIAL_AUTH_FACEBOOK_SECRET = '8f1853a562daa9775488b4ecbad612fa'
+SOCIAL_AUTH_FACEBOOK_SCOPE = [
+    'email',
+    'user_location',
+]

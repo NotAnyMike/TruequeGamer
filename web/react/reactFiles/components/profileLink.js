@@ -15,9 +15,9 @@ module.exports = React.createClass({
 		if(this.props.user.logged){
 			toReturn = (
 					<a href="#" className={"profileContainer " + this.props.version}>
-						<span>{this.props.user.user}</span>
+						<span>{this.props.user.first_name + " " + this.props.user.last_name}</span>
 						<figure>
-							<img src={this.props.user.pic} alt=""/>
+							<img src={this.props.user.picture} alt=""/>
 						</figure>
 					</a>
 					);

@@ -19,6 +19,7 @@ const Constants = {
 		suggestionsRefresh: 'suggestions_refresh',
 		search: 'search',
 		messageAdded: 'message_added',
+		userUpdated: 'user_update',
 	},
 	filter: {
 		not_used: 'not_used',

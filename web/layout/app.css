@@ -725,6 +725,7 @@ figure.negative .isotype.negative {
 .sloganContainer span:nth-child(2) span:before {
   content: '\e90a';
   font-family: TruequeGamer;
+  font-weight: bolder;
   left: 0;
   bottom: 3px;
   position: absolute;
@@ -783,6 +784,8 @@ figure.negative .isotype.negative {
   font-size: 20px;
   border-bottom: 1px solid #009992;
   margin: 20px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .profileContainer.negative span {
   border-bottom: 1px solid #fff;

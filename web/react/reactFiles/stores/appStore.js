@@ -18,9 +18,7 @@ var _store =  {
 		city: Constants.bogota	
 	},
 	user: {
-		logged: true,
-		user: 'Ash Ketchum',
-		pic: '/img/face1.png'
+		logged: false,
 	},
 	searchResult:{
 		results: {
@@ -255,7 +253,24 @@ var _store =  {
 	},
 };
 
-var SearchStore = assign({}, EventEmitter.prototype, {
+if(self.fetch){
+	//do something with fetch
+	fetch('/api/user.json').then(
+		function(response){
+			return response.json().then(
+				function(json){
+					_store.user = json;
+					_store.user.logged = true;
+					AppStore.userUpdated();
+				}
+			);
+		}
+	);
+} else {
+	//use the normal xhtml stuff
+}
+
+var AppStore = assign({}, EventEmitter.prototype, {
 
 	changeFilterState: function(filterName, new_state){
 		switch(filterName){
@@ -360,12 +375,28 @@ var SearchStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.filterRefresh, callback);
 	},
 
+	userUpdated: function(){
+		this.emit(Constants.eventType.userUpdated);
+	},
+
+	addOnUserUpdateListener: function(callback){
+		this.on(Constants.eventType.userUpdated, callback);
+	},
+
+	removeOnUserUpdateListener: function(callback){
+		this.removeListener(Constants.eventType.userUpdated, callback);
+	},
+
 	getStore: function(){
 		return _store;
 	},
 
 	getSearchValues: function(){
 		return _store.search;
+	},
+
+	getUser: function(){
+		return _store.user;
 	},
 
 	search: function(gameConsole, game){
@@ -378,13 +409,13 @@ AppDispatcher.register(function(payload){
 
 	switch(payload.actionType){
 		case Constants.actionType.changeFilterState:
-			SearchStore.changeFilterState(payload.filter, payload.value);	
+			AppStore.changeFilterState(payload.filter, payload.value);	
 			break;
 		case Constants.actionType.changeSearchInput:
-			SearchStore.changeSearchInput(payload.value);
+			AppStore.changeSearchInput(payload.value);
 			break;
 		case Constants.actionType.searchButtonClicked:
-			SearchStore.searchButtonClicked();
+			AppStore.searchButtonClicked();
 			break;
 	};
 
@@ -393,4 +424,4 @@ AppDispatcher.register(function(payload){
 });
 
 
-module.exports = SearchStore;
+module.exports = AppStore;

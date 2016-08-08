@@ -24,12 +24,19 @@ module.exports = React.createClass({
 	componentDidMount: function(){
 		AppStore.addSearchButtonClickedListener(this.onSearch);
 		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
+		AppStore.addOnUserUpdateListener(this.onUserUpdated);
 		Functions.startAnalytics();
 	},
 
 	componentWillUnmount: function(){
 		AppStore.removeSearchButtonClickedListener(this.onSearch);
 		AppStore.removeOnFilterRefreshListener(this.onFilterRefresh);
+		AppStore.removeOnUserUpdateListener(this.onUserUpdate);
+	},
+	
+	onUserUpdated: function(){
+		var userData = AppStore.getUser();
+		this.setState({user: userData});
 	},
 
 	onFilterRefresh: function(){

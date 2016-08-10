@@ -26,6 +26,10 @@ module.exports = React.createClass({
 		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.addOnUserUpdateListener(this.onUserUpdated);
 		Functions.startAnalytics();
+
+		if (process.env.NODE_ENV !== "development"){
+			console.log('dev');
+		}
 	},
 
 	componentWillUnmount: function(){

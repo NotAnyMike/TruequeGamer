@@ -138,3 +138,9 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = [
     'email',
     'user_location',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}

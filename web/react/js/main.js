@@ -27109,6 +27109,7 @@ module.exports = React.createClass({
 });
 
 },{"../utils/constants":278,"./isotypeContainer.js":257,"./profileLink.js":260,"./searchButtonHeader.js":262,"react":239}],254:[function(require,module,exports){
+(function (process){
 'use strict';
 
 var React = require('react'),
@@ -27139,6 +27140,10 @@ module.exports = React.createClass({
 		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.addOnUserUpdateListener(this.onUserUpdated);
 		Functions.startAnalytics();
+
+		if (process.env.NODE_ENV !== "development") {
+			console.log('dev');
+		}
 	},
 
 	componentWillUnmount: function () {
@@ -27190,7 +27195,8 @@ module.exports = React.createClass({
 
 });
 
-},{"../stores/appStore.js":274,"../stores/suggestionStore.js":276,"../utils/actions.js":277,"../utils/constants.js":278,"../utils/functions.js":279,"./chat.js":241,"./footer.js":251,"./header.js":253,"./mainContainer.js":259,"react":239,"react-router":37}],255:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"../stores/appStore.js":274,"../stores/suggestionStore.js":276,"../utils/actions.js":277,"../utils/constants.js":278,"../utils/functions.js":279,"./chat.js":241,"./footer.js":251,"./header.js":253,"./mainContainer.js":259,"_process":2,"react":239,"react-router":37}],255:[function(require,module,exports){
 var React = require('react'),
     ReactDOM = require('react-dom');
 

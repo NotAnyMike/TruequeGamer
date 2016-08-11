@@ -112,7 +112,7 @@ gulp.task('react-prod', ['react-prod-es6'], function(){
 });
 
 gulp.task('apply-prod-environment', function() {
-	process.env.NODE_ENV = 'production';
+	return process.env.NODE_ENV = 'production';
 });
 
 gulp.task('css-prod', ['stylus-dev'], function(){

@@ -26514,7 +26514,7 @@ var Chat = React.createClass({
 
 module.exports = Chat;
 
-},{"../stores/chatStore.js":275,"../utils/actions.js":277,"./chatBubble.js":242,"./chatContainer.js":243,"react":239}],242:[function(require,module,exports){
+},{"../stores/chatStore.js":275,"../utils/actions.js":276,"./chatBubble.js":242,"./chatContainer.js":243,"react":239}],242:[function(require,module,exports){
 var React = require('react');
 
 var ChatBubble = React.createClass({
@@ -26675,7 +26675,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":277,"../utils/constants.js":278,"react":239}],246:[function(require,module,exports){
+},{"../utils/actions.js":276,"../utils/constants.js":277,"react":239}],246:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26709,7 +26709,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"./consoleCheckbox.js":245,"react":239}],247:[function(require,module,exports){
+},{"../utils/constants.js":277,"./consoleCheckbox.js":245,"react":239}],247:[function(require,module,exports){
 var React = require('react'),
     Link = require('react-router').Link;
 
@@ -26781,7 +26781,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":277,"../utils/constants.js":278,"react":239}],249:[function(require,module,exports){
+},{"../utils/actions.js":276,"../utils/constants.js":277,"react":239}],249:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26833,7 +26833,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"./extraFilterButton":248,"react":239}],250:[function(require,module,exports){
+},{"../utils/constants.js":277,"./extraFilterButton":248,"react":239}],250:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26941,7 +26941,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"./socialLink.js":270,"react":239}],252:[function(require,module,exports){
+},{"../utils/constants.js":277,"./socialLink.js":270,"react":239}],252:[function(require,module,exports){
 const React = require('react'),
       AvailableConsoles = require('./availableConsoles.js'),
       Constants = require('../utils/constants.js'),
@@ -27075,7 +27075,7 @@ const GameItem = React.createClass({
 
 module.exports = GameItem;
 
-},{"../utils/constants.js":278,"../utils/functions.js":279,"./availableConsoles.js":240,"react":239}],253:[function(require,module,exports){
+},{"../utils/constants.js":277,"../utils/functions.js":278,"./availableConsoles.js":240,"react":239}],253:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27108,13 +27108,11 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants":278,"./isotypeContainer.js":257,"./profileLink.js":260,"./searchButtonHeader.js":262,"react":239}],254:[function(require,module,exports){
-(function (process){
+},{"../utils/constants":277,"./isotypeContainer.js":257,"./profileLink.js":260,"./searchButtonHeader.js":262,"react":239}],254:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
     AppStore = require('../stores/appStore.js'),
-    SuggestionStore = require('../stores/suggestionStore.js'),
     Header = require('./header.js'),
     MainContainer = require('./mainContainer.js'),
     Footer = require('./footer.js'),
@@ -27139,17 +27137,15 @@ module.exports = React.createClass({
 		AppStore.addSearchButtonClickedListener(this.onSearch);
 		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.addOnUserUpdateListener(this.onUserUpdated);
+		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
 		Functions.startAnalytics();
-
-		if (process.env.NODE_ENV !== "development") {
-			console.log('dev');
-		}
 	},
 
 	componentWillUnmount: function () {
 		AppStore.removeSearchButtonClickedListener(this.onSearch);
 		AppStore.removeOnFilterRefreshListener(this.onFilterRefresh);
-		AppStore.removeOnUserUpdateListener(this.onUserUpdate);
+		AppStore.removeOnUserUpdateListener(this.onUserUpdated);
+		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
 	},
 
 	onUserUpdated: function () {
@@ -27160,6 +27156,29 @@ module.exports = React.createClass({
 	onFilterRefresh: function () {
 		var search = AppStore.getSearchValues();
 		this.setState({ search: search });
+	},
+
+	onSuggestionRefresh: function () {
+		var suggestions = AppStore.getSuggestions();
+		this.setState({ suggestions: { suggestions: suggestions } });
+	},
+
+	changeHandlerForSearchInputFn: function (new_value) {
+		this.setState({ value: new_value });
+		if (new_value.length > 3) {
+			Actions.changeSearchInput(new_value);
+		} else {
+			this.setState({ suggestions: { suggestions: [] } });
+		};
+	},
+
+	suggestionSelectedHandlerFn: function (value) {
+		this.setState({ suggestions: { value: value } });
+		Actions.changeSearchInput(value);
+	},
+
+	onKeyDownHandlerForSearchInput: function () {
+		Actions.searchButtonClicked();
 	},
 
 	onSearch: function () {
@@ -27187,7 +27206,12 @@ module.exports = React.createClass({
 			'div',
 			{ id: 'semi_body' },
 			React.createElement(Header, { user: this.state.user }),
-			React.createElement(MainContainer, { searchValues: this.state.search }),
+			React.createElement(MainContainer, {
+				searchValues: this.state.search,
+				suggestionSelectedHandlerFn: this.suggestionSelectedHandlerFn,
+				changeHandlerForSearchInputFn: this.changeHandlerForSearchInputFn,
+				suggestions: this.state.suggestions
+			}),
 			React.createElement(Footer, null),
 			chat
 		);
@@ -27195,8 +27219,7 @@ module.exports = React.createClass({
 
 });
 
-}).call(this,require('_process'))
-},{"../stores/appStore.js":274,"../stores/suggestionStore.js":276,"../utils/actions.js":277,"../utils/constants.js":278,"../utils/functions.js":279,"./chat.js":241,"./footer.js":251,"./header.js":253,"./mainContainer.js":259,"_process":2,"react":239,"react-router":37}],255:[function(require,module,exports){
+},{"../stores/appStore.js":274,"../utils/actions.js":276,"../utils/constants.js":277,"../utils/functions.js":278,"./chat.js":241,"./footer.js":251,"./header.js":253,"./mainContainer.js":259,"react":239,"react-router":37}],255:[function(require,module,exports){
 var React = require('react'),
     ReactDOM = require('react-dom');
 
@@ -27268,7 +27291,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"react":239}],257:[function(require,module,exports){
+},{"../utils/constants.js":277,"react":239}],257:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27299,7 +27322,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"./isotype.js":256,"./slogan.js":269,"react":239}],258:[function(require,module,exports){
+},{"../utils/constants.js":277,"./isotype.js":256,"./slogan.js":269,"react":239}],258:[function(require,module,exports){
 var React = require('react');
 
 var ItemChat = React.createClass({
@@ -27372,7 +27395,11 @@ module.exports = React.createClass({
 		return React.createElement(
 			'div',
 			{ className: 'mainContainer' },
-			React.createElement(SearchField, null),
+			React.createElement(SearchField, {
+				suggestionSelectedHandlerFn: this.props.suggestionSelectedHandlerFn,
+				changeHandlerForSearchInputFn: this.props.changeHandlerForSearchInputFn,
+				suggestions: this.props.suggestions
+			}),
 			React.createElement(FilterMainContainer, { searchValues: this.props.searchValues }),
 			React.createElement(SearchButton, null)
 		);
@@ -27422,7 +27449,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"react":239}],261:[function(require,module,exports){
+},{"../utils/constants.js":277,"react":239}],261:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27450,7 +27477,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/actions.js":277,"react":239}],262:[function(require,module,exports){
+},{"../utils/actions.js":276,"react":239}],262:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27483,73 +27510,78 @@ module.exports = React.createClass({
 
 var React = require('react'),
     Actions = require('../utils/actions.js'),
-    SuggestionStore = require('../stores/suggestionStore.js'),
     SuggestionItem = require('./suggestionItem.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
 
-
-	getInitialState: function () {
-		return {
-			value: '',
-			suggestions: []
-		};
-	},
-
-	componentDidMount: function () {
-		SuggestionStore.addSuggestionsRefreshListener(this._onSuggestionRefresh);
-	},
-
-	componentWillUnmount: function () {
-		SuggestionStore.removeSuggestionsRefreshListener(this._onSuggestionRefresh);
-	},
-
-	_onSuggestionRefresh: function () {
-		var suggestions = SuggestionStore.getSuggestions();
-		this.setState({ suggestions: suggestions });
-	},
+	/*
+ 	getInitialState: function(){
+ 		return ({ 
+ 			value: '',
+ 			suggestions: []
+ 		});
+ 	},
+ */
+	/*
+ 	componentDidMount: function(){
+ 		SuggestionStore.addSuggestionsRefreshListener(this._onSuggestionRefresh);
+ 	},
+ 
+ 	componentWillUnmount: function(){
+ 		SuggestionStore.removeSuggestionsRefreshListener(this._onSuggestionRefresh);
+ 	},	
+ */
+	/*
+ 	_onSuggestionRefresh: function(){
+ 		var suggestions = SuggestionStore.getSuggestions();
+ 		this.setState({ suggestions: suggestions });
+ 	},
+ */
 
 	_changeHandler: function (e) {
-		var new_value = e.target.value;
-		this.setState({ value: new_value });
-		if (new_value.length > 3) {
-			Actions.changeSearchInput(new_value);
-		} else {
-			this.setState({ suggestions: [] });
-		};
+		/*var new_value = e.target.value;
+  this.setState({value: new_value});
+  if(new_value.length > 3){
+  	Actions.changeSearchInput(new_value);
+  }else{
+  	this.setState({suggestions: []});
+  };*/
+		this.props.changeHandlerForSearchInputFn(e.target.value);
 	},
 
 	_onKeyDownHandler: function (e) {
 		if (e.keyCode === 13) {
 			//send
-			Actions.searchButtonClicked();
+			//Actions.searchButtonClicked();
+			this.props.suggestionSelectedHandlerFn();
 		}
 	},
 
 	suggestionSelectedHandler: function (value) {
-		this.setState({ value: value });
-		Actions.changeSearchInput(value);
+		/*this.setState({value: value});
+  Actions.changeSearchInput(value);*/
+		this.props.suggestionsSelectedHandlerFn(value);
 	},
 
 	render: function () {
-		var clickHandler = this.suggestionSelectedHandler;
+		var clickHandler = this.props.suggestionSelectedHandlerFn;
 		return React.createElement(
 			'div',
 			{ className: 'searchFieldContainer' },
-			React.createElement('input', { type: 'text', placeholder: 'Nombre del juego a buscar', onChange: this._changeHandler, value: this.state.value, onKeyDown: this._onKeyDownHandler }),
+			React.createElement('input', { type: 'text', placeholder: 'Nombre del juego a buscar', onChange: this._changeHandler, value: this.props.value, onKeyDown: this._onKeyDownHandler }),
 			React.createElement(
 				'ul',
 				null,
-				this.state.suggestions.map(function (element) {
-					return React.createElement(SuggestionItem, { key: element, text: element, onClickHandler: clickHandler });
+				this.props.suggestions.suggestions.map(function (element) {
+					return React.createElement(SuggestionItem, { key: element.name, text: element.name, onClickHandler: clickHandler });
 				})
 			)
 		);
 	}
 });
 
-},{"../stores/suggestionStore.js":276,"../utils/actions.js":277,"./suggestionItem.js":271,"react":239}],264:[function(require,module,exports){
+},{"../utils/actions.js":276,"./suggestionItem.js":271,"react":239}],264:[function(require,module,exports){
 const React = require('react'),
       SearchResultsMainContainer = require('./searchResultsMainContainer.js'),
       Header = require('./header.js'),
@@ -27607,7 +27639,7 @@ const SearchResults = React.createClass({
 
 module.exports = SearchResults;
 
-},{"../stores/appStore.js":274,"../utils/constants.js":278,"./chat.js":241,"./footer.js":251,"./header.js":253,"./searchResultsMainContainer.js":266,"react":239}],265:[function(require,module,exports){
+},{"../stores/appStore.js":274,"../utils/constants.js":277,"./chat.js":241,"./footer.js":251,"./header.js":253,"./searchResultsMainContainer.js":266,"react":239}],265:[function(require,module,exports){
 const React = require('react'),
       GameItem = require('./gameItem.js'),
       Constants = require('../utils/constants.js');
@@ -27662,7 +27694,7 @@ const SearchResultsList = React.createClass({
 
 module.exports = SearchResultsList;
 
-},{"../utils/constants.js":278,"./gameItem.js":252,"react":239}],266:[function(require,module,exports){
+},{"../utils/constants.js":277,"./gameItem.js":252,"react":239}],266:[function(require,module,exports){
 const React = require('react'),
       SearchResultsList = require('./searchResultsList.js'),
       Constants = require('../utils/constants.js');
@@ -27693,7 +27725,7 @@ const SearchResultsMainContainer = React.createClass({
 
 module.exports = SearchResultsMainContainer;
 
-},{"../utils/constants.js":278,"./searchResultsList.js":265,"react":239}],267:[function(require,module,exports){
+},{"../utils/constants.js":277,"./searchResultsList.js":265,"react":239}],267:[function(require,module,exports){
 var React = require('react'),
     SingleMessage = require('./singleMessage.js'),
     InputChat = require('./inputChat.js');
@@ -27840,7 +27872,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"react":239}],270:[function(require,module,exports){
+},{"../utils/constants.js":277,"react":239}],270:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27928,7 +27960,8 @@ React.createElement(
 		React.createElement(Route, { path: '/test/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults })
 ), document.getElementById('mainContainer'));
 
-},{"./components/contactUs.js":247,"./components/index.js":254,"./components/searchResults.js":264,"./utils/constants.js":278,"react":239,"react-dom":7,"react-router":37}],274:[function(require,module,exports){
+},{"./components/contactUs.js":247,"./components/index.js":254,"./components/searchResults.js":264,"./utils/constants.js":277,"react":239,"react-dom":7,"react-router":37}],274:[function(require,module,exports){
+(function (process){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter,
@@ -27938,6 +27971,12 @@ var EventEmitter = require('events').EventEmitter,
 var AppDispatcher = require('../dispatcher.js');
 
 var _store = {
+	suggestions: {
+		value: '',
+		xbox: true,
+		ps: true,
+		suggestions: []
+	},
 	search: {
 		text: '',
 		xbox: true,
@@ -28312,6 +28351,49 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 	search: function (gameConsole, game) {
 		console.log("search for " + gameConsole + " the game with name " + game);
+	},
+
+	onChangeSearchInput: function (text) {
+		//get the list from the server
+		//for now one let's just add 1 2 and 3 to the text
+		var url = '/api/suggestions.json';
+		if (process.env.NODE_ENV === "production") {
+			url = '/api/suggestions/' + text + '/';
+		}
+		if (self.fetch) {
+			fetch(url).then(function (response) {
+				response.json().then(function (json) {
+					_store.suggestions.suggestions = json;
+				});
+			});
+		} else {}
+		//do something with xml stuff
+
+		/*
+  _store.suggestions.suggestions =  [
+  	text + ' 1',
+  	text + ' 2',
+  	text + ' GO'
+  ];
+  */
+		//show the list by calling the event
+		this.onSuggestionsRefresh();
+	},
+
+	onSuggestionsRefresh: function () {
+		this.emit(Constants.eventType.suggestionsRefresh);
+	},
+
+	addSuggestionsRefreshListener: function (callback) {
+		this.on(Constants.eventType.suggestionsRefresh, callback);
+	},
+
+	removeSuggestionsRefreshListener: function (callback) {
+		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
+	},
+
+	getSuggestions: function () {
+		return _store.suggestions.suggestions;
 	}
 
 });
@@ -28324,6 +28406,7 @@ AppDispatcher.register(function (payload) {
 			break;
 		case Constants.actionType.changeSearchInput:
 			AppStore.changeSearchInput(payload.value);
+			AppStore.onChangeSearchInput(payload.value);
 			break;
 		case Constants.actionType.searchButtonClicked:
 			AppStore.searchButtonClicked();
@@ -28335,7 +28418,8 @@ AppDispatcher.register(function (payload) {
 
 module.exports = AppStore;
 
-},{"../dispatcher.js":272,"../utils/constants.js":278,"events":1,"object-assign":6}],275:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"../dispatcher.js":272,"../utils/constants.js":277,"_process":2,"events":1,"object-assign":6}],275:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
     assign = require('object-assign'),
@@ -28472,60 +28556,7 @@ AppDispatcher.register(function (payload) {
 
 module.exports = ChatStore;
 
-},{"../dispatcher.js":272,"../utils/constants.js":278,"events":1,"object-assign":6}],276:[function(require,module,exports){
-var EventEmitter = require('events').EventEmitter,
-    AppDispatcher = require('../dispatcher'),
-    Constants = require('../utils/constants.js'),
-    assign = require('object-assign');
-
-var _store = {
-	value: '',
-	xbox: true,
-	ps: true,
-	suggestions: []
-};
-
-var SuggestionStore = assign({}, EventEmitter.prototype, {
-	run: AppDispatcher.register(function (payload) {
-		switch (payload.actionType) {
-			case Constants.actionType.changeSearchInput:
-				SuggestionStore._onChangeSearchInput(payload.value);
-				break;
-		}
-		return true;
-	}),
-
-	_onChangeSearchInput: function (text) {
-		//get the list from the server
-		//for now one let's just add 1 2 and 3 to the text
-		_store.suggestions = [text + ' 1', text + ' 2', text + ' GO'];
-		//show the list by calling the event
-		this.onSuggestionsRefresh();
-	},
-
-	onSuggestionsRefresh: function () {
-		this.emit(Constants.eventType.suggestionsRefresh);
-	},
-
-	addSuggestionsRefreshListener: function (callback) {
-		this.on(Constants.eventType.suggestionsRefresh, callback);
-	},
-
-	removeSuggestionsRefreshListener: function (callback) {
-		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
-	},
-
-	getSuggestions: function () {
-		return _store.suggestions;
-	}
-
-});
-
-SuggestionStore.run;
-
-module.exports = SuggestionStore;
-
-},{"../dispatcher":272,"../utils/constants.js":278,"events":1,"object-assign":6}],277:[function(require,module,exports){
+},{"../dispatcher.js":272,"../utils/constants.js":277,"events":1,"object-assign":6}],276:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher,
     Constants = require('./constants.js');
 
@@ -28566,7 +28597,7 @@ var Actions = {
 
 module.exports = Actions;
 
-},{"../dispatcher.js":272,"./constants.js":278,"flux":3}],278:[function(require,module,exports){
+},{"../dispatcher.js":272,"./constants.js":277,"flux":3}],277:[function(require,module,exports){
 const consoles = {
 	xbox: 'xbox',
 	ps: 'ps',
@@ -28626,7 +28657,7 @@ const Constants = {
 
 module.exports = Constants;
 
-},{}],279:[function(require,module,exports){
+},{}],278:[function(require,module,exports){
 'use strict';
 
 const Functions = {

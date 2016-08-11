@@ -2,7 +2,6 @@
 
 var React = require('react'),
 		AppStore = require('../stores/appStore.js'),
-		SuggestionStore = require('../stores/suggestionStore.js'),
 		Header = require('./header.js'),
 		MainContainer = require('./mainContainer.js'),
 		Footer = require('./footer.js'),
@@ -25,17 +24,15 @@ module.exports = React.createClass({
 		AppStore.addSearchButtonClickedListener(this.onSearch);
 		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.addOnUserUpdateListener(this.onUserUpdated);
+		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
 		Functions.startAnalytics();
-
-		if (process.env.NODE_ENV !== "development"){
-			console.log('dev');
-		}
 	},
 
 	componentWillUnmount: function(){
 		AppStore.removeSearchButtonClickedListener(this.onSearch);
 		AppStore.removeOnFilterRefreshListener(this.onFilterRefresh);
-		AppStore.removeOnUserUpdateListener(this.onUserUpdate);
+		AppStore.removeOnUserUpdateListener(this.onUserUpdated);
+		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
 	},
 	
 	onUserUpdated: function(){
@@ -47,7 +44,30 @@ module.exports = React.createClass({
 		var search = AppStore.getSearchValues();
 		this.setState({search: search});
 	},
+
+	onSuggestionRefresh: function(){
+		var suggestions = AppStore.getSuggestions();
+		this.setState({ suggestions: {suggestions: suggestions }});
+	},
+
+	changeHandlerForSearchInputFn: function(new_value){
+		this.setState({value: new_value});
+		if(new_value.length > 3){
+			Actions.changeSearchInput(new_value);
+		}else{
+			this.setState({suggestions: {suggestions: []}});
+		};
+	},
 	
+	suggestionSelectedHandlerFn: function(value){
+		this.setState({suggestions: {value: value}});
+		Actions.changeSearchInput(value);
+	},
+	
+	onKeyDownHandlerForSearchInput: function(){
+		Actions.searchButtonClicked();
+	},
+
 	onSearch: function(){
 		var store = AppStore.getStore();
 		//console.log('title: ' + store.search.text + ' xbox: ' + store.search.xbox + ' ps: ' + store.search.ps + ' not_used: ' + store.search.not_used + ' used: ' + store.search.used + ' exchange: ' + store.search.exchange + ' to_sell: ' + store.search.to_sell + ' city: ' + store.search.city);
@@ -72,7 +92,12 @@ module.exports = React.createClass({
 		return (
 				<div id="semi_body">
 					<Header user={this.state.user} />
-					<MainContainer searchValues={this.state.search}/>
+					<MainContainer 
+						searchValues={this.state.search}
+						suggestionSelectedHandlerFn={this.suggestionSelectedHandlerFn}
+						changeHandlerForSearchInputFn={this.changeHandlerForSearchInputFn}
+						suggestions={this.state.suggestions}
+					/>
 					<Footer />
 					{chat}
 				</div>

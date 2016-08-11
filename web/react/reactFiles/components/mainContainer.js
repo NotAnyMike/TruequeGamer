@@ -14,7 +14,11 @@ module.exports = React.createClass({
 	render: function(){
 		return (
 				<div className="mainContainer">
-					<SearchField />
+					<SearchField 
+						suggestionSelectedHandlerFn={this.props.suggestionSelectedHandlerFn}
+						changeHandlerForSearchInputFn={this.props.changeHandlerForSearchInputFn}
+						suggestions={this.props.suggestions}
+					/>
 					<FilterMainContainer searchValues={this.props.searchValues}/>
 					<SearchButton />
 				</div>

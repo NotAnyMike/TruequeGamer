@@ -7,6 +7,13 @@ var EventEmitter = require('events').EventEmitter,
 var AppDispatcher = require('../dispatcher.js');
 
 var _store =  {
+	suggestions: {
+		value: '',
+		xbox: true,
+		ps: true,
+		suggestions: [
+		]
+	},
 	search: {
 		text: '',
 		xbox: true,
@@ -403,6 +410,49 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		console.log("search for " + gameConsole + " the game with name " + game);
 	},
 
+	onChangeSearchInput: function(text){
+		//get the list from the server
+		//for now one let's just add 1 2 and 3 to the text
+		var url = '/api/suggestions.json';
+		if(process.env.NODE_ENV === "production"){
+			url = '/api/suggestions/' + text + '/';
+		}
+		if(self.fetch){
+			fetch(url).then(function(response){
+				response.json().then(function(json){
+					_store.suggestions.suggestions = json;	
+				});	
+			});
+		}else{
+			//do something with xml stuff
+		}
+		/*
+		_store.suggestions.suggestions =  [
+			text + ' 1',
+			text + ' 2',
+			text + ' GO'
+		];
+		*/
+		//show the list by calling the event
+		this.onSuggestionsRefresh();
+	},
+
+	onSuggestionsRefresh: function(){
+		this.emit(Constants.eventType.suggestionsRefresh);
+	},
+
+	addSuggestionsRefreshListener: function(callback){
+		this.on(Constants.eventType.suggestionsRefresh, callback);
+	},
+
+	removeSuggestionsRefreshListener: function(callback){
+		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
+	},
+
+	getSuggestions: function(){
+		return _store.suggestions.suggestions;
+	},
+
 });
 
 AppDispatcher.register(function(payload){
@@ -413,6 +463,7 @@ AppDispatcher.register(function(payload){
 			break;
 		case Constants.actionType.changeSearchInput:
 			AppStore.changeSearchInput(payload.value);
+			AppStore.onChangeSearchInput(payload.value);
 			break;
 		case Constants.actionType.searchButtonClicked:
 			AppStore.searchButtonClicked();

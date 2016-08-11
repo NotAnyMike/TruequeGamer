@@ -112,6 +112,7 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
 
 
         if serializerType == "suggestions":
+            games = games[:5]
             serializer = SuggestionSerializer(games, many=True)
         else:
             serializer = GameSerializer(games, many=True)

@@ -413,14 +413,23 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	onChangeSearchInput: function(text){
 		//get the list from the server
 		//for now one let's just add 1 2 and 3 to the text
-		var consoles = '';
-		if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
-		else if (_store.search.ps) consoles = 'ps';
-		else consoles = 'xbox';
 		
-		var url = '/api/suggestions/' + consoles + 'suggestions.json';
+		var url = '/api/suggestions/ps-xbox/suggestions.json';
 		if(process.env.NODE_ENV === "production"){
-			url = '/api/suggestions/' + consoles + '/' + text + '/';
+			var consoles = '';
+			if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
+			else if (_store.search.ps) consoles = 'ps';
+			else consoles = 'xbox';
+
+			var sell = 'both';
+			if(_store.search.to_sell && !_store.search.exchange) sell = 'sell';
+			else if(!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+
+			var newVariable = 'both';
+			if(_store.search.not_used && !_store.search.used) newVariable = 'new';
+			else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
+			
+			url = '/api/suggestions/' + consoles + '/' newVariable + '/' + sell +'/' + text + '/';
 		}
 		if(self.fetch){
 			fetch(url).then(function(response){

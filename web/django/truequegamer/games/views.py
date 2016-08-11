@@ -32,7 +32,7 @@ def CurrentUser(request):
         return HttpResponse('Unauthorized', status=401)
 
 @api_view(['GET'])
-def LocalSuggestions(request, console, new, sell, string):
+def LocalSuggestions(request, serializerType, console, new, sell, string):
     if request.method == 'GET':
         
         games = Game.objects.filter(name__icontains=string)
@@ -111,18 +111,12 @@ def LocalSuggestions(request, console, new, sell, string):
             return Response('Bad request', status=400)
 
 
+        if serializerType == "suggestions":
+            serializer = SuggestionSerializer(games, many=True)
+        else:
+            serializer = GameSerializer(games, many=True)
 
-        serializer = SuggestionSerializer(games, many=True)
         return Response(serializer.data)
 
-    else:
-        return Response('Unauthorized', status=401)
-
-@api_view(['GET'])
-def Games(request, console, new, sell, string):
-    if request.method == 'GET':
-        games = Game.objects.filter(name__icontains=string)
-        serializer = GameSerializer(games, many=True)
-        return Response(serializer.data)
     else:
         return Response('Unauthorized', status=401)

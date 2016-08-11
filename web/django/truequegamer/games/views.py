@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 
-from games.serializers import UserSerializer, SuggestionSerializer
+from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer
 from games.models import Game
 
 
@@ -37,5 +37,14 @@ def LocalSuggestions(request, string):
         serializer = SuggestionSerializer(games, many=True)
         return Response(serializer.data)
 
+    else:
+        return Response('Unauthorized', status=401)
+
+@api_view(['GET'])
+def Games(request, console, string):
+    if request.method == 'GET':
+        games = Game.objects.filter(name__icontains=string)
+        serializer = GameSerializer(games, many=True)
+        return Response(serializer.data)
     else:
         return Response('Unauthorized', status=401)

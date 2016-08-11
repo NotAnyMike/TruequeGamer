@@ -8,8 +8,8 @@ router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
     url(r'^api/user/$', views.CurrentUser, name='current_user'),
-    url(r'^api/suggestions/(?P<string>.+).json$', views.LocalSuggestions, name='local_suggestions_json'),
     url(r'^api/suggestions/(?P<string>.+)/$', views.LocalSuggestions, name='local_suggestions'),
+    url(r'^api/games/(?P<console>.+)/(?P<string>.+)/$', views.Games, name='games'),
     url(r'^api/', include(router.urls)),
     url(r'^$', views.index, name='index'),
     url(r'^img/', views.img, name='img'),

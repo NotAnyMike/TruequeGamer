@@ -22,6 +22,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'picture', 'location')
 
+class GameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Game
+        fields = '__all__'
+        
 class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game

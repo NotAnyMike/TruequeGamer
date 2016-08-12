@@ -27236,7 +27236,6 @@ module.exports = React.createClass({
 	},
 
 	render: function () {
-		debugger;
 		var toReturn = React.createElement(
 			'a',
 			{ className: "login arrow-decorator dot-decorator " + this.props.version, href: '#' },
@@ -27831,8 +27830,12 @@ if (self.fetch) {
 	fetch(url, { credentials: 'same-origin' }).then(function (response) {
 		return response.json();
 	}).then(function (json) {
-		_store.user = json;
-		_store.user.logged = true;
+		if (json.username === "" || json.username === null) {
+			_store.user.logged = false;
+		} else {
+			_store.user = json;
+			_store.user.logged = true;
+		}
 		AppStore.userUpdated();
 	});
 } else {

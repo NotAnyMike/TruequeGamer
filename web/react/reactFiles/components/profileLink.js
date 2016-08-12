@@ -11,7 +11,6 @@ module.exports = React.createClass({
 	},
 	
 	render: function(){
-		debugger;
 		var toReturn = <a className={"login arrow-decorator dot-decorator " + this.props.version} href="#">Ingresa con Facebook</a>;
 		if(this.props.user.logged){
 			toReturn = (

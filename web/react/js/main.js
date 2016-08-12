@@ -27160,20 +27160,23 @@ module.exports = React.createClass({
 
 	onSuggestionRefresh: function () {
 		var suggestions = AppStore.getSuggestions();
-		this.setState({ suggestions: { suggestions: suggestions } });
+		this.setState({ suggestions: { value: suggestions.value, list: suggestions.list } });
 	},
 
 	changeHandlerForSearchInputFn: function (new_value) {
-		this.setState({ value: new_value });
-		if (new_value.length > 3) {
-			Actions.changeSearchInput(new_value);
-		} else {
-			this.setState({ suggestions: { suggestions: [] } });
+		//this.setState({value: new_value});
+		Actions.changeSearchInput(new_value);
+
+		var suggestionsVar = this.state.suggestions.list;
+		if (new_value.length <= 3) {
+			suggestionsVar = [];
 		};
+		this.setState({ suggestions: { value: new_value, list: suggestionsVar } });
 	},
 
 	suggestionSelectedHandlerFn: function (value) {
-		this.setState({ suggestions: { value: value } });
+		var suggestionsList = this.state.suggestions.list;
+		this.setState({ suggestions: { value: value, list: suggestionsList } });
 		Actions.changeSearchInput(value);
 	},
 
@@ -27210,7 +27213,9 @@ module.exports = React.createClass({
 				searchValues: this.state.search,
 				suggestionSelectedHandlerFn: this.suggestionSelectedHandlerFn,
 				changeHandlerForSearchInputFn: this.changeHandlerForSearchInputFn,
-				suggestions: this.state.suggestions
+				onKeyDownHandlerForSearchInputFn: this.onKeyDownHandlerForSearchInput,
+				suggestions: this.state.suggestions.list,
+				value: this.state.suggestions.value
 			}),
 			React.createElement(Footer, null),
 			chat
@@ -27398,7 +27403,9 @@ module.exports = React.createClass({
 			React.createElement(SearchField, {
 				suggestionSelectedHandlerFn: this.props.suggestionSelectedHandlerFn,
 				changeHandlerForSearchInputFn: this.props.changeHandlerForSearchInputFn,
-				suggestions: this.props.suggestions
+				onKeyDownHandlerForSearchInputFn: this.props.onKeyDownHandlerForSearchInputFn,
+				suggestions: this.props.suggestions,
+				value: this.props.value
 			}),
 			React.createElement(FilterMainContainer, { searchValues: this.props.searchValues }),
 			React.createElement(SearchButton, null)
@@ -27554,7 +27561,8 @@ module.exports = React.createClass({
 		if (e.keyCode === 13) {
 			//send
 			//Actions.searchButtonClicked();
-			this.props.suggestionSelectedHandlerFn();
+			//this.props.suggestionSelectedHandlerFn();
+			this.props.onKeyDownHandlerForSearchInputFn();
 		}
 	},
 
@@ -27573,7 +27581,7 @@ module.exports = React.createClass({
 			React.createElement(
 				'ul',
 				null,
-				this.props.suggestions.suggestions.map(function (element) {
+				this.props.suggestions.map(function (element) {
 					return React.createElement(SuggestionItem, { key: element.name, text: element.name, onClickHandler: clickHandler });
 				})
 			)
@@ -27605,6 +27613,19 @@ const SearchResults = React.createClass({
 		return store;
 	},
 
+	componentDidMount: function () {
+		AppStore.addOnResultsUpdatedListener(this.onResultsUpdated);
+	},
+
+	componentWillUnmount: function () {
+		AppStore.removeOnResultsUpdatedListener(this.onResultsUpdated);
+	},
+
+	onResultsUpdated: function () {
+		var store = AppStore.getStore();
+		this.setState(store);
+	},
+
 	render: function () {
 		var headerVersion;
 		if (this.props.route.console === Constants.consoles.both) {
@@ -27629,7 +27650,7 @@ const SearchResults = React.createClass({
 			'div',
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
-			React.createElement(SearchResultsMainContainer, { console: this.props.route.console, list: this.state.searchResult.results['search1'] }),
+			React.createElement(SearchResultsMainContainer, { console: this.props.route.console, list: this.state.searchResult.results }),
 			React.createElement(Footer, { version: footerVersion }),
 			chat
 		);
@@ -27684,7 +27705,7 @@ const SearchResultsList = React.createClass({
 					cover: element.cover,
 					name: element.name,
 					both: consoleVar === Constants.consoles.both ? true : false,
-					key: element.id
+					key: element.pk
 				});
 			})
 		);
@@ -27975,7 +27996,7 @@ var _store = {
 		value: '',
 		xbox: true,
 		ps: true,
-		suggestions: []
+		list: []
 	},
 	search: {
 		text: '',
@@ -27991,219 +28012,7 @@ var _store = {
 		logged: false
 	},
 	searchResult: {
-		results: {
-			'search1': [{
-				id: 1,
-				name: 'the witcher: the wild hunt',
-				psPrice: 70000,
-				xboxPrice: 80000,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/cover.png'
-			}, {
-				id: 2,
-				name: 'battlefield 1',
-				psPrice: 70000,
-				xboxPrice: 80000,
-				psExchange: false,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/battlefield1.png'
-			}, {
-				id: 3,
-				name: 'bloodborne',
-				psPrice: 70000,
-				xboxPrice: 80000,
-				psExchange: true,
-				xboxExchange: false,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/bloodborne.png'
-			}, {
-				id: 4,
-				name: 'call of duty balck ops iii',
-				psPrice: 70000,
-				xboxPrice: 80000,
-				psExchange: false,
-				xboxExchange: false,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/codblackops.png'
-			}, {
-				id: 5,
-				name: 'dark souls iii',
-				psPrice: null,
-				xboxPrice: 80000,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/darksoulsiii.png'
-			}, {
-				id: 6,
-				name: 'doom',
-				psPrice: 70000,
-				xboxPrice: null,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/doom.png'
-			}, {
-				id: 7,
-				name: 'fallout 4',
-				psPrice: null,
-				xboxPrice: null,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/fallout4.png'
-			}, {
-				id: 8,
-				name: 'farcry primal',
-				psPrice: null,
-				xboxPrice: 80000,
-				psExchange: true,
-				xboxExchange: false,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/farcry.png'
-			}, {
-				id: 9,
-				name: 'grand theft auto V',
-				psPrice: 70000,
-				xboxPrice: null,
-				psExchange: false,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/gtav.png'
-			}, {
-				id: 10,
-				name: 'metal gear solid the phantom pain',
-				psPrice: 70000,
-				xboxPrice: null,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: true,
-				xboxOnly: false,
-				availableOnXbox: false,
-				availableOnPs: false,
-				psOnlyPrice: false,
-				xboxOnlyPrice: false,
-				cover: '/img/games/metalgear.png'
-			}, {
-				id: 11,
-				name: 'mirror edge',
-				psPrice: null,
-				xboxPrice: 80000,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: true,
-				availableOnXbox: false,
-				availableOnPs: false,
-				psOnlyPrice: false,
-				xboxOnlyPrice: false,
-				cover: '/img/games/mirroredge.png'
-			}, {
-				id: 12,
-				name: 'overwatch',
-				psPrice: 70000,
-				xboxPrice: 60000,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: false,
-				availableOnPs: false,
-				psOnlyPrice: false,
-				xboxOnlyPrice: false,
-				cover: '/img/games/overwatch.png'
-			}, {
-				id: 13,
-				name: 'the division',
-				psPrice: 70000,
-				xboxPrice: 80000,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: false,
-				availableOnPs: false,
-				psOnlyPrice: false,
-				xboxOnlyPrice: false,
-				cover: '/img/games/thedivision.png'
-			}, {
-				id: 14,
-				name: "uncharted 4: a thief's end",
-				psPrice: 70000,
-				xboxPrice: 80000,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/uncharted4.png'
-			}, {
-				id: 15,
-				name: 'until dawn',
-				psPrice: 70000,
-				xboxPrice: 80000,
-				psExchange: true,
-				xboxExchange: true,
-				psOnly: false,
-				xboxOnly: false,
-				availableOnXbox: true,
-				availableOnPs: true,
-				psOnlyPrice: true,
-				xboxOnlyPrice: true,
-				cover: '/img/games/untildawn.png'
-			}]
-		}
+		results: []
 	}
 };
 
@@ -28351,36 +28160,74 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 	search: function (gameConsole, game) {
 		console.log("search for " + gameConsole + " the game with name " + game);
+		//get results
+		if (self.fetch) {
+			//use fetch
+			var stringValue = _store.search.text;
+
+			var consoles = 'ps-xbox';
+			if (_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';else if (_store.search.ps) consoles = 'ps';else consoles = 'xbox';
+
+			var sell = 'both';
+			if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+
+			var newVariable = 'both';
+			if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
+
+			var url = '/api/games.json';
+			if (process.env.NODE_ENV === "production") {
+				url = '/api/games/' + newVariable + '/' + sell + '/' + stringValue + '/';
+			}
+
+			fetch(url).then(function (response) {
+				response.json().then(function (json) {
+					//do something with json
+					_store.searchResult.results = json;
+					AppStore.emit(Constants.eventType.resultsUpdated);
+				});
+			});
+		} else {
+			//use xml
+		}
 	},
 
 	onChangeSearchInput: function (text) {
 		//get the list from the server
 		//for now one let's just add 1 2 and 3 to the text
-		var consoles = '';
-		if (_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';else if (_store.search.ps) consoles = 'ps';else consoles = 'xbox';
+		if (text.length > 3) {
+			var url = '/api/suggestions/ps-xbox/suggestions.json';
+			if (process.env.NODE_ENV === "production") {
+				var consoles = '';
+				if (_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';else if (_store.search.ps) consoles = 'ps';else consoles = 'xbox';
 
-		var url = '/api/suggestions/ps-xbox/suggestions.json';
-		if (process.env.NODE_ENV === "production") {
-			url = '/api/suggestions/' + consoles + '/' + text + '/';
-		}
-		if (self.fetch) {
-			fetch(url).then(function (response) {
-				response.json().then(function (json) {
-					_store.suggestions.suggestions = json;
+				var sell = 'both';
+				if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+
+				var newVariable = 'both';
+				if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
+
+				url = '/api/suggestions/' + consoles + '/' + newVariable + '/' + sell + '/' + text + '/';
+			}
+			if (self.fetch) {
+				fetch(url).then(function (response) {
+					response.json().then(function (json) {
+						_store.suggestions.list = json;
+						_store.suggestions.value = text;
+						AppStore.onSuggestionsRefresh();
+					});
 				});
-			});
-		} else {}
-		//do something with xml stuff
+			} else {}
+			//do something with xml stuff
 
-		/*
-  _store.suggestions.suggestions =  [
-  	text + ' 1',
-  	text + ' 2',
-  	text + ' GO'
-  ];
-  */
-		//show the list by calling the event
-		this.onSuggestionsRefresh();
+			/*
+   _store.suggestions.list =  [
+   	text + ' 1',
+   	text + ' 2',
+   	text + ' GO'
+   ];
+   */
+			//show the list by calling the event
+		}
 	},
 
 	onSuggestionsRefresh: function () {
@@ -28395,8 +28242,20 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
 	},
 
+	addOnResultsUpdatedListener: function (callback) {
+		this.on(Constants.eventType.resultsUpdated, callback);
+	},
+
+	removeOnResultsUpdatedListener: function (callback) {
+		this.removeListener(Constants.eventType.resultsUpdated, callback);
+	},
+
+	getSuggestionsList: function () {
+		return _store.suggestions.list;
+	},
+
 	getSuggestions: function () {
-		return _store.suggestions.suggestions;
+		return _store.suggestions;
 	}
 
 });
@@ -28408,6 +28267,7 @@ AppDispatcher.register(function (payload) {
 			AppStore.changeFilterState(payload.filter, payload.value);
 			break;
 		case Constants.actionType.changeSearchInput:
+			console.log(payload.value);
 			AppStore.changeSearchInput(payload.value);
 			AppStore.onChangeSearchInput(payload.value);
 			break;
@@ -28622,7 +28482,8 @@ const Constants = {
 		suggestionsRefresh: 'suggestions_refresh',
 		search: 'search',
 		messageAdded: 'message_added',
-		userUpdated: 'user_update'
+		userUpdated: 'user_update',
+		resultsUpdated: 'results_updated'
 	},
 	filter: {
 		not_used: 'not_used',

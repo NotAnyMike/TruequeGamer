@@ -11,7 +11,7 @@ var _store =  {
 		value: '',
 		xbox: true,
 		ps: true,
-		suggestions: [
+		list: [
 		]
 	},
 	search: {
@@ -28,235 +28,7 @@ var _store =  {
 		logged: false,
 	},
 	searchResult:{
-		results: {
-			'search1': [
-				{
-					id: 1,
-					name: 'the witcher: the wild hunt',
-					psPrice: 70000,
-					xboxPrice: 80000,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/cover.png',
-				},
-				{
-					id: 2,
-					name: 'battlefield 1',
-					psPrice: 70000,
-					xboxPrice: 80000,
-					psExchange: false,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/battlefield1.png',
-				},
-				{
-					id: 3,
-					name: 'bloodborne',
-					psPrice: 70000,
-					xboxPrice: 80000,
-					psExchange: true,
-					xboxExchange: false,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/bloodborne.png',
-				},
-				{
-					id: 4,
-					name: 'call of duty balck ops iii',
-					psPrice: 70000,
-					xboxPrice: 80000,
-					psExchange: false,
-					xboxExchange: false,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/codblackops.png',
-				},
-				{
-					id: 5,
-					name: 'dark souls iii',
-					psPrice: null,
-					xboxPrice: 80000,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/darksoulsiii.png',
-				},
-				{
-					id: 6,
-					name: 'doom',
-					psPrice: 70000,
-					xboxPrice: null,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/doom.png',
-				},
-				{
-					id: 7,
-					name: 'fallout 4',
-					psPrice: null,
-					xboxPrice: null,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/fallout4.png',
-				},
-				{
-					id: 8,
-					name: 'farcry primal',
-					psPrice: null,
-					xboxPrice: 80000,
-					psExchange: true,
-					xboxExchange: false,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/farcry.png',
-				},
-				{
-					id: 9,
-					name: 'grand theft auto V',
-					psPrice: 70000,
-					xboxPrice: null,
-					psExchange: false,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/gtav.png',
-				},
-				{
-					id: 10,
-					name: 'metal gear solid the phantom pain',
-					psPrice: 70000,
-					xboxPrice: null,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: true,
-					xboxOnly: false,
-					availableOnXbox: false,
-					availableOnPs: false,
-					psOnlyPrice: false,
-					xboxOnlyPrice: false,
-					cover: '/img/games/metalgear.png',
-				},
-				{
-					id: 11,
-					name: 'mirror edge',
-					psPrice: null,
-					xboxPrice: 80000,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: true,
-					availableOnXbox: false,
-					availableOnPs: false,
-					psOnlyPrice: false,
-					xboxOnlyPrice: false,
-					cover: '/img/games/mirroredge.png',
-				},
-				{
-					id: 12,
-					name: 'overwatch',
-					psPrice: 70000,
-					xboxPrice: 60000,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: false,
-					availableOnPs: false,
-					psOnlyPrice: false,
-					xboxOnlyPrice: false,
-					cover: '/img/games/overwatch.png',
-				},
-				{
-					id: 13,
-					name: 'the division',
-					psPrice: 70000,
-					xboxPrice: 80000,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: false,
-					availableOnPs: false,
-					psOnlyPrice: false,
-					xboxOnlyPrice: false,
-					cover: '/img/games/thedivision.png',
-				},
-				{
-					id: 14,
-					name: "uncharted 4: a thief's end",
-					psPrice: 70000,
-					xboxPrice: 80000,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/uncharted4.png',
-				},
-				{
-					id: 15,
-					name: 'until dawn',
-					psPrice: 70000,
-					xboxPrice: 80000,
-					psExchange: true,
-					xboxExchange: true,
-					psOnly: false,
-					xboxOnly: false,
-					availableOnXbox: true,
-					availableOnPs: true,
-					psOnlyPrice: true,
-					xboxOnlyPrice: true,
-					cover: '/img/games/untildawn.png',
-				},
-			],
-		},
+		results:  [],
 	},
 };
 
@@ -408,15 +180,12 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 	search: function(gameConsole, game){
 		console.log("search for " + gameConsole + " the game with name " + game);
-	},
+		//get results
+		if(self.fetch){
+			//use fetch
+			var stringValue = _store.search.text;
 
-	onChangeSearchInput: function(text){
-		//get the list from the server
-		//for now one let's just add 1 2 and 3 to the text
-		
-		var url = '/api/suggestions/ps-xbox/suggestions.json';
-		if(process.env.NODE_ENV === "production"){
-			var consoles = '';
+			var consoles = 'ps-xbox';
 			if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
 			else if (_store.search.ps) consoles = 'ps';
 			else consoles = 'xbox';
@@ -428,27 +197,65 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			var newVariable = 'both';
 			if(_store.search.not_used && !_store.search.used) newVariable = 'new';
 			else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
-			
-			url = '/api/suggestions/' + consoles + '/' newVariable + '/' + sell +'/' + text + '/';
-		}
-		if(self.fetch){
+
+			var url = '/api/games.json';
+			if(process.env.NODE_ENV === "production"){
+				url = '/api/games/' + newVariable + '/' + sell + '/' + stringValue + '/';
+			}
+
 			fetch(url).then(function(response){
 				response.json().then(function(json){
-					_store.suggestions.suggestions = json;	
-				});	
+					//do something with json
+					_store.searchResult.results = json;
+					AppStore.emit(Constants.eventType.resultsUpdated);
+				});
 			});
 		}else{
-			//do something with xml stuff
+			//use xml
 		}
-		/*
-		_store.suggestions.suggestions =  [
-			text + ' 1',
-			text + ' 2',
-			text + ' GO'
-		];
-		*/
-		//show the list by calling the event
-		this.onSuggestionsRefresh();
+	},
+
+	onChangeSearchInput: function(text){
+		//get the list from the server
+		//for now one let's just add 1 2 and 3 to the text
+		if(text.length > 3){
+			var url = '/api/suggestions/ps-xbox/suggestions.json';
+			if(process.env.NODE_ENV === "production"){
+				var consoles = '';
+				if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
+				else if (_store.search.ps) consoles = 'ps';
+				else consoles = 'xbox';
+
+				var sell = 'both';
+				if(_store.search.to_sell && !_store.search.exchange) sell = 'sell';
+				else if(!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+
+				var newVariable = 'both';
+				if(_store.search.not_used && !_store.search.used) newVariable = 'new';
+				else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
+				
+				url = '/api/suggestions/' + consoles + '/' +  newVariable + '/' + sell +'/' + text + '/';
+			}
+			if(self.fetch){
+				fetch(url).then(function(response){
+					response.json().then(function(json){
+						_store.suggestions.list = json;	
+						_store.suggestions.value = text;
+						AppStore.onSuggestionsRefresh();
+					});	
+				});
+			}else{
+				//do something with xml stuff
+			}
+			/*
+			_store.suggestions.list =  [
+				text + ' 1',
+				text + ' 2',
+				text + ' GO'
+			];
+			*/
+			//show the list by calling the event
+		}
 	},
 
 	onSuggestionsRefresh: function(){
@@ -463,8 +270,20 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
 	},
 
+	addOnResultsUpdatedListener: function(callback){
+		this.on(Constants.eventType.resultsUpdated, callback);
+	},
+
+	removeOnResultsUpdatedListener: function(callback){
+		this.removeListener(Constants.eventType.resultsUpdated, callback);
+	},
+
+	getSuggestionsList: function(){
+		return _store.suggestions.list;
+	},
+	
 	getSuggestions: function(){
-		return _store.suggestions.suggestions;
+		return _store.suggestions;
 	},
 
 });
@@ -476,6 +295,7 @@ AppDispatcher.register(function(payload){
 			AppStore.changeFilterState(payload.filter, payload.value);	
 			break;
 		case Constants.actionType.changeSearchInput:
+			console.log(payload.value);
 			AppStore.changeSearchInput(payload.value);
 			AppStore.onChangeSearchInput(payload.value);
 			break;

@@ -17,7 +17,9 @@ module.exports = React.createClass({
 					<SearchField 
 						suggestionSelectedHandlerFn={this.props.suggestionSelectedHandlerFn}
 						changeHandlerForSearchInputFn={this.props.changeHandlerForSearchInputFn}
+						onKeyDownHandlerForSearchInputFn={this.props.onKeyDownHandlerForSearchInputFn}
 						suggestions={this.props.suggestions}
+						value={this.props.value}
 					/>
 					<FilterMainContainer searchValues={this.props.searchValues}/>
 					<SearchButton />

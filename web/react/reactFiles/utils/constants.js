@@ -20,6 +20,7 @@ const Constants = {
 		search: 'search',
 		messageAdded: 'message_added',
 		userUpdated: 'user_update',
+		resultsUpdated: 'results_updated',
 	},
 	filter: {
 		not_used: 'not_used',

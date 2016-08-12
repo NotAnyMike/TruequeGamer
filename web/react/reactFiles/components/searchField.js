@@ -44,7 +44,8 @@ module.exports = React.createClass({
 		if(e.keyCode === 13){
 			//send
 			//Actions.searchButtonClicked();
-			this.props.suggestionSelectedHandlerFn();
+			//this.props.suggestionSelectedHandlerFn();
+			this.props.onKeyDownHandlerForSearchInputFn();
 		}
 	},
 
@@ -60,7 +61,7 @@ module.exports = React.createClass({
 			<div className="searchFieldContainer">
 				<input type="text" placeholder="Nombre del juego a buscar" onChange={this._changeHandler} value={this.props.value} onKeyDown={this._onKeyDownHandler}/>
 				<ul>
-					{this.props.suggestions.suggestions.map(function(element){
+					{this.props.suggestions.map(function(element){
 						return <SuggestionItem key={element.name} text={element.name} onClickHandler={clickHandler} />;
 					})}
 				</ul>

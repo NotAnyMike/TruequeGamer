@@ -40,7 +40,7 @@ const SearchResultsList = React.createClass({
 							cover={element.cover} 
 							name={element.name} 
 							both={consoleVar === Constants.consoles.both ? true : false}
-							key={element.id}
+							key={element.pk}
 						/>
 					);
 				})}

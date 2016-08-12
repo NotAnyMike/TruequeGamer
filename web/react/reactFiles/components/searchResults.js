@@ -19,6 +19,19 @@ const SearchResults = React.createClass({
 		return store;
 	},
 
+	componentDidMount: function(){
+		AppStore.addOnResultsUpdatedListener(this.onResultsUpdated);
+	},
+
+	componentWillUnmount: function(){
+		AppStore.removeOnResultsUpdatedListener(this.onResultsUpdated);
+	},
+	
+	onResultsUpdated: function(){
+		var store = AppStore.getStore();
+		this.setState(store);
+	},
+
 	render: function(){
 		var headerVersion;
 		if(this.props.route.console === Constants.consoles.both){
@@ -42,7 +55,7 @@ const SearchResults = React.createClass({
 		return (
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user}/>
-				<SearchResultsMainContainer console={this.props.route.console} list={this.state.searchResult.results['search1']}/>
+				<SearchResultsMainContainer console={this.props.route.console} list={this.state.searchResult.results}/>
 				<Footer version={footerVersion}/>
 				{chat}
 			</div>

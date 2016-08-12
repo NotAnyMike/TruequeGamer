@@ -47,20 +47,23 @@ module.exports = React.createClass({
 
 	onSuggestionRefresh: function(){
 		var suggestions = AppStore.getSuggestions();
-		this.setState({ suggestions: {suggestions: suggestions }});
+		this.setState({ suggestions: {value: suggestions.value, list: suggestions.list }});
 	},
 
 	changeHandlerForSearchInputFn: function(new_value){
-		this.setState({value: new_value});
-		if(new_value.length > 3){
-			Actions.changeSearchInput(new_value);
-		}else{
-			this.setState({suggestions: {suggestions: []}});
+		//this.setState({value: new_value});
+		Actions.changeSearchInput(new_value);
+
+		var suggestionsVar = this.state.suggestions.list;
+		if(new_value.length <= 3){
+			suggestionsVar = [];
 		};
+		this.setState({suggestions: {value: new_value, list: suggestionsVar}});
 	},
 	
 	suggestionSelectedHandlerFn: function(value){
-		this.setState({suggestions: {value: value}});
+		var suggestionsList = this.state.suggestions.list;
+		this.setState({suggestions: {value: value, list: suggestionsList}});
 		Actions.changeSearchInput(value);
 	},
 	
@@ -96,7 +99,9 @@ module.exports = React.createClass({
 						searchValues={this.state.search}
 						suggestionSelectedHandlerFn={this.suggestionSelectedHandlerFn}
 						changeHandlerForSearchInputFn={this.changeHandlerForSearchInputFn}
-						suggestions={this.state.suggestions}
+						onKeyDownHandlerForSearchInputFn={this.onKeyDownHandlerForSearchInput}
+						suggestions={this.state.suggestions.list}
+						value={this.state.suggestions.value}
 					/>
 					<Footer />
 					{chat}

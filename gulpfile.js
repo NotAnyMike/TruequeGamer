@@ -39,6 +39,11 @@ gulp.task('w-react', function(){
 	gulp.watch(['!web/react/js/*.js','web/react/reactFiles/**/*.js'], ['react-dev']);
 });
 
+gulp.task('w-react-django', function(){
+	livereload.listen();
+	gulp.watch(['!web/react/js/*.js','web/react/reactFiles/**/*.js'], ['react-prod-django']);
+});
+
 gulp.task('react-dev', function(){
 	return browserify('./web/react/reactFiles/main.js')
 		.transform("babelify", {presets: ["react"]})
@@ -57,12 +62,22 @@ gulp.task('react-dev-es6', function(){
 		.pipe(gulp.dest('./web/react/js/'));
 });
 
+gulp.task('react-prod-django', ['apply-prod-environment'], function(){
+	return browserify('./web/react/reactFiles/main.js')
+		.transform(envify({NODE_ENV: 'production'}))
+		.transform("babelify", {presets: ["react"]})
+		.bundle()
+		.pipe(source('main.js'))
+		.pipe(gulp.dest('./web/django/truequegamer/games/static/games/js/'))
+});
+
 gulp.task('react-prod-es6', ['apply-prod-environment'], function(){
 	return browserify('./web/react/reactFiles/main.js')
 		.transform(envify({NODE_ENV: 'production'}))
 		.transform("babelify", {presets: ["es2015","react"]})
 		.bundle()
 		.pipe(source('main.js'))
+		.pipe(gulp.dest('./web/django/truequegamer/games/static/games/js/'))
 		.pipe(gulp.dest('./web/react/js/'));
 });
 
@@ -108,6 +123,7 @@ gulp.task('react-prod', ['react-prod-es6'], function(){
 	return gulp.src('./web/react/js/main.js')
 		.pipe(buildDist(opts))
 		.pipe(gulp.dest('web/react/js'))
+		.pipe(gulp.dest('web/django/truequegamer/games/static/games/js/'))
 		.pipe(gulp.dest('web/public/js'));
 });
 

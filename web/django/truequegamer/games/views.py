@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -12,7 +13,10 @@ from games.models import Game
 
 # Create your views here.
 def index(req):
-    return render(req, 'games/base.html')
+    template = 'games/base.html'
+    if settings.DEBUG:
+        template = 'games/base_dev.html'
+    return render(req,  template)
 
 def img(req):
     return redirect('/static/games' + req.path)

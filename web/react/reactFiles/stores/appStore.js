@@ -34,17 +34,18 @@ var _store =  {
 
 if(self.fetch){
 	//do something with fetch
-	fetch('/api/user.json').then(
-		function(response){
-			return response.json().then(
-				function(json){
-					_store.user = json;
-					_store.user.logged = true;
-					AppStore.userUpdated();
-				}
-			);
-		}
-	);
+	var url = '/api/user.json';
+	if(process.env.NODE_ENV === 'production'){
+		url = 'api/user/';
+	}
+	fetch(url, { credentials: 'same-origin' }).then(
+		function(response){return response.json()}).then(
+			function(json){
+				_store.user = json;
+				_store.user.logged = true;
+				AppStore.userUpdated();
+			}
+		);
 } else {
 	//use the normal xhtml stuff
 }
@@ -200,7 +201,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 			var url = '/api/games.json';
 			if(process.env.NODE_ENV === "production"){
-				url = '/api/games/' + newVariable + '/' + sell + '/' + stringValue + '/';
+				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
 			}
 
 			fetch(url).then(function(response){
@@ -295,7 +296,6 @@ AppDispatcher.register(function(payload){
 			AppStore.changeFilterState(payload.filter, payload.value);	
 			break;
 		case Constants.actionType.changeSearchInput:
-			console.log(payload.value);
 			AppStore.changeSearchInput(payload.value);
 			AppStore.onChangeSearchInput(payload.value);
 			break;

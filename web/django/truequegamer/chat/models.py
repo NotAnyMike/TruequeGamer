@@ -4,13 +4,15 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
 
-import urllib2
-import urllib
 import json
+import requests
 import logging
 
 import constants
 import token
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("chat.models")
 
 class UserAuth(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -18,7 +20,7 @@ class UserAuth(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
 def save_user(instance, access_token):
-    instanceToSave = UserAuth(user = instance, access_token = jsonInfo['access_token'])
+    instanceToSave = UserAuth(user = instance, access_token = access_token)
     instanceToSave.save()
 
 def get_name(instance):
@@ -31,6 +33,7 @@ def get_name(instance):
 
 @receiver(post_save, sender=User)
 def create_auth(sender, instance, created, **kwargs):
+    errorCode = 0;
     headers = {'Api-Token' : token.API_TOKEN}
     values = {
         "user_id" : instance.pk,
@@ -39,18 +42,16 @@ def create_auth(sender, instance, created, **kwargs):
         "issue_access_token" : True
     }
     data = json.dumps(values)
-    request = urllib2.Request(constants.API_CREATE_USER_URL, data, headers)
-    try:
-        response = urllib2.urlopen(request)
-        
-        #save the token
-        info = response.read()
-        jsonInfo = json.loads(info)
+    request = requests.post(constants.API_CREATE_USER_URL, data=None, json=values, headers=headers)
+    if request.status_code < 400 : 
+        jsonInfo = json.loads(request.content)
         save_user(instance, jsonInfo['access_token'])
-    except urllib2.HTTPError as e:
-        jsonData = json.loads(e.read())
+    else:
+        jsonData = json.loads(request.content)
         errorCode = jsonData['code']
-        if errorCode == 400201:
+        print jsonData
+ 
+        if errorCode == 400202:
             #User exists then update it
             values = {
                 "nickname" : get_name(instance),
@@ -58,20 +59,14 @@ def create_auth(sender, instance, created, **kwargs):
                 "issue_access_token" : True
             }
             data = json.dumps(values)
-            request = urllib2.Request("{0}/{1}".format(constants.API_CREATE_USER_URL, instance.pk), data, header)
-            try:
-                response = urllib2.urlopen(request)
-
-                #save the token
-                info = response.read()
-                jsonInfo = json.loads(info)
+            request = requests.put("{0}/{1}".format(constants.API_CREATE_USER_URL,instance.pk), data= data, headers=headers)
+            if request.status_code < 400:
+                jsonInfo = json.loads(request.content)
                 save_user(instance, jsonInfo['access_token'])
-            except urllib2.HTTPError as e:
-                print e.code
-                print e.read()
-                logger = logging.getLogger("updating user")
-                logger.error('Error while updating user, some error ... code: {0}, error: {1}'.format(e.code, e.read())
-        else:
-            pass
-            #logger = logging.getLogger("creating user")
-            #logger.error('Error while creating user, some error different from "user already exists" found ... code: {0}, error: {1}'.format(e.code, e.read())
+            else:
+                errorMsg = "Error while updating user, some error ... code: {0}, error: {1}".format(request.status_code, request.content)
+                logger.error(errorMsg)
+            
+        elif errorCode != 0:
+            errorMsg = 'Error while creating user, some error different from "user already exists" found ... code: {0}, error: {1}'.format(e.code, dataError)
+            logger.error(errorMsg)

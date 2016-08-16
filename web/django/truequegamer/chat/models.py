@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
+from django.contrib.auth.signals import user_logged_in
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
@@ -14,13 +15,29 @@ import token
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("chat.models")
 
+################## user logged signal ##################
+
+def check_token(sender, request, user, **kwargs):
+    print "holaaaaaaaaaaa"
+    print user
+    #userAuth = UserAuth.objects.filter(user = user)
+    print user
+
+user_logged_in.connect(check_token)
+
+########################################################
+
 class UserAuth(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=300, null=False, blank=False)
     last_update = models.DateTimeField(auto_now=True)
 
 def save_user(instance, access_token):
-    instanceToSave = UserAuth(user = instance, access_token = access_token)
+    if instance.pk == None: 
+        instanceToSave = UserAuth(user = instance, access_token = access_token)
+    else:
+        instanceToSave = UserAuth.objects.get(user = instance)
+        instanceToSave.access_token = access_token
     instanceToSave.save()
 
 def get_name(instance):

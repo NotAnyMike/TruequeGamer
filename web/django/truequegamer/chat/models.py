@@ -8,6 +8,8 @@ from django.db import models
 import json
 import requests
 import logging
+import datetime
+import pytz
 
 import constants
 import token
@@ -18,10 +20,27 @@ logger = logging.getLogger("chat.models")
 ################## user logged signal ##################
 
 def check_token(sender, request, user, **kwargs):
-    print "holaaaaaaaaaaa"
-    print user
-    #userAuth = UserAuth.objects.filter(user = user)
-    print user
+    userAuth = None
+    try:
+        userAuth = UserAuth.objects.get(user = user)
+    except UserAuth.DoesNotExist:
+        logger.error('Error while trying to update the chat token for a user that just signed in')
+    if userAuth != None:
+        #Check last update
+        utc=pytz.UTC
+        dateNow = datetime.datetime.now()
+        timeNowNormalized = dateNow.replace(tzinfo=utc)
+        timeNormilized = userAuth.last_update.replace(tzinfo=utc)
+        timeNowNormalized -= timeNormilized
+
+        if timeNowNormalized.days >= 1 :
+            #Update token
+            create_auth_function(user)
+        else:
+            #Do nothing
+            pass
+    else:
+        create_auth_function(user)
 
 user_logged_in.connect(check_token)
 
@@ -36,7 +55,13 @@ def save_user(instance, access_token):
     if instance.pk == None: 
         instanceToSave = UserAuth(user = instance, access_token = access_token)
     else:
-        instanceToSave = UserAuth.objects.get(user = instance)
+        instanceToSave = None
+        try:
+            instanceToSave = UserAuth.objects.get(user = instance)
+        except UserAuth.DoesNotExist:
+            logger.error("Error")
+        if instanceToSave == None :
+            instanceToSave = UserAuth(user= instance, access_token = access_token)
         instanceToSave.access_token = access_token
     instanceToSave.save()
 
@@ -48,8 +73,11 @@ def get_name(instance):
         toReturn = "unknown"
     return toReturn
 
-@receiver(post_save, sender=User)
-def create_auth(sender, instance, created, **kwargs):
+#@receiver(post_save, sender=User)
+#def create_auth(sender, instance, created, **kwargs):
+#    create_auth_function(instance)
+    
+def create_auth_function(instance):
     errorCode = 0;
     headers = {'Api-Token' : token.API_TOKEN}
     values = {

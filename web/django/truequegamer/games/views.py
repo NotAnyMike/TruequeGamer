@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer
+from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer
 from games.models import Game
 
 
@@ -29,7 +29,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 def CurrentUser(request):
     if request.method == "GET":
         user = request.user
-        serializer = UserSerializer(user, many=False)
+        serializer = CurrentUserSerializer(user, many=False)
         return Response(serializer.data)
 
     else: 

@@ -2,6 +2,7 @@
 
 var EventEmitter = require('events').EventEmitter,
 		Constants = require('../utils/constants.js'),
+		ChatStore = require('./chatStore.js'),
 		assign = require('object-assign');
 
 var AppDispatcher = require('../dispatcher.js');
@@ -46,6 +47,7 @@ if(self.fetch){
 				}else{
 					_store.user = json;
 					_store.user.logged = true;
+					ChatStore.setUser(json)
 				}
 				AppStore.userUpdated();
 			}

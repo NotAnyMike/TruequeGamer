@@ -6,6 +6,7 @@ var EventEmitter = require('events').EventEmitter,
 var _store = {
 	
 	unread: 3,
+	user: "",
 	chats: 
 		[	
 			{
@@ -133,6 +134,11 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			recived: false
 		});
 		this.emit(Constants.eventType.messageAdded);
+	},
+
+	setUser: function(user){
+		_store.user = user;
+		console.log(user);
 	},
 
 	addOnMessageAddedListener: function(callback){

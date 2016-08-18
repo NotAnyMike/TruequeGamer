@@ -5,14 +5,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
 
-import json
-import requests
-import logging
-import datetime
-import pytz
+import json, requests, logging, datetime, pytz
 
-import constants
-import token
+import constants, token
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("chat.models")

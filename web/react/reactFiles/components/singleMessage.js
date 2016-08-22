@@ -1,18 +1,24 @@
-var React = require('react');
+var React = require('react'),
+		Constants = require('../utils/constants.js');
 
 var SingleMessage = React.createClass({
 
 	propTypes: {
-		message: React.PropTypes.object.isRequired,
+		message: React.PropTypes.string.isRequired,
+		time: React.PropTypes.string.isRequired,
 		user: React.PropTypes.object.isRequired,
 	},
 	
 	render: function(){
+		img = this.props.user.profileUrl;
+		if(!img || img === ""){
+			img = Constants.genericProfile;
+		}
 		return (	
 			<li className={this.props.message.mine ? "own" : ""}>
-				<figure><img src={"/img/min-" + this.props.user.pic + ".png"} alt="" /></figure>
-				<span className="message">{this.props.message.value}</span>
-				<span className="time">{this.props.message.time}</span>
+				<figure><img src={"/img/min-" + img + ".png"} alt="" /></figure>
+				<span className="message">{this.props.message}</span>
+				<span className="time">{this.props.time}</span>
 			</li>
 		);
 	}

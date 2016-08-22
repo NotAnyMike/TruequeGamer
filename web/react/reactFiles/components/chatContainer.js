@@ -25,9 +25,11 @@ var ChatContainer = React.createClass({
 			visible = "in"
 		else
 			visible = "";
-		return (
-			<section id="chat" className={"chatList "+ visible}>
-				<ChatList chats={this.props.chats} closeChatFn={this.props.closeChatFn} openCertainChatFn={this.props.openCertainChatFn}/>
+
+		singleChat = null;
+		if(this.props.activeChat != null && this.props.activeChat != "" && this.props.activeChat >= 0){
+			console.log(this.props.activeChat)
+			singleChat = (
 				<SingleChat 
 					value={this.props.value} 
 					visible={this.props.singleChatVisible} 
@@ -37,6 +39,12 @@ var ChatContainer = React.createClass({
 					sendFn={this.props.sendFn} 
 					onKeyDownFn={this.props.onKeyDownFn} 
 				/>
+			);
+		}
+		return (
+			<section id="chat" className={"chatList "+ visible}>
+				<ChatList chats={this.props.chats} closeChatFn={this.props.closeChatFn} openCertainChatFn={this.props.openCertainChatFn}/>
+					{singleChat}
 			</section>
 		)
 	}

@@ -10,6 +10,20 @@ var ChatList = React.createClass({
 	},
 
 	render: function(){
+		chats = [];
+		if(this.props.chats && this.props.chats.length != null && this.props.chats.length > 0){
+			console.log(this.props.chats.length)
+			this.props.chats.map(
+					function(element){
+						var lastMessage = "";
+						if(element.lastMessage) {
+							lastMessage = element.lastMessage.message;
+						}
+						read = true;
+						if(element.unreadMessageCount > 0) read = false;
+						chats.push(<ItemChat id={element.id} key={element.id} user={element.user} message={lastMessage} time={"Ya"} read={read} openCertainChatFn={this.props.openCertainChatFn}/>);
+				}.bind(this))
+		}
 		return (			
 			<div className="container">
 				<div className="titleContainer">
@@ -17,10 +31,7 @@ var ChatList = React.createClass({
 					<button className="closeButton" onClick={this.props.closeChatFn}></button>
 				</div>
 				<ul>
-					{this.props.chats.map(
-							function(element){
-								return (<ItemChat id={element.id} key={element.id} user={element.user} message={element.messages[0]} openCertainChatFn={this.props.openCertainChatFn}/>);
-						}.bind(this))}
+					{chats}
 				</ul>
 				<div className="searchArea">
 					<input type="text" placeholder="Buscar perfil"/>

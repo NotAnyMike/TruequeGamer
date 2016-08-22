@@ -6,6 +6,7 @@ const consoles = {
 
 const Constants = {
 	bogota: 'bogota',
+	genericProfile: 'profile',
 	consoles: consoles,
 	actionType: {
 		changeFilterState: 'change_filter_status',
@@ -18,6 +19,7 @@ const Constants = {
 		filterRefresh: 'filter_refresh',
 		suggestionsRefresh: 'suggestions_refresh',
 		search: 'search',
+		chatsUpdated: 'chats_updated',
 		messageAdded: 'message_added',
 		userUpdated: 'user_update',
 		resultsUpdated: 'results_updated',

@@ -8,9 +8,13 @@ var Chat = React.createClass({
 	
 	getInitialState: function(){
 		var store = ChatStore.getStore();
+		var id = null;
+		if(store.chats.length > 0){
+			id = store.chats[0].id;
+		}
 		return  ({
 			store: store,
-			activeChat: store.chats[0].id,
+			activeChat: id,
 			visible: null,
 			singleChatVisible: null,
 			textToSend: '',
@@ -19,10 +23,17 @@ var Chat = React.createClass({
 
 	componentDidMount: function(){
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
+		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
 	},
 
 	componentWillUnmount: function(){
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
+		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
+	},
+
+	onChatsUpdated: function(){
+		chats = ChatStore.getChats();
+		this.setState({chats: chats});
 	},
 	
 	onMessageAdded: function(){

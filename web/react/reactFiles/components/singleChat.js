@@ -23,16 +23,21 @@ var SingleChat = React.createClass({
 		else
 			visible = "";
 
+		var messages = [];
+		if(this.props.chat.messages && this.props.chat.messages.length > 0){
+			this.props.chat.messages.map(function(element){
+				time = "Ahora mismo";
+				messages.push(<SingleMessage key={element.messageId} message={element.message} time={time} user={this.props.chat.user} />);
+			}.bind(this))
+		}
 		return(				
 			<div id="singleChat" className={"singleChat " + visible}>
 				<div className="titleContainer">
-					<span>{this.props.chat.user.name}</span>
+					<span>{this.props.chat.user.nickname}</span>
 					<button className="closeButton" onClick={this.props.closeSingleChatFn}></button>
 				</div>
 				<ul className="chatMessages">
-				{this.props.chat.messages.map(function(element){
-					return <SingleMessage key={element.id} message={element} user={this.props.chat.user} />;
-				}.bind(this))}
+					{messages}
 				</ul>
 				<div className="inputArea">
 					<div className="text">

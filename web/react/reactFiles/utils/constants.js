@@ -8,12 +8,14 @@ const Constants = {
 	bogota: 'bogota',
 	genericProfile: 'profile',
 	consoles: consoles,
+	messageNumber: 20,
 	actionType: {
 		changeFilterState: 'change_filter_status',
 		changeSearchInput: 'change_search_input',
 		searchButtonClicked: 'change_button_clicked',
 		openCertainChat: 'open_certain_chat',
 		sendMessage: 'send_message',
+		chatOpen: 'chat_open',
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',

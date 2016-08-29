@@ -30,7 +30,14 @@ var Actions = {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.sendMessage,
 			chat_id: chat_id,
-			value
+			value: value,
+		});
+	},
+
+	chatOpen: function(id){
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.chatOpen,
+			value: id,
 		});
 	},
 

@@ -79,6 +79,7 @@ var Chat = React.createClass({
 				singleChatVisible: true,
 				textToSend: '',
 			});
+			Actions.chatOpen(id);
 		}
 	},
 

@@ -26471,6 +26471,7 @@ var Chat = React.createClass({
 				singleChatVisible: true,
 				textToSend: ''
 			});
+			Actions.chatOpen(id);
 		}
 	},
 
@@ -28350,6 +28351,26 @@ var _store = {
 	chats: []
 };
 
+var _retrieveMessages = function (chat) {
+	var promiseToReturn = new Promise((resolve, reject) => {
+		//retrive message
+		var messageListQuery = chat.createPreviousMessageListQuery();
+		var someVariable = true;
+		messageListQuery.load(Constants.messageNumber, someVariable, function (messageList, error) {
+			console.log('returned');
+			if (error) {
+				//do something
+				if (reject) {
+					reject(error);
+				}
+			} else {
+				resolve(messageList);
+			}
+		});
+	});
+	return promiseToReturn;
+};
+
 var ChatStore = assign({}, EventEmitter.prototype, {
 
 	getStore: function () {
@@ -28361,6 +28382,34 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			case Constants.actionType.sendMessage:
 				ChatStore.sendMessage(payload.chat_id, payload.value);
 				break;
+			case Constants.actionType.chatOpen:
+				ChatStore.chatOpen(payload.value);
+				break;
+		}
+	},
+
+	chatOpen: function (id) {
+		console.log(id);
+		//get chat
+		var chat = _store.chats.find(element => element.id === id);
+		if (chat != null) {
+			//has more than 1 message?
+			if (chat.messages.length <= 1) {
+				//is it full
+				if (chat.full === false) {
+					//if not, call retrive message
+					chat.updating = true;
+					//emit event
+					_retrieveMessages(chat).then(messageList => {
+						messageList.splice(0, 1);
+						console.log(messageList);
+						if (!messageList) console.log("no");
+						chat.messages.push.apply(chat.messages, messageList);
+					}).catch(error => {
+						console.error(error);
+					});
+				}
+			}
 		}
 	},
 
@@ -28430,6 +28479,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 							otherUser = chat.members[1];
 						}
 						chat.updating = false;
+						chat.full = false;
 						chat.user = otherUser;
 						return chat;
 					});
@@ -28494,7 +28544,14 @@ var Actions = {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.sendMessage,
 			chat_id: chat_id,
-			value
+			value: value
+		});
+	},
+
+	chatOpen: function (id) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.chatOpen,
+			value: id
 		});
 	}
 
@@ -28513,12 +28570,14 @@ const Constants = {
 	bogota: 'bogota',
 	genericProfile: 'profile',
 	consoles: consoles,
+	messageNumber: 20,
 	actionType: {
 		changeFilterState: 'change_filter_status',
 		changeSearchInput: 'change_search_input',
 		searchButtonClicked: 'change_button_clicked',
 		openCertainChat: 'open_certain_chat',
-		sendMessage: 'send_message'
+		sendMessage: 'send_message',
+		chatOpen: 'chat_open'
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',

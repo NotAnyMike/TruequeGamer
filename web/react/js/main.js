@@ -26587,7 +26587,6 @@ var ChatContainer = React.createClass({
 
 		singleChat = null;
 		if (this.props.activeChat != null && this.props.activeChat != "" && this.props.activeChat >= 0) {
-			console.log(this.props.activeChat);
 			singleChat = React.createElement(SingleChat, {
 				value: this.props.value,
 				visible: this.props.singleChatVisible,
@@ -26626,7 +26625,6 @@ var ChatList = React.createClass({
 	render: function () {
 		chats = [];
 		if (this.props.chats && this.props.chats.length != null && this.props.chats.length > 0) {
-			console.log(this.props.chats.length);
 			this.props.chats.map(function (element) {
 				var lastMessage = "";
 				if (element.lastMessage) {
@@ -27805,6 +27803,15 @@ var SingleChat = React.createClass({
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 
+		var loading;
+		if (this.props.chat.updating === true) {
+			loading = React.createElement(
+				'il',
+				null,
+				'Cargando...'
+			);
+		}
+
 		var messages = [];
 		if (this.props.chat.messages && this.props.chat.messages.length > 0) {
 			this.props.chat.messages.map(function (element) {
@@ -27828,6 +27835,7 @@ var SingleChat = React.createClass({
 			React.createElement(
 				'ul',
 				{ className: 'chatMessages' },
+				loading,
 				messages
 			),
 			React.createElement(
@@ -28355,9 +28363,9 @@ var _retrieveMessages = function (chat) {
 	var promiseToReturn = new Promise((resolve, reject) => {
 		//retrive message
 		var messageListQuery = chat.createPreviousMessageListQuery();
-		var someVariable = true;
-		messageListQuery.load(Constants.messageNumber, someVariable, function (messageList, error) {
-			console.log('returned');
+		var fromLast = true;
+		//messageListQuery.load(Constants.messageNumber, fromLast, function(messageList, error){
+		messageListQuery.load(chat.messages.length + Constants.messageNumber, fromLast, function (messageList, error) {
 			if (error) {
 				//do something
 				if (reject) {
@@ -28389,22 +28397,30 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 	},
 
 	chatOpen: function (id) {
-		console.log(id);
 		//get chat
 		var chat = _store.chats.find(element => element.id === id);
 		if (chat != null) {
 			//has more than 1 message?
-			if (chat.messages.length <= 1) {
+			if (chat.messages.length <= 1 || true) {
+				//to change
 				//is it full
 				if (chat.full === false) {
 					//if not, call retrive message
-					chat.updating = true;
-					//emit event
-					_retrieveMessages(chat).then(messageList => {
-						messageList.splice(0, 1);
-						console.log(messageList);
-						if (!messageList) console.log("no");
+					if (chat.updating !== true) {
+						chat.updating = true;
+						//emit event
+						this.emit(Constants.eventType.chatsUpdated);
+					}
+					let test = _retrieveMessages(chat).then(messageList => {
+						messageList.splice(0, chat.messages.length || 1);
 						chat.messages.push.apply(chat.messages, messageList);
+						if (messageList.length < Constants.messageNumber) {
+							chat.full = true;
+						}
+						if (chat.updating !== false) {
+							chat.updating = false;
+						}
+						this.emit(Constants.eventType.chatsUpdated);
 					}).catch(error => {
 						console.error(error);
 					});

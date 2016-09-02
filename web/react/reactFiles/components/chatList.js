@@ -12,7 +12,6 @@ var ChatList = React.createClass({
 	render: function(){
 		chats = [];
 		if(this.props.chats && this.props.chats.length != null && this.props.chats.length > 0){
-			console.log(this.props.chats.length)
 			this.props.chats.map(
 					function(element){
 						var lastMessage = "";

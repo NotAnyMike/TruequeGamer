@@ -42,8 +42,8 @@ var SingleChat = React.createClass({
 					<button className="closeButton" onClick={this.props.closeSingleChatFn}></button>
 				</div>
 				<ul className="chatMessages">
-					<li className={"loading" + loading}>Cargando...</li>
 					{messages}
+					<li className={"loading" + loading}>Cargando...</li>
 				</ul>
 				<div className="inputArea">
 					<div className="text">

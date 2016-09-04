@@ -27831,12 +27831,12 @@ var SingleChat = React.createClass({
 			React.createElement(
 				'ul',
 				{ className: 'chatMessages' },
+				messages,
 				React.createElement(
 					'li',
 					{ className: "loading" + loading },
 					'Cargando...'
-				),
-				messages
+				)
 			),
 			React.createElement(
 				'div',

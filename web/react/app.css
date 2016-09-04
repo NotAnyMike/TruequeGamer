@@ -1629,6 +1629,27 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   transition: background-color 150ms;
   width: 100%;
 }
+.chatList ul li.loading,
+.chatList .chatMessages li.loading {
+  display: inline-block;
+  font-size: 12px;
+  text-align: center;
+  -webkit-transition: opacity 150ms;
+  -moz-transition: opacity 150ms;
+  -o-transition: opacity 150ms;
+  -ms-transition: opacity 150ms;
+  transition: opacity 150ms;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.chatList ul li.loading.hide,
+.chatList .chatMessages li.loading.hide {
+  display: inline-block;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
 .chatList ul li figure,
 .chatList .chatMessages li figure {
   width: 60px;

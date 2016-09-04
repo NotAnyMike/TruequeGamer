@@ -27803,13 +27803,9 @@ var SingleChat = React.createClass({
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 
-		var loading;
-		if (this.props.chat.updating === true) {
-			loading = React.createElement(
-				'il',
-				null,
-				'Cargando...'
-			);
+		var loading = "";
+		if (this.props.chat.updating === false) {
+			loading = " hide";
 		}
 
 		var messages = [];
@@ -27835,7 +27831,11 @@ var SingleChat = React.createClass({
 			React.createElement(
 				'ul',
 				{ className: 'chatMessages' },
-				loading,
+				React.createElement(
+					'li',
+					{ className: "loading" + loading },
+					'Cargando...'
+				),
 				messages
 			),
 			React.createElement(

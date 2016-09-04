@@ -23,9 +23,9 @@ var SingleChat = React.createClass({
 		else
 			visible = "";
 
-		var loading;
-		if(this.props.chat.updating === true){
-			loading = <il>Cargando...</il>;
+		var loading = "";
+		if(this.props.chat.updating === false){
+			loading = " hide";
 		}
 
 		var messages = [];
@@ -42,7 +42,7 @@ var SingleChat = React.createClass({
 					<button className="closeButton" onClick={this.props.closeSingleChatFn}></button>
 				</div>
 				<ul className="chatMessages">
-					{loading}
+					<li className={"loading" + loading}>Cargando...</li>
 					{messages}
 				</ul>
 				<div className="inputArea">

@@ -611,6 +611,17 @@ button.extraFilterButton
 			transition: background-color 150ms
 			width: 100%			
 
+			&.loading
+				display: inline-block
+				font-size: 12px
+				text-align: center
+				transition: opacity 150ms
+				opacity: 1
+
+				&.hide
+					display: inline-block
+					opacity: 0
+
 			figure
 				width: 60px
 				height: 60px

@@ -91,12 +91,12 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	sendMessage: function(chat_id, value){
 		var index = _store.chats.indexOf(_store.chats.find(element => element.id === chat_id));
-		var id = 0;
+		var id = -1*index;
 		if(_store.chats[index].messages.length > 0){
 			id = _store.chats[index].messages[_store.chats[index].messages.length -1 ].id + 1;
 		}
-		_store.chats[index].messages.push({
-			id: id,
+		_store.chats[index].messages.unshift({
+			messageId: id,
 			message: value,
 			time: 'ahora mismo',
 			mine: true,
@@ -108,7 +108,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 					console.error(error);
 					return;
 			}
-			console.log(message);
+			_store.chats[index].messages[0] = message;
 		});
 	},
 

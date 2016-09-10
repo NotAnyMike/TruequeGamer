@@ -26586,7 +26586,8 @@ var ChatContainer = React.createClass({
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 
 		singleChat = null;
-		if (this.props.activeChat != null && this.props.activeChat != "" && this.props.activeChat >= 0) {
+		if (this.props.activeChat !== null && this.props.activeChat !== "" && this.props.activeChat >= 0) {
+			console.log('printing');
 			singleChat = React.createElement(SingleChat, {
 				value: this.props.value,
 				visible: this.props.singleChatVisible,

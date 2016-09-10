@@ -23,6 +23,17 @@ var _retrieveMessages = function(chat){
 					reject(error);
 				}
 			}else{
+				//add mine field
+				if(_store.user !== ""){
+					messageList.map(function(message){
+						if(parseInt(message.sender.userId,10) === _store.user.id){
+							message.mine = true;
+						}else{
+							message.mine = false;
+						}
+						return message;
+					});
+				}
 				resolve(messageList);
 			}
 		});
@@ -138,6 +149,11 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 								chat.id = chat.url.replace("sendbird_group_channel_","");
 								chat.messages = [];
 								if(chat.lastMessage){
+									if(parseInt(chat.lastMessage.sender.userId,10) === _store.user.id){
+										chat.lastMessage.mine = true;
+									}else{
+										chat.lastMessage.mine = false;
+									}
 									chat.messages.push(chat.lastMessage);
 								};
 								let otherUser = chat.members[0];

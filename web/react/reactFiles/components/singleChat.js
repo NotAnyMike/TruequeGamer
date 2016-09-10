@@ -32,7 +32,7 @@ var SingleChat = React.createClass({
 		if(this.props.chat.messages && this.props.chat.messages.length > 0){
 			this.props.chat.messages.map(function(element){
 				time = "Ahora mismo";
-				messages.push(<SingleMessage key={element.messageId} message={element.message} time={time} user={this.props.chat.user} />);
+				messages.push(<SingleMessage key={element.messageId} message={element.message} time={time} user={this.props.chat.user} mine={element.mine} />);
 			}.bind(this))
 		}
 		return(				

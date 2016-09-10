@@ -5,6 +5,7 @@ var SingleMessage = React.createClass({
 
 	propTypes: {
 		message: React.PropTypes.string.isRequired,
+		mine: React.PropTypes.bool.isRequired,
 		time: React.PropTypes.string.isRequired,
 		user: React.PropTypes.object.isRequired,
 	},
@@ -15,7 +16,7 @@ var SingleMessage = React.createClass({
 			img = Constants.genericProfile;
 		}
 		return (	
-			<li className={this.props.message.mine ? "own" : ""}>
+			<li className={this.props.mine ? "own" : ""}>
 				<figure><img src={"/img/min-" + img + ".png"} alt="" /></figure>
 				<span className="message">{this.props.message}</span>
 				<span className="time">{this.props.time}</span>

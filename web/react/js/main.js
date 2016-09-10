@@ -26587,7 +26587,6 @@ var ChatContainer = React.createClass({
 
 		singleChat = null;
 		if (this.props.activeChat !== null && this.props.activeChat !== "" && this.props.activeChat >= 0) {
-			console.log('printing');
 			singleChat = React.createElement(SingleChat, {
 				value: this.props.value,
 				visible: this.props.singleChatVisible,
@@ -27813,7 +27812,7 @@ var SingleChat = React.createClass({
 		if (this.props.chat.messages && this.props.chat.messages.length > 0) {
 			this.props.chat.messages.map(function (element) {
 				time = "Ahora mismo";
-				messages.push(React.createElement(SingleMessage, { key: element.messageId, message: element.message, time: time, user: this.props.chat.user }));
+				messages.push(React.createElement(SingleMessage, { key: element.messageId, message: element.message, time: time, user: this.props.chat.user, mine: element.mine }));
 			}.bind(this));
 		}
 		return React.createElement(
@@ -27870,6 +27869,7 @@ var SingleMessage = React.createClass({
 
 	propTypes: {
 		message: React.PropTypes.string.isRequired,
+		mine: React.PropTypes.bool.isRequired,
 		time: React.PropTypes.string.isRequired,
 		user: React.PropTypes.object.isRequired
 	},
@@ -27881,7 +27881,7 @@ var SingleMessage = React.createClass({
 		}
 		return React.createElement(
 			'li',
-			{ className: this.props.message.mine ? "own" : "" },
+			{ className: this.props.mine ? "own" : "" },
 			React.createElement(
 				'figure',
 				null,
@@ -28373,6 +28373,17 @@ var _retrieveMessages = function (chat) {
 					reject(error);
 				}
 			} else {
+				//add mine field
+				if (_store.user !== "") {
+					messageList.map(function (message) {
+						if (parseInt(message.sender.userId, 10) === _store.user.id) {
+							message.mine = true;
+						} else {
+							message.mine = false;
+						}
+						return message;
+					});
+				}
 				resolve(messageList);
 			}
 		});
@@ -28489,6 +28500,11 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						chat.id = chat.url.replace("sendbird_group_channel_", "");
 						chat.messages = [];
 						if (chat.lastMessage) {
+							if (parseInt(chat.lastMessage.sender.userId, 10) === _store.user.id) {
+								chat.lastMessage.mine = true;
+							} else {
+								chat.lastMessage.mine = false;
+							}
 							chat.messages.push(chat.lastMessage);
 						};
 						let otherUser = chat.members[0];

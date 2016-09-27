@@ -108,5 +108,6 @@ def create_auth_function(instance):
                 logger.error(errorMsg)
             
         elif errorCode != 0:
-            errorMsg = 'Error while creating user, some error different from "user already exists" found ... code: {0}, error: {1}'.format(e.code, dataError)
+            
+            errorMsg = 'Error while creating user, some error different from "user already exists" found ... code: {0}, error: {1}'.format(errorCode, jsonData)
             logger.error(errorMsg)

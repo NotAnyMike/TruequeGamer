@@ -26206,9 +26206,13 @@ var Chat = React.createClass({
 
 	getInitialState: function () {
 		var store = ChatStore.getStore();
+		var id = null;
+		if (store.chats.length > 0) {
+			id = store.chats[0].id;
+		}
 		return {
 			store: store,
-			activeChat: store.chats[0].id,
+			activeChat: id,
 			visible: null,
 			singleChatVisible: null,
 			textToSend: ''
@@ -26217,10 +26221,17 @@ var Chat = React.createClass({
 
 	componentDidMount: function () {
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
+		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
 	},
 
 	componentWillUnmount: function () {
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
+		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
+	},
+
+	onChatsUpdated: function () {
+		chats = ChatStore.getChats();
+		this.setState({ chats: chats });
 	},
 
 	onMessageAdded: function () {
@@ -26266,6 +26277,7 @@ var Chat = React.createClass({
 				singleChatVisible: true,
 				textToSend: ''
 			});
+			Actions.chatOpen(id);
 		}
 	},
 
@@ -26378,11 +26390,10 @@ var ChatContainer = React.createClass({
 	render: function () {
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
-		return React.createElement(
-			'section',
-			{ id: 'chat', className: "chatList " + visible },
-			React.createElement(ChatList, { chats: this.props.chats, closeChatFn: this.props.closeChatFn, openCertainChatFn: this.props.openCertainChatFn }),
-			React.createElement(SingleChat, {
+
+		singleChat = null;
+		if (this.props.activeChat !== null && this.props.activeChat !== "" && this.props.activeChat >= 0) {
+			singleChat = React.createElement(SingleChat, {
 				value: this.props.value,
 				visible: this.props.singleChatVisible,
 				chat: this.props.chats[this.props.activeChat],
@@ -26390,7 +26401,13 @@ var ChatContainer = React.createClass({
 				onChangeInputChatFn: this.props.onChangeInputChatFn,
 				sendFn: this.props.sendFn,
 				onKeyDownFn: this.props.onKeyDownFn
-			})
+			});
+		}
+		return React.createElement(
+			'section',
+			{ id: 'chat', className: "chatList " + visible },
+			React.createElement(ChatList, { chats: this.props.chats, closeChatFn: this.props.closeChatFn, openCertainChatFn: this.props.openCertainChatFn }),
+			singleChat
 		);
 	}
 });
@@ -26412,6 +26429,18 @@ var ChatList = React.createClass({
 	},
 
 	render: function () {
+		chats = [];
+		if (this.props.chats && this.props.chats.length != null && this.props.chats.length > 0) {
+			this.props.chats.map(function (element) {
+				var lastMessage = "";
+				if (element.lastMessage) {
+					lastMessage = element.lastMessage.message;
+				}
+				read = true;
+				if (element.unreadMessageCount > 0) read = false;
+				chats.push(React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: lastMessage, time: "Ya", read: read, openCertainChatFn: this.props.openCertainChatFn }));
+			}.bind(this));
+		}
 		return React.createElement(
 			'div',
 			{ className: 'container' },
@@ -26428,9 +26457,7 @@ var ChatList = React.createClass({
 			React.createElement(
 				'ul',
 				null,
-				this.props.chats.map(function (element) {
-					return React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: element.messages[0], openCertainChatFn: this.props.openCertainChatFn });
-				}.bind(this))
+				chats
 			),
 			React.createElement(
 				'div',
@@ -27134,10 +27161,11 @@ module.exports = React.createClass({
 });
 
 },{"../utils/constants.js":277,"./isotype.js":256,"./slogan.js":269,"react":239}],258:[function(require,module,exports){
-var React = require('react');
+var React = require('react'),
+    Constants = require('../utils/constants.js');
 
 var ItemChat = React.createClass({
-	displayName: "ItemChat",
+	displayName: 'ItemChat',
 
 
 	setInitialState: function () {
@@ -27146,37 +27174,43 @@ var ItemChat = React.createClass({
 
 	propTypes: {
 		user: React.PropTypes.object.isRequired,
-		message: React.PropTypes.object.isRequired,
+		message: React.PropTypes.string.isRequired,
+		time: React.PropTypes.string.isRequired,
+		read: React.PropTypes.bool.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
-		id: React.PropTypes.number.isRequired
+		id: React.PropTypes.string.isRequired
 	},
 
 	render: function () {
+		var img = this.props.user.pic;
+		if (!img) {
+			img = Constants.genericProfile;
+		}
 		return React.createElement(
-			"li",
-			{ className: this.props.message.read ? "" : "unread", onClick: () => this.props.openCertainChatFn(this.props.id) },
+			'li',
+			{ className: this.props.read ? "" : "unread", onClick: () => this.props.openCertainChatFn(this.props.id) },
 			React.createElement(
-				"figure",
+				'figure',
 				null,
-				React.createElement("img", { src: "/img/" + this.props.user.pic + ".png", alt: "" })
+				React.createElement('img', { src: "/img/" + img + ".png", alt: '' })
 			),
 			React.createElement(
-				"div",
-				{ className: "content" },
+				'div',
+				{ className: 'content' },
 				React.createElement(
-					"span",
-					{ className: "name" },
-					this.props.user.name
+					'span',
+					{ className: 'name' },
+					this.props.user.nickname
 				),
 				React.createElement(
-					"span",
-					{ className: "time" },
-					this.props.message.time
+					'span',
+					{ className: 'time' },
+					this.props.time
 				),
 				React.createElement(
-					"span",
-					{ className: "messageText" },
-					this.props.message.value
+					'span',
+					{ className: 'messageText' },
+					this.props.message
 				)
 			)
 		);
@@ -27186,7 +27220,7 @@ var ItemChat = React.createClass({
 
 module.exports = ItemChat;
 
-},{"react":239}],259:[function(require,module,exports){
+},{"../utils/constants.js":277,"react":239}],259:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27575,6 +27609,18 @@ var SingleChat = React.createClass({
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 
+		var loading = "";
+		if (this.props.chat.updating === false) {
+			loading = " hide";
+		}
+
+		var messages = [];
+		if (this.props.chat.messages && this.props.chat.messages.length > 0) {
+			this.props.chat.messages.map(function (element) {
+				time = "Ahora mismo";
+				messages.push(React.createElement(SingleMessage, { key: element.messageId, message: element.message, time: time, user: this.props.chat.user, mine: element.mine }));
+			}.bind(this));
+		}
 		return React.createElement(
 			'div',
 			{ id: 'singleChat', className: "singleChat " + visible },
@@ -27584,16 +27630,19 @@ var SingleChat = React.createClass({
 				React.createElement(
 					'span',
 					null,
-					this.props.chat.user.name
+					this.props.chat.user.nickname
 				),
 				React.createElement('button', { className: 'closeButton', onClick: this.props.closeSingleChatFn })
 			),
 			React.createElement(
 				'ul',
 				{ className: 'chatMessages' },
-				this.props.chat.messages.map(function (element) {
-					return React.createElement(SingleMessage, { key: element.id, message: element, user: this.props.chat.user });
-				}.bind(this))
+				messages,
+				React.createElement(
+					'li',
+					{ className: "loading" + loading },
+					'Cargando...'
+				)
 			),
 			React.createElement(
 				'div',
@@ -27617,35 +27666,42 @@ var SingleChat = React.createClass({
 module.exports = SingleChat;
 
 },{"./inputChat.js":255,"./singleMessage.js":268,"react":239}],268:[function(require,module,exports){
-var React = require('react');
+var React = require('react'),
+    Constants = require('../utils/constants.js');
 
 var SingleMessage = React.createClass({
-	displayName: "SingleMessage",
+	displayName: 'SingleMessage',
 
 
 	propTypes: {
-		message: React.PropTypes.object.isRequired,
+		message: React.PropTypes.string.isRequired,
+		mine: React.PropTypes.bool.isRequired,
+		time: React.PropTypes.string.isRequired,
 		user: React.PropTypes.object.isRequired
 	},
 
 	render: function () {
+		img = this.props.user.profileUrl;
+		if (!img || img === "") {
+			img = Constants.genericProfile;
+		}
 		return React.createElement(
-			"li",
-			{ className: this.props.message.mine ? "own" : "" },
+			'li',
+			{ className: this.props.mine ? "own" : "" },
 			React.createElement(
-				"figure",
+				'figure',
 				null,
-				React.createElement("img", { src: "/img/min-" + this.props.user.pic + ".png", alt: "" })
+				React.createElement('img', { src: "/img/min-" + img + ".png", alt: '' })
 			),
 			React.createElement(
-				"span",
-				{ className: "message" },
-				this.props.message.value
+				'span',
+				{ className: 'message' },
+				this.props.message
 			),
 			React.createElement(
-				"span",
-				{ className: "time" },
-				this.props.message.time
+				'span',
+				{ className: 'time' },
+				this.props.time
 			)
 		);
 	}
@@ -27653,7 +27709,7 @@ var SingleMessage = React.createClass({
 
 module.exports = SingleMessage;
 
-},{"react":239}],269:[function(require,module,exports){
+},{"../utils/constants.js":277,"react":239}],269:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -27792,6 +27848,7 @@ React.createElement(
 
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
+    ChatStore = require('./chatStore.js'),
     assign = require('object-assign');
 
 var AppDispatcher = require('../dispatcher.js');
@@ -27835,6 +27892,7 @@ if (self.fetch) {
 		} else {
 			_store.user = json;
 			_store.user.logged = true;
+			ChatStore.setUser(json);
 		}
 		AppStore.userUpdated();
 	});
@@ -28093,98 +28151,47 @@ AppDispatcher.register(function (payload) {
 
 module.exports = AppStore;
 
-},{"../dispatcher.js":272,"../utils/constants.js":277,"events":1,"object-assign":6}],275:[function(require,module,exports){
+},{"../dispatcher.js":272,"../utils/constants.js":277,"./chatStore.js":275,"events":1,"object-assign":6}],275:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
     assign = require('object-assign'),
     AppDispatcher = require('../dispatcher.js');
 
 var _store = {
-
 	unread: 3,
-	chats: [{
-		id: 1,
-		read: true,
-		user: {
-			name: 'Misty',
-			pic: 'profile1'
-		},
-		messages: [{
-			id: 1,
-			value: "Al fin si me conseguiste mis aletas de Gyrados? He escuchado que si alimentas a una Staryu con eso se vuelve más fuerte",
-			time: "hace 1h",
-			mine: false
-		}, {
-			id: 2,
-			value: "Pero el Gyrados está en peligro de extinción",
-			time: "hace 30m",
-			mine: true
-		}, {
-			id: 3,
-			value: 'y? solo dices eso para cobrarme más caro, te he visto venderlas en la plaza de pueblo paleta',
-			time: "hace 30m",
-			mine: false
-		}, {
-			id: 4,
-			value: 'hahahah te las dejaría en 30.000 y ya no te debo una bicicleta',
-			time: "hace 30m",
-			mine: true
-		}, {
-			id: 5,
-			value: 'me ves cara de idiota? te las compro en 15.000 y todavía me debes mi bicicleta! Y si no me vendes eso mañana le digo a tu madre que estas vendiendo cosas ilegales',
-			time: "hace 30m",
-			mine: false
-		}, {
-			id: 6,
-			value: 'Ok ok, pero no le digas a mi madre, no le gusta que la incomoden cuando está con el profesor',
-			time: "hace 30m",
-			mine: true
-		}]
-	}, {
-		id: 3,
-		read: true,
-		user: {
-			name: 'Gary Oak',
-			pic: 'profile2'
-		},
-		messages: [{
-			id: 0,
-			value: "Hola hermoso",
-			time: "hace 1h",
-			mine: false,
-			recived: true
-		}, {
-			id: 123,
-			value: "No sé cunato aguante si poder verte!!! <3",
-			time: "hace 1h",
-			mine: true,
-			recived: true
-		}, {
-			id: 2,
-			value: "No me dejes en leído!!!",
-			time: "hace 30m",
-			mine: true,
-			recived: true
-		}, {
-			id: 3,
-			value: "Estas con el maldito de Brook de nuevo?",
-			time: "hace 30m",
-			mine: true,
-			recived: true
-		}, {
-			id: 4,
-			value: "No amor, tú también me haces falta",
-			time: "hace 30m",
-			mine: false,
-			recived: true
-		}, {
-			id: 5,
-			value: "No puedo esperar que nuestro viaje pokemon comience, you know what I mean",
-			time: "hace 30m",
-			mine: true,
-			recived: true
-		}]
-	}]
+	user: "",
+	chats: []
+};
+
+var _retrieveMessages = function (chat) {
+	var promiseToReturn = new Promise((resolve, reject) => {
+		//retrive message
+		var messageListQuery = chat.createPreviousMessageListQuery();
+		var fromLast = true;
+		//messageListQuery.load(Constants.messageNumber, fromLast, function(messageList, error){
+		messageListQuery.load(chat.messages.length + Constants.messageNumber, fromLast, function (messageList, error) {
+			if (error) {
+				//do something
+				if (reject) {
+					reject(error);
+				}
+			} else {
+				//add mine field
+				if (_store.user !== "") {
+					messageList.map(function (message) {
+						if (parseInt(message.sender.userId, 10) === _store.user.id) {
+							message.mine = true;
+						} else {
+							message.mine = false;
+						}
+						return message;
+					});
+				}
+				resolve(messageList);
+			}
+		});
+	});
+	return promiseToReturn;
 };
 
 var ChatStore = assign({}, EventEmitter.prototype, {
@@ -28198,19 +28205,142 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			case Constants.actionType.sendMessage:
 				ChatStore.sendMessage(payload.chat_id, payload.value);
 				break;
+			case Constants.actionType.chatOpen:
+				ChatStore.chatOpen(payload.value);
+				break;
 		}
+	},
+
+	chatOpen: function (id) {
+		//get chat
+		var chat = _store.chats.find(element => element.id === id);
+		if (chat != null) {
+			//has more than 1 message?
+			if (chat.messages.length <= 1 || true) {
+				//to change
+				//is it full
+				if (chat.full === false) {
+					//if not, call retrive message
+					if (chat.updating !== true) {
+						chat.updating = true;
+						//emit event
+						this.emit(Constants.eventType.chatsUpdated);
+					}
+					let test = _retrieveMessages(chat).then(messageList => {
+						messageList.splice(0, chat.messages.length || 1);
+						chat.messages.push.apply(chat.messages, messageList);
+						if (messageList.length < Constants.messageNumber) {
+							chat.full = true;
+						}
+						if (chat.updating !== false) {
+							chat.updating = false;
+						}
+						this.emit(Constants.eventType.chatsUpdated);
+					}).catch(error => {
+						console.error(error);
+					});
+				}
+			}
+		}
+	},
+
+	addChatsUpdatedListener: function (callback) {
+		this.on(Constants.eventType.chatsUpdated, callback);
+	},
+
+	removeChatsUpdatedListener: function (callback) {
+		this.removeListener(Constants.eventType.chatsUpdated, callback);
 	},
 
 	sendMessage: function (chat_id, value) {
 		var index = _store.chats.indexOf(_store.chats.find(element => element.id === chat_id));
-		_store.chats[index].messages.push({
-			id: _store.chats[index].messages[_store.chats[index].messages.length - 1].id + 1,
-			value: value,
+		var id = -1 * index;
+		if (_store.chats[index].messages.length > 0) {
+			id = _store.chats[index].messages[_store.chats[index].messages.length - 1].id + 1;
+		}
+		_store.chats[index].messages.unshift({
+			messageId: id,
+			message: value,
 			time: 'ahora mismo',
 			mine: true,
 			recived: false
 		});
 		this.emit(Constants.eventType.messageAdded);
+		_store.chats[index].sendUserMessage(value, null, function (message, error) {
+			if (error) {
+				console.error(error);
+				return;
+			}
+			_store.chats[index].messages[0] = message;
+		});
+	},
+
+	setUser: function (user) {
+		_store.user = user;
+		this.run();
+	},
+
+	run: function () {
+		//Connect to the sendbird api and get the list for chats
+		var sb = new SendBird({
+
+			appId: "4094F42A-A4A3-4AB1-B71A-FCF72D92A0E3"
+		});
+
+		sb.connect(_store.user.id, _store.user.chat_token, function (user, error) {
+
+			//Creating new chat with truequeGamer fb account
+			var userIds = [_store.user.id, '2'];
+			sb.GroupChannel.createChannel(userIds, true, function (channel, error) {
+				if (error) {
+					console.log(error);
+				} else {
+					console.log(channel);
+				}
+			});
+
+			//Getting the list of group channels
+			var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
+			channelListQuery.includeEmpty = true; //change to false
+
+			if (channelListQuery.hasNext) {
+				channelListQuery.next(function (channelList, error) {
+					if (error) {
+						console.error(error);
+						return;
+					}
+
+					channelList.map(function (chat) {
+						chat.id = chat.url.replace("sendbird_group_channel_", "");
+						chat.messages = [];
+						if (chat.lastMessage) {
+							if (parseInt(chat.lastMessage.sender.userId, 10) === _store.user.id) {
+								chat.lastMessage.mine = true;
+							} else {
+								chat.lastMessage.mine = false;
+							}
+							chat.messages.push(chat.lastMessage);
+						};
+						let otherUser = chat.members[0];
+						if (otherUser.userId === user.userId) {
+							otherUser = chat.members[1];
+						}
+						chat.updating = false;
+						chat.full = false;
+						chat.user = otherUser;
+						return chat;
+					});
+					console.log(channelList);
+					_store.chats = channelList;
+				});
+			}
+		});
+
+		//Receiving messages		
+		var ChannelHandler = new sb.ChannelHandler();
+		ChannelHandler.onMessageReceived = function (channel, message) {
+			console.log(channel, message);
+		};
 	},
 
 	addOnMessageAddedListener: function (callback) {
@@ -28219,6 +28349,10 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	removeOnMessageAddedListener: function (callback) {
 		this.removeListener(Constants.eventType.messageAdded, callback);
+	},
+
+	getChats: function () {
+		return _store.chats;
 	}
 
 });
@@ -28263,7 +28397,14 @@ var Actions = {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.sendMessage,
 			chat_id: chat_id,
-			value
+			value: value
+		});
+	},
+
+	chatOpen: function (id) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.chatOpen,
+			value: id
 		});
 	}
 
@@ -28280,18 +28421,22 @@ const consoles = {
 
 const Constants = {
 	bogota: 'bogota',
+	genericProfile: 'profile',
 	consoles: consoles,
+	messageNumber: 20,
 	actionType: {
 		changeFilterState: 'change_filter_status',
 		changeSearchInput: 'change_search_input',
 		searchButtonClicked: 'change_button_clicked',
 		openCertainChat: 'open_certain_chat',
-		sendMessage: 'send_message'
+		sendMessage: 'send_message',
+		chatOpen: 'chat_open'
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
 		suggestionsRefresh: 'suggestions_refresh',
 		search: 'search',
+		chatsUpdated: 'chats_updated',
 		messageAdded: 'message_added',
 		userUpdated: 'user_update',
 		resultsUpdated: 'results_updated'

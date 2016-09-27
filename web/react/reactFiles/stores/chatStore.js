@@ -3,8 +3,7 @@ var EventEmitter = require('events').EventEmitter,
 		assign = require('object-assign'),
 		AppDispatcher = require('../dispatcher.js');
 
-var _store = {
-	
+var _store = {	
 	unread: 3,
 	user: "",
 	chats: [],
@@ -134,6 +133,17 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			    appId: "4094F42A-A4A3-4AB1-B71A-FCF72D92A0E3"
 		}); 
 		sb.connect(_store.user.id, _store.user.chat_token, function(user, error) {	
+
+			//Creating new chat with truequeGamer fb account
+			var userIds = [_store.user.id,'2'];
+			sb.GroupChannel.createChannel(userIds, true, function(channel, error){
+				if(error){
+					console.log(error);
+				}else{
+					console.log(channel);
+				}
+			});
+			
 			//Getting the list of group channels
 			var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
 			channelListQuery.includeEmpty = true; //change to false
@@ -170,6 +180,12 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 					});
 			}
 		});
+		
+		//Receiving messages		
+		var ChannelHandler = new sb.ChannelHandler();
+		ChannelHandler.onMessageReceived = function(channel, message){
+			console.log(channel, message);
+		}
 
 	},
 

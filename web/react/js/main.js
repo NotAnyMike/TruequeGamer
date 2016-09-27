@@ -28354,7 +28354,6 @@ var EventEmitter = require('events').EventEmitter,
     AppDispatcher = require('../dispatcher.js');
 
 var _store = {
-
 	unread: 3,
 	user: "",
 	chats: []
@@ -28521,6 +28520,12 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 				});
 			}
 		});
+
+		var ChannelHandler = new sb.ChannelHandler();
+
+		ChannelHandler.onMessageReceived = function (channel, message) {
+			console.log(channel, message);
+		};
 	},
 
 	addOnMessageAddedListener: function (callback) {

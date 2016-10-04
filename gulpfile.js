@@ -136,6 +136,7 @@ gulp.task('css-prod', ['stylus-dev'], function(){
 		.pipe(cleanCSS({advanced: false}))
 		.pipe(rename({suffix: '.min'}))
 		.pipe(gulp.dest('web/react'))
+		.pipe(gulp.dest('web/django/truequegamer/games/static/games'))
 		.pipe(gulp.dest('web/public'));
 });
 

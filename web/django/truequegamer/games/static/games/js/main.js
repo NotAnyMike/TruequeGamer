@@ -28290,14 +28290,16 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		sb.connect(_store.user.id, _store.user.chat_token, function (user, error) {
 
 			//Creating new chat with truequeGamer fb account
-			var userIds = [_store.user.id, '2'];
-			sb.GroupChannel.createChannel(userIds, true, function (channel, error) {
-				if (error) {
-					console.log(error);
-				} else {
-					console.log(channel);
-				}
-			});
+			//console.log("user id",_store.user.id);
+			//var userIds = [41,2];
+			//sb.GroupChannel.createChannelWithUserIds(userIds, true, function(channel, error){
+			//	if(error){
+			//		console.log(error);
+			//		return;
+			//	}
+			//	console.log(channel);
+			//	
+			//});
 
 			//Getting the list of group channels
 			var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
@@ -28337,10 +28339,15 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		});
 
 		//Receiving messages		
+		var UNIQUE_CHANNEL_HANDLER = "12";
 		var ChannelHandler = new sb.ChannelHandler();
+		let self = this;
 		ChannelHandler.onMessageReceived = function (channel, message) {
-			console.log(channel, message);
+			let chat = _store.chats.find(element => element.id === channel.id);
+			chat.messages.unshift(message);
+			self.emit(Constants.eventType.messageAdded);
 		};
+		sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
 	},
 
 	addOnMessageAddedListener: function (callback) {

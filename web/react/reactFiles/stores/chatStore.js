@@ -111,7 +111,11 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			mine: true,
 			recived: false
 		});
+
+		//Emiting event
 		this.emit(Constants.eventType.messageAdded);
+
+		//Sending the message
 		_store.chats[index].sendUserMessage(value, null, function(message, error){
 			if (error) {
 					console.error(error);

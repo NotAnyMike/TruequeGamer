@@ -33,6 +33,7 @@ def check_token(sender, request, user, **kwargs):
             create_auth_function(user)
         else:
             #Do nothing
+            print("check token");
             pass
     else:
         create_auth_function(user)

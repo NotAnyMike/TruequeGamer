@@ -29,8 +29,11 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 def CurrentUser(request):
     if request.method == "GET":
         user = request.user
-        serializer = CurrentUserSerializer(user, many=False)
-        return Response(serializer.data)
+        if user.is_anonymous():
+            return HttpResponse("Please log in", status=440);
+        else:
+            serializer = CurrentUserSerializer(user, many=False)
+            return Response(serializer.data)
 
     else: 
         return HttpResponse('Unauthorized', status=401)

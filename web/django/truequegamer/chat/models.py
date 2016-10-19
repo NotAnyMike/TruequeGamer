@@ -15,7 +15,6 @@ logger = logging.getLogger("chat.models")
 ################## user logged signal ##################
 
 def check_token(sender, request, user, **kwargs):
-    userAuth = None
     try:
         userAuth = UserAuth.objects.get(user = user)
     except UserAuth.DoesNotExist:
@@ -33,7 +32,6 @@ def check_token(sender, request, user, **kwargs):
             create_auth_function(user)
         else:
             #Do nothing
-            print("check token");
             pass
     else:
         create_auth_function(user)

@@ -15,6 +15,7 @@ logger = logging.getLogger("chat.models")
 ################## user logged signal ##################
 
 def check_token(sender, request, user, **kwargs):
+    userAuth = None
     try:
         userAuth = UserAuth.objects.get(user = user)
     except UserAuth.DoesNotExist:
@@ -74,9 +75,10 @@ def get_name(instance):
 def create_auth_function(instance):
     errorCode = 0;
     headers = {'Api-Token' : token.API_TOKEN}
+    nickname = get_name(instance) 
     values = {
         "user_id" : instance.pk,
-        "nickname" : get_name(instance),
+        "nickname" : nickname,
         "profile_url" : "",
         "issue_access_token" : True
     }

@@ -28275,6 +28275,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 				console.error(error);
 				return;
 			}
+			message.mine = true;
 			_store.chats[index].messages[0] = message;
 		});
 	},

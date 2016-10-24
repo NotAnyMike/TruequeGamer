@@ -26,16 +26,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'picture')
 
-class SearchUsersSerializer(serializers.ModelSerializer):
-    picture = serializers.SerializerMethodField()
-
-    def get_picture(self, user):
-        return data['picture']['data']['url']
-
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'picture')
-
 class CurrentUserSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()

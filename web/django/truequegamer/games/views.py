@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, SearchUsersSerializer
+from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer
 from games.models import Game
 
 
@@ -36,17 +36,6 @@ def CurrentUser(request):
             return Response(serializer.data)
 
     else: 
-        return HttpResponse('Unauthorized', status=401)
-
-@api_view(['GET'])
-def SearchUser(request, userName):
-    if request.method == "GET":
-        #Add filters to look for first and last name
-        #Restrict it to only users within the chat list
-        users = User.objects.filter(first_name__icontains=userName)
-        serializer = SearchUsersSerializer(users, many=True)
-        return Response(serializer.data)
-    else:
         return HttpResponse('Unauthorized', status=401)
 
 @api_view(['GET'])

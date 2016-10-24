@@ -7,6 +7,7 @@ var _store = {
 	unread: 3,
 	user: "",
 	chats: [],
+	searchChatValue: "",
 };
 
 var _retrieveMessages = function(chat){
@@ -14,7 +15,6 @@ var _retrieveMessages = function(chat){
 		//retrive message
 		var messageListQuery = chat.createPreviousMessageListQuery();
 		var fromLast = true;
-		//messageListQuery.load(Constants.messageNumber, fromLast, function(messageList, error){
 		messageListQuery.load(chat.messages.length + Constants.messageNumber, fromLast, function(messageList, error){
 			if(error){
 				//do something
@@ -152,7 +152,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			
 			//Getting the list of group channels
 			var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
-			channelListQuery.includeEmpty = true; //change to false
+			channelListQuery.includeEmpty = false; //must be false
 
 			if (channelListQuery.hasNext) {
 					channelListQuery.next(function(channelList, error){
@@ -210,6 +210,14 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	getChats: function(){
 		return _store.chats;
+	},
+
+	getSearchChatValue: function(){
+		return _store.searchChatValue;
+	},
+
+	setSearchChatValue: function(value){
+		_store.searchChatValue = value;
 	},
 
 });

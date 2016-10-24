@@ -109,6 +109,21 @@ var Chat = React.createClass({
 		}
 	},
 
+	onSearchChatFn: function(){
+		//what to do when the search button on the chats is clicked
+		var valueToSearch = ChatStore.getSearchChatValue();
+		console.log('search ' + valueToSearch);
+		//ALL THE LOGIC GOES HERE
+
+		//filter function
+		var containes = this.state.store.chats.find(chat => chat.members.find(member => member.nickname.indexOf(valueToSearch) >= 0));
+		console.log(containes)
+	},
+
+	onSearchChatValueChange: function(value){
+		ChatStore.setSearchChatValue(value);	
+	},
+
 	render: function(){		
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
 		return (
@@ -126,6 +141,8 @@ var Chat = React.createClass({
 					sendFn={this.sendFn} 
 					onKeyDownFn={this.onKeyDownFn} 
 					value={this.state.textToSend} 
+					onSearchChatFn={this.onSearchChatFn}
+					onSearchChatValueChangeFn={this.onSearchChatValueChange}
 				/>
 			</div>
 		);

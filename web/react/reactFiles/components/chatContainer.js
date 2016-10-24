@@ -15,6 +15,8 @@ var ChatContainer = React.createClass({
 		sendFn: React.PropTypes.func.isRequired,
 		onChangeInputChatFn: React.PropTypes.func.isRequired,
 		onKeyDownFn: React.PropTypes.func.isRequired,
+		onSearchChatFn: React.PropTypes.func.isRequired,
+		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
 	},
 
 	render: function(){
@@ -42,7 +44,13 @@ var ChatContainer = React.createClass({
 		}
 		return (
 			<section id="chat" className={"chatList "+ visible}>
-				<ChatList chats={this.props.chats} closeChatFn={this.props.closeChatFn} openCertainChatFn={this.props.openCertainChatFn}/>
+				<ChatList 
+					chats={this.props.chats}
+					closeChatFn={this.props.closeChatFn} 
+					openCertainChatFn={this.props.openCertainChatFn}
+					onSearchChatFn={this.props.onSearchChatFn}
+					onSearchChatValueChangeFn={this.props.onSearchChatValueChangeFn}
+				/>
 				{singleChat}
 			</section>
 		)

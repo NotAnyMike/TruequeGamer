@@ -7,6 +7,19 @@ var ChatList = React.createClass({
 		chats: React.PropTypes.array.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
+		onSearchChatFn: React.PropTypes.func.isRequired,
+		onSearchChatValueChange: React.PropTypes.func.isRequired,
+	},
+
+	onSearchChatChangeFn: function(e){
+		this.props.onSearchChatValueChangeFn(e.target.value);
+	},
+
+	onKeyDown: function(e){
+		console.log(e.keyCode);
+		if(e.keyCode === 13){
+			this.props.onSearchChatFn();
+		}
 	},
 
 	render: function(){
@@ -23,6 +36,7 @@ var ChatList = React.createClass({
 						chats.push(<ItemChat id={element.id} key={element.id} user={element.user} message={lastMessage} time={"Ya"} read={read} openCertainChatFn={this.props.openCertainChatFn}/>);
 				}.bind(this))
 		}
+
 		return (			
 			<div className="container">
 				<div className="titleContainer">
@@ -33,8 +47,11 @@ var ChatList = React.createClass({
 					{chats}
 				</ul>
 				<div className="searchArea">
-					<input type="text" placeholder="Buscar perfil"/>
-					<button className="searchChatButton searchButton"></button>
+					<input type="text" placeholder="Buscar perfil" 
+						onChange={this.onSearchChatChangeFn}
+						onKeyDown={this.onKeyDown}
+					/>
+					<button className="searchChatButton searchButton" onClick={this.props.onSearchChatFn}></button>
 				</div>
 			</div>
 		);

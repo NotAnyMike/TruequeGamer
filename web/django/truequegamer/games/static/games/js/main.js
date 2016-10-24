@@ -26307,6 +26307,21 @@ var Chat = React.createClass({
 		}
 	},
 
+	onSearchChatFn: function () {
+		//what to do when the search button on the chats is clicked
+		var valueToSearch = ChatStore.getSearchChatValue();
+		console.log('search ' + valueToSearch);
+		//ALL THE LOGIC GOES HERE
+
+		//filter function
+		var containes = this.state.store.chats.find(chat => chat.members.find(member => member.nickname.indexOf(valueToSearch) >= 0));
+		console.log(containes);
+	},
+
+	onSearchChatValueChange: function (value) {
+		ChatStore.setSearchChatValue(value);
+	},
+
 	render: function () {
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
 		return React.createElement(
@@ -26324,7 +26339,9 @@ var Chat = React.createClass({
 				onChangeInputChatFn: this.onChangeInputChatFn,
 				sendFn: this.sendFn,
 				onKeyDownFn: this.onKeyDownFn,
-				value: this.state.textToSend
+				value: this.state.textToSend,
+				onSearchChatFn: this.onSearchChatFn,
+				onSearchChatValueChangeFn: this.onSearchChatValueChange
 			})
 		);
 	}
@@ -26384,7 +26401,9 @@ var ChatContainer = React.createClass({
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
 		onChangeInputChatFn: React.PropTypes.func.isRequired,
-		onKeyDownFn: React.PropTypes.func.isRequired
+		onKeyDownFn: React.PropTypes.func.isRequired,
+		onSearchChatFn: React.PropTypes.func.isRequired,
+		onSearchChatValueChangeFn: React.PropTypes.func.isRequired
 	},
 
 	render: function () {
@@ -26406,7 +26425,13 @@ var ChatContainer = React.createClass({
 		return React.createElement(
 			'section',
 			{ id: 'chat', className: "chatList " + visible },
-			React.createElement(ChatList, { chats: this.props.chats, closeChatFn: this.props.closeChatFn, openCertainChatFn: this.props.openCertainChatFn }),
+			React.createElement(ChatList, {
+				chats: this.props.chats,
+				closeChatFn: this.props.closeChatFn,
+				openCertainChatFn: this.props.openCertainChatFn,
+				onSearchChatFn: this.props.onSearchChatFn,
+				onSearchChatValueChangeFn: this.props.onSearchChatValueChangeFn
+			}),
 			singleChat
 		);
 	}
@@ -26425,7 +26450,20 @@ var ChatList = React.createClass({
 	propTypes: {
 		chats: React.PropTypes.array.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
-		openCertainChatFn: React.PropTypes.func.isRequired
+		openCertainChatFn: React.PropTypes.func.isRequired,
+		onSearchChatFn: React.PropTypes.func.isRequired,
+		onSearchChatValueChange: React.PropTypes.func.isRequired
+	},
+
+	onSearchChatChangeFn: function (e) {
+		this.props.onSearchChatValueChangeFn(e.target.value);
+	},
+
+	onKeyDown: function (e) {
+		console.log(e.keyCode);
+		if (e.keyCode === 13) {
+			this.props.onSearchChatFn();
+		}
 	},
 
 	render: function () {
@@ -26441,6 +26479,7 @@ var ChatList = React.createClass({
 				chats.push(React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: lastMessage, time: "Ya", read: read, openCertainChatFn: this.props.openCertainChatFn }));
 			}.bind(this));
 		}
+
 		return React.createElement(
 			'div',
 			{ className: 'container' },
@@ -26462,8 +26501,11 @@ var ChatList = React.createClass({
 			React.createElement(
 				'div',
 				{ className: 'searchArea' },
-				React.createElement('input', { type: 'text', placeholder: 'Buscar perfil' }),
-				React.createElement('button', { className: 'searchChatButton searchButton' })
+				React.createElement('input', { type: 'text', placeholder: 'Buscar perfil',
+					onChange: this.onSearchChatChangeFn,
+					onKeyDown: this.onKeyDown
+				}),
+				React.createElement('button', { className: 'searchChatButton searchButton', onClick: this.props.onSearchChatFn })
 			)
 		);
 	}
@@ -28160,7 +28202,8 @@ var EventEmitter = require('events').EventEmitter,
 var _store = {
 	unread: 3,
 	user: "",
-	chats: []
+	chats: [],
+	searchChatValue: ""
 };
 
 var _retrieveMessages = function (chat) {
@@ -28168,7 +28211,6 @@ var _retrieveMessages = function (chat) {
 		//retrive message
 		var messageListQuery = chat.createPreviousMessageListQuery();
 		var fromLast = true;
-		//messageListQuery.load(Constants.messageNumber, fromLast, function(messageList, error){
 		messageListQuery.load(chat.messages.length + Constants.messageNumber, fromLast, function (messageList, error) {
 			if (error) {
 				//do something
@@ -28308,7 +28350,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 			//Getting the list of group channels
 			var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
-			channelListQuery.includeEmpty = true; //change to false
+			channelListQuery.includeEmpty = false; //must be false
 
 			if (channelListQuery.hasNext) {
 				channelListQuery.next(function (channelList, error) {
@@ -28365,6 +28407,14 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	getChats: function () {
 		return _store.chats;
+	},
+
+	getSearchChatValue: function () {
+		return _store.searchChatValue;
+	},
+
+	setSearchChatValue: function (value) {
+		_store.searchChatValue = value;
 	}
 
 });

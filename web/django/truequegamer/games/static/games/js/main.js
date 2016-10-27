@@ -26215,7 +26215,9 @@ var Chat = React.createClass({
 			activeChat: id,
 			visible: null,
 			singleChatVisible: null,
-			textToSend: ''
+			textToSend: '',
+			searchingUser: false,
+			filteredChats: null
 		};
 	},
 
@@ -26310,13 +26312,22 @@ var Chat = React.createClass({
 	onSearchChatFn: function () {
 		//what to do when the search button on the chats is clicked
 		var valueToSearch = ChatStore.getSearchChatValue();
-		console.log('search ' + valueToSearch);
 
-		//filter function, it returns elements which have at least one member with the same nickname (all in lowercase) and different id from the user logged in
-		var containes = this.state.store.chats.filter(chat => {
-			return !!chat.members.find(member => member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id);
-		});
-		console.log(containes);
+		if (valueToSearch === "" || valueToSearch == null) {
+			this.setState({
+				searchingChat: false
+			});
+		} else {
+			//filter function, it returns elements which have at least one member with the same nickname (all in lowercase) and different id from the user logged in
+			var filteredChats = this.state.store.chats.filter(chat => {
+				return !!chat.members.find(member => member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id);
+			});
+			console.log(filteredChats);
+			this.setState({
+				searchingChat: true,
+				filteredChats: filteredChats
+			});
+		}
 	},
 
 	onSearchChatValueChange: function (value) {
@@ -26325,6 +26336,8 @@ var Chat = React.createClass({
 
 	render: function () {
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
+		var chats = this.state.searchingChat ? this.state.filteredChats : this.state.store.chats;
+
 		return React.createElement(
 			'div',
 			null,
@@ -26332,12 +26345,16 @@ var Chat = React.createClass({
 			React.createElement(ChatContainer, {
 				visible: this.state.visible,
 				singleChatVisible: this.state.singleChatVisible,
-				chats: this.state.store.chats,
+				chats: chats,
+				searchingChat: this.state.searchingChat,
 				activeChat: activeChat,
 				closeSingleChatFn: this.closeSingleChatFn,
 				closeChatFn: this.closeChatFn,
 				openCertainChatFn: this.openCertainChatFn,
 				onChangeInputChatFn: this.onChangeInputChatFn,
+				searchingChat: this.state.searchingChat,
+				searchingChat: this.state.searchingChat,
+				searchingChat: this.state.searchingCha,
 				sendFn: this.sendFn,
 				onKeyDownFn: this.onKeyDownFn,
 				value: this.state.textToSend,
@@ -26397,6 +26414,7 @@ var ChatContainer = React.createClass({
 		activeChat: React.PropTypes.number,
 		visible: React.PropTypes.bool,
 		singleChatVisible: React.PropTypes.bool,
+		searchingChat: React.PropTypes.bool.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
@@ -26428,6 +26446,7 @@ var ChatContainer = React.createClass({
 			{ id: 'chat', className: "chatList " + visible },
 			React.createElement(ChatList, {
 				chats: this.props.chats,
+				searchingChats: this.props.searchingChat,
 				closeChatFn: this.props.closeChatFn,
 				openCertainChatFn: this.props.openCertainChatFn,
 				onSearchChatFn: this.props.onSearchChatFn,
@@ -26450,6 +26469,7 @@ var ChatList = React.createClass({
 
 	propTypes: {
 		chats: React.PropTypes.array.isRequired,
+		searchingChat: React.PropTypes.bool.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		onSearchChatFn: React.PropTypes.func.isRequired,
@@ -26479,6 +26499,20 @@ var ChatList = React.createClass({
 				if (element.unreadMessageCount > 0) read = false;
 				chats.push(React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: lastMessage, time: "Ya", read: read, openCertainChatFn: this.props.openCertainChatFn }));
 			}.bind(this));
+		} else {
+			if (this.props.searchingChat) {
+				chats.push(React.createElement(
+					'li',
+					null,
+					'No tienes chats'
+				));
+			} else {
+				chats.push(React.createElement(
+					'li',
+					null,
+					'No hay nadie con ese nombre en tus chats :('
+				));
+			}
 		}
 
 		return React.createElement(

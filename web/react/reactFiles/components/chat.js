@@ -18,6 +18,8 @@ var Chat = React.createClass({
 			visible: null,
 			singleChatVisible: null,
 			textToSend: '',
+			searchingUser: false,
+			filteredChats: null,
 		});
 	},
 
@@ -112,13 +114,22 @@ var Chat = React.createClass({
 	onSearchChatFn: function(){
 		//what to do when the search button on the chats is clicked
 		var valueToSearch = ChatStore.getSearchChatValue();
-		console.log('search ' + valueToSearch);
 
-		//filter function, it returns elements which have at least one member with the same nickname (all in lowercase) and different id from the user logged in
-		var containes = this.state.store.chats.filter((chat) => {return !!chat.members.find(member => (
-			member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id
-		))});
-		console.log(containes)
+		if(valueToSearch === "" || valueToSearch == null){
+			this.setState({
+				searchingChat: false
+			});
+		}else{
+			//filter function, it returns elements which have at least one member with the same nickname (all in lowercase) and different id from the user logged in
+			var filteredChats = this.state.store.chats.filter((chat) => {return !!chat.members.find(member => (
+				member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id
+			))});
+			console.log(filteredChats);
+			this.setState({
+				searchingChat: true,
+				filteredChats: filteredChats,
+			});
+		}
 	},
 
 	onSearchChatValueChange: function(value){
@@ -127,18 +138,24 @@ var Chat = React.createClass({
 
 	render: function(){		
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
+		var chats = (this.state.searchingChat ? this.state.filteredChats : this.state.store.chats);
+
 		return (
 			<div>
 				<ChatBubble unread={this.state.store.unread} showChatFn={this.showChatFn}/>
 				<ChatContainer 
 					visible={this.state.visible} 
 					singleChatVisible={this.state.singleChatVisible} 
-					chats={this.state.store.chats} 
+					chats={chats} 
+					searchingChat={this.state.searchingChat}
 					activeChat={activeChat} 
 					closeSingleChatFn={this.closeSingleChatFn} 
 					closeChatFn={this.closeChatFn} 
 					openCertainChatFn={this.openCertainChatFn} 
 					onChangeInputChatFn={this.onChangeInputChatFn} 
+					searchingChat={this.state.searchingChat}
+					searchingChat={this.state.searchingChat}
+					searchingChat={this.state.searchingCha}
 					sendFn={this.sendFn} 
 					onKeyDownFn={this.onKeyDownFn} 
 					value={this.state.textToSend} 

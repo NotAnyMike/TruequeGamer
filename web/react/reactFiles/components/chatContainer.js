@@ -9,6 +9,7 @@ var ChatContainer = React.createClass({
 		activeChat: React.PropTypes.number,
 		visible: React.PropTypes.bool,
 		singleChatVisible: React.PropTypes.bool,
+		searchingChat: React.PropTypes.bool.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
@@ -46,6 +47,7 @@ var ChatContainer = React.createClass({
 			<section id="chat" className={"chatList "+ visible}>
 				<ChatList 
 					chats={this.props.chats}
+					searchingChats={this.props.searchingChat}
 					closeChatFn={this.props.closeChatFn} 
 					openCertainChatFn={this.props.openCertainChatFn}
 					onSearchChatFn={this.props.onSearchChatFn}

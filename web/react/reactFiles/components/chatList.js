@@ -5,6 +5,7 @@ var ChatList = React.createClass({
 	
 	propTypes: {
 		chats: React.PropTypes.array.isRequired,
+		searchingChat: React.PropTypes.bool.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		onSearchChatFn: React.PropTypes.func.isRequired,
@@ -35,6 +36,12 @@ var ChatList = React.createClass({
 						if(element.unreadMessageCount > 0) read = false;
 						chats.push(<ItemChat id={element.id} key={element.id} user={element.user} message={lastMessage} time={"Ya"} read={read} openCertainChatFn={this.props.openCertainChatFn}/>);
 				}.bind(this))
+		}else{
+			if(this.props.searchingChat){
+				chats.push(<li>No tienes chats</li>);
+			}else{
+				chats.push(<li>No hay nadie con ese nombre en tus chats :(</li>);
+			}
 		}
 
 		return (			

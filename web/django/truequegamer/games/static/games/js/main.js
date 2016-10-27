@@ -26311,10 +26311,11 @@ var Chat = React.createClass({
 		//what to do when the search button on the chats is clicked
 		var valueToSearch = ChatStore.getSearchChatValue();
 		console.log('search ' + valueToSearch);
-		//ALL THE LOGIC GOES HERE
 
-		//filter function
-		var containes = this.state.store.chats.find(chat => chat.members.find(member => member.nickname.indexOf(valueToSearch) >= 0));
+		//filter function, it returns elements which have at least one member with the same nickname (all in lowercase) and different id from the user logged in
+		var containes = this.state.store.chats.filter(chat => {
+			return !!chat.members.find(member => member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id);
+		});
 		console.log(containes);
 	},
 

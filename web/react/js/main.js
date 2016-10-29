@@ -26409,7 +26409,9 @@ var Chat = React.createClass({
 			activeChat: id,
 			visible: null,
 			singleChatVisible: null,
-			textToSend: ''
+			textToSend: '',
+			searchingUser: false,
+			filteredChats: null
 		};
 	},
 
@@ -26501,8 +26503,36 @@ var Chat = React.createClass({
 		}
 	},
 
+	onSearchChatFn: function () {
+		//what to do when the search button on the chats is clicked
+		var valueToSearch = ChatStore.getSearchChatValue();
+
+		if (valueToSearch === "" || valueToSearch == null) {
+			this.setState({
+				searchingChat: false
+			});
+		} else {
+			//filter function, it returns elements which have at least one member with the same nickname (all in lowercase) and different id from the user logged in
+			var filteredChats = this.state.store.chats.filter(chat => {
+				return !!chat.members.find(member => member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id);
+			});
+			console.log(filteredChats);
+			this.setState({
+				searchingChat: true,
+				filteredChats: filteredChats
+			});
+		}
+	},
+
+	onSearchChatValueChange: function (value) {
+		ChatStore.setSearchChatValue(value);
+		this.onSearchChatFn();
+	},
+
 	render: function () {
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
+		var chats = this.state.searchingChat ? this.state.filteredChats : this.state.store.chats;
+
 		return React.createElement(
 			'div',
 			null,
@@ -26510,15 +26540,21 @@ var Chat = React.createClass({
 			React.createElement(ChatContainer, {
 				visible: this.state.visible,
 				singleChatVisible: this.state.singleChatVisible,
-				chats: this.state.store.chats,
+				chats: chats,
+				searchingChat: this.state.searchingChat,
 				activeChat: activeChat,
 				closeSingleChatFn: this.closeSingleChatFn,
 				closeChatFn: this.closeChatFn,
 				openCertainChatFn: this.openCertainChatFn,
 				onChangeInputChatFn: this.onChangeInputChatFn,
+				searchingChat: this.state.searchingChat,
+				searchingChat: this.state.searchingChat,
+				searchingChat: this.state.searchingCha,
 				sendFn: this.sendFn,
 				onKeyDownFn: this.onKeyDownFn,
-				value: this.state.textToSend
+				value: this.state.textToSend,
+				onSearchChatFn: this.onSearchChatFn,
+				onSearchChatValueChangeFn: this.onSearchChatValueChange
 			})
 		);
 	}
@@ -26573,12 +26609,15 @@ var ChatContainer = React.createClass({
 		activeChat: React.PropTypes.number,
 		visible: React.PropTypes.bool,
 		singleChatVisible: React.PropTypes.bool,
+		searchingChat: React.PropTypes.bool.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
 		onChangeInputChatFn: React.PropTypes.func.isRequired,
-		onKeyDownFn: React.PropTypes.func.isRequired
+		onKeyDownFn: React.PropTypes.func.isRequired,
+		onSearchChatFn: React.PropTypes.func.isRequired,
+		onSearchChatValueChangeFn: React.PropTypes.func.isRequired
 	},
 
 	render: function () {
@@ -26600,7 +26639,14 @@ var ChatContainer = React.createClass({
 		return React.createElement(
 			'section',
 			{ id: 'chat', className: "chatList " + visible },
-			React.createElement(ChatList, { chats: this.props.chats, closeChatFn: this.props.closeChatFn, openCertainChatFn: this.props.openCertainChatFn }),
+			React.createElement(ChatList, {
+				chats: this.props.chats,
+				searchingChats: this.props.searchingChat,
+				closeChatFn: this.props.closeChatFn,
+				openCertainChatFn: this.props.openCertainChatFn,
+				onSearchChatFn: this.props.onSearchChatFn,
+				onSearchChatValueChangeFn: this.props.onSearchChatValueChangeFn
+			}),
 			singleChat
 		);
 	}
@@ -26618,8 +26664,22 @@ var ChatList = React.createClass({
 
 	propTypes: {
 		chats: React.PropTypes.array.isRequired,
+		searchingChat: React.PropTypes.bool.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
-		openCertainChatFn: React.PropTypes.func.isRequired
+		openCertainChatFn: React.PropTypes.func.isRequired,
+		onSearchChatFn: React.PropTypes.func.isRequired,
+		onSearchChatValueChange: React.PropTypes.func.isRequired
+	},
+
+	onSearchChatChangeFn: function (e) {
+		this.props.onSearchChatValueChangeFn(e.target.value);
+	},
+
+	onKeyDown: function (e) {
+		console.log(e.keyCode);
+		if (e.keyCode === 13) {
+			this.props.onSearchChatFn();
+		}
 	},
 
 	render: function () {
@@ -26634,7 +26694,22 @@ var ChatList = React.createClass({
 				if (element.unreadMessageCount > 0) read = false;
 				chats.push(React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: lastMessage, time: "Ya", read: read, openCertainChatFn: this.props.openCertainChatFn }));
 			}.bind(this));
+		} else {
+			if (this.props.searchingChat) {
+				chats.push(React.createElement(
+					'li',
+					null,
+					'No tienes chats'
+				));
+			} else {
+				chats.push(React.createElement(
+					'li',
+					null,
+					'No hay nadie con ese nombre en tus chats :('
+				));
+			}
 		}
+
 		return React.createElement(
 			'div',
 			{ className: 'container' },
@@ -26656,8 +26731,12 @@ var ChatList = React.createClass({
 			React.createElement(
 				'div',
 				{ className: 'searchArea' },
-				React.createElement('input', { type: 'text', placeholder: 'Buscar perfil' }),
-				React.createElement('button', { className: 'searchChatButton searchButton' })
+				React.createElement('input', { type: 'text', placeholder: 'Buscar perfil',
+					onChange: this.onSearchChatChangeFn,
+					onKeyDown: this.onKeyDown
+				}),
+				React.createElement('button', { className: 'closeButton' }),
+				React.createElement('button', { className: 'searchChatButton searchButton', onClick: this.props.onSearchChatFn })
 			)
 		);
 	}
@@ -28356,7 +28435,8 @@ var EventEmitter = require('events').EventEmitter,
 var _store = {
 	unread: 3,
 	user: "",
-	chats: []
+	chats: [],
+	searchChatValue: ""
 };
 
 var _retrieveMessages = function (chat) {
@@ -28364,7 +28444,6 @@ var _retrieveMessages = function (chat) {
 		//retrive message
 		var messageListQuery = chat.createPreviousMessageListQuery();
 		var fromLast = true;
-		//messageListQuery.load(Constants.messageNumber, fromLast, function(messageList, error){
 		messageListQuery.load(chat.messages.length + Constants.messageNumber, fromLast, function (messageList, error) {
 			if (error) {
 				//do something
@@ -28461,12 +28540,17 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			mine: true,
 			recived: false
 		});
+
+		//Emiting event
 		this.emit(Constants.eventType.messageAdded);
+
+		//Sending the message
 		_store.chats[index].sendUserMessage(value, null, function (message, error) {
 			if (error) {
 				console.error(error);
 				return;
 			}
+			message.mine = true;
 			_store.chats[index].messages[0] = message;
 		});
 	},
@@ -28484,9 +28568,22 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		});
 
 		sb.connect(_store.user.id, _store.user.chat_token, function (user, error) {
+
+			//Creating new chat with truequeGamer fb account
+			//console.log("user id",_store.user.id);
+			//var userIds = [41,2];
+			//sb.GroupChannel.createChannelWithUserIds(userIds, true, function(channel, error){
+			//	if(error){
+			//		console.log(error);
+			//		return;
+			//	}
+			//	console.log(channel);
+			//	
+			//});
+
 			//Getting the list of group channels
 			var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
-			channelListQuery.includeEmpty = true; //change to false
+			channelListQuery.includeEmpty = false; //must be false
 
 			if (channelListQuery.hasNext) {
 				channelListQuery.next(function (channelList, error) {
@@ -28521,11 +28618,16 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			}
 		});
 
+		//Receiving messages		
+		var UNIQUE_CHANNEL_HANDLER = "12";
 		var ChannelHandler = new sb.ChannelHandler();
-
+		let self = this;
 		ChannelHandler.onMessageReceived = function (channel, message) {
-			console.log(channel, message);
+			let chat = _store.chats.find(element => element.id === channel.id);
+			chat.messages.unshift(message);
+			self.emit(Constants.eventType.messageAdded);
 		};
+		sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
 	},
 
 	addOnMessageAddedListener: function (callback) {
@@ -28538,6 +28640,14 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	getChats: function () {
 		return _store.chats;
+	},
+
+	getSearchChatValue: function () {
+		return _store.searchChatValue;
+	},
+
+	setSearchChatValue: function (value) {
+		_store.searchChatValue = value;
 	}
 
 });

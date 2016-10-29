@@ -1,13 +1,1 @@
-Miércoles:  Solving problem when reatriving user information through api when the user is not logged in
-Jueves: Solving bug #26: problem that didn't allowed to send messages cuz it was signed as a guest
-Viernes: Bug #27 solved: Error recognizing message's owner
-Viernes: Starting to create the searchUser api: Working on the interface
-Sábado: Creación del serializador y la vista para SearchUser API
-Domingo: Nada
-Lunes: Deshaciendo lo del sábado
-Lunes: Creating fucntion to get the chats with the nicknames matching the one searching
-Lunes: Deleting #29 creating task #31 
-Martes: nada
-Miércoles: nada
-Jueves: Filter function in order to filter the users when the user is searching in the chat for some chat
-Jueves: Showing the filtered chats (wating to get the real interface)
+Viernes: Haciendo que la busqueda ocurra mientras se escribe, x en la búsqueda del chat

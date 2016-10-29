@@ -26332,6 +26332,7 @@ var Chat = React.createClass({
 
 	onSearchChatValueChange: function (value) {
 		ChatStore.setSearchChatValue(value);
+		this.onSearchChatFn();
 	},
 
 	render: function () {

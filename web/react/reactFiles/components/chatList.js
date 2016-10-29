@@ -58,6 +58,7 @@ var ChatList = React.createClass({
 						onChange={this.onSearchChatChangeFn}
 						onKeyDown={this.onKeyDown}
 					/>
+					<button className="closeButton"></button>
 					<button className="searchChatButton searchButton" onClick={this.props.onSearchChatFn}></button>
 				</div>
 			</div>

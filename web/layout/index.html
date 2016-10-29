@@ -7,256 +7,251 @@
 	<link rel="stylesheet" type="text/css" href="app.css">
 </head>
 <body>
-	<header>
-		<div class="searchHeaderButtonContainer">
-		 	<div>
-				<div class="searchButtonSubContainer">
-					<button class="searchButton"></button>
+	<div id="mainContainer">
+		<div id="semi_body">
+			<header>
+				<div class="searchHeaderButtonContainer">
+					<div>
+						<div class="searchButtonSubContainer">
+							<button class="searchButton"></button>
+						</div>
+					</div>
+					<div></div>
 				</div>
+				<div class="isotypeContainer">
+					<figure>
+						<img class="isotype" src="./img/isotype.png"/>
+					</figure>
+					<div class="sloganContainer">
+						<span class="dot-decorator">Intercambiando juegos desde </span>
+						<span>
+							<img class="crossline" src="./img/crossline.png"/>
+							<span>1993.</span>
+						</span>
+						<span class="arrow-decorator"> 2016</span>
+					</div>
+				</div>
+				<a class="login arrow-decorator dot-decorator hidden" href="#">Ingresa con Facebook</a>
+				<a href="#" class="profileContainer"><span>Carlos Mejia</span><figure><img src="img/face.png" alt=""></figure></a>
+			</header>
+			<div class="mainContainer">
+				<div class="searchFieldContainer">
+								<input type="text" placeholder="Nombre del juego a buscar">
+								<ul class="hidden">
+												<li>Resident Evil 4</li>
+												<li>Resident Evil 3</li>
+												<li>Resident Evil Zero</li>
+												<li>Resident Evil 2</li>
+								</ul>
+				</div>
+				<div class="filterMainContainer">
+					<section class="consoleContainer">
+						<button class="consoleCheckbox ps4">
+							<div class="isotype">
+							</div>
+							<span class="consoleNameTitle"></span>
+						</button>
+						<button class="consoleCheckbox xboxone">
+							<div class="isotype">
+							</div>
+							<span class="consoleNameTitle"></span>
+						</button>
+					</section>
+					<div class="extraFilterContainer">
+						<section>
+							<button class="extraFilterButton checked">
+								<span>Nuevo</span>
+								<input id="c1" type="checkbox">
+								<label for="c1"></label>
+							</button>
+							<button class="extraFilterButton checked">
+								<span>Usado</span>
+								<input id="c2" type="checkbox">
+								<label for="c2"></label>
+							</button>
+						</section>
+						<div class="listDecorator"></div>
+						<section>
+							<button class="extraFilterButton checked">
+								<span>Trueque</span>
+								<input id="c3" type="checkbox">
+								<label for="c3"></label>
+							</button>
+							<button class="extraFilterButton checked">
+								<span>Venta</span>
+								<input id="c4" type="checkbox">
+								<label for="c4"></label>
+							</button>
+						</section>
+						<div class="listDecorator"></div>
+						<section class="locationSection">
+							<figure><img src="img/col.png" alt=""></figure>
+							<button class="cityButton">Bogotá</button>
+						</section>
+					</div>
+				</div>
+				<div class="dot-decorator arrow-decorator searchButtonSection"><button class="searchButton">Buscar</button></div>
 			</div>
-		 	<div></div>
-		</div>
-		<div class="isotypeContainer">
-			<figure>
-				<img class="isotype" src="./img/isotype.png"/>
-			</figure>
-			<div class="sloganContainer">
-				<span class="dot-decorator">Intercambiando juegos desde </span>
-				<span>
-					<img class="crossline" src="./img/crossline.png"/>
-					<span>1993.</span>
-				</span>
-				<span class="arrow-decorator"> 2016</span>
-			</div>
-		</div>
-		<a class="login arrow-decorator dot-decorator hidden" href="#">Ingresa con Facebook</a>
-		<a href="#" class="profileContainer"><span>Carlos Mejia</span><figure><img src="img/face.png" alt=""></figure></a>
-	</header>
-	<div class="mainContainer">
-		<div class="searchFieldContainer">
-						<input type="text" placeholder="Nombre del juego a buscar">
-						<ul class="hidden">
-						        <li>Resident Evil 4</li>
-						        <li>Resident Evil 3</li>
-						        <li>Resident Evil Zero</li>
-						        <li>Resident Evil 2</li>
-						</ul>
-		</div>
-		<div class="filterMainContainer">
-			<section class="consoleContainer">
-				<button class="consoleCheckbox ps4">
-					<div class="isotype">
-					</div>
-					<span class="consoleNameTitle"></span>
-				</button>
-				<button class="consoleCheckbox xboxone">
-					<div class="isotype">
-					</div>
-					<span class="consoleNameTitle"></span>
-				</button>
-				<button class="consoleCheckbox ps3">
-					<div class="isotype">
-					</div>
-					<span class="consoleNameTitle"></span>
-				</button>
-				<button class="consoleCheckbox xbox360">
-					<div class="isotype">
-					</div>
-					<span class="consoleNameTitle"></span>
-				</button>
+			<section class="chatBubble">
+				<img src="img/chatBubble.png" alt="">
+				<div class="messagesNumber">
+					<span>1</span>
+				</div>
 			</section>
-			<div class="extraFilterContainer">
-				<section>
-					<button class="extraFilterButton checked">
-						<span>Nuevo</span>
-						<input id="c1" type="checkbox">
-						<label for="c1"></label>
-					</button>
-					<button class="extraFilterButton checked">
-						<span>Usado</span>
-						<input id="c2" type="checkbox">
-						<label for="c2"></label>
-					</button>
-				</section>
-				<div class="listDecorator"></div>
-				<section>
-					<button class="extraFilterButton checked">
-						<span>Trueque</span>
-						<input id="c3" type="checkbox">
-						<label for="c3"></label>
-					</button>
-					<button class="extraFilterButton checked">
-						<span>Venta</span>
-						<input id="c4" type="checkbox">
-						<label for="c4"></label>
-					</button>
-				</section>
-				<div class="listDecorator"></div>
-				<section class="locationSection">
-					<figure><img src="img/col.png" alt=""></figure>
-					<button class="cityButton">Bogotá</button>
-				</section>
-			</div>
+			<section id="chat" class="chatList">
+				<div class="titleContainer">
+					<span>Trueque Chat</span>
+					<button class="closeButton"></button>
+				</div>
+				 <ul>
+					<li class="unread">
+						<figure><img src="img/profile2.png" alt=""></figure>
+						<div class="content">
+							<span class="name">Sandra Ficci</span>
+							<span class="time">Hace 1h</span>
+							<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
+						</div>
+					</li>
+					<li class="">
+						<figure><img src="img/profile2.png" alt=""></figure>
+						<div class="content">
+							<span class="name">Sandra Ficci</span>
+							<span class="time">Hace 1h</span>
+							<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
+						</div>
+					</li>
+					<li class="">
+						<figure><img src="img/profile2.png" alt=""></figure>
+						<div class="content">
+							<span class="name">Sandra Ficci</span>
+							<span class="time">Hace 1h</span>
+							<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
+						</div>
+					</li>
+					<li class="">
+						<figure><img src="img/profile2.png" alt=""></figure>
+						<div class="content">
+							<span class="name">Sandra Ficci</span>
+							<span class="time">Hace 1h</span>
+							<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
+						</div>
+					</li>
+					<li class="">
+						<figure><img src="img/profile2.png" alt=""></figure>
+						<div class="content">
+							<span class="name">Sandra Ficci</span>
+							<span class="time">Hace 1h</span>
+							<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
+						</div>
+					</li>
+					<li class="">
+						<figure><img src="img/profile2.png" alt=""></figure>
+						<div class="content">
+							<span class="name">Sandra Ficci</span>
+							<span class="time">Hace 1h</span>
+							<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
+						</div>
+					</li>
+					<li class="">
+						<figure><img src="img/profile2.png" alt=""></figure>
+						<div class="content">
+							<span class="name">Sandra Ficci</span>
+							<span class="time">Hace 1h</span>
+							<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
+						</div>
+					</li>
+				</ul>
+				<div class="searchArea">
+					<input type="text" placeholder="Buscar perfil">
+					<button class="closeButton"></button>
+					<button class="searchChatButton searchButton"></button>
+				</div>
+				<div id="singleChat" class="singleChat">
+					<div class="titleContainer">
+						<span>Alzar Quarim</span>
+						<button class="closeButton"></button>
+					</div>
+					<ul class="chatMessages">
+						<li class="own">
+							<figure><img src="img/min-profile.png" alt=""></figure>
+							<span class="message">Hola, no olvides que mañana nos vemos en Salitre Plaza para cambiar Silent Hill 4, yo te llevo Mosrtal Combat XL</span>
+							<span class="time">Hace 45m</span>
+						</li>
+						<li class="own">
+							<figure><img src="img/min-profile.png" alt=""></figure>
+							<span class="message">Yo te llevo Mortal combat XL, luego me gustaría cambiar algún FIFA por Resident Evil 5, pero la edición gold.</span>
+							<span class="time">Hace 45m</span>
+						</li>
+						<li class="">
+							<figure><img src="img/min-profile.png" alt=""></figure>
+							<span class="message">Sí, dale, no te preocupes yo lo tengo presente. En cuanto a lo del RS5 Gold, yo no lo tengo, pero un amigo mio sí, entonces le paso tu perfil y él seguro te llama porque ama FIFA</span>
+							<span class="time">Hace 43m</span>
+						</li>
+						<li class="own">
+							<figure><img src="img/min-profile.png" alt=""></figure>
+							<span class="message">Wow, sí de una, sí por fa, dile y yo estoy pendiente<br/> Ven y a que hora nos vemos?</span>
+							<span class="time">Hace 39m</span>
+						</li>
+						<li class="">
+							<figure><img src="img/min-profile.png" alt=""></figure>
+							<span class="message">Pues yo estaría llegando tipo 3pm, si tardo un poco espérame, depende del trancón</span>
+							<span class="time">Hace 35m</span>
+						</li>
+						<li class="own">
+							<figure><img src="img/min-profile.png" alt=""></figure>
+							<span class="message">Y estás soltero?</span>
+							<span class="time">Hace 35m</span>
+						</li>
+						<li class="">
+							<figure><img src="img/min-profile.png" alt=""></figure>
+							<span class="message">Me gustan los gatos cariño! Lo siento por ti :/ aunque eres linda, tal ves al tipo del FIFA le puedas caer, aunque él es medio feo y raro, es más parece un pato electrocutado y huele peor, pero no sé, es buena persona.</span>
+							<span class="time">Hace 21m</span>
+						</li>
+						<li class="own">
+							<figure><img src="img/min-profile.png" alt=""></figure>
+							<span class="message">Era solo por hacer conversación! relajate! ya tengo novio, de hecho creo que tengo dos :V hahahahah</span>
+							<span class="time">Hace 18m</span>
+						</li>
+						<li class="">
+							<figure><img src="img/min-profile.png" alt=""></figure>
+							<span class="message">Sorry :P</span>
+							<span class="time">Hace 15m</span>
+						</li>
+					</ul>
+					<div class="inputArea">
+						<div class="text">
+							<span id="chatInputDiv" class="content" contentEditable>Hola, cómo estás?</span>
+						</div>
+						<button class="sendButton"></button>
+					</div>
+				</div>
+			</section>
+			<footer>
+				<div class="footerContainer">
+					<section class="moreLinks">
+						<a href="#">Sobre nosotros</a>
+						<a href="#">Contáctanos</a>
+					</section>
+					<div class="footerDecorator"></div>
+					<section class="socialLinks">
+						<a class="instagramLink" href="" onclick='return false'></a>
+						<a class="youtubeLink" href=""></a>
+						<a class="facebookLink" href="#"></a>
+						<a class="twitterLink" href="#"></a>
+						<a class="pinterestLink" href=""></a>
+						<span>www.truequegamer.com. ©2016 Derechos reservados. Bogotá D.C., Colombia.</span>
+					</section>
+					<div class="footerDecorator x-reflexion"></div>
+					<section class="bugLinksContainer">
+						<figure><img src="img/bug.png" alt=""></figure>
+						<span>Chan, chan, chan, chaaan</span>
+						<a href="">Informar bug!</a>
+					</section>
+				</div>
+			</footer>
+			<div class="decoration"></div>
 		</div>
-		<div class="dot-decorator arrow-decorator searchButtonSection"><button class="searchButton">Buscar</button></div>
 	</div>
-	<section class="chatBubble">
-		<img src="img/chatBubble.png" alt="">
-		<div class="messagesNumber">
-			<span>1</span>
-		</div>
-	</section>
-	<section id="chat" class="chatList">
-    <div class="titleContainer">
-			<span>Trueque Chat</span>
-			<button class="closeButton"></button>
-		</div>
-		 <ul>
-		  <li class="unread">
-				<figure><img src="img/profile2.png" alt=""></figure>
-				<div class="content">
-					<span class="name">Sandra Ficci</span>
-					<span class="time">Hace 1h</span>
-					<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
-				</div>
-		  </li>
-		  <li class="">
-				<figure><img src="img/profile2.png" alt=""></figure>
-				<div class="content">
-					<span class="name">Sandra Ficci</span>
-					<span class="time">Hace 1h</span>
-					<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
-				</div>
-		  </li>
-		  <li class="">
-				<figure><img src="img/profile2.png" alt=""></figure>
-				<div class="content">
-					<span class="name">Sandra Ficci</span>
-					<span class="time">Hace 1h</span>
-					<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
-				</div>
-		  </li>
-		  <li class="">
-				<figure><img src="img/profile2.png" alt=""></figure>
-				<div class="content">
-					<span class="name">Sandra Ficci</span>
-					<span class="time">Hace 1h</span>
-					<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
-				</div>
-		  </li>
-		  <li class="">
-				<figure><img src="img/profile2.png" alt=""></figure>
-				<div class="content">
-					<span class="name">Sandra Ficci</span>
-					<span class="time">Hace 1h</span>
-					<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
-				</div>
-		  </li>
-		  <li class="">
-				<figure><img src="img/profile2.png" alt=""></figure>
-				<div class="content">
-					<span class="name">Sandra Ficci</span>
-					<span class="time">Hace 1h</span>
-					<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
-				</div>
-		  </li>
-		  <li class="">
-				<figure><img src="img/profile2.png" alt=""></figure>
-				<div class="content">
-					<span class="name">Sandra Ficci</span>
-					<span class="time">Hace 1h</span>
-					<span class="messageText">No se si pueda, yo te conﬁrmo mañana en la mañana, que pena contigo.</span>
-				</div>
-		  </li>
-		</ul>
-	  <div class="searchArea">
-			<input type="text" placeholder="Buscar perfil">
-			<button class="searchChatButton searchButton"></button>
-		</div>
-		<div id="singleChat" class="singleChat">
-			<div class="titleContainer">
-				<span>Alzar Quarim</span>
-				<button class="closeButton"></button>
-			</div>
-			<ul class="chatMessages">
-				<li class="own">
-					<figure><img src="img/min-profile.png" alt=""></figure>
-					<span class="message">Hola, no olvides que mañana nos vemos en Salitre Plaza para cambiar Silent Hill 4, yo te llevo Mosrtal Combat XL</span>
-					<span class="time">Hace 45m</span>
-				</li>
-				<li class="own">
-					<figure><img src="img/min-profile.png" alt=""></figure>
-					<span class="message">Yo te llevo Mortal combat XL, luego me gustaría cambiar algún FIFA por Resident Evil 5, pero la edición gold.</span>
-					<span class="time">Hace 45m</span>
-				</li>
-				<li class="">
-					<figure><img src="img/min-profile.png" alt=""></figure>
-					<span class="message">Sí, dale, no te preocupes yo lo tengo presente. En cuanto a lo del RS5 Gold, yo no lo tengo, pero un amigo mio sí, entonces le paso tu perfil y él seguro te llama porque ama FIFA</span>
-					<span class="time">Hace 43m</span>
-				</li>
-				<li class="own">
-					<figure><img src="img/min-profile.png" alt=""></figure>
-					<span class="message">Wow, sí de una, sí por fa, dile y yo estoy pendiente<br/> Ven y a que hora nos vemos?</span>
-					<span class="time">Hace 39m</span>
-				</li>
-				<li class="">
-					<figure><img src="img/min-profile.png" alt=""></figure>
-					<span class="message">Pues yo estaría llegando tipo 3pm, si tardo un poco espérame, depende del trancón</span>
-					<span class="time">Hace 35m</span>
-				</li>
-				<li class="own">
-					<figure><img src="img/min-profile.png" alt=""></figure>
-					<span class="message">Y estás soltero?</span>
-					<span class="time">Hace 35m</span>
-				</li>
-				<li class="">
-					<figure><img src="img/min-profile.png" alt=""></figure>
-					<span class="message">Me gustan los gatos cariño! Lo siento por ti :/ aunque eres linda, tal ves al tipo del FIFA le puedas caer, aunque él es medio feo y raro, es más parece un pato electrocutado y huele peor, pero no sé, es buena persona.</span>
-					<span class="time">Hace 21m</span>
-				</li>
-				<li class="own">
-					<figure><img src="img/min-profile.png" alt=""></figure>
-					<span class="message">Era solo por hacer conversación! relajate! ya tengo novio, de hecho creo que tengo dos :V hahahahah</span>
-					<span class="time">Hace 18m</span>
-				</li>
-				<li class="">
-					<figure><img src="img/min-profile.png" alt=""></figure>
-					<span class="message">Sorry :P</span>
-					<span class="time">Hace 15m</span>
-				</li>
-			</ul>
-			<div class="inputArea">
-				<div class="text">
-					<span id="chatInputDiv" class="content" contentEditable>Hola, cómo estás?</span>
-				</div>
-				<button class="sendButton"></button>
-			</div>
-		</div>
-	</section>
-	<footer>
-		<div class="footerContainer">
-			<section class="moreLinks">
-				<a href="#">Sobre nosotros</a>
-				<a href="#">Contáctanos</a>
-			</section>
-			<div class="footerDecorator"></div>
-			<section class="socialLinks">
-				<a class="instagramLink" href="" onclick='return false'></a>
-				<a class="youtubeLink" href=""></a>
-				<a class="facebookLink" href="#"></a>
-				<a class="twitterLink" href="#"></a>
-				<a class="pinterestLink" href=""></a>
-				<span>www.truequegamer.com. ©2016 Derechos reservados. Bogotá D.C., Colombia.</span>
-			</section>
-			<div class="footerDecorator x-reflexion"></div>
-			<section class="bugLinksContainer">
-				<figure><img src="img/bug.png" alt=""></figure>
-				<span>Chan, chan, chan, chaaan</span>
-				<a href="">Informar bug!</a>
-			</section>
-		</div>
-	</footer>
-	<div class="decoration"></div>
 	<script src="js/index.js"></script>
 </body>
 </html>

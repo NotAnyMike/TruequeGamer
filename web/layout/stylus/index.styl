@@ -574,16 +574,6 @@ button.extraFilterButton
 				color: $dark_green
 				font-size: 15px
 				
-		button.closeButton
-			width: 17px
-			height: 17px
-			background-image: url(img/x.png)
-			background-color: transparent
-			background-position: center center
-			background-repeat: no-repeat
-			border: 0
-			margin: 0
-
 	ul, .chatMessages
 		display: flex
 		flex-direction: column
@@ -687,9 +677,10 @@ button.extraFilterButton
 		z-index: 2
 
 		input
-			flex-grow: 1
 			color: white
 			background-color: transparent
+			flex-grow: 1
+			padding-right: 33px
 			transition: all 150ms
 
 			&:focus,&:hover
@@ -707,6 +698,20 @@ button.extraFilterButton
 			&:before
 				color: $darker_green
 				content: '\e908'
+
+		.closeButton
+			position: absolute
+			right: 95px
+
+button.closeButton
+	width: 17px
+	height: 17px
+	background-image: url(img/x.png)
+	background-color: transparent
+	background-position: center center
+	background-repeat: no-repeat
+	border: 0
+	margin: 0
 
 .singleChat
 	position: absolute

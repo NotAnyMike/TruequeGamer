@@ -138,9 +138,15 @@ var Chat = React.createClass({
 		this.onSearchChatFn();
 	},
 
+	onCloseButtonSearchChatFn: function(){
+		ChatStore.setSearchChatValue("");
+		this.onSearchChatFn();
+	},
+
 	render: function(){		
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
 		var chats = (this.state.searchingChat ? this.state.filteredChats : this.state.store.chats);
+		var searchChatValue = ChatStore.getSearchChatValue();
 
 		return (
 			<div>
@@ -161,6 +167,8 @@ var Chat = React.createClass({
 					onSearchChatFn={this.onSearchChatFn}
 					searchingChat={this.state.searchingChat}
 					onSearchChatValueChangeFn={this.onSearchChatValueChangeFn}
+					searchChatValue={searchChatValue}
+					onCloseButtonSearchChatFn={this.onCloseButtonSearchChatFn}
 				/>
 			</div>
 		);

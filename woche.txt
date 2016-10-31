@@ -1,1 +1,4 @@
 Viernes: Haciendo que la busqueda ocurra mientras se escribe, x en la búsqueda del chat
+Sábado: Probando una aproximación sobre el dinamismo del input field de la búsqueda del chat
+Domingo: Corrijiendo errors menores sobre la funcionalidad de búsqueda (limpiando el código) y deshaciendo la aproximación que intenté
+Lunes: Añadida funcionalidad de la x del input de la búsqueda del chat

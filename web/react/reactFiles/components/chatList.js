@@ -10,6 +10,8 @@ var ChatList = React.createClass({
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		onSearchChatFn: React.PropTypes.func.isRequired,
 		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
+		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
+		searchChatValue: React.PropTypes.string,
 	},
 
 	onSearchChatChangeFn: function(e){
@@ -20,6 +22,8 @@ var ChatList = React.createClass({
 		console.log(e.keyCode);
 		if(e.keyCode === 13){
 			this.props.onSearchChatFn();
+		}else if(e.keyCode === 27){
+			this.props.onCloseButtonSearchChatFn();
 		}
 	},
 
@@ -55,10 +59,13 @@ var ChatList = React.createClass({
 				</ul>
 				<div className="searchArea">
 					<input type="text" placeholder="Buscar perfil" 
+						value={this.props.searchChatValue}
 						onChange={this.onSearchChatChangeFn}
 						onKeyDown={this.onKeyDown}
 					/>
-					<button className="closeButton"></button>
+					<button className="closeButton" 
+						onClick={this.props.onCloseButtonSearchChatFn}
+					></button>
 					<button className="searchChatButton searchButton" onClick={this.props.onSearchChatFn}></button>
 				</div>
 			</div>

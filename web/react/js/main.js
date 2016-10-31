@@ -26530,9 +26530,15 @@ var Chat = React.createClass({
 		this.onSearchChatFn();
 	},
 
+	onCloseButtonSearchChatFn: function () {
+		ChatStore.setSearchChatValue("");
+		this.onSearchChatFn();
+	},
+
 	render: function () {
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
 		var chats = this.state.searchingChat ? this.state.filteredChats : this.state.store.chats;
+		var searchChatValue = ChatStore.getSearchChatValue();
 
 		return React.createElement(
 			'div',
@@ -26553,7 +26559,9 @@ var Chat = React.createClass({
 				value: this.state.textToSend,
 				onSearchChatFn: this.onSearchChatFn,
 				searchingChat: this.state.searchingChat,
-				onSearchChatValueChangeFn: this.onSearchChatValueChangeFn
+				onSearchChatValueChangeFn: this.onSearchChatValueChangeFn,
+				searchChatValue: searchChatValue,
+				onCloseButtonSearchChatFn: this.onCloseButtonSearchChatFn
 			})
 		);
 	}
@@ -26616,7 +26624,9 @@ var ChatContainer = React.createClass({
 		onChangeInputChatFn: React.PropTypes.func.isRequired,
 		onKeyDownFn: React.PropTypes.func.isRequired,
 		onSearchChatFn: React.PropTypes.func.isRequired,
-		onSearchChatValueChangeFn: React.PropTypes.func.isRequired
+		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
+		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
+		searchChatValue: React.PropTypes.string
 	},
 
 	render: function () {
@@ -26644,7 +26654,9 @@ var ChatContainer = React.createClass({
 				openCertainChatFn: this.props.openCertainChatFn,
 				onSearchChatFn: this.props.onSearchChatFn,
 				onSearchChatValueChangeFn: this.props.onSearchChatValueChangeFn,
-				searchingChat: this.props.searchingChat
+				searchingChat: this.props.searchingChat,
+				searchChatValue: this.props.searchChatValue,
+				onCloseButtonSearchChatFn: this.props.onCloseButtonSearchChatFn
 			}),
 			singleChat
 		);
@@ -26667,7 +26679,9 @@ var ChatList = React.createClass({
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		onSearchChatFn: React.PropTypes.func.isRequired,
-		onSearchChatValueChangeFn: React.PropTypes.func.isRequired
+		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
+		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
+		searchChatValue: React.PropTypes.string
 	},
 
 	onSearchChatChangeFn: function (e) {
@@ -26678,6 +26692,8 @@ var ChatList = React.createClass({
 		console.log(e.keyCode);
 		if (e.keyCode === 13) {
 			this.props.onSearchChatFn();
+		} else if (e.keyCode === 27) {
+			this.props.onCloseButtonSearchChatFn();
 		}
 	},
 
@@ -26731,10 +26747,13 @@ var ChatList = React.createClass({
 				'div',
 				{ className: 'searchArea' },
 				React.createElement('input', { type: 'text', placeholder: 'Buscar perfil',
+					value: this.props.searchChatValue,
 					onChange: this.onSearchChatChangeFn,
 					onKeyDown: this.onKeyDown
 				}),
-				React.createElement('button', { className: 'closeButton' }),
+				React.createElement('button', { className: 'closeButton',
+					onClick: this.props.onCloseButtonSearchChatFn
+				}),
 				React.createElement('button', { className: 'searchChatButton searchButton', onClick: this.props.onSearchChatFn })
 			)
 		);

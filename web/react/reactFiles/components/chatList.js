@@ -9,7 +9,7 @@ var ChatList = React.createClass({
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		onSearchChatFn: React.PropTypes.func.isRequired,
-		onSearchChatValueChange: React.PropTypes.func.isRequired,
+		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
 	},
 
 	onSearchChatChangeFn: function(e){
@@ -38,9 +38,9 @@ var ChatList = React.createClass({
 				}.bind(this))
 		}else{
 			if(this.props.searchingChat){
-				chats.push(<li>No tienes chats</li>);
+				chats = <li>No hay nadie con ese nombre en tus chats :(</li>;
 			}else{
-				chats.push(<li>No hay nadie con ese nombre en tus chats :(</li>);
+				chats = <li>No tienes chats</li>;
 			}
 		}
 

@@ -20,6 +20,7 @@ var Chat = React.createClass({
 			textToSend: '',
 			searchingUser: false,
 			filteredChats: null,
+			searchingChat: false,
 		});
 	},
 
@@ -132,7 +133,7 @@ var Chat = React.createClass({
 		}
 	},
 
-	onSearchChatValueChange: function(value){
+	onSearchChatValueChangeFn: function(value){
 		ChatStore.setSearchChatValue(value);	
 		this.onSearchChatFn();
 	},
@@ -154,14 +155,12 @@ var Chat = React.createClass({
 					closeChatFn={this.closeChatFn} 
 					openCertainChatFn={this.openCertainChatFn} 
 					onChangeInputChatFn={this.onChangeInputChatFn} 
-					searchingChat={this.state.searchingChat}
-					searchingChat={this.state.searchingChat}
-					searchingChat={this.state.searchingCha}
 					sendFn={this.sendFn} 
 					onKeyDownFn={this.onKeyDownFn} 
 					value={this.state.textToSend} 
 					onSearchChatFn={this.onSearchChatFn}
-					onSearchChatValueChangeFn={this.onSearchChatValueChange}
+					searchingChat={this.state.searchingChat}
+					onSearchChatValueChangeFn={this.onSearchChatValueChangeFn}
 				/>
 			</div>
 		);

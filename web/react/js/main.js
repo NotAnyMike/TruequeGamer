@@ -26411,7 +26411,8 @@ var Chat = React.createClass({
 			singleChatVisible: null,
 			textToSend: '',
 			searchingUser: false,
-			filteredChats: null
+			filteredChats: null,
+			searchingChat: false
 		};
 	},
 
@@ -26524,7 +26525,7 @@ var Chat = React.createClass({
 		}
 	},
 
-	onSearchChatValueChange: function (value) {
+	onSearchChatValueChangeFn: function (value) {
 		ChatStore.setSearchChatValue(value);
 		this.onSearchChatFn();
 	},
@@ -26547,14 +26548,12 @@ var Chat = React.createClass({
 				closeChatFn: this.closeChatFn,
 				openCertainChatFn: this.openCertainChatFn,
 				onChangeInputChatFn: this.onChangeInputChatFn,
-				searchingChat: this.state.searchingChat,
-				searchingChat: this.state.searchingChat,
-				searchingChat: this.state.searchingCha,
 				sendFn: this.sendFn,
 				onKeyDownFn: this.onKeyDownFn,
 				value: this.state.textToSend,
 				onSearchChatFn: this.onSearchChatFn,
-				onSearchChatValueChangeFn: this.onSearchChatValueChange
+				searchingChat: this.state.searchingChat,
+				onSearchChatValueChangeFn: this.onSearchChatValueChangeFn
 			})
 		);
 	}
@@ -26641,11 +26640,11 @@ var ChatContainer = React.createClass({
 			{ id: 'chat', className: "chatList " + visible },
 			React.createElement(ChatList, {
 				chats: this.props.chats,
-				searchingChats: this.props.searchingChat,
 				closeChatFn: this.props.closeChatFn,
 				openCertainChatFn: this.props.openCertainChatFn,
 				onSearchChatFn: this.props.onSearchChatFn,
-				onSearchChatValueChangeFn: this.props.onSearchChatValueChangeFn
+				onSearchChatValueChangeFn: this.props.onSearchChatValueChangeFn,
+				searchingChat: this.props.searchingChat
 			}),
 			singleChat
 		);
@@ -26668,7 +26667,7 @@ var ChatList = React.createClass({
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		onSearchChatFn: React.PropTypes.func.isRequired,
-		onSearchChatValueChange: React.PropTypes.func.isRequired
+		onSearchChatValueChangeFn: React.PropTypes.func.isRequired
 	},
 
 	onSearchChatChangeFn: function (e) {
@@ -26696,17 +26695,17 @@ var ChatList = React.createClass({
 			}.bind(this));
 		} else {
 			if (this.props.searchingChat) {
-				chats.push(React.createElement(
-					'li',
-					null,
-					'No tienes chats'
-				));
-			} else {
-				chats.push(React.createElement(
+				chats = React.createElement(
 					'li',
 					null,
 					'No hay nadie con ese nombre en tus chats :('
-				));
+				);
+			} else {
+				chats = React.createElement(
+					'li',
+					null,
+					'No tienes chats'
+				);
 			}
 		}
 

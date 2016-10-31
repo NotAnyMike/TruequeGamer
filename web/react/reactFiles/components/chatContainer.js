@@ -47,11 +47,11 @@ var ChatContainer = React.createClass({
 			<section id="chat" className={"chatList "+ visible}>
 				<ChatList 
 					chats={this.props.chats}
-					searchingChats={this.props.searchingChat}
 					closeChatFn={this.props.closeChatFn} 
 					openCertainChatFn={this.props.openCertainChatFn}
 					onSearchChatFn={this.props.onSearchChatFn}
 					onSearchChatValueChangeFn={this.props.onSearchChatValueChangeFn}
+					searchingChat={this.props.searchingChat}
 				/>
 				{singleChat}
 			</section>

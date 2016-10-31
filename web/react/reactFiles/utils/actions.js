@@ -41,6 +41,13 @@ var Actions = {
 		});
 	},
 
+	setSearchChatValue: function(value){
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.changeSearchChatValue,
+			value: value,
+		});
+	},
+
 };
 
 module.exports = Actions;

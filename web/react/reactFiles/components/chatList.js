@@ -19,10 +19,7 @@ var ChatList = React.createClass({
 	},
 
 	onKeyDown: function(e){
-		console.log(e.keyCode);
-		if(e.keyCode === 13){
-			this.props.onSearchChatFn();
-		}else if(e.keyCode === 27){
+		if(e.keyCode === 27){
 			this.props.onCloseButtonSearchChatFn();
 		}
 	},

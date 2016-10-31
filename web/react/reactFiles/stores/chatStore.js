@@ -4,10 +4,14 @@ var EventEmitter = require('events').EventEmitter,
 		AppDispatcher = require('../dispatcher.js');
 
 var _store = {	
-	unread: 3,
+	unread: 0,
 	user: "",
 	chats: [],
 	searchChatValue: "",
+};
+
+var _setSearchChatValue = function(value){
+	_store.searchChatValue = value;
 };
 
 var _retrieveMessages = function(chat){
@@ -54,6 +58,9 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			case Constants.actionType.chatOpen:
 				ChatStore.chatOpen(payload.value);
 				break;
+			case Constants.actionType.changeSearchChatValue:
+				_setSearchChatValue(payload.value);
+				break;
 		}
 	},
 
@@ -79,6 +86,10 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						}
 						if(chat.updating !== false){
 							chat.updating = false;
+						}
+						//mark chat as read
+						if(chat.unreadMessageCount > 0){
+							chat.markAsRead();
 						}
 						this.emit(Constants.eventType.chatsUpdated);
 					}).catch((error)=>{
@@ -160,8 +171,11 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 									console.error(error);
 									return;
 							}
-
+							var unread = 0;
 							channelList.map(function(chat){
+								//get unread chats
+								if(chat.unreadMessageCount > 0) unread++;	
+
 								chat.id = chat.url.replace("sendbird_group_channel_","");
 								chat.messages = [];
 								if(chat.lastMessage){
@@ -183,6 +197,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 							});
 							console.log(channelList);
 							_store.chats = channelList;
+							_store.unread = unread;
 					});
 			}
 		});
@@ -214,10 +229,6 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	getSearchChatValue: function(){
 		return _store.searchChatValue;
-	},
-
-	setSearchChatValue: function(value){
-		_store.searchChatValue = value;
 	},
 
 });

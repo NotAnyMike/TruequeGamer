@@ -26217,7 +26217,8 @@ var Chat = React.createClass({
 			singleChatVisible: null,
 			textToSend: '',
 			searchingUser: false,
-			filteredChats: null
+			filteredChats: null,
+			searchingChat: false
 		};
 	},
 
@@ -26330,14 +26331,20 @@ var Chat = React.createClass({
 		}
 	},
 
-	onSearchChatValueChange: function (value) {
-		ChatStore.setSearchChatValue(value);
+	onSearchChatValueChangeFn: function (value) {
+		Actions.setSearchChatValue(value);
+		this.onSearchChatFn();
+	},
+
+	onCloseButtonSearchChatFn: function () {
+		Actions.setSearchChatValue("");
 		this.onSearchChatFn();
 	},
 
 	render: function () {
 		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
 		var chats = this.state.searchingChat ? this.state.filteredChats : this.state.store.chats;
+		var searchChatValue = ChatStore.getSearchChatValue();
 
 		return React.createElement(
 			'div',
@@ -26353,14 +26360,14 @@ var Chat = React.createClass({
 				closeChatFn: this.closeChatFn,
 				openCertainChatFn: this.openCertainChatFn,
 				onChangeInputChatFn: this.onChangeInputChatFn,
-				searchingChat: this.state.searchingChat,
-				searchingChat: this.state.searchingChat,
-				searchingChat: this.state.searchingCha,
 				sendFn: this.sendFn,
 				onKeyDownFn: this.onKeyDownFn,
 				value: this.state.textToSend,
 				onSearchChatFn: this.onSearchChatFn,
-				onSearchChatValueChangeFn: this.onSearchChatValueChange
+				searchingChat: this.state.searchingChat,
+				onSearchChatValueChangeFn: this.onSearchChatValueChangeFn,
+				searchChatValue: searchChatValue,
+				onCloseButtonSearchChatFn: this.onCloseButtonSearchChatFn
 			})
 		);
 	}
@@ -26423,7 +26430,9 @@ var ChatContainer = React.createClass({
 		onChangeInputChatFn: React.PropTypes.func.isRequired,
 		onKeyDownFn: React.PropTypes.func.isRequired,
 		onSearchChatFn: React.PropTypes.func.isRequired,
-		onSearchChatValueChangeFn: React.PropTypes.func.isRequired
+		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
+		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
+		searchChatValue: React.PropTypes.string
 	},
 
 	render: function () {
@@ -26447,11 +26456,13 @@ var ChatContainer = React.createClass({
 			{ id: 'chat', className: "chatList " + visible },
 			React.createElement(ChatList, {
 				chats: this.props.chats,
-				searchingChats: this.props.searchingChat,
 				closeChatFn: this.props.closeChatFn,
 				openCertainChatFn: this.props.openCertainChatFn,
 				onSearchChatFn: this.props.onSearchChatFn,
-				onSearchChatValueChangeFn: this.props.onSearchChatValueChangeFn
+				onSearchChatValueChangeFn: this.props.onSearchChatValueChangeFn,
+				searchingChat: this.props.searchingChat,
+				searchChatValue: this.props.searchChatValue,
+				onCloseButtonSearchChatFn: this.props.onCloseButtonSearchChatFn
 			}),
 			singleChat
 		);
@@ -26474,7 +26485,9 @@ var ChatList = React.createClass({
 		closeChatFn: React.PropTypes.func.isRequired,
 		openCertainChatFn: React.PropTypes.func.isRequired,
 		onSearchChatFn: React.PropTypes.func.isRequired,
-		onSearchChatValueChange: React.PropTypes.func.isRequired
+		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
+		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
+		searchChatValue: React.PropTypes.string
 	},
 
 	onSearchChatChangeFn: function (e) {
@@ -26482,9 +26495,8 @@ var ChatList = React.createClass({
 	},
 
 	onKeyDown: function (e) {
-		console.log(e.keyCode);
-		if (e.keyCode === 13) {
-			this.props.onSearchChatFn();
+		if (e.keyCode === 27) {
+			this.props.onCloseButtonSearchChatFn();
 		}
 	},
 
@@ -26502,17 +26514,17 @@ var ChatList = React.createClass({
 			}.bind(this));
 		} else {
 			if (this.props.searchingChat) {
-				chats.push(React.createElement(
-					'li',
-					null,
-					'No tienes chats'
-				));
-			} else {
-				chats.push(React.createElement(
+				chats = React.createElement(
 					'li',
 					null,
 					'No hay nadie con ese nombre en tus chats :('
-				));
+				);
+			} else {
+				chats = React.createElement(
+					'li',
+					null,
+					'No tienes chats'
+				);
 			}
 		}
 
@@ -26538,8 +26550,12 @@ var ChatList = React.createClass({
 				'div',
 				{ className: 'searchArea' },
 				React.createElement('input', { type: 'text', placeholder: 'Buscar perfil',
+					value: this.props.searchChatValue,
 					onChange: this.onSearchChatChangeFn,
 					onKeyDown: this.onKeyDown
+				}),
+				React.createElement('button', { className: 'closeButton',
+					onClick: this.props.onCloseButtonSearchChatFn
 				}),
 				React.createElement('button', { className: 'searchChatButton searchButton', onClick: this.props.onSearchChatFn })
 			)
@@ -28236,10 +28252,14 @@ var EventEmitter = require('events').EventEmitter,
     AppDispatcher = require('../dispatcher.js');
 
 var _store = {
-	unread: 3,
+	unread: 0,
 	user: "",
 	chats: [],
 	searchChatValue: ""
+};
+
+var _setSearchChatValue = function (value) {
+	_store.searchChatValue = value;
 };
 
 var _retrieveMessages = function (chat) {
@@ -28286,6 +28306,9 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			case Constants.actionType.chatOpen:
 				ChatStore.chatOpen(payload.value);
 				break;
+			case Constants.actionType.changeSearchChatValue:
+				_setSearchChatValue(payload.value);
+				break;
 		}
 	},
 
@@ -28312,6 +28335,10 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						}
 						if (chat.updating !== false) {
 							chat.updating = false;
+						}
+						//mark chat as read
+						if (chat.unreadMessageCount > 0) {
+							chat.markAsRead();
 						}
 						this.emit(Constants.eventType.chatsUpdated);
 					}).catch(error => {
@@ -28394,8 +28421,11 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						console.error(error);
 						return;
 					}
-
+					var unread = 0;
 					channelList.map(function (chat) {
+						//get unread chats
+						if (chat.unreadMessageCount > 0) unread++;
+
 						chat.id = chat.url.replace("sendbird_group_channel_", "");
 						chat.messages = [];
 						if (chat.lastMessage) {
@@ -28417,6 +28447,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 					});
 					console.log(channelList);
 					_store.chats = channelList;
+					_store.unread = unread;
 				});
 			}
 		});
@@ -28447,10 +28478,6 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	getSearchChatValue: function () {
 		return _store.searchChatValue;
-	},
-
-	setSearchChatValue: function (value) {
-		_store.searchChatValue = value;
 	}
 
 });
@@ -28504,6 +28531,13 @@ var Actions = {
 			actionType: Constants.actionType.chatOpen,
 			value: id
 		});
+	},
+
+	setSearchChatValue: function (value) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.changeSearchChatValue,
+			value: value
+		});
 	}
 
 };
@@ -28528,7 +28562,8 @@ const Constants = {
 		searchButtonClicked: 'change_button_clicked',
 		openCertainChat: 'open_certain_chat',
 		sendMessage: 'send_message',
-		chatOpen: 'chat_open'
+		chatOpen: 'chat_open',
+		changeSearchChatValue: 'change_search_chat_value'
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',

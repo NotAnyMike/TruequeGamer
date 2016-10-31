@@ -134,12 +134,12 @@ var Chat = React.createClass({
 	},
 
 	onSearchChatValueChangeFn: function(value){
-		ChatStore.setSearchChatValue(value);	
+		Actions.setSearchChatValue(value);	
 		this.onSearchChatFn();
 	},
 
 	onCloseButtonSearchChatFn: function(){
-		ChatStore.setSearchChatValue("");
+		Actions.setSearchChatValue("");
 		this.onSearchChatFn();
 	},
 

@@ -16,6 +16,7 @@ const Constants = {
 		openCertainChat: 'open_certain_chat',
 		sendMessage: 'send_message',
 		chatOpen: 'chat_open',
+		changeSearchChatValue: 'change_search_chat_value',
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',

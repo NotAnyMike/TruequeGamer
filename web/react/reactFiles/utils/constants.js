@@ -26,6 +26,7 @@ const Constants = {
 		messageAdded: 'message_added',
 		userUpdated: 'user_update',
 		resultsUpdated: 'results_updated',
+		unreadMessageCountUpdated: 'unread_message_count_updated',
 	},
 	filter: {
 		not_used: 'not_used',

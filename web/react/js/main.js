@@ -26419,11 +26419,13 @@ var Chat = React.createClass({
 	componentDidMount: function () {
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
 	componentWillUnmount: function () {
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
 	onChatsUpdated: function () {
@@ -26435,6 +26437,11 @@ var Chat = React.createClass({
 		this.setState({
 			store: ChatStore.getStore()
 		});
+	},
+
+	onUnreadMessageCountUpdated: function () {
+		console.log("updating");
+		this.forceUpdate();
 	},
 
 	showChatFn: function () {
@@ -26526,12 +26533,12 @@ var Chat = React.createClass({
 	},
 
 	onSearchChatValueChangeFn: function (value) {
-		ChatStore.setSearchChatValue(value);
+		Actions.setSearchChatValue(value);
 		this.onSearchChatFn();
 	},
 
 	onCloseButtonSearchChatFn: function () {
-		ChatStore.setSearchChatValue("");
+		Actions.setSearchChatValue("");
 		this.onSearchChatFn();
 	},
 
@@ -26689,10 +26696,7 @@ var ChatList = React.createClass({
 	},
 
 	onKeyDown: function (e) {
-		console.log(e.keyCode);
-		if (e.keyCode === 13) {
-			this.props.onSearchChatFn();
-		} else if (e.keyCode === 27) {
+		if (e.keyCode === 27) {
 			this.props.onCloseButtonSearchChatFn();
 		}
 	},
@@ -28451,10 +28455,14 @@ var EventEmitter = require('events').EventEmitter,
     AppDispatcher = require('../dispatcher.js');
 
 var _store = {
-	unread: 3,
+	unread: 0,
 	user: "",
 	chats: [],
 	searchChatValue: ""
+};
+
+var _setSearchChatValue = function (value) {
+	_store.searchChatValue = value;
 };
 
 var _retrieveMessages = function (chat) {
@@ -28501,6 +28509,9 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			case Constants.actionType.chatOpen:
 				ChatStore.chatOpen(payload.value);
 				break;
+			case Constants.actionType.changeSearchChatValue:
+				_setSearchChatValue(payload.value);
+				break;
 		}
 	},
 
@@ -28527,6 +28538,10 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						}
 						if (chat.updating !== false) {
 							chat.updating = false;
+						}
+						//mark chat as read
+						if (chat.unreadMessageCount > 0) {
+							chat.markAsRead();
 						}
 						this.emit(Constants.eventType.chatsUpdated);
 					}).catch(error => {
@@ -28603,14 +28618,17 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
 			channelListQuery.includeEmpty = false; //must be false
 
+			var unread = 0;
 			if (channelListQuery.hasNext) {
 				channelListQuery.next(function (channelList, error) {
 					if (error) {
 						console.error(error);
 						return;
 					}
-
 					channelList.map(function (chat) {
+						//get unread chats
+						if (chat.unreadMessageCount > 0) unread++;
+
 						chat.id = chat.url.replace("sendbird_group_channel_", "");
 						chat.messages = [];
 						if (chat.lastMessage) {
@@ -28630,10 +28648,13 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						chat.user = otherUser;
 						return chat;
 					});
-					console.log(channelList);
 					_store.chats = channelList;
+					console.log('just about to fire event');
 				});
 			}
+			console.log(channelList);
+			_store.unread = unread;
+			this.emit(Constants.eventType.onUnreadMessageCountUpdated);
 		});
 
 		//Receiving messages		
@@ -28656,16 +28677,20 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.messageAdded, callback);
 	},
 
+	addOnUnreadMessageCountUpdatedListener: function (callback) {
+		this.on(Constants.eventType.unreadMessageCountUpdate, callback);
+	},
+
+	removeOnUnreadMessageCountUpdatedListener: function (callback) {
+		this.removeListener(Constants.eventType.unreadMessageCountUpdate, callback);
+	},
+
 	getChats: function () {
 		return _store.chats;
 	},
 
 	getSearchChatValue: function () {
 		return _store.searchChatValue;
-	},
-
-	setSearchChatValue: function (value) {
-		_store.searchChatValue = value;
 	}
 
 });
@@ -28719,6 +28744,13 @@ var Actions = {
 			actionType: Constants.actionType.chatOpen,
 			value: id
 		});
+	},
+
+	setSearchChatValue: function (value) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.changeSearchChatValue,
+			value: value
+		});
 	}
 
 };
@@ -28743,7 +28775,8 @@ const Constants = {
 		searchButtonClicked: 'change_button_clicked',
 		openCertainChat: 'open_certain_chat',
 		sendMessage: 'send_message',
-		chatOpen: 'chat_open'
+		chatOpen: 'chat_open',
+		changeSearchChatValue: 'change_search_chat_value'
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -28752,7 +28785,8 @@ const Constants = {
 		chatsUpdated: 'chats_updated',
 		messageAdded: 'message_added',
 		userUpdated: 'user_update',
-		resultsUpdated: 'results_updated'
+		resultsUpdated: 'results_updated',
+		unreadMessageCountUpdated: 'unread_message_count_updated'
 	},
 	filter: {
 		not_used: 'not_used',

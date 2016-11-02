@@ -27,11 +27,13 @@ var Chat = React.createClass({
 	componentDidMount: function(){
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
 	componentWillUnmount: function(){
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
 	onChatsUpdated: function(){
@@ -43,6 +45,11 @@ var Chat = React.createClass({
 		this.setState({
 			store: ChatStore.getStore()
 		});
+	},
+
+	onUnreadMessageCountUpdated: function(){
+		console.log("unread msg: " + this.state.store.unread);
+		this.forceUpdate();
 	},
 	
 	showChatFn: function(){

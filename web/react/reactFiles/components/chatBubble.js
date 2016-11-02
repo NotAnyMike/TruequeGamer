@@ -8,10 +8,11 @@ var ChatBubble = React.createClass({
 	},
 
 	render: function(){
+		var className = "messagesNumber " + (this.props.unread == 0 ? "hidden" : "");
 		return (			
 			<section className="chatBubble" onClick={this.props.showChatFn}>
 				<img src="/img/chatBubble.png" alt=""/>
-				<div className="messagesNumber">
+				<div className={className}>
 					<span>{this.props.unread}</span>
 				</div>
 			</section>

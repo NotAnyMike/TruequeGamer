@@ -26225,11 +26225,13 @@ var Chat = React.createClass({
 	componentDidMount: function () {
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
 	componentWillUnmount: function () {
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
 	onChatsUpdated: function () {
@@ -26241,6 +26243,11 @@ var Chat = React.createClass({
 		this.setState({
 			store: ChatStore.getStore()
 		});
+	},
+
+	onUnreadMessageCountUpdated: function () {
+		console.log("unread msg: " + this.state.store.unread);
+		this.forceUpdate();
 	},
 
 	showChatFn: function () {
@@ -26388,13 +26395,14 @@ var ChatBubble = React.createClass({
 	},
 
 	render: function () {
+		var className = "messagesNumber " + (this.props.unread == 0 ? "hidden" : "");
 		return React.createElement(
 			"section",
 			{ className: "chatBubble", onClick: this.props.showChatFn },
 			React.createElement("img", { src: "/img/chatBubble.png", alt: "" }),
 			React.createElement(
 				"div",
-				{ className: "messagesNumber" },
+				{ className: className },
 				React.createElement(
 					"span",
 					null,
@@ -28339,6 +28347,10 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						//mark chat as read
 						if (chat.unreadMessageCount > 0) {
 							chat.markAsRead();
+
+							//next line is beacause markAsRead does not make unreadMessageCount = 0
+							chat.unreadMessageCount = 0;
+							this.getUnreadMessageCount();
 						}
 						this.emit(Constants.eventType.chatsUpdated);
 					}).catch(error => {
@@ -28347,6 +28359,17 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 				}
 			}
 		}
+	},
+
+	getUnreadMessageCount: function () {
+		var unread = 0;
+		if (_store.chats.length > 0) {
+			_store.chats.forEach(chat => {
+				if (chat.unreadMessageCount > 0) unread++;
+			});
+		}
+		_store.unread = unread;
+		this.emit(Constants.eventType.onUnreadMessageCountUpdated);
 	},
 
 	addChatsUpdatedListener: function (callback) {
@@ -28421,10 +28444,8 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						console.error(error);
 						return;
 					}
-					var unread = 0;
 					channelList.map(function (chat) {
 						//get unread chats
-						if (chat.unreadMessageCount > 0) unread++;
 
 						chat.id = chat.url.replace("sendbird_group_channel_", "");
 						chat.messages = [];
@@ -28445,9 +28466,9 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						chat.user = otherUser;
 						return chat;
 					});
-					console.log(channelList);
 					_store.chats = channelList;
-					_store.unread = unread;
+					self.getUnreadMessageCount();
+					console.log(channelList);
 				});
 			}
 		});
@@ -28460,6 +28481,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			let chat = _store.chats.find(element => element.id === channel.id);
 			chat.messages.unshift(message);
 			self.emit(Constants.eventType.messageAdded);
+			self.getUnreadMessageCount();
 		};
 		sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
 	},
@@ -28470,6 +28492,14 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	removeOnMessageAddedListener: function (callback) {
 		this.removeListener(Constants.eventType.messageAdded, callback);
+	},
+
+	addOnUnreadMessageCountUpdatedListener: function (callback) {
+		this.on(Constants.eventType.unreadMessageCountUpdate, callback);
+	},
+
+	removeOnUnreadMessageCountUpdatedListener: function (callback) {
+		this.removeListener(Constants.eventType.unreadMessageCountUpdate, callback);
 	},
 
 	getChats: function () {
@@ -28572,7 +28602,8 @@ const Constants = {
 		chatsUpdated: 'chats_updated',
 		messageAdded: 'message_added',
 		userUpdated: 'user_update',
-		resultsUpdated: 'results_updated'
+		resultsUpdated: 'results_updated',
+		unreadMessageCountUpdated: 'unread_message_count_updated'
 	},
 	filter: {
 		not_used: 'not_used',

@@ -14,6 +14,7 @@ var InputChat = React.createClass({
 		if(
 				nextProps.visible === false
 				|| nextProps.visible === null
+				|| nextProps.value === this.props.value //in order to avoid that the input field focus when by some reason it updates and the focus was in other element (eg searching chat)
 				|| (
 					nextProps.value !== '' 
 					&& this.props.onKeyDownFn === nextProps.onKeyDownFn

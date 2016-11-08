@@ -4,3 +4,5 @@ Domingo: Corrijiendo errors menores sobre la funcionalidad de búsqueda (limpian
 Lunes: Añadida funcionalidad de la x del input de la búsqueda del chat, comenzando a trabajar en la funcionalidad de marcar como leído un chat, corrijiendo flujo de información para el search chat.
 Martes: Reunión de diseño de interfaz sobre las páginas restantes del sitio. Actiones que afectan el número de mesajes: 1. cargar los chats, abrir un chat, recibir mensaje
 Miércoles: Haciendo que se actualize el popup del número de chats con mensajes nuevos, corrigiendo interfaz para mostrar 0 mensajes
+Jueves: Nada
+Viernes: Nada

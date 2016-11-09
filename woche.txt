@@ -1,4 +1,5 @@
 Sábado: Nada
 Domingo: Nada
 Lunes: Solucionado el error del focus en el chat (bug #42, puesto en revisión)
-Martes: Comenzando el diseño de la página de detalle (la siguiente página cunado se da click en un video juego)
+Martes: Nada
+Miércoles: Comenzando el diseño de la página de detalle (la siguiente página cunado se da click en un video juego): actualizando los archivos del layout

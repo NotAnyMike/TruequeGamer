@@ -11,7 +11,7 @@ const SearchResultsMainContainer = React.createClass({
 
 	render: function(){
 		return (		
-			<section className={"searchResultsMainContainer " + this.props.console}>
+			<section className={"genericMainContainer searchResultsMainContainer " + this.props.console}>
 				<div className="container">
 					<div className="title"></div>
 					<SearchResultsList console={this.props.console} list={this.props.list} />

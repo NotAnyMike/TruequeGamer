@@ -3,3 +3,4 @@ Domingo: Nada
 Lunes: Solucionado el error del focus en el chat (bug #42, puesto en revisión)
 Martes: Nada
 Miércoles: Comenzando el diseño de la página de detalle (la siguiente página cunado se da click en un video juego): actualizando los archivos del layout
+Jueves: Terminando de hacer gráficamente aceptable el layout de both y de xbox

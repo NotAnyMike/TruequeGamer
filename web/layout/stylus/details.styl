@@ -15,6 +15,75 @@
 					font-weight: bold
 					padding-left: 0
 
+		.gameList
+			il
+				height: auto
+				min-height: 310px
+
+				figure
+					position: relative
+
+					.info
+						position: absolute
+						height: 40px
+						width: 40px
+						top: 0
+						right: 0
+						border-top: 20px solid white
+						border-left: 20px solid transparent
+						border-right: 20px solid white
+						border-bottom: 20px solid transparent
+						box-sizing: border-box
+
+						span
+							background-color: $red
+							display: inline-block
+							border-radius: 10px
+							height: 20px
+							width: 20px
+							margin-top: -18px
+							margin-left: -2px
+							position: absolute
+
+							&:before
+								content: 'i'
+								display: inline-block
+								height: 20px
+								width: 20px
+								text-align: center
+
+				.contentContainer
+					span,div
+						padding-top: 0
+						padding-bottom: 0
+						margin-top: 2px
+						margin-bottom: 2px
+
+					.name
+						margin-top: 10px
+
+					.exchange
+						margin-bottom: 10px
+						margin-top: 3px
+
+					.chatButton
+						align-items: center
+						background-color: $red
+						border: 0
+						display: flex
+						height: 30px
+						justify-content: center
+						order: 3
+
+						span
+							display: inherit
+
+							&:before
+								color: white
+								content: 'abrir chat'
+								font-size: 12px
+								text-transform: uppercase
+
 .gameDetails
 	border-bottom: 1px solid #fff
 	display: flex

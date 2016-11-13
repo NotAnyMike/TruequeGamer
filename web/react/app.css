@@ -3740,6 +3740,7 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 }
 .detailsMainContainer .container .title {
   font-size: 15px;
+  border: 0;
 }
 .detailsMainContainer .container .title:after {
   content: '';
@@ -3753,6 +3754,7 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   padding-left: 0;
 }
 .gameDetails {
+  border-bottom: 1px solid #fff;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -3765,10 +3767,29 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -o-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   padding: 25px 0;
+  padding-top: 0;
+  width: 100%;
+}
+.gameDetails hr {
+  margin: 0;
+  margin-bottom: 25px;
+  margin-right: 200px;
   width: 100%;
 }
 .gameDetails figure {
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
   border: 2px solid #fff;
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
@@ -3779,9 +3800,19 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   flex-grow: 0;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   height: 200px;
   margin: 0;
   width: 167px;
+}
+.gameDetails figure img {
+  height: 180px;
+  width: 142px;
 }
 .gameDetails .gameDetailsContainer {
   display: -webkit-box;

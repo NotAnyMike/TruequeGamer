@@ -2,6 +2,7 @@
 	.container
 		.title
 			font-size: 15px
+			border: 0
 
 			&:after
 				content: ''
@@ -15,18 +16,33 @@
 					padding-left: 0
 
 .gameDetails
+	border-bottom: 1px solid #fff
 	display: flex
 	flex-direction: row
+	flex-wrap: wrap
 	padding: 25px 0
+	padding-top: 0
 	width: 100%
 
+	hr
+		margin: 0
+		margin-bottom: 25px
+		margin-right: 200px
+		width: 100%
+
 	figure
+		align-items: center
 		border: 2px solid white
 		flex-grow: 0
 		flex-shrink: 0
+		justify-content: center
 		height: 200px
 		margin: 0
 		width: 167px
+
+		img
+			height: 180px
+			width: 142px
 	
 	.gameDetailsContainer
 		display: flex

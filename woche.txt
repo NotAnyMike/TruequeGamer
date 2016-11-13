@@ -5,3 +5,4 @@ Martes: Nada
 Miércoles: Comenzando el diseño de la página de detalle (la siguiente página cunado se da click en un video juego): actualizando los archivos del layout
 Jueves: Terminando de hacer gráficamente aceptable el layout de both y de xbox
 Viernes: Comenzando a agregar estructura y estilos a la página de detalles
+Sábado: Agregando las imágenes correctas, las lineas y sus estílos

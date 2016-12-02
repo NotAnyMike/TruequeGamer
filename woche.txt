@@ -1,4 +1,1 @@
-Sábado: Agregando las imágenes correctas, las lineas y sus estílos
-Domingo: creando la parte gráfica de cada perfil que venda un juego en la pág de detalles
-Lunes: Actualizando layouts para xbox y para both de details y results, creando la dinámica sobre los atributos de trueque
-Martes: Agregar el botón AbrirChat en details.html y en general el nuevo layout de los item
+Jueves: Agregando hover effect al info button y se agregó la bandera "usado" para los detalles de los juegos y cuadrando el div del comentario sobre el juego, next: crear x para cerrar el comentario y mejorar el layout

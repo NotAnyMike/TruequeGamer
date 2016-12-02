@@ -19,6 +19,7 @@
 			il
 				height: auto
 				min-height: 310px
+				position: relative
 
 				figure
 					position: relative
@@ -34,6 +35,8 @@
 						border-right: 20px solid white
 						border-bottom: 20px solid transparent
 						box-sizing: border-box
+						transition: border $time
+						z-index: 3
 
 						span
 							background-color: $red
@@ -65,6 +68,14 @@
 					.exchange
 						margin-bottom: 10px
 						margin-top: 3px
+						position: relative
+
+						.used
+							display: none
+
+							&:after
+								transition: color $time
+								color: white
 
 					.chatButton
 						align-items: center
@@ -84,6 +95,58 @@
 								font-size: 12px
 								text-transform: uppercase
 
+				&:hover
+					figure
+						.info
+							border-top: 20px solid $green_hover_xbox
+							border-right: 20px solid $green_hover_xbox
+
+					.contentContainer
+						.exchange
+							.used
+								&:after
+									color: white
+
+				&.xboxUsed
+					.contentContainer
+						.used
+							display: inline-block
+							position: absolute
+							right: 0
+							top: -3px
+
+							&:after
+								content: 'usado'
+								color: $red
+								font-size: 12px
+
+				.commentContainer
+					position: absolute
+					top: 0
+					bottom: 30px
+
+					.background,span
+						position: absolute
+						top: 0
+						left: 0
+						width: 167px
+						height: 100%
+
+					.background
+						background-color: $green_hover_xbox
+						opacity: .92
+						z-index: 2
+
+					span
+						z-index: 3
+						box-sizing: border-box
+						padding: 15px
+						font-size: 11px
+						padding-right: 20px
+						padding-top: 20px
+						text-transform: uppercase
+						overflow-y: scroll
+							
 .gameDetails
 	border-bottom: 1px solid #fff
 	display: flex

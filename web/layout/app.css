@@ -3756,6 +3756,7 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList il {
   height: auto;
   min-height: 310px;
+  position: relative;
 }
 .detailsMainContainer .container .gameList il figure {
   position: relative;
@@ -3773,6 +3774,12 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-transition: border 300ms;
+  -moz-transition: border 300ms;
+  -o-transition: border 300ms;
+  -ms-transition: border 300ms;
+  transition: border 300ms;
+  z-index: 3;
 }
 .detailsMainContainer .container .gameList il figure .info span {
   background-color: #e6334c;
@@ -3805,6 +3812,18 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList il .contentContainer .exchange {
   margin-bottom: 10px;
   margin-top: 3px;
+  position: relative;
+}
+.detailsMainContainer .container .gameList il .contentContainer .exchange .used {
+  display: none;
+}
+.detailsMainContainer .container .gameList il .contentContainer .exchange .used:after {
+  -webkit-transition: color 300ms;
+  -moz-transition: color 300ms;
+  -o-transition: color 300ms;
+  -ms-transition: color 300ms;
+  transition: color 300ms;
+  color: #fff;
 }
 .detailsMainContainer .container .gameList il .contentContainer .chatButton {
   -webkit-box-align: center;
@@ -3843,6 +3862,56 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   content: 'abrir chat';
   font-size: 12px;
   text-transform: uppercase;
+}
+.detailsMainContainer .container .gameList il:hover figure .info {
+  border-top: 20px solid #8cc63f;
+  border-right: 20px solid #8cc63f;
+}
+.detailsMainContainer .container .gameList il:hover .contentContainer .exchange .used:after {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList il.xboxUsed .contentContainer .used {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: -3px;
+}
+.detailsMainContainer .container .gameList il.xboxUsed .contentContainer .used:after {
+  content: 'usado';
+  color: #e6334c;
+  font-size: 12px;
+}
+.detailsMainContainer .container .gameList il .commentContainer {
+  position: absolute;
+  top: 0;
+  bottom: 30px;
+}
+.detailsMainContainer .container .gameList il .commentContainer .background,
+.detailsMainContainer .container .gameList il .commentContainer span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 167px;
+  height: 100%;
+}
+.detailsMainContainer .container .gameList il .commentContainer .background {
+  background-color: #8cc63f;
+  opacity: 0.92;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=92)";
+  filter: alpha(opacity=92);
+  z-index: 2;
+}
+.detailsMainContainer .container .gameList il .commentContainer span {
+  z-index: 3;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 15px;
+  font-size: 11px;
+  padding-right: 20px;
+  padding-top: 20px;
+  text-transform: uppercase;
+  overflow-y: scroll;
 }
 .gameDetails {
   border-bottom: 1px solid #fff;

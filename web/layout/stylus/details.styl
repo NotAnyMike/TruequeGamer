@@ -162,6 +162,30 @@
 							span
 								&:before
 									content: 'X'
+				
+			&.both
+				il
+					figure
+						.info
+							border-top: 20px solid $dark_green
+							border-right: 20px solid $dark_green
+
+							span
+								background-color: white
+								
+								&:before
+									color: $dark_green
+									font-weight: bold /* just for both */
+
+					&:hover
+						figure
+							.info
+								border-top: 20px solid $red
+								border-right: 20px solid $red
+
+								span
+									&:before
+										color: $red
 							
 .gameDetails
 	border-bottom: 1px solid #fff

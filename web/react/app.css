@@ -3930,6 +3930,24 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList il.showComment figure .info span:before {
   content: 'X';
 }
+.detailsMainContainer .container .gameList.both il figure .info {
+  border-top: 20px solid #009992;
+  border-right: 20px solid #009992;
+}
+.detailsMainContainer .container .gameList.both il figure .info span {
+  background-color: #fff;
+}
+.detailsMainContainer .container .gameList.both il figure .info span:before {
+  color: #009992;
+  font-weight: bold /* just for both */;
+}
+.detailsMainContainer .container .gameList.both il:hover figure .info {
+  border-top: 20px solid #e6334c;
+  border-right: 20px solid #e6334c;
+}
+.detailsMainContainer .container .gameList.both il:hover figure .info span:before {
+  color: #e6334c;
+}
 .gameDetails {
   border-bottom: 1px solid #fff;
   display: -webkit-box;

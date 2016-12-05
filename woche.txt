@@ -1,4 +1,4 @@
 Jueves: Agregando hover effect al info button y se agregó la bandera "usado" para los detalles de los juegos y cuadrando el div del comentario sobre el juego, next: crear x para cerrar el comentario y mejorar el layout
 Viernes: nada
 Sábado: nada
-Domingo: Agregando la opción de cerrar el comentairo del juego
+Domingo: Agregando la opción de cerrar el comentairo del juego, comenzado con la versión para las dos consolas

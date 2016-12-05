@@ -3779,7 +3779,7 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -o-transition: border 300ms;
   -ms-transition: border 300ms;
   transition: border 300ms;
-  z-index: 3;
+  z-index: 4;
 }
 .detailsMainContainer .container .gameList il figure .info span {
   background-color: #e6334c;
@@ -3885,6 +3885,10 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   position: absolute;
   top: 0;
   bottom: 30px;
+  display: none;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
 }
 .detailsMainContainer .container .gameList il .commentContainer .background,
 .detailsMainContainer .container .gameList il .commentContainer span {
@@ -3912,6 +3916,19 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   padding-top: 20px;
   text-transform: uppercase;
   overflow-y: scroll;
+}
+.detailsMainContainer .container .gameList il.showComment .commentContainer {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  display: inline-block;
+}
+.detailsMainContainer .container .gameList il.showComment figure .info {
+  border-top: 20px transparent solid;
+  border-right: 20px transparent solid;
+}
+.detailsMainContainer .container .gameList il.showComment figure .info span:before {
+  content: 'X';
 }
 .gameDetails {
   border-bottom: 1px solid #fff;

@@ -36,7 +36,7 @@
 						border-bottom: 20px solid transparent
 						box-sizing: border-box
 						transition: border $time
-						z-index: 3
+						z-index: 4
 
 						span
 							background-color: $red
@@ -119,11 +119,13 @@
 								content: 'usado'
 								color: $red
 								font-size: 12px
-
+				
 				.commentContainer
 					position: absolute
 					top: 0
 					bottom: 30px
+					display:none
+					opacity: 0
 
 					.background,span
 						position: absolute
@@ -146,6 +148,20 @@
 						padding-top: 20px
 						text-transform: uppercase
 						overflow-y: scroll
+				
+				&.showComment
+					.commentContainer
+						opacity: 1
+						display: inline-block
+
+					figure
+						.info
+							border-top: 20px transparent solid
+							border-right: 20px transparent solid
+							
+							span
+								&:before
+									content: 'X'
 							
 .gameDetails
 	border-bottom: 1px solid #fff

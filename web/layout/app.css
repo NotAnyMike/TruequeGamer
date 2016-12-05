@@ -3941,12 +3941,108 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   color: #009992;
   font-weight: bold /* just for both */;
 }
+.detailsMainContainer .container .gameList.both il .contentContainer {
+  text-align: left;
+}
+.detailsMainContainer .container .gameList.both il .contentContainer .price {
+  -webkit-box-ordinal-group: 1;
+  -moz-box-ordinal-group: 1;
+  -o-box-ordinal-group: 1;
+  -ms-flex-order: 1;
+  -webkit-order: 1;
+  order: 1;
+  height: 12px;
+}
+.detailsMainContainer .container .gameList.both il .contentContainer .price:before {
+  display: none;
+}
+.detailsMainContainer .container .gameList.both il .contentContainer .price span {
+  width: auto;
+  margin: 0px 12px;
+  font-size: 15px;
+  font-weight: bold;
+  height: 12px;
+  line-height: normal;
+}
+.detailsMainContainer .container .gameList.both il .contentContainer .exchange span {
+  display: none;
+  width: auto;
+  position: relative;
+}
+.detailsMainContainer .container .gameList.both il .contentContainer .exchange span:after {
+  left: -5px;
+  top: 0;
+  color: #00605b;
+}
+.detailsMainContainer .container .gameList.both il .contentContainer .exchange:before,
+.detailsMainContainer .container .gameList.both il .contentContainer .exchange:after {
+  padding-right: 0;
+  bottom: 3px;
+}
+.detailsMainContainer .container .gameList.both il .contentContainer .exchange:after {
+  bottom: 2px;
+}
+.detailsMainContainer .container .gameList.both il .contentContainer .exchange .used {
+  bottom: 0;
+  top: auto;
+}
+.detailsMainContainer .container .gameList.both il .contentContainer .exchange .used:after {
+  color: #fff;
+  font-weight: bold;
+}
+.detailsMainContainer .container .gameList.both il.xboxNoExchange .contentContainer .exchange:before,
+.detailsMainContainer .container .gameList.both il.psNoExchange .contentContainer .exchange:before,
+.detailsMainContainer .container .gameList.both il.xboxNoExchange .contentContainer .exchange:after,
+.detailsMainContainer .container .gameList.both il.psNoExchange .contentContainer .exchange:after {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  color: #00605b;
+}
+.detailsMainContainer .container .gameList.both il.xboxNoExchange .contentContainer .exchange span:after,
+.detailsMainContainer .container .gameList.both il.psNoExchange .contentContainer .exchange span:after,
+.detailsMainContainer .container .gameList.both il.xboxNoExchange .contentContainer .exchange span:before,
+.detailsMainContainer .container .gameList.both il.psNoExchange .contentContainer .exchange span:before {
+  display: inline-block;
+}
+.detailsMainContainer .container .gameList.both il.xboxNoExchange .contentContainer .exchange span:before,
+.detailsMainContainer .container .gameList.both il.psNoExchange .contentContainer .exchange span:before {
+  content: "trueque";
+}
+.detailsMainContainer .container .gameList.both il.xbox span:nth-child(2) {
+  display: inline-block;
+}
+.detailsMainContainer .container .gameList.both il.ps span:first-child {
+  display: inline-block;
+}
 .detailsMainContainer .container .gameList.both il:hover figure .info {
   border-top: 20px solid #e6334c;
   border-right: 20px solid #e6334c;
 }
 .detailsMainContainer .container .gameList.both il:hover figure .info span:before {
   color: #e6334c;
+}
+.detailsMainContainer .container .gameList.both il:hover.xboxNoExchange .contentContainer .exchange:before,
+.detailsMainContainer .container .gameList.both il:hover.psNoExchange .contentContainer .exchange:before,
+.detailsMainContainer .container .gameList.both il:hover.xboxNoExchange .contentContainer .exchange:after,
+.detailsMainContainer .container .gameList.both il:hover.psNoExchange .contentContainer .exchange:after {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il:hover.xboxNoExchange .contentContainer .exchange span:before,
+.detailsMainContainer .container .gameList.both il:hover.psNoExchange .contentContainer .exchange span:before,
+.detailsMainContainer .container .gameList.both il:hover.xboxNoExchange .contentContainer .exchange span:after,
+.detailsMainContainer .container .gameList.both il:hover.psNoExchange .contentContainer .exchange span:after {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.showComment figure .info {
+  border-top: 20px transparent solid;
+  border-right: 20px transparent solid;
+}
+.detailsMainContainer .container .gameList.both il.showComment .commentContainer {
+  left: 0;
+}
+.detailsMainContainer .container .gameList.both il.showComment .commentContainer .background {
+  background-color: #00605b;
 }
 .gameDetails {
   border-bottom: 1px solid #fff;

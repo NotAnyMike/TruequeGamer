@@ -2,3 +2,4 @@ Jueves: Agregando hover effect al info button y se agregó la bandera "usado" pa
 Viernes: nada
 Sábado: nada
 Domingo: Agregando la opción de cerrar el comentairo del juego, comenzado con la versión para las dos consolas
+Lunes: agregando estilos complementarios para both details, están listos los de los elementos de la lista, next: el datelle del juego

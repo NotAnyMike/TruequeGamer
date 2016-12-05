@@ -164,7 +164,7 @@
 									content: 'X'
 				
 			&.both
-				il
+				il	
 					figure
 						.info
 							border-top: 20px solid $dark_green
@@ -177,6 +177,73 @@
 									color: $dark_green
 									font-weight: bold /* just for both */
 
+					.contentContainer
+						text-align: left
+
+						.price
+							order: 1
+							height: 12px
+
+							&:before
+								display: none
+
+							span
+								width: auto
+								margin: 0px 12px
+								font-size: 15px
+								font-weight: bold
+								height:12px
+								line-height: normal
+
+						.exchange
+							span
+								display: none
+								width: auto
+								position: relative
+
+								&:after
+									left: -5px
+									top: 0
+									color: $darker_green
+
+							&:before, &:after
+								padding-right: 0
+								bottom: 3px
+
+							&:after
+								bottom: 2px
+
+							.used
+								bottom: 0
+								top: auto
+								
+								&:after
+									color: white
+									font-weight: bold
+
+					&.xboxNoExchange, &.psNoExchange
+						.contentContainer
+							.exchange
+
+								&:before, &:after
+									opacity: 1
+									color: $darker_green
+
+								span
+									&:after, &:before
+										display: inline-block
+
+									&:before
+										content: "trueque"
+					
+					&.xbox
+						span:nth-child(2)
+							display: inline-block
+
+					&.ps
+						span:first-child
+							display: inline-block
+
 					&:hover
 						figure
 							.info
@@ -186,6 +253,28 @@
 								span
 									&:before
 										color: $red
+
+						&.xboxNoExchange, &.psNoExchange
+							.contentContainer
+								.exchange
+									&:before, &:after
+										color: white
+
+									span
+										&:before, &:after
+											color: white
+
+					&.showComment
+						figure
+							.info
+								border-top: 20px transparent solid
+								border-right: 20px transparent solid
+
+						.commentContainer
+							left: 0
+
+							.background
+								background-color: $darker_green
 							
 .gameDetails
 	border-bottom: 1px solid #fff

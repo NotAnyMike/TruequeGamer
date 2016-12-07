@@ -1,3 +1,5 @@
+/* acá el caso generico (si no es especifica consola es xbox para simplicidad de programación, lo que significa que SIEMPRE se debe especificar consola */
+
 .detailsMainContainer
 	.container
 		.title
@@ -16,6 +18,8 @@
 					padding-left: 0
 
 		.gameList
+			padding-top: 20px
+
 			il
 				height: auto
 				min-height: 310px
@@ -47,6 +51,7 @@
 							margin-top: -18px
 							margin-left: -2px
 							position: absolute
+							transition: background-color $time
 
 							&:before
 								content: 'i'
@@ -54,6 +59,7 @@
 								height: 20px
 								width: 20px
 								text-align: center
+								transition: color $time
 
 				.contentContainer
 					span,div
@@ -107,7 +113,7 @@
 								&:after
 									color: white
 
-				&.xboxUsed
+				&.xboxUsed, &.psUsed
 					.contentContainer
 						.used
 							display: inline-block
@@ -119,6 +125,22 @@
 								content: 'usado'
 								color: $red
 								font-size: 12px
+								opacity: 0
+
+				&.xbox
+					&.xboxUsed
+						.contentContainer
+							.used
+								&:after
+									opacity: 1
+				
+				&.ps
+					&.psUsed
+						.contentContainer
+							.used
+								&:after
+									opacity: 1
+
 				
 				.commentContainer
 					position: absolute
@@ -275,7 +297,36 @@
 
 							.background
 								background-color: $darker_green
-							
+			&.ps
+				il	
+					.contentContainer
+						.exchange
+							.used
+								&:after
+									color: white
+
+					&:hover
+						figure
+							.info
+								border-top: 20px $red solid
+								border-right: 20px $red solid
+
+								span
+									background-color: white
+								
+									&:before
+										color: $red
+
+					&.showComment
+						figure
+							.info
+								border-top: transparent 20px solid
+								border-right: transparent 20px solid
+
+						.commentContainer
+							.background
+								background-color: $red
+								
 .gameDetails
 	border-bottom: 1px solid #fff
 	display: flex
@@ -342,7 +393,7 @@
 		border-bottom: solid 1px $dark_green
 
 		hr
-			background: $dark_green
+			border-top: 1px solid $dark_green
 
 		figure
 			border: solid 1px $dark_green

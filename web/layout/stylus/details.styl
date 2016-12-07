@@ -337,3 +337,27 @@
 				flex-grow: 0
 				font-size: 15px
 				font-weight: normal
+.both
+	.gameDetails
+		border-bottom: solid 1px $dark_green
+
+		hr
+			background: $dark_green
+
+		figure
+			border: solid 1px $dark_green
+
+		.gameDetailsContainer
+			.arrow-decorator
+				&:after
+					color: $dark_green
+
+			span
+				color: $dark_green
+
+			span:nth-child(3)
+				flex-grow: 0
+				padding-top: 10px
+
+			span:last-child
+				display: none

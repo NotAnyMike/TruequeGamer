@@ -3,3 +3,4 @@ Viernes: nada
 Sábado: nada
 Domingo: Agregando la opción de cerrar el comentairo del juego, comenzado con la versión para las dos consolas
 Lunes: agregando estilos complementarios para both details, están listos los de los elementos de la lista, next: el datelle del juego
+Martes: Terminado estilos para los detalles del juego en both

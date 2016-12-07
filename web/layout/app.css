@@ -4174,3 +4174,31 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   font-size: 15px;
   font-weight: normal;
 }
+.both .gameDetails {
+  border-bottom: solid 1px #009992;
+}
+.both .gameDetails hr {
+  background: #009992;
+}
+.both .gameDetails figure {
+  border: solid 1px #009992;
+}
+.both .gameDetails .gameDetailsContainer .arrow-decorator:after {
+  color: #009992;
+}
+.both .gameDetails .gameDetailsContainer span {
+  color: #009992;
+}
+.both .gameDetails .gameDetailsContainer span:nth-child(3) {
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  -o-box-flex: 0;
+  -ms-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex-grow: 0;
+  flex-grow: 0;
+  padding-top: 10px;
+}
+.both .gameDetails .gameDetailsContainer span:last-child {
+  display: none;
+}

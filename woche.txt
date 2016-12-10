@@ -5,3 +5,5 @@ Domingo: Agregando la opción de cerrar el comentairo del juego, comenzado con l
 Lunes: agregando estilos complementarios para both details, están listos los de los elementos de la lista, next: el datelle del juego
 Martes: Terminado estilos para los detalles del juego en both
 Miércoles: Ultimos detalles para both, pagina de detalles para ps lista
+Jueves: nada
+Viernes: Creando la pag de profile, profileDetails done, arreglando layout para only consoles items, jodiendo al diseñador por mandar los diseños incompletos :v

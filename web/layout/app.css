@@ -3211,18 +3211,24 @@ ul.gameList il.xboxNoExchange.xbox .contentContainer .exchange:after {
   filter: alpha(opacity=0);
 }
 .genericMainContainer.both .title,
-.searchResultsMainContainer.both .title {
+.searchResultsMainContainer.both .title,
+.genericMainContainer.profile .title,
+.searchResultsMainContainer.profile .title {
   color: #009992;
   border-bottom: 1px solid #009992;
 }
 .genericMainContainer.both .title:before,
-.searchResultsMainContainer.both .title:before {
+.searchResultsMainContainer.both .title:before,
+.genericMainContainer.profile .title:before,
+.searchResultsMainContainer.profile .title:before {
   background-image: url("img/smile.png");
   backgronud-position: center center;
   background-repeat: no-repeat;
 }
 .genericMainContainer.both .title:after,
-.searchResultsMainContainer.both .title:after {
+.searchResultsMainContainer.both .title:after,
+.genericMainContainer.profile .title:after,
+.searchResultsMainContainer.profile .title:after {
   content: 'aquí encontrarás juegos de PlayStation y de XBox';
 }
 ul.both.gameList il {
@@ -3883,6 +3889,9 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList il:hover .contentContainer .exchange .used:after {
   color: #fff;
 }
+.detailsMainContainer .container .gameList il.only .contentContainer .availableConsoles .container span {
+  width: 28px;
+}
 .detailsMainContainer .container .gameList il.xboxUsed .contentContainer .used,
 .detailsMainContainer .container .gameList il.psUsed .contentContainer .used {
   display: inline-block;
@@ -4092,7 +4101,8 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList.ps il.showComment .commentContainer .background {
   background-color: #e6334c;
 }
-.gameDetails {
+.gameDetails,
+.profileDetails {
   border-bottom: 1px solid #fff;
   display: -webkit-box;
   display: -moz-box;
@@ -4116,13 +4126,15 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   padding-top: 0;
   width: 100%;
 }
-.gameDetails hr {
+.gameDetails hr,
+.profileDetails hr {
   margin: 0;
   margin-bottom: 25px;
   margin-right: 200px;
   width: 100%;
 }
-.gameDetails figure {
+.gameDetails figure,
+.profileDetails figure {
   -webkit-box-align: center;
   -moz-box-align: center;
   -o-box-align: center;
@@ -4149,11 +4161,15 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   margin: 0;
   width: 167px;
 }
-.gameDetails figure img {
+.gameDetails figure img,
+.profileDetails figure img {
   height: 180px;
   width: 142px;
 }
-.gameDetails .gameDetailsContainer {
+.gameDetails .gameDetailsContainer,
+.profileDetails .gameDetailsContainer,
+.gameDetails .profileDetailsContainer,
+.profileDetails .profileDetailsContainer {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -4168,7 +4184,10 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   flex-direction: column;
   padding-left: 30px;
 }
-.gameDetails .gameDetailsContainer div:first-child {
+.gameDetails .gameDetailsContainer div:first-child,
+.profileDetails .gameDetailsContainer div:first-child,
+.gameDetails .profileDetailsContainer div:first-child,
+.profileDetails .profileDetailsContainer div:first-child {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -o-box-flex: 1;
@@ -4180,14 +4199,20 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   flex-shrink: 1;
   position: relative;
 }
-.gameDetails .gameDetailsContainer div:first-child:after {
+.gameDetails .gameDetailsContainer div:first-child:after,
+.profileDetails .gameDetailsContainer div:first-child:after,
+.gameDetails .profileDetailsContainer div:first-child:after,
+.profileDetails .profileDetailsContainer div:first-child:after {
   bottom: 10px;
   color: #fff;
   font-size: 25px;
   padding: 0;
   position: absolute;
 }
-.gameDetails .gameDetailsContainer span {
+.gameDetails .gameDetailsContainer span,
+.profileDetails .gameDetailsContainer span,
+.gameDetails .profileDetailsContainer span,
+.profileDetails .profileDetailsContainer span {
   color: #fff;
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
@@ -4202,7 +4227,10 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   font-weight: bold;
   text-transform: uppercase;
 }
-.gameDetails .gameDetailsContainer span:nth-child(3) {
+.gameDetails .gameDetailsContainer span:nth-child(3),
+.profileDetails .gameDetailsContainer span:nth-child(3),
+.gameDetails .profileDetailsContainer span:nth-child(3),
+.profileDetails .profileDetailsContainer span:nth-child(3) {
   -webkit-box-flex: 0.5;
   -moz-box-flex: 0.5;
   -o-box-flex: 0.5;
@@ -4211,7 +4239,10 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -webkit-flex-grow: 0.5;
   flex-grow: 0.5;
 }
-.gameDetails .gameDetailsContainer span:last-child {
+.gameDetails .gameDetailsContainer span:last-child,
+.profileDetails .gameDetailsContainer span:last-child,
+.gameDetails .profileDetailsContainer span:last-child,
+.profileDetails .profileDetailsContainer span:last-child {
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
   -o-box-flex: 0;
@@ -4222,22 +4253,34 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   font-size: 15px;
   font-weight: normal;
 }
-.both .gameDetails {
+.both .gameDetails,
+.both .profileDetails {
   border-bottom: solid 1px #009992;
 }
-.both .gameDetails hr {
+.both .gameDetails hr,
+.both .profileDetails hr {
   border-top: 1px solid #009992;
 }
-.both .gameDetails figure {
+.both .gameDetails figure,
+.both .profileDetails figure {
   border: solid 1px #009992;
 }
-.both .gameDetails .gameDetailsContainer .arrow-decorator:after {
+.both .gameDetails .gameDetailsContainer .arrow-decorator:after,
+.both .profileDetails .gameDetailsContainer .arrow-decorator:after,
+.both .gameDetails .profileDetailsContainer .arrow-decorator:after,
+.both .profileDetails .profileDetailsContainer .arrow-decorator:after {
   color: #009992;
 }
-.both .gameDetails .gameDetailsContainer span {
+.both .gameDetails .gameDetailsContainer span,
+.both .profileDetails .gameDetailsContainer span,
+.both .gameDetails .profileDetailsContainer span,
+.both .profileDetails .profileDetailsContainer span {
   color: #009992;
 }
-.both .gameDetails .gameDetailsContainer span:nth-child(3) {
+.both .gameDetails .gameDetailsContainer span:nth-child(3),
+.both .profileDetails .gameDetailsContainer span:nth-child(3),
+.both .gameDetails .profileDetailsContainer span:nth-child(3),
+.both .profileDetails .profileDetailsContainer span:nth-child(3) {
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
   -o-box-flex: 0;
@@ -4247,6 +4290,23 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   flex-grow: 0;
   padding-top: 10px;
 }
-.both .gameDetails .gameDetailsContainer span:last-child {
+.both .gameDetails .gameDetailsContainer span:last-child,
+.both .profileDetails .gameDetailsContainer span:last-child {
   display: none;
+}
+.profile .container .title span {
+  font-size: 20px;
+}
+.profile .container .profileDetails .profileDetailsContainer span {
+  display: inline-block;
+}
+.profile .container .profileDetails .profileDetailsContainer span:nth-child(3),
+.profile .container .profileDetails .profileDetailsContainer span:last-child {
+  font-size: 20px;
+  font-weight: normal;
+  padding-top: 20px;
+}
+.profile .container .profileDetails .profileDetailsContainer span:last-child {
+  color: #98ceb7;
+  padding-top: 10px;
 }

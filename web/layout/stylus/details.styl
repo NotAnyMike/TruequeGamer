@@ -113,6 +113,13 @@
 								&:after
 									color: white
 
+				&.only
+					.contentContainer
+						.availableConsoles
+							.container
+								span
+									width: 28px
+
 				&.xboxUsed, &.psUsed
 					.contentContainer
 						.used
@@ -185,7 +192,7 @@
 								&:before
 									content: 'X'
 				
-			&.both
+			&.both, $.profile
 				il	
 					figure
 						.info
@@ -327,7 +334,7 @@
 							.background
 								background-color: $red
 								
-.gameDetails
+.gameDetails, .profileDetails
 	border-bottom: 1px solid #fff
 	display: flex
 	flex-direction: row
@@ -356,7 +363,7 @@
 			height: 180px
 			width: 142px
 	
-	.gameDetailsContainer
+	.gameDetailsContainer, .profileDetailsContainer
 		display: flex
 		flex-direction: column
 		padding-left: 30px
@@ -389,7 +396,7 @@
 				font-size: 15px
 				font-weight: normal
 .both
-	.gameDetails
+	.gameDetails, .profileDetails
 		border-bottom: solid 1px $dark_green
 
 		hr
@@ -398,7 +405,7 @@
 		figure
 			border: solid 1px $dark_green
 
-		.gameDetailsContainer
+		.gameDetailsContainer, .profileDetailsContainer
 			.arrow-decorator
 				&:after
 					color: $dark_green
@@ -410,5 +417,6 @@
 				flex-grow: 0
 				padding-top: 10px
 
+		.gameDetailsContainer
 			span:last-child
 				display: none

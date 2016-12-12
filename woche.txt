@@ -1,9 +1,1 @@
-Jueves: Agregando hover effect al info button y se agregó la bandera "usado" para los detalles de los juegos y cuadrando el div del comentario sobre el juego, next: crear x para cerrar el comentario y mejorar el layout
-Viernes: nada
-Sábado: nada
-Domingo: Agregando la opción de cerrar el comentairo del juego, comenzado con la versión para las dos consolas
-Lunes: agregando estilos complementarios para both details, están listos los de los elementos de la lista, next: el datelle del juego
-Martes: Terminado estilos para los detalles del juego en both
-Miércoles: Ultimos detalles para both, pagina de detalles para ps lista
-Jueves: nada
-Viernes: Creando la pag de profile, profileDetails done, arreglando layout para only consoles items, jodiendo al diseñador por mandar los diseños incompletos :v
+Domingo:

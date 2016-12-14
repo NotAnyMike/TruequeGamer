@@ -1,1 +1,4 @@
-Domingo:
+Domingo: Seguí esperando
+Lunes: reuniones + viaje, luis mandó los diseños
+Martes: Creando elemento de "nuevo" y el el formulario también
+Miércoles: Terminando el formulario para agregar nuevos juegos 

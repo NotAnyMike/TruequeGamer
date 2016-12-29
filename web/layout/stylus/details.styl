@@ -29,37 +29,8 @@
 					position: relative
 
 					.info
-						position: absolute
-						height: 40px
-						width: 40px
-						top: 0
-						right: 0
-						border-top: 20px solid white
-						border-left: 20px solid transparent
 						border-right: 20px solid white
-						border-bottom: 20px solid transparent
-						box-sizing: border-box
-						transition: border $time
-						z-index: 4
-
-						span
-							background-color: $red
-							display: inline-block
-							border-radius: 10px
-							height: 20px
-							width: 20px
-							margin-top: -18px
-							margin-left: -2px
-							position: absolute
-							transition: background-color $time
-
-							&:before
-								content: 'i'
-								display: inline-block
-								height: 20px
-								width: 20px
-								text-align: center
-								transition: color $time
+						border-top: 20px solid white
 
 				.contentContainer
 					span,div
@@ -420,3 +391,36 @@
 		.gameDetailsContainer
 			span:last-child
 				display: none
+.info
+	position: absolute
+	height: 40px
+	width: 40px
+	top: 0
+	right: 0
+	border-top: 20px solid $green
+	border-left: 20px solid transparent
+	border-right: 20px solid $green
+	border-bottom: 20px solid transparent
+	box-sizing: border-box
+	transition: border $time
+	z-index: 4
+	cursor: pointer
+
+	span
+		background-color: $red
+		display: inline-block
+		border-radius: 10px
+		height: 20px
+		width: 20px
+		margin-top: -18px
+		margin-left: -2px
+		position: absolute
+		transition: background-color $time
+
+		&:before
+			content: 'i'
+			display: inline-block
+			height: 20px
+			width: 20px
+			text-align: center
+			transition: color $time

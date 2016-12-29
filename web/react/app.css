@@ -3771,52 +3771,8 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   position: relative;
 }
 .detailsMainContainer .container .gameList il figure .info {
-  position: absolute;
-  height: 40px;
-  width: 40px;
-  top: 0;
-  right: 0;
-  border-top: 20px solid #fff;
-  border-left: 20px solid transparent;
   border-right: 20px solid #fff;
-  border-bottom: 20px solid transparent;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-transition: border 300ms;
-  -moz-transition: border 300ms;
-  -o-transition: border 300ms;
-  -ms-transition: border 300ms;
-  transition: border 300ms;
-  z-index: 4;
-}
-.detailsMainContainer .container .gameList il figure .info span {
-  background-color: #e6334c;
-  display: inline-block;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  height: 20px;
-  width: 20px;
-  margin-top: -18px;
-  margin-left: -2px;
-  position: absolute;
-  -webkit-transition: background-color 300ms;
-  -moz-transition: background-color 300ms;
-  -o-transition: background-color 300ms;
-  -ms-transition: background-color 300ms;
-  transition: background-color 300ms;
-}
-.detailsMainContainer .container .gameList il figure .info span:before {
-  content: 'i';
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-  text-align: center;
-  -webkit-transition: color 300ms;
-  -moz-transition: color 300ms;
-  -o-transition: color 300ms;
-  -ms-transition: color 300ms;
-  transition: color 300ms;
+  border-top: 20px solid #fff;
 }
 .detailsMainContainer .container .gameList il .contentContainer span,
 .detailsMainContainer .container .gameList il .contentContainer div {
@@ -4294,6 +4250,55 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .both .profileDetails .gameDetailsContainer span:last-child {
   display: none;
 }
+.info {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  top: 0;
+  right: 0;
+  border-top: 20px solid #98ceb7;
+  border-left: 20px solid transparent;
+  border-right: 20px solid #98ceb7;
+  border-bottom: 20px solid transparent;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: border 300ms;
+  -moz-transition: border 300ms;
+  -o-transition: border 300ms;
+  -ms-transition: border 300ms;
+  transition: border 300ms;
+  z-index: 4;
+  cursor: pointer;
+}
+.info span {
+  background-color: #e6334c;
+  display: inline-block;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  height: 20px;
+  width: 20px;
+  margin-top: -18px;
+  margin-left: -2px;
+  position: absolute;
+  -webkit-transition: background-color 300ms;
+  -moz-transition: background-color 300ms;
+  -o-transition: background-color 300ms;
+  -ms-transition: background-color 300ms;
+  transition: background-color 300ms;
+}
+.info span:before {
+  content: 'i';
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  -webkit-transition: color 300ms;
+  -moz-transition: color 300ms;
+  -o-transition: color 300ms;
+  -ms-transition: color 300ms;
+  transition: color 300ms;
+}
 .profile .container .title span {
   font-size: 20px;
 }
@@ -4309,6 +4314,9 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .profile .container .profileDetails .profileDetailsContainer span:last-child {
   color: #98ceb7;
   padding-top: 10px;
+}
+il.new {
+  cursor: default;
 }
 il.new figure .img {
   background-color: #98ceb7;
@@ -4391,18 +4399,27 @@ il.new form {
   box-sizing: border-box;
   background-color: #009992;
 }
+il.new form .info span {
+  padding: 0;
+  font-size: 15px;
+  left: 0;
+}
+il.new form .info span:before {
+  content: 'x';
+}
 il.new form span {
   text-align: center;
   padding: 5px;
   padding-top: 10px;
-}
-il.new form div:first-child {
-  padding-top: 20px;
+  font-size: 12px;
 }
 il.new form div:nth-child(2) {
+  padding-top: 20px;
+}
+il.new form div:nth-child(3) {
   padding-top: 10px;
 }
-il.new form .commentButton,
+il.new form .publishButton,
 il.new form .cancel {
   border: 0;
   font-size: 12px;
@@ -4413,14 +4430,23 @@ il.new form .cancel {
 il.new form .cancel {
   background-color: #00605b;
   color: #98ceb7;
-  bottom: 25px;
+  bottom: 27px;
 }
-il.new form .commentButton {
+il.new form .publishButton {
   background-color: #e6334c;
   color: #fff;
   text-transform: uppercase;
   font-size: 10px;
   bottom: 0;
+  cursor: pointer;
+  -webkit-transition: font-size 300ms;
+  -moz-transition: font-size 300ms;
+  -o-transition: font-size 300ms;
+  -ms-transition: font-size 300ms;
+  transition: font-size 300ms;
+}
+il.new form .publishButton:hover {
+  font-size: 13px;
 }
 il.new form div {
   display: -webkit-box;
@@ -4435,12 +4461,12 @@ il.new form div {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: distribute;
-  -moz-box-pack: distribute;
-  -o-box-pack: distribute;
-  -ms-flex-pack: distribute;
-  -webkit-justify-content: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
 }
 il.new form div input[type='text'] {
   width: 145px;
@@ -4466,13 +4492,17 @@ il.new form div input[type="radio"]+label {
   -webkit-border-radius: 0;
   border-radius: 0;
   background-color: #00605b;
-  height: 18px;
+  height: 27px;
   color: #98ceb7;
-  padding: 10px;
-  width: 45px;
+  padding: 5px;
+  width: 73px;
   text-align: center;
   cursor: pointer;
   font-size: 15px;
+  margin: 0 2.5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 il.new form div input[type="radio"]:checked+label {
   background-color: #e6334c;
@@ -4483,15 +4513,15 @@ il.new form div.exchange input+label {
 }
 il.new form div.console input.ps+label,
 il.new form div.console input.xbox+label {
-  height: 38px;
-  width: 65px;
+  height: 27px;
+  width: 72px;
   padding: 0px;
 }
 il.new form div.console input.ps+label:before,
 il.new form div.console input.xbox+label:before {
   font-family: TruequeGamer;
-  font-size: 28px;
-  margin-top: 5px;
+  font-size: 20px;
+  margin-top: 3px;
   display: inline-block;
   cursor: pointer;
 }

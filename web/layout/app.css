@@ -3828,6 +3828,11 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -ms-flex-order: 3;
   -webkit-order: 3;
   order: 3;
+  -webkit-transition: background-color 300ms;
+  -moz-transition: background-color 300ms;
+  -o-transition: background-color 300ms;
+  -ms-transition: background-color 300ms;
+  transition: background-color 300ms;
 }
 .detailsMainContainer .container .gameList il .contentContainer .chatButton span {
   display: inherit;
@@ -3837,6 +3842,14 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   content: 'abrir chat';
   font-size: 12px;
   text-transform: uppercase;
+  -webkit-transition: color 300ms;
+  -moz-transition: color 300ms;
+  -o-transition: color 300ms;
+  -ms-transition: color 300ms;
+  transition: color 300ms;
+}
+.detailsMainContainer .container .gameList il .contentContainer .chatButton:hover {
+  background-color: #8cc63f;
 }
 .detailsMainContainer .container .gameList il:hover figure .info {
   border-top: 20px solid #8cc63f;
@@ -3983,6 +3996,9 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   color: #fff;
   font-weight: bold;
 }
+.detailsMainContainer .container .gameList.both il .contentContainer .chatButton:hover {
+  background-color: #00605b;
+}
 .detailsMainContainer .container .gameList.both il.xboxNoExchange .contentContainer .exchange:before,
 .detailsMainContainer .container .gameList.both il.psNoExchange .contentContainer .exchange:before,
 .detailsMainContainer .container .gameList.both il.xboxNoExchange .contentContainer .exchange:after,
@@ -4039,6 +4055,12 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 }
 .detailsMainContainer .container .gameList.ps il .contentContainer .exchange .used:after {
   color: #fff;
+}
+.detailsMainContainer .container .gameList.ps il .contentContainer .chatButton:hover {
+  background-color: #fff;
+}
+.detailsMainContainer .container .gameList.ps il .contentContainer .chatButton:hover span:before {
+  color: #e6334c;
 }
 .detailsMainContainer .container .gameList.ps il:hover figure .info {
   border-top: 20px #e6334c solid;
@@ -4403,14 +4425,16 @@ il.new form .info span {
   padding: 0;
   font-size: 15px;
   left: 0;
+  background-color: #fff;
 }
 il.new form .info span:before {
   content: 'x';
+  color: #98ceb7;
 }
 il.new form span {
   text-align: center;
   padding: 5px;
-  padding-top: 10px;
+  padding-top: 12px;
   font-size: 12px;
 }
 il.new form div:nth-child(2) {
@@ -4419,18 +4443,101 @@ il.new form div:nth-child(2) {
 il.new form div:nth-child(3) {
   padding-top: 10px;
 }
+il.new form div.videoGameSection {
+  position: relative;
+}
+il.new form div.videoGameSection ul {
+  display: inline-block;
+  position: absolute;
+  background-color: #fff;
+  top: 40px;
+  width: 145px;
+  z-index: 3;
+  padding: 0;
+  padding-bottom: 5px;
+}
+il.new form div.videoGameSection ul il {
+  min-height: 21px !important;
+  margin: 0;
+  width: auto;
+  background-color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 2px 8px;
+  color: #98ceb7;
+  text-align: left;
+  -webkit-box-align: start;
+  -moz-box-align: start;
+  -o-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+il.new form div.videoGameSection ul il:hover {
+  background-color: rgba(0,153,146,0.5);
+  color: #fff;
+}
+il.new form div.stateButtons {
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -o-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  display: none;
+}
+il.new form div.stateButtons button {
+  width: 54px;
+  height: 27px;
+  border: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  font-size: 8px;
+  color: #fff;
+  background-color: #00605b;
+  -webkit-transition: background-color 300ms;
+  -moz-transition: background-color 300ms;
+  -o-transition: background-color 300ms;
+  -ms-transition: background-color 300ms;
+  transition: background-color 300ms;
+}
+il.new form div.stateButtons button:hover {
+  background-color: #f29224;
+}
+il.new form div.stateButtons .delete:hover {
+  background-color: #e6334c;
+}
+il.new form .stateButtonsLabel {
+  display: none;
+}
 il.new form .publishButton,
-il.new form .cancel {
+il.new form .secondButton {
   border: 0;
   font-size: 12px;
   height: 25px;
   position: absolute;
   width: 100%;
 }
-il.new form .cancel {
+il.new form .secondButton {
   background-color: #00605b;
   color: #98ceb7;
+  text-transform: uppercase;
+  font-size: 10px;
   bottom: 27px;
+  -webkit-transition: color 300ms, background-color 300ms;
+  -moz-transition: color 300ms, background-color 300ms;
+  -o-transition: color 300ms, background-color 300ms;
+  -ms-transition: color 300ms, background-color 300ms;
+  transition: color 300ms, background-color 300ms;
+}
+il.new form .secondButton:hover {
+  background-color: #f29224;
+  color: #fff;
 }
 il.new form .publishButton {
   background-color: #e6334c;
@@ -4446,7 +4553,7 @@ il.new form .publishButton {
   transition: font-size 300ms;
 }
 il.new form .publishButton:hover {
-  font-size: 13px;
+  font-size: 11px;
 }
 il.new form div {
   display: -webkit-box;
@@ -4503,6 +4610,14 @@ il.new form div input[type="radio"]+label {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-transition: color 300ms;
+  -moz-transition: color 300ms;
+  -o-transition: color 300ms;
+  -ms-transition: color 300ms;
+  transition: color 300ms;
+}
+il.new form div input[type="radio"]+label:hover {
+  color: #fff;
 }
 il.new form div input[type="radio"]:checked+label {
   background-color: #e6334c;
@@ -4530,6 +4645,17 @@ il.new form div.console input.ps+label:before {
 }
 il.new form div.console input.xbox+label:before {
   content: '\e906';
+}
+il.new.editing form .stateButtonsLabel {
+  display: block;
+}
+il.new.editing form .stateButtons {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
 }
 il.new:hover figure {
   border-top: 2px solid #98ceb7 !important;

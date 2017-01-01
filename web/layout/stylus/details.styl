@@ -62,6 +62,7 @@
 						height: 30px
 						justify-content: center
 						order: 3
+						transition: background-color $time
 
 						span
 							display: inherit
@@ -71,6 +72,10 @@
 								content: 'abrir chat'
 								font-size: 12px
 								text-transform: uppercase
+								transition: color $time
+
+						&:hover
+							background-color: $green_hover_xbox
 
 				&:hover
 					figure
@@ -221,6 +226,10 @@
 									color: white
 									font-weight: bold
 
+						.chatButton
+							&:hover
+								background-color: $darker_green
+
 					&.xboxNoExchange, &.psNoExchange
 						.contentContainer
 							.exchange
@@ -282,6 +291,14 @@
 							.used
 								&:after
 									color: white
+
+						.chatButton
+							&:hover
+								background-color: white
+
+								span
+									&:before
+										color: $red
 
 					&:hover
 						figure
@@ -366,6 +383,7 @@
 				flex-grow: 0
 				font-size: 15px
 				font-weight: normal
+
 .both
 	.gameDetails, .profileDetails
 		border-bottom: solid 1px $dark_green
@@ -391,6 +409,7 @@
 		.gameDetailsContainer
 			span:last-child
 				display: none
+
 .info
 	position: absolute
 	height: 40px

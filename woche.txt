@@ -4,3 +4,5 @@ Martes: Creando elemento de "nuevo" y el el formulario también
 Miércoles: Terminando el formulario para agregar nuevos juegos 
 Jueves, viernes, sábado y domingo: Nada, esperando nuevos diseños
 Jueves: Modificando el forumulario con el nuevo diseño
+Viernes, Sábado: AÑO NUEVO!!
+Domingo: Añadiendo hover effects, añadiendo lista de nombre de juegos al diseño, añadiendo hover effect al "abrir chat" y creando los botones de estado

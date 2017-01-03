@@ -5,6 +5,7 @@ const React = require('react'),
 const SearchResultsMainContainer = React.createClass({
 
 	propTypes: {
+		goToDetailsFn: React.PropTypes.func.isRequired,
 		console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired,
 		list: React.PropTypes.array.isRequired,
 	},
@@ -14,7 +15,7 @@ const SearchResultsMainContainer = React.createClass({
 			<section className={"genericMainContainer searchResultsMainContainer " + this.props.console}>
 				<div className="container">
 					<div className="title"></div>
-					<SearchResultsList console={this.props.console} list={this.props.list} />
+					<SearchResultsList console={this.props.console} list={this.props.list} goToDetailsFn={this.props.goToDetailsFn}/>
 				</div>
 			</section>
 		);

@@ -17,6 +17,7 @@ const Constants = {
 		sendMessage: 'send_message',
 		chatOpen: 'chat_open',
 		changeSearchChatValue: 'change_search_chat_value',
+		goToDetails: 'go_to_details_page',
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -27,6 +28,7 @@ const Constants = {
 		userUpdated: 'user_update',
 		resultsUpdated: 'results_updated',
 		unreadMessageCountUpdated: 'unread_message_count_updated',
+		goToDetails: 'go_to_details_page',
 	},
 	filter: {
 		not_used: 'not_used',

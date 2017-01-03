@@ -4,7 +4,9 @@ const React = require('react'),
 			Footer = require('./footer.js'),
 			Constants = require('../utils/constants.js'),
 			AppStore = require('../stores/appStore.js'),
-			Chat = require('./chat.js');
+			Actions = require('../utils/actions.js'),
+			Chat = require('./chat.js'),
+			browserHistory = require('react-router').browserHistory;
 
 const SearchResults = React.createClass({
 
@@ -21,15 +23,28 @@ const SearchResults = React.createClass({
 
 	componentDidMount: function(){
 		AppStore.addOnResultsUpdatedListener(this.onResultsUpdated);
+		AppStore.addOnGoToDetailsListener(this.loadDetailsPage);
 	},
 
 	componentWillUnmount: function(){
 		AppStore.removeOnResultsUpdatedListener(this.onResultsUpdated);
+		AppStore.removeOnGoToDetailsListener(this.loadDetailsPage);
 	},
 	
 	onResultsUpdated: function(){
 		var store = AppStore.getStore();
 		this.setState(store);
+	},
+
+	loadDetailsPage: function(){
+		console.log('going to details')
+
+		var route = "/details";
+		browserHistory.push(route);
+	},
+
+	goToDetailsFn: function(){
+		Actions.goToDetails();
 	},
 
 	render: function(){
@@ -55,7 +70,7 @@ const SearchResults = React.createClass({
 		return (
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user}/>
-				<SearchResultsMainContainer console={this.props.route.console} list={this.state.searchResult.results}/>
+				<SearchResultsMainContainer console={this.props.route.console} list={this.state.searchResult.results} goToDetailsFn={this.goToDetailsFn}/>
 				<Footer version={footerVersion}/>
 				{chat}
 			</div>

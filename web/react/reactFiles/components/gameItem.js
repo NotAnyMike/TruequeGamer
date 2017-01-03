@@ -20,6 +20,7 @@ const GameItem = React.createClass({
 		psOnlyPrice: React.PropTypes.bool,
 		xboxPrice: React.PropTypes.number,
 		xboxOnlyPrice: React.PropTypes.bool,
+		goToDetailsFn: React.PropTypes.func.isRequired,
 	},
 
 	getInitialState: function(){
@@ -46,6 +47,10 @@ const GameItem = React.createClass({
 		this.setState({isHover: false});
 	},
 	
+	_goToDetails: function(){
+		this.props.goToDetailsFn();
+	},
+	
 	render: function(){
 		var consoleVar = this.props.console;
 		if(this.props.both && this.state.isHover && consoleVar !== null){
@@ -69,7 +74,7 @@ const GameItem = React.createClass({
 		}
 
 		return (
-			<il className={className}>
+			<il className={className} onClick={this._goToDetails}>
 				<figure><img src={this.props.cover} alt=""/></figure>
 				<div className="contentContainer">
 					<span className="name">{this.props.name}</span>

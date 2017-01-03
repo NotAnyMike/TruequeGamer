@@ -5,6 +5,7 @@ const React = require('react'),
 const SearchResultsList = React.createClass({
 
 	propTypes: {
+		goToDetailsFn: React.PropTypes.func.isRequired,
 		console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired,
 		list: React.PropTypes.array.isRequired,
 	},
@@ -12,6 +13,7 @@ const SearchResultsList = React.createClass({
 	render: function(){
 
 		var consoleVar = this.props.console;
+		var self = this;
 		
 		return (
 			<ul className={"gameList " + this.props.console}>
@@ -40,6 +42,7 @@ const SearchResultsList = React.createClass({
 							cover={element.cover} 
 							name={element.name} 
 							both={consoleVar === Constants.consoles.both ? true : false}
+							goToDetailsFn={self.props.goToDetailsFn}
 							key={element.pk}
 						/>
 					);

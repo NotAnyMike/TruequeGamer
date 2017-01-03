@@ -48,6 +48,12 @@ var Actions = {
 		});
 	},
 
+	goToDetails: function(){
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.goToDetails,
+		});
+	},
+
 };
 
 module.exports = Actions;

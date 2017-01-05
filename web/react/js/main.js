@@ -26917,7 +26917,11 @@ const Details = React.createClass({
 			'div',
 			{ id: 'semi_body', className: 'both' },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
-			React.createElement(DetailsMainContainer, { game: this.state.gameDetails.game }),
+			React.createElement(DetailsMainContainer, {
+				game: this.state.gameDetails.game,
+				console: this.props.route.console,
+				list: this.state.gameDetails.list
+			}),
 			React.createElement(Footer, { version: footerVersion }),
 			chat
 		);
@@ -26991,153 +26995,191 @@ const DetailsGameLabel = React.createClass({
 module.exports = DetailsGameLabel;
 
 },{"../utils/functions.js":282,"react":239}],250:[function(require,module,exports){
-const React = require('react');
+const React = require('react'),
+      GameItem = require('./gameItem.js'),
+      Constants = require('../utils/constants.js');
 
 const DetailsList = React.createClass({
-	displayName: "DetailsList",
+	displayName: 'DetailsList',
 
 
-	propTypes: {},
+	propTypes: {
+		list: React.PropTypes.array
+	},
 
 	render: function () {
+
+		var consoleVar = this.props.console;
+		var self = this;
+
 		return React.createElement(
-			"ul",
-			{ className: "gameList both" },
+			'ul',
+			{ className: 'gameList both' },
+			this.props.list.map(function (element) {
+
+				var consoleProp = Constants.consoles.ps;
+				if (consoleVar !== Constants.consoles.both) {
+					consoleProp = consoleVar;
+				} else if (element.xboxPrice && (!element.psPrice || element.xboxPrice < element.psPrice)) {
+					consoleProp = Constants.consoles.xbox;
+				}
+
+				return React.createElement(GameItem, {
+					console: consoleProp,
+					psNoExchange: !element.psExchange,
+					xboxNoExchange: !element.xboxExchange,
+					notOnly: consoleVar === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs,
+					only: consoleVar === Constants.consoles.ps ? element.psOnly : element.xboxOnly,
+					psPrice: element.psPrice,
+					psOnlyPrice: element.psOnlyPrice,
+					xboxPrice: element.xboxPrice,
+					xboxOnlyPrice: element.xboxOnlyPrice,
+					psNoSell: element.psPrice === null ? true : false,
+					xboxNoSell: element.xboxPrice === null ? true : false,
+					cover: element.cover,
+					name: element.name,
+					both: consoleVar === Constants.consoles.both ? true : false,
+					psUsed: element.psUsed,
+					xboxUsed: element.xboxUsed,
+					comment: element.comment,
+					key: element.pk
+				});
+			}),
 			React.createElement(
-				"il",
-				{ className: "ps notOnly psUsed" },
+				'il',
+				{ className: 'ps notOnly psUsed' },
 				React.createElement(
-					"figure",
+					'figure',
 					null,
 					React.createElement(
-						"div",
-						{ className: "info" },
-						React.createElement("span", null)
+						'div',
+						{ className: 'info' },
+						React.createElement('span', null)
 					),
-					React.createElement("img", { src: "img/details_profile.png", alt: "" })
+					React.createElement('img', { src: 'img/details_profile.png', alt: '' })
 				),
 				React.createElement(
-					"div",
-					{ className: "contentContainer" },
+					'div',
+					{ className: 'contentContainer' },
 					React.createElement(
-						"span",
-						{ className: "name" },
-						"Alizr María"
+						'span',
+						{ className: 'name' },
+						'Alizr María'
 					),
 					React.createElement(
-						"div",
-						{ className: "exchange" },
-						React.createElement("span", null),
-						React.createElement("span", null),
-						React.createElement("div", { className: "used" })
+						'div',
+						{ className: 'exchange' },
+						React.createElement('span', null),
+						React.createElement('span', null),
+						React.createElement('div', { className: 'used' })
 					),
 					React.createElement(
-						"div",
-						{ className: "availableConsoles" },
+						'div',
+						{ className: 'availableConsoles' },
 						React.createElement(
-							"div",
-							{ className: "container" },
-							React.createElement("span", null),
-							React.createElement("span", null)
+							'div',
+							{ className: 'container' },
+							React.createElement('span', null),
+							React.createElement('span', null)
 						)
 					),
 					React.createElement(
-						"div",
-						{ className: "price" },
+						'div',
+						{ className: 'price' },
 						React.createElement(
-							"span",
+							'span',
 							null,
-							"Desde 70.000"
+							'Desde 70.000'
 						),
 						React.createElement(
-							"span",
+							'span',
 							null,
-							"Desde 80.000"
+							'Desde 80.000'
 						)
 					),
 					React.createElement(
-						"button",
-						{ className: "chatButton" },
-						React.createElement("span", null)
+						'button',
+						{ className: 'chatButton' },
+						React.createElement('span', null)
 					)
 				),
 				React.createElement(
-					"div",
-					{ className: "commentContainer" },
-					React.createElement("div", { className: "background" }),
+					'div',
+					{ className: 'commentContainer' },
+					React.createElement('div', { className: 'background' }),
 					React.createElement(
-						"span",
+						'span',
 						null,
-						"esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto estto es un comentario de pruba pero no se sabe que carajos es todo estoi esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto  es un comentario de pruba pero no se sabe que carajos es todo esto"
+						'esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto estto es un comentario de pruba pero no se sabe que carajos es todo estoi esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto  es un comentario de pruba pero no se sabe que carajos es todo esto'
 					)
 				)
 			),
 			React.createElement(
-				"il",
-				{ className: "xbox notOnly xboxUsed showComment" },
+				'il',
+				{ className: 'xbox notOnly xboxUsed showComment' },
 				React.createElement(
-					"figure",
+					'figure',
 					null,
 					React.createElement(
-						"div",
-						{ className: "info" },
-						React.createElement("span", null)
+						'div',
+						{ className: 'info' },
+						React.createElement('span', null)
 					),
-					React.createElement("img", { src: "img/details_profile.png", alt: "" })
+					React.createElement('img', { src: 'img/details_profile.png', alt: '' })
 				),
 				React.createElement(
-					"div",
-					{ className: "contentContainer" },
+					'div',
+					{ className: 'contentContainer' },
 					React.createElement(
-						"span",
-						{ className: "name" },
-						"Alizr María"
+						'span',
+						{ className: 'name' },
+						'Alizr María'
 					),
 					React.createElement(
-						"div",
-						{ className: "exchange" },
-						React.createElement("span", null),
-						React.createElement("span", null),
-						React.createElement("div", { className: "used" })
+						'div',
+						{ className: 'exchange' },
+						React.createElement('span', null),
+						React.createElement('span', null),
+						React.createElement('div', { className: 'used' })
 					),
 					React.createElement(
-						"div",
-						{ className: "availableConsoles" },
+						'div',
+						{ className: 'availableConsoles' },
 						React.createElement(
-							"div",
-							{ className: "container" },
-							React.createElement("span", null),
-							React.createElement("span", null)
+							'div',
+							{ className: 'container' },
+							React.createElement('span', null),
+							React.createElement('span', null)
 						)
 					),
 					React.createElement(
-						"div",
-						{ className: "price" },
+						'div',
+						{ className: 'price' },
 						React.createElement(
-							"span",
+							'span',
 							null,
-							"Desde 70.000"
+							'Desde 70.000'
 						),
 						React.createElement(
-							"span",
+							'span',
 							null,
-							"Desde 80.000"
+							'Desde 80.000'
 						)
 					),
 					React.createElement(
-						"button",
-						{ className: "chatButton" },
-						React.createElement("span", null)
+						'button',
+						{ className: 'chatButton' },
+						React.createElement('span', null)
 					)
 				),
 				React.createElement(
-					"div",
-					{ className: "commentContainer" },
-					React.createElement("div", { className: "background" }),
+					'div',
+					{ className: 'commentContainer' },
+					React.createElement('div', { className: 'background' }),
 					React.createElement(
-						"span",
+						'span',
 						null,
-						"esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto estto es un comentario de pruba pero no se sabe que carajos es todo estoi esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto  es un comentario de pruba pero no se sabe que carajos es todo esto"
+						'esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto estto es un comentario de pruba pero no se sabe que carajos es todo estoi esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto  es un comentario de pruba pero no se sabe que carajos es todo esto'
 					)
 				)
 			)
@@ -27148,7 +27190,7 @@ const DetailsList = React.createClass({
 
 module.exports = DetailsList;
 
-},{"react":239}],251:[function(require,module,exports){
+},{"../utils/constants.js":281,"./gameItem.js":256,"react":239}],251:[function(require,module,exports){
 const React = require('react'),
       DetailsList = require('./detailsList.js'),
       DetailsGameLabel = require('./detailsGameLabel.js');
@@ -27158,7 +27200,9 @@ const DetailsMainContainer = React.createClass({
 
 
 	propTypes: {
-		game: React.PropTypes.object.isRequired
+		game: React.PropTypes.object.isRequired,
+		console: React.PropTypes.string.isRequired,
+		list: React.PropTypes.array.isRequired
 	},
 
 	render: function () {
@@ -27189,7 +27233,10 @@ const DetailsMainContainer = React.createClass({
 					cover: this.props.game.cover,
 					hasHigherPrices: this.props.game.higher_prices
 				}),
-				React.createElement(DetailsList, null)
+				React.createElement(DetailsList, {
+					console: this.props.console,
+					list: this.props.list
+				})
 			)
 		);
 	}
@@ -27435,7 +27482,10 @@ const GameItem = React.createClass({
 		psOnlyPrice: React.PropTypes.bool,
 		xboxPrice: React.PropTypes.number,
 		xboxOnlyPrice: React.PropTypes.bool,
-		goToDetailsFn: React.PropTypes.func.isRequired
+		goToDetailsFn: React.PropTypes.func,
+		comment: React.PropTypes.string,
+		psUsed: React.PropTypes.bool,
+		xboxUsed: React.PropTypes.bool
 	},
 
 	getInitialState: function () {
@@ -27450,7 +27500,10 @@ const GameItem = React.createClass({
 			xboxNoExchange: false,
 			only: false,
 			notOnly: false,
-			console: null
+			console: null,
+			psUsed: false,
+			xboxUsed: false,
+			comment: null
 		};
 	},
 
@@ -27483,6 +27536,12 @@ const GameItem = React.createClass({
 		if (this.props.both || this.props.console === Constants.consoles.ps) {
 			className += (this.props.psNoExchange ? " psNoExchange" : "") + (this.props.psNoSell ? " psNoSell" : "");
 		}
+		if (this.props.both && this.props.console === Constants.consoles.ps && this.props.psUsed) {
+			className += " psUsed";
+		}
+		if ((this.props.both || this.props.console === Constants.consoles.xbox) && this.props.xboxUsed) {
+			className += " xboxUsed";
+		}
 
 		return React.createElement(
 			'il',
@@ -27490,6 +27549,11 @@ const GameItem = React.createClass({
 			React.createElement(
 				'figure',
 				null,
+				React.createElement(
+					'div',
+					{ className: 'info' },
+					React.createElement('span', null)
+				),
 				React.createElement('img', { src: this.props.cover, alt: '' })
 			),
 			React.createElement(
@@ -27504,7 +27568,8 @@ const GameItem = React.createClass({
 					'div',
 					{ className: 'exchange' },
 					React.createElement('span', null),
-					React.createElement('span', null)
+					React.createElement('span', null),
+					React.createElement('div', { className: 'used' })
 				),
 				React.createElement(
 					'div',
@@ -27540,6 +27605,21 @@ const GameItem = React.createClass({
 					'div',
 					{ className: 'alsoAvailableOn' },
 					React.createElement('span', null)
+				),
+				React.createElement(
+					'button',
+					{ className: 'chatButton' },
+					React.createElement('span', null)
+				)
+			),
+			React.createElement(
+				'div',
+				{ className: 'commentContainer' },
+				React.createElement('div', { className: 'background' }),
+				React.createElement(
+					'span',
+					null,
+					this.props.comment
 				)
 			)
 		);

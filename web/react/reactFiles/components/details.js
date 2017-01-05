@@ -53,7 +53,11 @@ const Details = React.createClass({
 		return (
 			<div id="semi_body" className="both">
 				<Header version={headerVersion} user={this.state.user} />
-				<DetailsMainContainer game={this.state.gameDetails.game} />
+				<DetailsMainContainer 
+					game={this.state.gameDetails.game} 
+					console={this.props.route.console} 
+					list={this.state.gameDetails.list}
+				/>
 				<Footer version={footerVersion} />
 				{chat}
 			</div>

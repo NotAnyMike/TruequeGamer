@@ -20,7 +20,10 @@ const GameItem = React.createClass({
 		psOnlyPrice: React.PropTypes.bool,
 		xboxPrice: React.PropTypes.number,
 		xboxOnlyPrice: React.PropTypes.bool,
-		goToDetailsFn: React.PropTypes.func.isRequired,
+		goToDetailsFn: React.PropTypes.func,
+		comment: React.PropTypes.string,
+		psUsed: React.PropTypes.bool,
+		xboxUsed: React.PropTypes.bool,
 	},
 
 	getInitialState: function(){
@@ -36,6 +39,9 @@ const GameItem = React.createClass({
 			only: false,
 			notOnly: false,
 			console: null,
+			psUsed: false,
+			xboxUsed: false,
+			comment: null,
 		});
 	},
 
@@ -72,15 +78,27 @@ const GameItem = React.createClass({
 			className += (this.props.psNoExchange ? " psNoExchange" : "") +
 				(this.props.psNoSell ? " psNoSell" : "");
 		}
+		if((this.props.both && this.props.console === Constants.consoles.ps) && this.props.psUsed){
+			className += " psUsed";
+		}
+		if((this.props.both || this.props.console === Constants.consoles.xbox) && this.props.xboxUsed){
+			className += " xboxUsed";
+		}
 
 		return (
 			<il className={className} onClick={this._goToDetails}>
-				<figure><img src={this.props.cover} alt=""/></figure>
+				<figure>
+					<div className="info">
+						<span></span>
+					</div>
+					<img src={this.props.cover} alt=""/>
+				</figure>
 				<div className="contentContainer">
 					<span className="name">{this.props.name}</span>
 					<div className="exchange">
 						<span></span>
 						<span></span>
+						<div className="used"></div>
 					</div>
 					<div className="availableConsoles">
 						<div className="container">
@@ -103,6 +121,13 @@ const GameItem = React.createClass({
 						</span>
 					</div>
 					<div className="alsoAvailableOn"><span></span></div>
+					<button className="chatButton">
+						<span></span>
+					</button>
+				</div>
+				<div className="commentContainer">
+					<div className="background"></div>
+					<span>{this.props.comment}</span>
 				</div>
 			</il>
 		);

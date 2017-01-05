@@ -6,6 +6,8 @@ const DetailsMainContainer = React.createClass({
 
 	propTypes: {
 		game: React.PropTypes.object.isRequired,
+		console: React.PropTypes.string.isRequired,
+		list: React.PropTypes.array.isRequired,
 	},
 
 	render: function(){
@@ -19,7 +21,10 @@ const DetailsMainContainer = React.createClass({
 						cover={this.props.game.cover}
 						hasHigherPrices={this.props.game.higher_prices}
 					/>
-					<DetailsList />
+					<DetailsList 
+						console={this.props.console}
+						list={this.props.list}
+					/>
 				</div>
 			</section>
 		)

@@ -7,3 +7,5 @@ Jueves: Modificando el forumulario con el nuevo diseño
 Viernes, Sábado: AÑO NUEVO!!
 Domingo: Añadiendo hover effects, añadiendo lista de nombre de juegos al diseño, añadiendo hover effect al "abrir chat" y creando los botones de estado
 Lunes: Adding the route to details in react
+Martes: Creating react components
+Miércoles: Creating the json in order to make it interactive

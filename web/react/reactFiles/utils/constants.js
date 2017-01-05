@@ -29,6 +29,8 @@ const Constants = {
 		resultsUpdated: 'results_updated',
 		unreadMessageCountUpdated: 'unread_message_count_updated',
 		goToDetails: 'go_to_details_page',
+		gamesAvailableUpdated: 'games_available_for_a_game_updated',
+		availableGamesUpadate: 'available_games_update',
 	},
 	filter: {
 		not_used: 'not_used',
@@ -60,6 +62,11 @@ const Constants = {
 			ps: '/search/ps/',
 			xbox: '/search/xbox/',
 			both: '/search/ps-xbox/',
+		},
+		details: {
+			ps: '/ps/',
+			xbox: '/xbox/',
+			both: '/ps-xbox/',
 		}
 	}
 };

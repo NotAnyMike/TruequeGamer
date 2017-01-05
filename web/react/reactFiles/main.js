@@ -23,7 +23,9 @@ ReactDOM.render(
 			<Route path="/search/ps-xbox/(:search)" console={Constants.consoles.both} component={SearchResults} />
 			<Route path="/search/ps/(:search)" console={Constants.consoles.ps} component={SearchResults} />
 			<Route path="/search/xbox/(:search)" console={Constants.consoles.xbox} component={SearchResults} />
-			<Route path="/details" component={Details} />
+			<Route path="/(:gameName)/ps-xbox" console={Constants.consoles.both} component={Details}/>
+			<Route path="/(:gameName)/ps" console={Constants.consoles.ps} component={Details} />
+			<Route path="/(:gameName)/xbox" console={Constants.consoles.xbox} component={Details} />
 			<Route path="/test/" component={Index}/>
 			<Route path="/test/search/ps-xbox/(:search)" console={Constants.consoles.both} component={SearchResults} />
 			<Route path="/test/search/ps/(:search)" console={Constants.consoles.ps} component={SearchResults} />

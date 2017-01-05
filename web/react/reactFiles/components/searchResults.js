@@ -37,9 +37,7 @@ const SearchResults = React.createClass({
 	},
 
 	loadDetailsPage: function(){
-		console.log('going to details')
-
-		var route = "/details";
+		var route = "/the witcher/ps-xbox";
 		browserHistory.push(route);
 	},
 

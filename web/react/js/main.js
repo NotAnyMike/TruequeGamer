@@ -26576,7 +26576,7 @@ var Chat = React.createClass({
 
 module.exports = Chat;
 
-},{"../stores/chatStore.js":276,"../utils/actions.js":277,"./chatBubble.js":242,"./chatContainer.js":243,"react":239}],242:[function(require,module,exports){
+},{"../stores/chatStore.js":279,"../utils/actions.js":280,"./chatBubble.js":242,"./chatContainer.js":243,"react":239}],242:[function(require,module,exports){
 var React = require('react');
 
 var ChatBubble = React.createClass({
@@ -26673,7 +26673,7 @@ var ChatContainer = React.createClass({
 
 module.exports = ChatContainer;
 
-},{"./chatList.js":244,"./singleChat.js":268,"react":239}],244:[function(require,module,exports){
+},{"./chatList.js":244,"./singleChat.js":271,"react":239}],244:[function(require,module,exports){
 var React = require('react'),
     ItemChat = require('./itemChat.js');
 
@@ -26767,7 +26767,7 @@ var ChatList = React.createClass({
 
 module.exports = ChatList;
 
-},{"./itemChat.js":259,"react":239}],245:[function(require,module,exports){
+},{"./itemChat.js":262,"react":239}],245:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js'),
     Actions = require('../utils/actions.js');
@@ -26804,7 +26804,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":277,"../utils/constants.js":278,"react":239}],246:[function(require,module,exports){
+},{"../utils/actions.js":280,"../utils/constants.js":281,"react":239}],246:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26838,7 +26838,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"./consoleCheckbox.js":245,"react":239}],247:[function(require,module,exports){
+},{"../utils/constants.js":281,"./consoleCheckbox.js":245,"react":239}],247:[function(require,module,exports){
 var React = require('react'),
     Link = require('react-router').Link;
 
@@ -26862,17 +26862,64 @@ module.exports = ContactUs;
 const React = require('react'),
       AppStore = require('../stores/appStore.js'),
       Constants = require('../utils/constants.js'),
-      Chat = require('./chat.js');
+      Chat = require('./chat.js'),
+      Header = require('./header.js'),
+      Footer = require('./footer.js'),
+      DetailsMainContainer = require('./detailsMainContainer.js');
 
 const Details = React.createClass({
 	displayName: 'Details',
 
 
+	propTypes: {},
+
+	getInitialState: function () {
+		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
+		var store = AppStore.getStore();
+		return store;
+	},
+
+	componentDidMount: function () {
+		AppStore.addOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
+	},
+
+	componentWillUnmount: function () {
+		AppStore.removeOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
+	},
+
+	onGamesAvailableUpdated: function () {
+		var store = AppStore.getStore();
+		this.setState(store);
+	},
+
 	render: function () {
+
+		var headerVersion;
+		if (this.props.route.console === Constants.consoles.both || true) {
+			headerVersion = Constants.header.versions.normal;
+		} else {
+			headerVersion = Constants.header.versions.negative;
+		}
+
+		var footerVersion;
+		if (this.props.route.console === Constants.consoles.both || true) {
+			footerVersion = Constants.footer.versions.whiteBackground;
+		} else {
+			footerVersion = Constants.footer.versions.white;
+		}
+
+		var chat;
+		if (this.state.user.logged) {
+			chat = React.createElement(Chat, { user: this.state.user });
+		}
+
 		return React.createElement(
-			'span',
-			null,
-			'hola'
+			'div',
+			{ id: 'semi_body', className: 'both' },
+			React.createElement(Header, { version: headerVersion, user: this.state.user }),
+			React.createElement(DetailsMainContainer, { game: this.state.gameDetails.game }),
+			React.createElement(Footer, { version: footerVersion }),
+			chat
 		);
 	}
 
@@ -26880,7 +26927,274 @@ const Details = React.createClass({
 
 module.exports = Details;
 
-},{"../stores/appStore.js":275,"../utils/constants.js":278,"./chat.js":241,"react":239}],249:[function(require,module,exports){
+},{"../stores/appStore.js":278,"../utils/constants.js":281,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239}],249:[function(require,module,exports){
+const React = require('react');
+
+const DetailsGameLabel = React.createClass({
+	displayName: 'DetailsGameLabel',
+
+
+	propTypes: {
+		name: React.PropTypes.string.isRequired,
+		priceMin: React.PropTypes.number,
+		hasHigherPrices: React.PropTypes.bool,
+		cover: React.PropTypes.string,
+		availableOnPs: React.PropTypes.bool,
+		availableOnXbox: React.PropTypes.bool
+	},
+
+	render: function () {
+		var minPriceVar = "-";
+		if (typeof this.props.hasHigerPrices !== 'undefined' && typeof this.props.hasHigerPrices !== 'undefined') minPriceVar = "Desde " + this.props.priceMin;
+
+		var nameVar = 'cargando...';
+		if (typeof this.props.name !== 'undefined') nameVar = this.props.name;
+
+		return React.createElement(
+			'div',
+			{ className: 'gameDetails' },
+			React.createElement('hr', null),
+			React.createElement(
+				'figure',
+				null,
+				React.createElement('img', { src: 'img/cover.png', alt: '' })
+			),
+			React.createElement(
+				'div',
+				{ className: 'gameDetailsContainer' },
+				React.createElement('div', { className: 'arrow-decorator' }),
+				React.createElement(
+					'span',
+					null,
+					nameVar
+				),
+				React.createElement(
+					'span',
+					null,
+					minPriceVar
+				),
+				React.createElement(
+					'span',
+					null,
+					'también disponible en play station 4'
+				)
+			)
+		);
+	}
+
+});
+
+module.exports = DetailsGameLabel;
+
+},{"react":239}],250:[function(require,module,exports){
+const React = require('react');
+
+const DetailsList = React.createClass({
+	displayName: "DetailsList",
+
+
+	propTypes: {},
+
+	render: function () {
+		return React.createElement(
+			"ul",
+			{ className: "gameList both" },
+			React.createElement(
+				"il",
+				{ className: "ps notOnly psUsed" },
+				React.createElement(
+					"figure",
+					null,
+					React.createElement(
+						"div",
+						{ className: "info" },
+						React.createElement("span", null)
+					),
+					React.createElement("img", { src: "img/details_profile.png", alt: "" })
+				),
+				React.createElement(
+					"div",
+					{ className: "contentContainer" },
+					React.createElement(
+						"span",
+						{ className: "name" },
+						"Alizr María"
+					),
+					React.createElement(
+						"div",
+						{ className: "exchange" },
+						React.createElement("span", null),
+						React.createElement("span", null),
+						React.createElement("div", { className: "used" })
+					),
+					React.createElement(
+						"div",
+						{ className: "availableConsoles" },
+						React.createElement(
+							"div",
+							{ className: "container" },
+							React.createElement("span", null),
+							React.createElement("span", null)
+						)
+					),
+					React.createElement(
+						"div",
+						{ className: "price" },
+						React.createElement(
+							"span",
+							null,
+							"Desde 70.000"
+						),
+						React.createElement(
+							"span",
+							null,
+							"Desde 80.000"
+						)
+					),
+					React.createElement(
+						"button",
+						{ className: "chatButton" },
+						React.createElement("span", null)
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "commentContainer" },
+					React.createElement("div", { className: "background" }),
+					React.createElement(
+						"span",
+						null,
+						"esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto estto es un comentario de pruba pero no se sabe que carajos es todo estoi esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto  es un comentario de pruba pero no se sabe que carajos es todo esto"
+					)
+				)
+			),
+			React.createElement(
+				"il",
+				{ className: "xbox notOnly xboxUsed showComment" },
+				React.createElement(
+					"figure",
+					null,
+					React.createElement(
+						"div",
+						{ className: "info" },
+						React.createElement("span", null)
+					),
+					React.createElement("img", { src: "img/details_profile.png", alt: "" })
+				),
+				React.createElement(
+					"div",
+					{ className: "contentContainer" },
+					React.createElement(
+						"span",
+						{ className: "name" },
+						"Alizr María"
+					),
+					React.createElement(
+						"div",
+						{ className: "exchange" },
+						React.createElement("span", null),
+						React.createElement("span", null),
+						React.createElement("div", { className: "used" })
+					),
+					React.createElement(
+						"div",
+						{ className: "availableConsoles" },
+						React.createElement(
+							"div",
+							{ className: "container" },
+							React.createElement("span", null),
+							React.createElement("span", null)
+						)
+					),
+					React.createElement(
+						"div",
+						{ className: "price" },
+						React.createElement(
+							"span",
+							null,
+							"Desde 70.000"
+						),
+						React.createElement(
+							"span",
+							null,
+							"Desde 80.000"
+						)
+					),
+					React.createElement(
+						"button",
+						{ className: "chatButton" },
+						React.createElement("span", null)
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "commentContainer" },
+					React.createElement("div", { className: "background" }),
+					React.createElement(
+						"span",
+						null,
+						"esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto estto es un comentario de pruba pero no se sabe que carajos es todo estoi esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto  es un comentario de pruba pero no se sabe que carajos es todo esto"
+					)
+				)
+			)
+		);
+	}
+
+});
+
+module.exports = DetailsList;
+
+},{"react":239}],251:[function(require,module,exports){
+const React = require('react'),
+      DetailsList = require('./detailsList.js'),
+      DetailsGameLabel = require('./detailsGameLabel.js');
+
+const DetailsMainContainer = React.createClass({
+	displayName: 'DetailsMainContainer',
+
+
+	propTypes: {
+		game: React.PropTypes.object.isRequired
+	},
+
+	render: function () {
+		return React.createElement(
+			'section',
+			{ className: 'genericMainContainer detailsMainContainer both' },
+			React.createElement(
+				'div',
+				{ className: 'container' },
+				React.createElement(
+					'div',
+					{ className: 'title' },
+					React.createElement(
+						'span',
+						null,
+						'Estás en la sección de ',
+						React.createElement(
+							'span',
+							null,
+							'The Witcher'
+						),
+						' para xbox one'
+					)
+				),
+				React.createElement(DetailsGameLabel, {
+					name: this.props.game.name,
+					priceMin: this.props.game.min_price,
+					cover: this.props.game.cover,
+					hasHigherPrices: this.props.game.higher_prices
+				}),
+				React.createElement(DetailsList, null)
+			)
+		);
+	}
+
+});
+
+module.exports = DetailsMainContainer;
+
+},{"./detailsGameLabel.js":249,"./detailsList.js":250,"react":239}],252:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26932,7 +27246,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":277,"../utils/constants.js":278,"react":239}],250:[function(require,module,exports){
+},{"../utils/actions.js":280,"../utils/constants.js":281,"react":239}],253:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26984,7 +27298,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"./extraFilterButton":249,"react":239}],251:[function(require,module,exports){
+},{"../utils/constants.js":281,"./extraFilterButton":252,"react":239}],254:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27010,7 +27324,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./consoleContainer.js":246,"./extraFilterContainer.js":250,"react":239}],252:[function(require,module,exports){
+},{"./consoleContainer.js":246,"./extraFilterContainer.js":253,"react":239}],255:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27092,7 +27406,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"./socialLink.js":271,"react":239}],253:[function(require,module,exports){
+},{"../utils/constants.js":281,"./socialLink.js":274,"react":239}],256:[function(require,module,exports){
 const React = require('react'),
       AvailableConsoles = require('./availableConsoles.js'),
       Constants = require('../utils/constants.js'),
@@ -27231,7 +27545,7 @@ const GameItem = React.createClass({
 
 module.exports = GameItem;
 
-},{"../utils/constants.js":278,"../utils/functions.js":279,"./availableConsoles.js":240,"react":239}],254:[function(require,module,exports){
+},{"../utils/constants.js":281,"../utils/functions.js":282,"./availableConsoles.js":240,"react":239}],257:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27264,7 +27578,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants":278,"./isotypeContainer.js":258,"./profileLink.js":261,"./searchButtonHeader.js":263,"react":239}],255:[function(require,module,exports){
+},{"../utils/constants":281,"./isotypeContainer.js":261,"./profileLink.js":264,"./searchButtonHeader.js":266,"react":239}],258:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27380,7 +27694,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../stores/appStore.js":275,"../utils/actions.js":277,"../utils/constants.js":278,"../utils/functions.js":279,"./chat.js":241,"./footer.js":252,"./header.js":254,"./mainContainer.js":260,"react":239,"react-router":37}],256:[function(require,module,exports){
+},{"../stores/appStore.js":278,"../utils/actions.js":280,"../utils/constants.js":281,"../utils/functions.js":282,"./chat.js":241,"./footer.js":255,"./header.js":257,"./mainContainer.js":263,"react":239,"react-router":37}],259:[function(require,module,exports){
 var React = require('react'),
     ReactDOM = require('react-dom');
 
@@ -27424,7 +27738,7 @@ var InputChat = React.createClass({
 
 module.exports = InputChat;
 
-},{"react":239,"react-dom":7}],257:[function(require,module,exports){
+},{"react":239,"react-dom":7}],260:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -27453,7 +27767,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"react":239}],258:[function(require,module,exports){
+},{"../utils/constants.js":281,"react":239}],261:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27484,7 +27798,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"./isotype.js":257,"./slogan.js":270,"react":239}],259:[function(require,module,exports){
+},{"../utils/constants.js":281,"./isotype.js":260,"./slogan.js":273,"react":239}],262:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js');
 
@@ -27544,7 +27858,7 @@ var ItemChat = React.createClass({
 
 module.exports = ItemChat;
 
-},{"../utils/constants.js":278,"react":239}],260:[function(require,module,exports){
+},{"../utils/constants.js":281,"react":239}],263:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27578,7 +27892,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./filterMainContainer.js":251,"./searchButton.js":262,"./searchField.js":264,"react":239}],261:[function(require,module,exports){
+},{"./filterMainContainer.js":254,"./searchButton.js":265,"./searchField.js":267,"react":239}],264:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -27620,7 +27934,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"react":239}],262:[function(require,module,exports){
+},{"../utils/constants.js":281,"react":239}],265:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27648,7 +27962,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/actions.js":277,"react":239}],263:[function(require,module,exports){
+},{"../utils/actions.js":280,"react":239}],266:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27676,7 +27990,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],264:[function(require,module,exports){
+},{"react":239}],267:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27753,7 +28067,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":277,"./suggestionItem.js":272,"react":239}],265:[function(require,module,exports){
+},{"../utils/actions.js":280,"./suggestionItem.js":275,"react":239}],268:[function(require,module,exports){
 const React = require('react'),
       SearchResultsMainContainer = require('./searchResultsMainContainer.js'),
       Header = require('./header.js'),
@@ -27795,9 +28109,7 @@ const SearchResults = React.createClass({
 	},
 
 	loadDetailsPage: function () {
-		console.log('going to details');
-
-		var route = "/details";
+		var route = "/the witcher/ps-xbox";
 		browserHistory.push(route);
 	},
 
@@ -27839,7 +28151,7 @@ const SearchResults = React.createClass({
 
 module.exports = SearchResults;
 
-},{"../stores/appStore.js":275,"../utils/actions.js":277,"../utils/constants.js":278,"./chat.js":241,"./footer.js":252,"./header.js":254,"./searchResultsMainContainer.js":267,"react":239,"react-router":37}],266:[function(require,module,exports){
+},{"../stores/appStore.js":278,"../utils/actions.js":280,"../utils/constants.js":281,"./chat.js":241,"./footer.js":255,"./header.js":257,"./searchResultsMainContainer.js":270,"react":239,"react-router":37}],269:[function(require,module,exports){
 const React = require('react'),
       GameItem = require('./gameItem.js'),
       Constants = require('../utils/constants.js');
@@ -27897,7 +28209,7 @@ const SearchResultsList = React.createClass({
 
 module.exports = SearchResultsList;
 
-},{"../utils/constants.js":278,"./gameItem.js":253,"react":239}],267:[function(require,module,exports){
+},{"../utils/constants.js":281,"./gameItem.js":256,"react":239}],270:[function(require,module,exports){
 const React = require('react'),
       SearchResultsList = require('./searchResultsList.js'),
       Constants = require('../utils/constants.js');
@@ -27929,7 +28241,7 @@ const SearchResultsMainContainer = React.createClass({
 
 module.exports = SearchResultsMainContainer;
 
-},{"../utils/constants.js":278,"./searchResultsList.js":266,"react":239}],268:[function(require,module,exports){
+},{"../utils/constants.js":281,"./searchResultsList.js":269,"react":239}],271:[function(require,module,exports){
 var React = require('react'),
     SingleMessage = require('./singleMessage.js'),
     InputChat = require('./inputChat.js');
@@ -28008,7 +28320,7 @@ var SingleChat = React.createClass({
 
 module.exports = SingleChat;
 
-},{"./inputChat.js":256,"./singleMessage.js":269,"react":239}],269:[function(require,module,exports){
+},{"./inputChat.js":259,"./singleMessage.js":272,"react":239}],272:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js');
 
@@ -28052,7 +28364,7 @@ var SingleMessage = React.createClass({
 
 module.exports = SingleMessage;
 
-},{"../utils/constants.js":278,"react":239}],270:[function(require,module,exports){
+},{"../utils/constants.js":281,"react":239}],273:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -28098,7 +28410,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":278,"react":239}],271:[function(require,module,exports){
+},{"../utils/constants.js":281,"react":239}],274:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -28117,7 +28429,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],272:[function(require,module,exports){
+},{"react":239}],275:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -28146,14 +28458,14 @@ const SuggestionItem = React.createClass({
 
 module.exports = SuggestionItem;
 
-},{"react":239}],273:[function(require,module,exports){
+},{"react":239}],276:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 
 var AppDispatcher = new Dispatcher();
 
 module.exports = AppDispatcher;
 
-},{"flux":3}],274:[function(require,module,exports){
+},{"flux":3}],277:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -28181,14 +28493,16 @@ React.createElement(
 		React.createElement(Route, { path: '/search/ps-xbox/(:search)', console: Constants.consoles.both, component: SearchResults }),
 		React.createElement(Route, { path: '/search/ps/(:search)', console: Constants.consoles.ps, component: SearchResults }),
 		React.createElement(Route, { path: '/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults }),
-		React.createElement(Route, { path: '/details', component: Details }),
+		React.createElement(Route, { path: '/(:gameName)/ps-xbox', console: Constants.consoles.both, component: Details }),
+		React.createElement(Route, { path: '/(:gameName)/ps', console: Constants.consoles.ps, component: Details }),
+		React.createElement(Route, { path: '/(:gameName)/xbox', console: Constants.consoles.xbox, component: Details }),
 		React.createElement(Route, { path: '/test/', component: Index }),
 		React.createElement(Route, { path: '/test/search/ps-xbox/(:search)', console: Constants.consoles.both, component: SearchResults }),
 		React.createElement(Route, { path: '/test/search/ps/(:search)', console: Constants.consoles.ps, component: SearchResults }),
 		React.createElement(Route, { path: '/test/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults })
 ), document.getElementById('mainContainer'));
 
-},{"./components/contactUs.js":247,"./components/details.js":248,"./components/index.js":255,"./components/searchResults.js":265,"./utils/constants.js":278,"react":239,"react-dom":7,"react-router":37}],275:[function(require,module,exports){
+},{"./components/contactUs.js":247,"./components/details.js":248,"./components/index.js":258,"./components/searchResults.js":268,"./utils/constants.js":281,"react":239,"react-dom":7,"react-router":37}],278:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -28221,6 +28535,15 @@ var _store = {
 	},
 	searchResult: {
 		results: []
+	},
+	gameDetails: {
+		game: {
+			name: 'cargando...',
+			min_price: 0,
+			cover: 'img/cover.png',
+			higher_prices: false
+		},
+		list: []
 	}
 };
 
@@ -28387,8 +28710,48 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		return _store.user;
 	},
 
+	addOnGamesAvailableUpdateListener: function (callback) {
+		this.on(Constants.eventType.availableGamesUpdate, callback);
+	},
+
+	removeOnGamesAvailableUpdateListener: function (callback) {
+		this.removeListener(Constants.eventType.availableGamesUpdate, callback);
+	},
+
+	getGamesAvailable: function (gameConsole, game) {
+		//get results
+		if (self.fetch) {
+			//use fetch
+			var stringValue = game;
+
+			var consoles = 'ps-xbox';
+			if (gameConsole === Constants.consoles.both || gameConsole === "ps-xbox" || gameConsole === 'xbox-ps') consoles = 'ps-xbox';else if (gameConsole === 'ps') consoles = 'ps';else consoles = 'xbox';
+
+			var sell = 'both';
+			if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+
+			var newVariable = 'both';
+			if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
+
+			var url = '/api/game_details/thewitcher.json';
+			if (process.env.NODE_ENV === "production") {
+				//TODO: CHANGE URL
+				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
+			}
+
+			fetch(url).then(function (response) {
+				response.json().then(function (json) {
+					//do something with json
+					_store.gameDetails = json;
+					AppStore.emit(Constants.eventType.availableGamesUpdate);
+				});
+			});
+		} else {
+			//use xml
+		}
+	},
+
 	search: function (gameConsole, game) {
-		console.log("search for " + gameConsole + " the game with name " + game);
 		//get results
 		if (self.fetch) {
 			//use fetch
@@ -28513,7 +28876,7 @@ AppDispatcher.register(function (payload) {
 module.exports = AppStore;
 
 }).call(this,require('_process'))
-},{"../dispatcher.js":273,"../utils/constants.js":278,"./chatStore.js":276,"_process":2,"events":1,"object-assign":6}],276:[function(require,module,exports){
+},{"../dispatcher.js":276,"../utils/constants.js":281,"./chatStore.js":279,"_process":2,"events":1,"object-assign":6}],279:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
     assign = require('object-assign'),
@@ -28779,7 +29142,7 @@ AppDispatcher.register(function (payload) {
 
 module.exports = ChatStore;
 
-},{"../dispatcher.js":273,"../utils/constants.js":278,"events":1,"object-assign":6}],277:[function(require,module,exports){
+},{"../dispatcher.js":276,"../utils/constants.js":281,"events":1,"object-assign":6}],280:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher,
     Constants = require('./constants.js');
 
@@ -28840,7 +29203,7 @@ var Actions = {
 
 module.exports = Actions;
 
-},{"../dispatcher.js":273,"./constants.js":278,"flux":3}],278:[function(require,module,exports){
+},{"../dispatcher.js":276,"./constants.js":281,"flux":3}],281:[function(require,module,exports){
 const consoles = {
 	xbox: 'xbox',
 	ps: 'ps',
@@ -28871,7 +29234,9 @@ const Constants = {
 		userUpdated: 'user_update',
 		resultsUpdated: 'results_updated',
 		unreadMessageCountUpdated: 'unread_message_count_updated',
-		goToDetails: 'go_to_details_page'
+		goToDetails: 'go_to_details_page',
+		gamesAvailableUpdated: 'games_available_for_a_game_updated',
+		availableGamesUpadate: 'available_games_update'
 	},
 	filter: {
 		not_used: 'not_used',
@@ -28903,13 +29268,18 @@ const Constants = {
 			ps: '/search/ps/',
 			xbox: '/search/xbox/',
 			both: '/search/ps-xbox/'
+		},
+		details: {
+			ps: '/ps/',
+			xbox: '/xbox/',
+			both: '/ps-xbox/'
 		}
 	}
 };
 
 module.exports = Constants;
 
-},{}],279:[function(require,module,exports){
+},{}],282:[function(require,module,exports){
 'use strict';
 
 const Functions = {
@@ -28940,4 +29310,4 @@ const Functions = {
 
 module.exports = Functions;
 
-},{}]},{},[274]);
+},{}]},{},[277]);

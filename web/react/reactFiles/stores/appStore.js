@@ -31,6 +31,15 @@ var _store =  {
 	searchResult:{
 		results:  [],
 	},
+	gameDetails:{
+		game:{
+			name: 'cargando...',
+			min_price: 0,
+			cover: 'img/cover.png',
+			higher_prices: false,
+		},
+		list: [],
+	}
 };
 
 if(self.fetch){
@@ -196,9 +205,53 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	getUser: function(){
 		return _store.user;
 	},
+	
+	addOnGamesAvailableUpdateListener: function(callback){
+		this.on(Constants.eventType.availableGamesUpdate, callback);
+	},
+
+	removeOnGamesAvailableUpdateListener: function(callback){
+		this.removeListener(Constants.eventType.availableGamesUpdate, callback);
+	},
+
+	getGamesAvailable: function(gameConsole, game){
+		//get results
+		if(self.fetch){
+			//use fetch
+			var stringValue = game;
+
+			var consoles = 'ps-xbox';
+			if(gameConsole === Constants.consoles.both || gameConsole === "ps-xbox" || gameConsole === 'xbox-ps') consoles = 'ps-xbox';
+			else if (gameConsole === 'ps') consoles = 'ps';
+			else consoles = 'xbox';
+
+			var sell = 'both';
+			if(_store.search.to_sell && !_store.search.exchange) sell = 'sell';
+			else if(!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+
+			var newVariable = 'both';
+			if(_store.search.not_used && !_store.search.used) newVariable = 'new';
+			else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
+
+			var url = '/api/game_details/thewitcher.json';
+			if(process.env.NODE_ENV === "production"){
+				//TODO: CHANGE URL
+				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
+			}
+			
+			fetch(url).then(function(response){
+				response.json().then(function(json){
+					//do something with json
+					_store.gameDetails = json;
+					AppStore.emit(Constants.eventType.availableGamesUpdate);
+				});
+			});
+		}else{
+			//use xml
+		}
+	},
 
 	search: function(gameConsole, game){
-		console.log("search for " + gameConsole + " the game with name " + game);
 		//get results
 		if(self.fetch){
 			//use fetch

@@ -26928,7 +26928,8 @@ const Details = React.createClass({
 module.exports = Details;
 
 },{"../stores/appStore.js":278,"../utils/constants.js":281,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239}],249:[function(require,module,exports){
-const React = require('react');
+const React = require('react'),
+      functions = require('../utils/functions.js');
 
 const DetailsGameLabel = React.createClass({
 	displayName: 'DetailsGameLabel',
@@ -26945,10 +26946,13 @@ const DetailsGameLabel = React.createClass({
 
 	render: function () {
 		var minPriceVar = "-";
-		if (typeof this.props.hasHigerPrices !== 'undefined' && typeof this.props.hasHigerPrices !== 'undefined') minPriceVar = "Desde " + this.props.priceMin;
+		if (typeof this.props.hasHigherPrices !== 'undefined' && typeof this.props.priceMin !== 'undefined') minPriceVar = "Desde " + functions.addDecimalPoints(this.props.priceMin);
 
 		var nameVar = 'cargando...';
 		if (typeof this.props.name !== 'undefined') nameVar = this.props.name;
+
+		var coverVar = '/img/games/cover.png';
+		if (typeof this.props.cover !== 'undefined') coverVar = this.props.cover;
 
 		return React.createElement(
 			'div',
@@ -26957,7 +26961,7 @@ const DetailsGameLabel = React.createClass({
 			React.createElement(
 				'figure',
 				null,
-				React.createElement('img', { src: 'img/cover.png', alt: '' })
+				React.createElement('img', { src: coverVar, alt: '' })
 			),
 			React.createElement(
 				'div',
@@ -26986,7 +26990,7 @@ const DetailsGameLabel = React.createClass({
 
 module.exports = DetailsGameLabel;
 
-},{"react":239}],250:[function(require,module,exports){
+},{"../utils/functions.js":282,"react":239}],250:[function(require,module,exports){
 const React = require('react');
 
 const DetailsList = React.createClass({

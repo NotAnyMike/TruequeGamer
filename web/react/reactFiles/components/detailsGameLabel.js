@@ -1,4 +1,5 @@
-const React = require('react');
+const React = require('react'),
+			functions = require('../utils/functions.js');
 
 const DetailsGameLabel = React.createClass({
 	
@@ -13,15 +14,18 @@ const DetailsGameLabel = React.createClass({
 
 	render: function(){
 		var minPriceVar = "-";
-		if(typeof this.props.hasHigerPrices !== 'undefined' && typeof this.props.hasHigerPrices !== 'undefined') minPriceVar = "Desde " + this.props.priceMin;
+		if(typeof this.props.hasHigherPrices !== 'undefined' && typeof this.props.priceMin !== 'undefined') minPriceVar = "Desde " + functions.addDecimalPoints(this.props.priceMin);
 
 		var nameVar = 'cargando...';
 		if(typeof this.props.name !== 'undefined') nameVar = this.props.name;
+		
+		var coverVar = '/img/games/cover.png';
+		if(typeof this.props.cover !== 'undefined') coverVar = this.props.cover;
 
 		return (
 			<div className="gameDetails">
 				<hr />
-				<figure><img src="img/cover.png" alt=""/></figure>
+				<figure><img src={coverVar} alt=""/></figure>
 				<div className="gameDetailsContainer">
 					<div className="arrow-decorator"></div>
 					<span>{nameVar}</span>

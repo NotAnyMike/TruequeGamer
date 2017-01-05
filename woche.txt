@@ -9,3 +9,4 @@ Domingo: Añadiendo hover effects, añadiendo lista de nombre de juegos al dise�
 Lunes: Adding the route to details in react
 Martes: Creating react components
 Miércoles: Creating the json in order to make it interactive
+Jueves: DetailsGameLabel working for both desing

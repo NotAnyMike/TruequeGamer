@@ -1,4 +1,5 @@
 const React = require('react'),
+			Constants = require('../utils/constants.js'),
 			functions = require('../utils/functions.js');
 
 const DetailsGameLabel = React.createClass({
@@ -21,6 +22,15 @@ const DetailsGameLabel = React.createClass({
 		
 		var coverVar = '/img/games/cover.png';
 		if(typeof this.props.cover !== 'undefined') coverVar = this.props.cover;
+		
+		var availableOn;
+		if(this.props.console !== Constants.consoles.both && (typeof this.props.availableOnPs !== 'undefined' || typeof this.props.availableOnXbox !== 'undefined')){
+			if(this.props.console === Constants.consoles.xbox && typeof this.props.availableOnPs !== 'undefined' && this.props.availableOnPs === true){
+				availableOn = "También disponible en play station 4";
+			} else if(this.props.console === Constants.consoles.ps && typeof this.props.availableOnXbox !== 'undefined' && this.props.availableOnXbox === true){
+				availableOn = "También disponible en xbox one";
+			}
+		}
 
 		return (
 			<div className="gameDetails">
@@ -30,7 +40,7 @@ const DetailsGameLabel = React.createClass({
 					<div className="arrow-decorator"></div>
 					<span>{nameVar}</span>
 					<span>{minPriceVar}</span>
-					<span>también disponible en play station 4</span>
+					<span>{availableOn}</span>
 				</div>
 			</div> 
 		);

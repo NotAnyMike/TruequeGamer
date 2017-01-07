@@ -10,3 +10,4 @@ Lunes: Adding the route to details in react
 Martes: Creating react components
 Miércoles: Creating the json in order to make it interactive
 Jueves: DetailsGameLabel working for both desing, gameItem working for bothDesign
+Viernes: trabajando en details para el diseño de ps y xbox, creando ruta para profile

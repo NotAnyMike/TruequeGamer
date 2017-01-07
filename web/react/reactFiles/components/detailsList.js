@@ -6,6 +6,7 @@ const DetailsList = React.createClass({
 	
 	propTypes: {
 		list: React.PropTypes.array,
+		console: React.PropTypes.string.isRequired,
 	},
 
 	render: function(){
@@ -14,7 +15,7 @@ const DetailsList = React.createClass({
 		var self = this;
 
 		return (
-			<ul className="gameList both">
+			<ul className={"gameList " + this.props.console}>
 				{this.props.list.map(function(element){
 					
 					var consoleProp = Constants.consoles.ps;
@@ -23,7 +24,7 @@ const DetailsList = React.createClass({
 					} else if (element.xboxPrice && (!element.psPrice || element.xboxPrice < element.psPrice)){
 						consoleProp = Constants.consoles.xbox;
 					}
-					
+						
 					return (
 						<GameItem 
 							console={consoleProp}

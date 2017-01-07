@@ -32,14 +32,14 @@ const Details = React.createClass({
 	render: function(){
 		
 		var headerVersion;
-		if(this.props.route.console === Constants.consoles.both || true){
+		if(this.props.route.console === Constants.consoles.both){
 			headerVersion = Constants.header.versions.normal;
 		}else{
 			headerVersion = Constants.header.versions.negative;
 		}
 		
 		var footerVersion;
-		if(this.props.route.console === Constants.consoles.both || true){
+		if(this.props.route.console === Constants.consoles.both){
 			footerVersion = Constants.footer.versions.whiteBackground;
 		}else{
 			footerVersion = Constants.footer.versions.white;
@@ -51,7 +51,7 @@ const Details = React.createClass({
 		}
 
 		return (
-			<div id="semi_body" className="both">
+			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user} />
 				<DetailsMainContainer 
 					game={this.state.gameDetails.game} 

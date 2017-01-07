@@ -3777,7 +3777,6 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   position: relative;
 }
 .detailsMainContainer .container .gameList il figure .info {
-  display: inline-block;
   border-right: 20px solid #fff;
   border-top: 20px solid #fff;
 }
@@ -3807,6 +3806,9 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   transition: color 300ms;
   color: #fff;
 }
+.detailsMainContainer .container .gameList il .contentContainer .alsoAvailableOn {
+  display: none;
+}
 .detailsMainContainer .container .gameList il .contentContainer .chatButton {
   display: inline-block;
   -webkit-box-align: center;
@@ -3830,12 +3832,12 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  -webkit-box-ordinal-group: 3;
-  -moz-box-ordinal-group: 3;
-  -o-box-ordinal-group: 3;
-  -ms-flex-order: 3;
-  -webkit-order: 3;
-  order: 3;
+  -webkit-box-ordinal-group: 4;
+  -moz-box-ordinal-group: 4;
+  -o-box-ordinal-group: 4;
+  -ms-flex-order: 4;
+  -webkit-order: 4;
+  order: 4;
   -webkit-transition: background-color 300ms;
   -moz-transition: background-color 300ms;
   -o-transition: background-color 300ms;

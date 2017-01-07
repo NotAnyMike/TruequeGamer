@@ -85,6 +85,17 @@ const GameItem = React.createClass({
 			className += " xboxUsed";
 		}
 
+		var comment;
+		if(typeof this.props.comment !== 'undefined' || this.props.comment !== ''){
+			comment = (
+				<div className="commentContainer">
+					<div className="background"></div>
+					<span>{this.props.comment}</span>
+				</div>
+			);
+		}
+
+
 		return (
 			<il className={className} onClick={this._goToDetails}>
 				<figure>
@@ -125,10 +136,7 @@ const GameItem = React.createClass({
 						<span></span>
 					</button>
 				</div>
-				<div className="commentContainer">
-					<div className="background"></div>
-					<span>{this.props.comment}</span>
-				</div>
+				{comment}
 			</il>
 		);
 	}

@@ -21,6 +21,7 @@ const GameItem = React.createClass({
 		xboxPrice: React.PropTypes.number,
 		xboxOnlyPrice: React.PropTypes.bool,
 		goToDetailsFn: React.PropTypes.func,
+		goToProfileFn: React.PropTypes.func,
 		comment: React.PropTypes.string,
 		psUsed: React.PropTypes.bool,
 		xboxUsed: React.PropTypes.bool,
@@ -53,8 +54,9 @@ const GameItem = React.createClass({
 		this.setState({isHover: false});
 	},
 	
-	_goToDetails: function(){
-		this.props.goToDetailsFn();
+	_goToPage: function(){
+		if(this.props.profile) this.props.goToProfileFn();
+		else this.props.goToDetailsFn();
 	},
 	
 	render: function(){
@@ -86,7 +88,7 @@ const GameItem = React.createClass({
 		}
 
 		var comment;
-		if(typeof this.props.comment !== 'undefined' || this.props.comment !== ''){
+		if(this.props.profile && typeof this.props.comment !== 'undefined' || this.props.comment !== ''){
 			comment = (
 				<div className="commentContainer">
 					<div className="background"></div>
@@ -97,7 +99,7 @@ const GameItem = React.createClass({
 
 
 		return (
-			<il className={className} onClick={this._goToDetails}>
+			<il className={className} onClick={this._goToPage}>
 				<figure>
 					<div className="info">
 						<span></span>

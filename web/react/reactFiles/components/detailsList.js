@@ -7,6 +7,7 @@ const DetailsList = React.createClass({
 	propTypes: {
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
+		goToProfileFn: React.PropTypes.func,
 	},
 
 	render: function(){
@@ -27,6 +28,7 @@ const DetailsList = React.createClass({
 						
 					return (
 						<GameItem 
+							profile={true}
 							console={consoleProp}
 							psNoExchange={!element.psExchange} 
 							xboxNoExchange={!element.xboxExchange} 
@@ -44,6 +46,7 @@ const DetailsList = React.createClass({
 							psUsed={element.psUsed}
 							xboxUsed={element.xboxUsed}	
 							comment={element.comment}
+							goToProfileFn={self.props.goToProfileFn}
 							key={element.pk}
 						/>
 					);

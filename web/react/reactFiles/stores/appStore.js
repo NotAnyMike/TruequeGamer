@@ -182,6 +182,18 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.userUpdated, callback);
 	},
 
+	addOnGoToProfileListener: function(callback){
+		this.on(Constants.eventType.goToProfile, callback);
+	},
+
+	removeOnGoToProfileListener: function(callback){
+		this.removeListener(Constants.eventType.goToProfile, callback);
+	},
+
+	goToProfilePage: function(){
+		this.emit(Constants.eventType.goToProfile);
+	},
+
 	addOnGoToDetailsListener: function(callback){
 		this.on(Constants.eventType.goToDetails, callback);
 	},
@@ -375,6 +387,9 @@ AppDispatcher.register(function(payload){
 			break;
 		case Constants.actionType.goToDetails:
 			AppStore.goToDetailsPage();
+			break;
+		case Constants.actionType.goToProfile:
+			AppStore.goToProfilePage();
 			break;
 	};
 

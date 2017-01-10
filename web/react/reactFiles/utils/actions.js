@@ -54,6 +54,12 @@ var Actions = {
 		});
 	},
 
+	goToProfile: function(){
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.goToProfile,
+		});
+	},
+
 };
 
 module.exports = Actions;

@@ -26862,16 +26862,22 @@ module.exports = ContactUs;
 const React = require('react'),
       AppStore = require('../stores/appStore.js'),
       Constants = require('../utils/constants.js'),
+      Actions = require('../utils/actions.js'),
       Chat = require('./chat.js'),
       Header = require('./header.js'),
       Footer = require('./footer.js'),
-      DetailsMainContainer = require('./detailsMainContainer.js');
+      DetailsMainContainer = require('./detailsMainContainer.js'),
+      browserHistory = require('react-router').browserHistory;
 
 const Details = React.createClass({
 	displayName: 'Details',
 
 
 	propTypes: {},
+
+	goToProfile: function () {
+		Actions.goToProfile();
+	},
 
 	getInitialState: function () {
 		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
@@ -26881,15 +26887,22 @@ const Details = React.createClass({
 
 	componentDidMount: function () {
 		AppStore.addOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
+		AppStore.addOnGoToProfileListener(this.loadProfilePage);
 	},
 
 	componentWillUnmount: function () {
 		AppStore.removeOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
+		AppStore.removeOnGoToProfileListener(this.loadProfilePage);
 	},
 
 	onGamesAvailableUpdated: function () {
 		var store = AppStore.getStore();
 		this.setState(store);
+	},
+
+	loadProfilePage: function () {
+		var route = "/profile/test";
+		browserHistory.push(route);
 	},
 
 	render: function () {
@@ -26920,7 +26933,8 @@ const Details = React.createClass({
 			React.createElement(DetailsMainContainer, {
 				game: this.state.gameDetails.game,
 				console: this.props.route.console,
-				list: this.state.gameDetails.list
+				list: this.state.gameDetails.list,
+				goToProfileFn: this.goToProfile
 			}),
 			React.createElement(Footer, { version: footerVersion }),
 			chat
@@ -26931,7 +26945,7 @@ const Details = React.createClass({
 
 module.exports = Details;
 
-},{"../stores/appStore.js":279,"../utils/constants.js":282,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239}],249:[function(require,module,exports){
+},{"../stores/appStore.js":279,"../utils/actions.js":281,"../utils/constants.js":282,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239,"react-router":37}],249:[function(require,module,exports){
 const React = require('react'),
       Constants = require('../utils/constants.js'),
       functions = require('../utils/functions.js');
@@ -26941,12 +26955,15 @@ const DetailsGameLabel = React.createClass({
 
 
 	propTypes: {
+		profile: React.PropTypes.bool.isRequired,
 		name: React.PropTypes.string.isRequired,
 		priceMin: React.PropTypes.number,
 		hasHigherPrices: React.PropTypes.bool,
 		cover: React.PropTypes.string,
 		availableOnPs: React.PropTypes.bool,
-		availableOnXbox: React.PropTypes.bool
+		availableOnXbox: React.PropTypes.bool,
+		numberOfGames: React.PropTypes.number,
+		city: React.PropTypes.string
 	},
 
 	render: function () {
@@ -26968,18 +26985,35 @@ const DetailsGameLabel = React.createClass({
 			}
 		}
 
-		return React.createElement(
-			'div',
-			{ className: 'gameDetails' },
-			React.createElement('hr', null),
-			React.createElement(
-				'figure',
-				null,
-				React.createElement('img', { src: coverVar, alt: '' })
-			),
-			React.createElement(
+		var classNameVar = "game";
+		if (this.props.profile) classNameVar = "profile";
+
+		var container;
+		if (this.props.profile) {
+			container = React.createElement(
 				'div',
-				{ className: 'gameDetailsContainer' },
+				{ className: classNameVar + "DetailsContainer" },
+				React.createElement('div', { className: 'arrow-decorator' }),
+				React.createElement(
+					'span',
+					null,
+					nameVar
+				),
+				React.createElement(
+					'span',
+					null,
+					this.props.city
+				),
+				React.createElement(
+					'span',
+					null,
+					this.props.numberOfGames + " videojuegos"
+				)
+			);
+		} else {
+			container = React.createElement(
+				'div',
+				{ className: classNameVar + "DetailsContainer" },
 				React.createElement('div', { className: 'arrow-decorator' }),
 				React.createElement(
 					'span',
@@ -26996,7 +27030,19 @@ const DetailsGameLabel = React.createClass({
 					null,
 					availableOn
 				)
-			)
+			);
+		}
+
+		return React.createElement(
+			'div',
+			{ className: classNameVar + "Details" },
+			React.createElement('hr', null),
+			React.createElement(
+				'figure',
+				null,
+				React.createElement('img', { src: coverVar, alt: '' })
+			),
+			container
 		);
 	}
 
@@ -27015,7 +27061,8 @@ const DetailsList = React.createClass({
 
 	propTypes: {
 		list: React.PropTypes.array,
-		console: React.PropTypes.string.isRequired
+		console: React.PropTypes.string.isRequired,
+		goToProfileFn: React.PropTypes.func
 	},
 
 	render: function () {
@@ -27036,6 +27083,7 @@ const DetailsList = React.createClass({
 				}
 
 				return React.createElement(GameItem, {
+					profile: true,
 					console: consoleProp,
 					psNoExchange: !element.psExchange,
 					xboxNoExchange: !element.xboxExchange,
@@ -27053,6 +27101,7 @@ const DetailsList = React.createClass({
 					psUsed: element.psUsed,
 					xboxUsed: element.xboxUsed,
 					comment: element.comment,
+					goToProfileFn: self.props.goToProfileFn,
 					key: element.pk
 				});
 			}),
@@ -27204,52 +27253,90 @@ module.exports = DetailsList;
 },{"../utils/constants.js":282,"./gameItem.js":256,"react":239}],251:[function(require,module,exports){
 const React = require('react'),
       DetailsList = require('./detailsList.js'),
-      DetailsGameLabel = require('./detailsGameLabel.js');
+      DetailsGameLabel = require('./detailsGameLabel.js'),
+      Constants = require('../utils/constants.js');
 
 const DetailsMainContainer = React.createClass({
 	displayName: 'DetailsMainContainer',
 
 
 	propTypes: {
-		game: React.PropTypes.object.isRequired,
+		game: React.PropTypes.object,
 		console: React.PropTypes.string.isRequired,
-		list: React.PropTypes.array.isRequired
+		list: React.PropTypes.array.isRequired,
+		goToProfileFn: React.PropTypes.func,
+		city: React.PropTypes.string,
+		numberOfGames: React.PropTypes.number
 	},
 
 	render: function () {
-		return React.createElement(
-			'section',
-			{ className: "genericMainContainer detailsMainContainer " + this.props.console },
-			React.createElement(
+		var detailsGameLabelVar;
+		if (this.props.profile) {
+			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
+				profile: this.props.profile,
+				console: Constants.consoles.both,
+				name: "mike",
+				cover: "/img/details_profile.png",
+				city: this.props.city,
+				numberOfGames: this.props.numberOfGames
+			});
+		} else {
+			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
+				profile: this.props.profile,
+				console: this.props.console,
+				name: this.props.game.name,
+				priceMin: this.props.game.min_price,
+				cover: this.props.game.cover,
+				hasHigherPrices: this.props.game.higher_prices,
+				availableOnPs: this.props.game.availableOnPs,
+				availableOnXbox: this.props.game.availableOnXbox
+			});
+		}
+
+		var classNameVar = "genericMainContainer detailsMainContainer " + this.props.console;
+		if (this.props.profile) classNameVar += " profile";
+
+		var titleVar;
+		if (this.props.profile) {
+			titleVar = React.createElement(
 				'div',
-				{ className: 'container' },
+				{ className: 'title' },
 				React.createElement(
-					'div',
-					{ className: 'title' },
+					'span',
+					null,
+					'Bienvenido al perfil de Mike'
+				)
+			);
+		} else {
+			titleVar = React.createElement(
+				'div',
+				{ className: 'title' },
+				React.createElement(
+					'span',
+					null,
+					'Estás en la sección de ',
 					React.createElement(
 						'span',
 						null,
-						'Estás en la sección de ',
-						React.createElement(
-							'span',
-							null,
-							'The Witcher'
-						),
-						' para xbox one'
-					)
-				),
-				React.createElement(DetailsGameLabel, {
-					console: this.props.console,
-					name: this.props.game.name,
-					priceMin: this.props.game.min_price,
-					cover: this.props.game.cover,
-					hasHigherPrices: this.props.game.higher_prices,
-					availableOnPs: this.props.game.availableOnPs,
-					availableOnXbox: this.props.game.availableOnXbox
-				}),
+						'The Witcher'
+					),
+					' para xbox one'
+				)
+			);
+		}
+
+		return React.createElement(
+			'section',
+			{ className: classNameVar },
+			React.createElement(
+				'div',
+				{ className: 'container' },
+				titleVar,
+				detailsGameLabelVar,
 				React.createElement(DetailsList, {
 					console: this.props.console,
-					list: this.props.list
+					list: this.props.list,
+					goToProfileFn: this.props.goToProfileFn
 				})
 			)
 		);
@@ -27259,7 +27346,7 @@ const DetailsMainContainer = React.createClass({
 
 module.exports = DetailsMainContainer;
 
-},{"./detailsGameLabel.js":249,"./detailsList.js":250,"react":239}],252:[function(require,module,exports){
+},{"../utils/constants.js":282,"./detailsGameLabel.js":249,"./detailsList.js":250,"react":239}],252:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27497,6 +27584,7 @@ const GameItem = React.createClass({
 		xboxPrice: React.PropTypes.number,
 		xboxOnlyPrice: React.PropTypes.bool,
 		goToDetailsFn: React.PropTypes.func,
+		goToProfileFn: React.PropTypes.func,
 		comment: React.PropTypes.string,
 		psUsed: React.PropTypes.bool,
 		xboxUsed: React.PropTypes.bool
@@ -27529,8 +27617,8 @@ const GameItem = React.createClass({
 		this.setState({ isHover: false });
 	},
 
-	_goToDetails: function () {
-		this.props.goToDetailsFn();
+	_goToPage: function () {
+		if (this.props.profile) this.props.goToProfileFn();else this.props.goToDetailsFn();
 	},
 
 	render: function () {
@@ -27558,7 +27646,7 @@ const GameItem = React.createClass({
 		}
 
 		var comment;
-		if (typeof this.props.comment !== 'undefined' || this.props.comment !== '') {
+		if (this.props.profile && typeof this.props.comment !== 'undefined' || this.props.comment !== '') {
 			comment = React.createElement(
 				'div',
 				{ className: 'commentContainer' },
@@ -27573,7 +27661,7 @@ const GameItem = React.createClass({
 
 		return React.createElement(
 			'il',
-			{ className: className, onClick: this._goToDetails },
+			{ className: className, onClick: this._goToPage },
 			React.createElement(
 				'figure',
 				null,
@@ -27996,21 +28084,55 @@ module.exports = React.createClass({
 });
 
 },{"./filterMainContainer.js":254,"./searchButton.js":266,"./searchField.js":268,"react":239}],264:[function(require,module,exports){
-const React = require('react');
+const React = require('react'),
+      AppStore = require('../stores/appStore.js'),
+      Constants = require('../utils/constants.js'),
+      Chat = require('./chat.js'),
+      Header = require('./header.js'),
+      Footer = require('./footer.js'),
+      DetailsMainContainer = require('./detailsMainContainer.js');
 
 const Profile = React.createClass({
-	displayName: "Profile",
+	displayName: 'Profile',
 
+
+	getInitialState: function () {
+		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
+		var store = AppStore.getStore();
+		return store;
+	},
 
 	render: function () {
-		return "hola";
+
+		var headerVersion = Constants.header.versions.normal;
+		var footerVersion = Constants.footer.versions.whiteBackground;
+
+		var chat;
+		if (this.state.user.logged) {
+			chat = React.createElement(Chat, { user: this.state.user });
+		}
+
+		return React.createElement(
+			'div',
+			{ id: 'semi_body', className: this.props.route.console },
+			React.createElement(Header, { version: headerVersion, user: this.state.user }),
+			React.createElement(DetailsMainContainer, {
+				profile: true,
+				console: Constants.consoles.both,
+				list: this.state.gameDetails.list,
+				city: "bogotá",
+				numberOfGames: 3
+			}),
+			React.createElement(Footer, { version: footerVersion }),
+			chat
+		);
 	}
 
 });
 
 module.exports = Profile;
 
-},{"react":239}],265:[function(require,module,exports){
+},{"../stores/appStore.js":279,"../utils/constants.js":282,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239}],265:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -28806,6 +28928,18 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.userUpdated, callback);
 	},
 
+	addOnGoToProfileListener: function (callback) {
+		this.on(Constants.eventType.goToProfile, callback);
+	},
+
+	removeOnGoToProfileListener: function (callback) {
+		this.removeListener(Constants.eventType.goToProfile, callback);
+	},
+
+	goToProfilePage: function () {
+		this.emit(Constants.eventType.goToProfile);
+	},
+
 	addOnGoToDetailsListener: function (callback) {
 		this.on(Constants.eventType.goToDetails, callback);
 	},
@@ -28987,6 +29121,9 @@ AppDispatcher.register(function (payload) {
 			break;
 		case Constants.actionType.goToDetails:
 			AppStore.goToDetailsPage();
+			break;
+		case Constants.actionType.goToProfile:
+			AppStore.goToProfilePage();
 			break;
 	};
 
@@ -29317,6 +29454,12 @@ var Actions = {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.goToDetails
 		});
+	},
+
+	goToProfile: function () {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.goToProfile
+		});
 	}
 
 };
@@ -29343,7 +29486,8 @@ const Constants = {
 		sendMessage: 'send_message',
 		chatOpen: 'chat_open',
 		changeSearchChatValue: 'change_search_chat_value',
-		goToDetails: 'go_to_details_page'
+		goToDetails: 'go_to_details_page',
+		goToProfile: 'go_to_profile_page'
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -29355,6 +29499,7 @@ const Constants = {
 		resultsUpdated: 'results_updated',
 		unreadMessageCountUpdated: 'unread_message_count_updated',
 		goToDetails: 'go_to_details_page',
+		goToProfile: 'go_to_profile',
 		gamesAvailableUpdated: 'games_available_for_a_game_updated',
 		availableGamesUpadate: 'available_games_update'
 	},

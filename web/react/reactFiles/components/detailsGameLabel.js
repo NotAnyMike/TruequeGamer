@@ -5,12 +5,15 @@ const React = require('react'),
 const DetailsGameLabel = React.createClass({
 	
 	propTypes: {
+		profile: React.PropTypes.bool.isRequired,
 		name: React.PropTypes.string.isRequired,
 		priceMin: React.PropTypes.number,
 		hasHigherPrices: React.PropTypes.bool,
 		cover: React.PropTypes.string,
 		availableOnPs: React.PropTypes.bool,
 		availableOnXbox: React.PropTypes.bool,
+		numberOfGames: React.PropTypes.number,
+		city: React.PropTypes.string,
 	},
 
 	render: function(){
@@ -32,16 +35,35 @@ const DetailsGameLabel = React.createClass({
 			}
 		}
 
-		return (
-			<div className="gameDetails">
-				<hr />
-				<figure><img src={coverVar} alt=""/></figure>
-				<div className="gameDetailsContainer">
+		var classNameVar = "game";
+		if(this.props.profile) classNameVar = "profile";
+
+		var container;
+		if(this.props.profile){
+			container = (
+				<div className={classNameVar + "DetailsContainer"}>
+					<div className="arrow-decorator"></div>
+					<span>{nameVar}</span>
+					<span>{this.props.city}</span>
+					<span>{this.props.numberOfGames + " videojuegos"}</span>
+				</div>
+			);
+		}else{
+			container = (
+				<div className={classNameVar + "DetailsContainer"}>
 					<div className="arrow-decorator"></div>
 					<span>{nameVar}</span>
 					<span>{minPriceVar}</span>
 					<span>{availableOn}</span>
 				</div>
+			);
+		}
+
+		return (
+			<div className={classNameVar + "Details"}>
+				<hr />
+				<figure><img src={coverVar} alt=""/></figure>
+				{container}
 			</div> 
 		);
 	},

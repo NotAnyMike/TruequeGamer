@@ -11,3 +11,6 @@ Martes: Creating react components
 Miércoles: Creating the json in order to make it interactive
 Jueves: DetailsGameLabel working for both desing, gameItem working for bothDesign
 Viernes: trabajando en details para el diseño de ps y xbox, creando ruta para profile
+Sábado: Nada
+Domingo: Nada
+Lunes: Creando los componentes de react para profile.js y adaptando lo que se usan en details

@@ -1,14 +1,20 @@
 const React = require('react'),
 	AppStore = require('../stores/appStore.js'),
 	Constants = require('../utils/constants.js'),
+	Actions = require('../utils/actions.js'),
 	Chat = require('./chat.js'),
 	Header = require('./header.js'),
 	Footer = require('./footer.js'),
-	DetailsMainContainer = require('./detailsMainContainer.js');
+	DetailsMainContainer = require('./detailsMainContainer.js'),
+	browserHistory = require('react-router').browserHistory;
 
 const Details = React.createClass({
 
 	propTypes: { },
+
+	goToProfile: function(){
+		Actions.goToProfile();	
+	},
 
 	getInitialState: function(){
 		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
@@ -18,15 +24,22 @@ const Details = React.createClass({
 
 	componentDidMount: function(){
 		AppStore.addOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
+		AppStore.addOnGoToProfileListener(this.loadProfilePage);
 	},
 
 	componentWillUnmount: function(){
 		AppStore.removeOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
+		AppStore.removeOnGoToProfileListener(this.loadProfilePage);
 	},
 
 	onGamesAvailableUpdated: function(){
 		var store = AppStore.getStore()
 		this.setState(store);
+	},
+
+	loadProfilePage: function(){
+		var route = "/profile/test";
+		browserHistory.push(route);
 	},
 
 	render: function(){
@@ -57,6 +70,7 @@ const Details = React.createClass({
 					game={this.state.gameDetails.game} 
 					console={this.props.route.console} 
 					list={this.state.gameDetails.list}
+					goToProfileFn={this.goToProfile}
 				/>
 				<Footer version={footerVersion} />
 				{chat}

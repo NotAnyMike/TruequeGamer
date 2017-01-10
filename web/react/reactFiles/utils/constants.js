@@ -18,6 +18,7 @@ const Constants = {
 		chatOpen: 'chat_open',
 		changeSearchChatValue: 'change_search_chat_value',
 		goToDetails: 'go_to_details_page',
+		goToProfile: 'go_to_profile_page',
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -29,6 +30,7 @@ const Constants = {
 		resultsUpdated: 'results_updated',
 		unreadMessageCountUpdated: 'unread_message_count_updated',
 		goToDetails: 'go_to_details_page',
+		goToProfile: 'go_to_profile',
 		gamesAvailableUpdated: 'games_available_for_a_game_updated',
 		availableGamesUpadate: 'available_games_update',
 	},

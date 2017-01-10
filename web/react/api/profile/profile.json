@@ -1,0 +1,31 @@
+{
+	"profile": {
+		"id":2,
+		"username":"admin",
+		"first_name":"Mike",
+		"last_name":"Woodcock",
+		"picture":"/img/details_profile.png",
+		"location":"BogotÃ¡, Colombia",
+		"numberOfGames":4
+	},
+	"list":[
+		{
+			"pk":14,
+			"name":"Alzir Marja",
+			"cover":"/img/details_profile.png",
+			"psPrice":70000,
+			"xboxPrice":80000,
+			"psExchange":true,
+			"xboxExchange":true,
+			"psOnly":false,
+			"xboxOnly":false,
+			"availableOnPs":true,
+			"availableOnXbox":true,
+			"psOnlyPrice":true,
+			"xboxOnlyPrice":true,
+			"psUsed":true,
+			"xboxUsed":true,
+			"comment":"this is just a test"
+		}
+	]
+}

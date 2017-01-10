@@ -13,4 +13,4 @@ Jueves: DetailsGameLabel working for both desing, gameItem working for bothDesig
 Viernes: trabajando en details para el diseño de ps y xbox, creando ruta para profile
 Sábado: Nada
 Domingo: Nada
-Lunes: Creando los componentes de react para profile.js y adaptando lo que se usan en details
+Lunes: Creando los componentes de react para profile.js y adaptando lo que se usan en details, creando profile.json

@@ -67,6 +67,7 @@ const Details = React.createClass({
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user} />
 				<DetailsMainContainer 
+					profile={false}
 					game={this.state.gameDetails.game} 
 					console={this.props.route.console} 
 					list={this.state.gameDetails.list}

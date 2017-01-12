@@ -7,6 +7,7 @@ const DetailsMainContainer = React.createClass({
 
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		isOwnerOfProfile: React.PropTypes.bool,
 		game: React.PropTypes.object,
 		console: React.PropTypes.string.isRequired,
 		list: React.PropTypes.array.isRequired,
@@ -22,6 +23,7 @@ const DetailsMainContainer = React.createClass({
 			detailsGameLabelVar = (
 				<DetailsGameLabel
 					isProfile={this.props.isProfile}
+					isOwnerOfProfile={this.props.isOwnerOfProfile}
 					console={Constants.consoles.both}
 					name={this.props.name}
 					cover={"/img/details_profile.png"}
@@ -33,6 +35,7 @@ const DetailsMainContainer = React.createClass({
 			detailsGameLabelVar = (
 				<DetailsGameLabel
 					isProfile={this.props.isProfile}
+					isOwnerOfProfile={this.props.isOwnerOfProfile}
 					console={this.props.console}
 					name={this.props.game.name}
 					priceMin={this.props.game.min_price}

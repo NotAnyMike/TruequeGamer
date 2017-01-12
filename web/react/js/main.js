@@ -26926,12 +26926,18 @@ const Details = React.createClass({
 			chat = React.createElement(Chat, { user: this.state.user });
 		}
 
+		var isOwnerOfProfile = false;
+		if (typeof this.state.user.id !== 'undefined' && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
+			isOwnerOfProfile = true;
+		}
+
 		return React.createElement(
 			'div',
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
 			React.createElement(DetailsMainContainer, {
 				isProfile: false,
+				isOwnerOfProfile: isOwnerOfProfile,
 				game: this.state.gameDetails.game,
 				console: this.props.route.console,
 				list: this.state.gameDetails.list,
@@ -26957,6 +26963,7 @@ const DetailsGameLabel = React.createClass({
 
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		isOwnerOfProfile: React.PropTypes.bool,
 		name: React.PropTypes.string.isRequired,
 		priceMin: React.PropTypes.number,
 		hasHigherPrices: React.PropTypes.bool,
@@ -26989,11 +26996,14 @@ const DetailsGameLabel = React.createClass({
 		var classNameVar = "game";
 		if (this.props.isProfile) classNameVar = "profile";
 
+		var own = "";
+		if (this.props.isProfile && this.props.isOwnerOfProfile) own = " own";
+
 		var container;
 		if (this.props.isProfile) {
 			container = React.createElement(
 				'div',
-				{ className: classNameVar + "DetailsContainer" },
+				{ className: classNameVar + "DetailsContainer" + own },
 				React.createElement('div', { className: 'arrow-decorator' }),
 				React.createElement(
 					'span',
@@ -27009,6 +27019,11 @@ const DetailsGameLabel = React.createClass({
 					'span',
 					null,
 					this.props.numberOfGames + " videojuegos"
+				),
+				React.createElement(
+					'button',
+					{ className: 'openChatProfileButton' },
+					'abrir chat'
 				)
 			);
 		} else {
@@ -27035,8 +27050,6 @@ const DetailsGameLabel = React.createClass({
 		}
 
 		classNameVar += "Details";
-
-		if (this.props.isProfile && true) classNameVar += " own";
 
 		return React.createElement(
 			'div',
@@ -27066,6 +27079,7 @@ const DetailsList = React.createClass({
 
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		isOwnerOfProfile: React.PropTypes.bool,
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func
@@ -27145,6 +27159,7 @@ const DetailsMainContainer = React.createClass({
 
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		isOwnerOfProfile: React.PropTypes.bool,
 		game: React.PropTypes.object,
 		console: React.PropTypes.string.isRequired,
 		list: React.PropTypes.array.isRequired,
@@ -27159,6 +27174,7 @@ const DetailsMainContainer = React.createClass({
 		if (this.props.isProfile) {
 			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
 				isProfile: this.props.isProfile,
+				isOwnerOfProfile: this.props.isOwnerOfProfile,
 				console: Constants.consoles.both,
 				name: this.props.name,
 				cover: "/img/details_profile.png",
@@ -27168,6 +27184,7 @@ const DetailsMainContainer = React.createClass({
 		} else {
 			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
 				isProfile: this.props.isProfile,
+				isOwnerOfProfile: this.props.isOwnerOfProfile,
 				console: this.props.console,
 				name: this.props.game.name,
 				priceMin: this.props.game.min_price,
@@ -28113,12 +28130,19 @@ const Profile = React.createClass({
 		var city = "somewhere";
 		if (typeof this.state.profile.profile.city !== 'undefined' && this.state.profile.profile !== null) city = this.state.profile.profile.city;
 
+		var isOwnerOfProfile = false;
+		if (typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
+			isOwnerOfProfile = true;
+			console.log(this.state.user.id + " " + this.state.profile.profile.id);
+		}
+
 		return React.createElement(
 			'div',
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
 			React.createElement(DetailsMainContainer, {
 				isProfile: true,
+				isOwnerOfProfile: isOwnerOfProfile,
 				console: Constants.consoles.both,
 				list: this.state.profile.list,
 				name: this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name,

@@ -63,11 +63,17 @@ const Details = React.createClass({
 			chat = <Chat user={this.state.user} />;
 		}
 
+		var isOwnerOfProfile = false;
+		if(typeof this.state.user.id !== 'undefined' && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
+			isOwnerOfProfile = true;
+		}
+
 		return (
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user} />
 				<DetailsMainContainer 
 					isProfile={false}
+					isOwnerOfProfile={isOwnerOfProfile}
 					game={this.state.gameDetails.game} 
 					console={this.props.route.console} 
 					list={this.state.gameDetails.list}

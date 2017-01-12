@@ -40,11 +40,18 @@ const Profile = React.createClass({
 		var city = "somewhere";
 		if(typeof this.state.profile.profile.city !== 'undefined' && this.state.profile.profile !== null) city = this.state.profile.profile.city;
 
+		var isOwnerOfProfile = false;
+		if(typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
+			isOwnerOfProfile = true;
+			console.log(this.state.user.id + " " + this.state.profile.profile.id);
+		}
+
 		return (
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user} />
 				<DetailsMainContainer 
 					isProfile={true}
+					isOwnerOfProfile={isOwnerOfProfile}
 					console={Constants.consoles.both} 
 					list={this.state.profile.list}
 					name={this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name}

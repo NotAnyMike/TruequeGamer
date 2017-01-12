@@ -6,6 +6,7 @@ const DetailsList = React.createClass({
 	
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		isOwnerOfProfile: React.PropTypes.bool,
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func,

@@ -6,6 +6,7 @@ const DetailsGameLabel = React.createClass({
 	
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		isOwnerOfProfile: React.PropTypes.bool,
 		name: React.PropTypes.string.isRequired,
 		priceMin: React.PropTypes.number,
 		hasHigherPrices: React.PropTypes.bool,
@@ -38,14 +39,18 @@ const DetailsGameLabel = React.createClass({
 		var classNameVar = "game";
 		if(this.props.isProfile) classNameVar = "profile";
 
+		var own = "";
+		if(this.props.isProfile && this.props.isOwnerOfProfile) own = " own";
+
 		var container;
 		if(this.props.isProfile){
 			container = (
-				<div className={classNameVar + "DetailsContainer"}>
+				<div className={classNameVar + "DetailsContainer" + own}>
 					<div className="arrow-decorator"></div>
 					<span>{nameVar}</span>
 					<span>{this.props.city}</span>
 					<span>{this.props.numberOfGames + " videojuegos"}</span>
+					<button className="openChatProfileButton">abrir chat</button>
 				</div>
 			);
 		}else{
@@ -60,8 +65,6 @@ const DetailsGameLabel = React.createClass({
 		}
 
 		classNameVar += "Details";
-
-		if(this.props.isProfile && true) classNameVar += " own"
 
 		return (
 			<div className={classNameVar}>

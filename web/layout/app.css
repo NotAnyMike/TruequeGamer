@@ -4512,8 +4512,8 @@ ul.gameList il.new form .info span:before {
 ul.gameList il.new form span {
   text-align: center;
   padding: 5px;
-  padding-top: 12px;
   font-size: 12px;
+  padding-top: 20px;
 }
 ul.gameList il.new form div:nth-child(2) {
   padding-top: 20px;
@@ -4738,22 +4738,25 @@ ul.gameList il.new form div.console input.ps+label:before {
 ul.gameList il.new form div.console input.xbox+label:before {
   content: '\e906';
 }
-ul.gameList il.new.editing form .stateButtonsLabel {
+ul.gameList il.new.editing.onlyExchange form .stateButtons .sold {
+  display: none;
+}
+ul.gameList il.new.editing.onlySell form .stateButtons .exchanged {
+  display: none;
+}
+ul.gameList il.new.editing.alreadyCreated form span {
+  padding-top: 12px;
+}
+ul.gameList il.new.editing.alreadyCreated form .stateButtonsLabel {
   display: block;
 }
-ul.gameList il.new.editing form .stateButtons {
+ul.gameList il.new.editing.alreadyCreated form .stateButtons {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: box;
   display: flex;
-}
-ul.gameList il.new.editing.onlyExchange form .stateButtons .sold {
-  display: none;
-}
-ul.gameList il.new.editing.onlySell form .stateButtons .exchanged {
-  display: none;
 }
 ul.gameList il.new:hover figure {
   border-top: 2px solid #98ceb7 !important;

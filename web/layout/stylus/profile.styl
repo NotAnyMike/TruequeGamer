@@ -119,8 +119,8 @@ ul
 					span
 						text-align: center
 						padding: 5px
-						padding-top: 12px
 						font-size: 12px
+						padding-top: 20px
 					
 					div
 						&:nth-child(2)
@@ -295,13 +295,6 @@ ul
 											content: '\e906'
 
 				&.editing
-					form
-						.stateButtonsLabel
-							display: block
-
-						.stateButtons
-							display: flex
-
 					&.onlyExchange
 						form
 							.stateButtons
@@ -313,6 +306,18 @@ ul
 							.stateButtons
 								.exchanged
 									display: none
+
+					&.alreadyCreated
+						form
+							span
+								padding-top: 12px
+
+							.stateButtonsLabel
+								display: block
+
+							.stateButtons
+								display: flex
+
 
 				&:hover
 					figure

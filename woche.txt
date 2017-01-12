@@ -16,4 +16,4 @@ Domingo: Nada
 Lunes: Creando los componentes de react para profile.js y adaptando lo que se usan en details, creando profile.json
 Martes: Adaptando itemGame for profile.html
 Miércoles: null
-Jueves: Arraging props of components, añadiendo botton para chat en profile.html, añadiendo onlySell and onlyExchange styles to the state Buttons, añadiendo title y textarea to comment, añadiendo psNew and xboxNew styles
+Jueves: Arraging props of components, añadiendo botton para chat en profile.html, añadiendo onlySell and onlyExchange styles to the state Buttons, añadiendo title y textarea to comment, añadiendo psNew and xboxNew styles, añadiendo alreadyCreated style

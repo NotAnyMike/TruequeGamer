@@ -4747,6 +4747,9 @@ ul.gameList il.new.editing.onlySell form .stateButtons .exchanged {
 ul.gameList il.new.editing.alreadyCreated form span {
   padding-top: 12px;
 }
+ul.gameList il.new.editing.alreadyCreated form .info span {
+  padding-top: 0px;
+}
 ul.gameList il.new.editing.alreadyCreated form .stateButtonsLabel {
   display: block;
 }

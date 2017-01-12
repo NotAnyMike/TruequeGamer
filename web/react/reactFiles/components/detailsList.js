@@ -39,7 +39,8 @@ const DetailsList = React.createClass({
 								price={element.price}
 								comment={element.comment}
 								key={element.pk}
-							/>)
+							/>
+						);
 					}else{
 						gameItem = (
 							<GameItem 
@@ -67,7 +68,7 @@ const DetailsList = React.createClass({
 						);
 					}
 					return gameItem;
-				})};
+				})}
 			</ul>
 		);
 	},

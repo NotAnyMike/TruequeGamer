@@ -27034,9 +27034,13 @@ const DetailsGameLabel = React.createClass({
 			);
 		}
 
+		classNameVar += "Details";
+
+		if (this.props.isProfile && true) classNameVar += " own";
+
 		return React.createElement(
 			'div',
-			{ className: classNameVar + "Details" },
+			{ className: classNameVar },
 			React.createElement('hr', null),
 			React.createElement(
 				'figure',
@@ -27121,8 +27125,7 @@ const DetailsList = React.createClass({
 					});
 				}
 				return gameItem;
-			}),
-			';'
+			})
 		);
 	}
 

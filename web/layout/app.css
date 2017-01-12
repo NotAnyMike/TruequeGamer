@@ -3872,14 +3872,18 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   width: 28px;
 }
 .detailsMainContainer .container .gameList il.xboxUsed .contentContainer .used,
-.detailsMainContainer .container .gameList il.psUsed .contentContainer .used {
+.detailsMainContainer .container .gameList il.psUsed .contentContainer .used,
+.detailsMainContainer .container .gameList il.xboxNew .contentContainer .used,
+.detailsMainContainer .container .gameList il.psNew .contentContainer .used {
   display: inline-block;
   position: absolute;
   right: 0;
   top: -3px;
 }
 .detailsMainContainer .container .gameList il.xboxUsed .contentContainer .used:after,
-.detailsMainContainer .container .gameList il.psUsed .contentContainer .used:after {
+.detailsMainContainer .container .gameList il.psUsed .contentContainer .used:after,
+.detailsMainContainer .container .gameList il.xboxNew .contentContainer .used:after,
+.detailsMainContainer .container .gameList il.psNew .contentContainer .used:after {
   content: 'usado';
   color: #e6334c;
   font-size: 12px;
@@ -3892,10 +3896,22 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -ms-filter: none;
   filter: none;
 }
+.detailsMainContainer .container .gameList il.xbox.xboxNew .contentContainer .used:after {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  content: 'nuevo';
+}
 .detailsMainContainer .container .gameList il.ps.psUsed .contentContainer .used:after {
   opacity: 1;
   -ms-filter: none;
   filter: none;
+}
+.detailsMainContainer .container .gameList il.ps.psNew .contentContainer .used:after {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  content: 'nuevo';
 }
 .detailsMainContainer .container .gameList il .commentContainer {
   position: absolute;
@@ -3907,12 +3923,12 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   filter: alpha(opacity=0);
 }
 .detailsMainContainer .container .gameList il .commentContainer .background,
-.detailsMainContainer .container .gameList il .commentContainer span {
+.detailsMainContainer .container .gameList il .commentContainer .commentTextContainer {
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
   width: 167px;
-  height: 100%;
 }
 .detailsMainContainer .container .gameList il .commentContainer .background {
   background-color: #8cc63f;
@@ -3921,7 +3937,7 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   filter: alpha(opacity=92);
   z-index: 2;
 }
-.detailsMainContainer .container .gameList il .commentContainer span {
+.detailsMainContainer .container .gameList il .commentContainer .commentTextContainer {
   z-index: 3;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -3933,15 +3949,47 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   text-transform: uppercase;
   overflow-y: scroll;
 }
+.detailsMainContainer .container .gameList il .commentContainer .commentTextContainer .commentTitle {
+  display: block;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.detailsMainContainer .container .gameList il .commentContainer .commentTextContainer .textArea {
+  display: none;
+  width: 134px;
+  display: inline-block;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  outline: none;
+  resize: none;
+  position: absolute;
+  top: 44px;
+  bottom: 20px;
+  height: auto;
+  padding: 5px;
+  font-size: 12px;
+  text-transform: none;
+}
 .detailsMainContainer .container .gameList il.showComment .commentContainer {
   opacity: 1;
   -ms-filter: none;
   filter: none;
   display: inline-block;
 }
+.detailsMainContainer .container .gameList il.showComment .commentContainer .commentTextContainer .textArea {
+  display: none;
+}
+.detailsMainContainer .container .gameList il.showComment form {
+  display: none;
+}
 .detailsMainContainer .container .gameList il.showComment figure .info {
-  border-top: 20px transparent solid;
-  border-right: 20px transparent solid;
+  display: inline-block;
+  border-top: 20px #98ceb7 solid;
+  border-right: 20px #98ceb7 solid;
 }
 .detailsMainContainer .container .gameList il.showComment figure .info span:before {
   content: 'X';
@@ -4035,8 +4083,8 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   display: inline-block;
 }
 .detailsMainContainer .container .gameList.both il:hover figure .info {
-  border-top: 20px solid #e6334c;
-  border-right: 20px solid #e6334c;
+  border-top: 20px solid #e6334c !important;
+  border-right: 20px solid #e6334c !important;
 }
 .detailsMainContainer .container .gameList.both il:hover figure .info span:before {
   color: #e6334c;
@@ -4054,8 +4102,8 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   color: #fff;
 }
 .detailsMainContainer .container .gameList.both il.showComment figure .info {
-  border-top: 20px transparent solid;
-  border-right: 20px transparent solid;
+  border-top: 20px #009992 solid;
+  border-right: 20px #009992 solid;
 }
 .detailsMainContainer .container .gameList.both il.showComment .commentContainer {
   left: 0;
@@ -4367,10 +4415,10 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .profile .container .profileDetails .profileDetailsContainer.own .openChatProfileButton {
   display: none;
 }
-il.new {
+ul.gameList il.new {
   cursor: default;
 }
-il.new figure .img {
+ul.gameList il.new figure .img {
   background-color: #98ceb7;
   background-image: url("img/bug.png");
   background-repeat: no-repeat;
@@ -4381,8 +4429,8 @@ il.new figure .img {
   height: 180px;
   display: inline-block;
 }
-il.new figure .img div,
-il.new figure .img span {
+ul.gameList il.new figure .img div,
+ul.gameList il.new figure .img span {
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
@@ -4397,12 +4445,12 @@ il.new figure .img span {
   -ms-transition: opacity 300ms;
   transition: opacity 300ms;
 }
-il.new figure .img div {
+ul.gameList il.new figure .img div {
   height: 20px;
   padding: 20px 0;
   top: 0;
 }
-il.new figure .img div:before {
+ul.gameList il.new figure .img div:before {
   content: '\e907';
   font-family: TruequeGamer;
   display: inline-block;
@@ -4410,14 +4458,14 @@ il.new figure .img div:before {
   height: 100%;
   text-align: center;
 }
-il.new figure .img span {
+ul.gameList il.new figure .img span {
   top: 60px;
   bottom: 0px;
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
 }
-il.new .contentContainer span.newText {
+ul.gameList il.new .contentContainer span.newText {
   text-transform: uppercase;
   margin: 20px;
   text-align: center;
@@ -4425,7 +4473,7 @@ il.new .contentContainer span.newText {
   padding-bottom: 30px !important;
   border-bottom: 2px solid #fff;
 }
-il.new form {
+ul.gameList il.new form {
   position: absolute;
   top: 0;
   left: 0;
@@ -4451,32 +4499,32 @@ il.new form {
   box-sizing: border-box;
   background-color: #009992;
 }
-il.new form .info span {
+ul.gameList il.new form .info span {
   padding: 0;
   font-size: 15px;
   left: 0;
   background-color: #fff;
 }
-il.new form .info span:before {
+ul.gameList il.new form .info span:before {
   content: 'x';
   color: #98ceb7;
 }
-il.new form span {
+ul.gameList il.new form span {
   text-align: center;
   padding: 5px;
   padding-top: 12px;
   font-size: 12px;
 }
-il.new form div:nth-child(2) {
+ul.gameList il.new form div:nth-child(2) {
   padding-top: 20px;
 }
-il.new form div:nth-child(3) {
+ul.gameList il.new form div:nth-child(3) {
   padding-top: 10px;
 }
-il.new form div.videoGameSection {
+ul.gameList il.new form div.videoGameSection {
   position: relative;
 }
-il.new form div.videoGameSection ul {
+ul.gameList il.new form div.videoGameSection ul {
   display: inline-block;
   position: absolute;
   background-color: #fff;
@@ -4486,7 +4534,7 @@ il.new form div.videoGameSection ul {
   padding: 0;
   padding-bottom: 5px;
 }
-il.new form div.videoGameSection ul il {
+ul.gameList il.new form div.videoGameSection ul il {
   min-height: 21px !important;
   margin: 0;
   width: auto;
@@ -4506,11 +4554,11 @@ il.new form div.videoGameSection ul il {
   -webkit-align-items: flex-start;
   align-items: flex-start;
 }
-il.new form div.videoGameSection ul il:hover {
+ul.gameList il.new form div.videoGameSection ul il:hover {
   background-color: rgba(0,153,146,0.5);
   color: #fff;
 }
-il.new form div.stateButtons {
+ul.gameList il.new form div.stateButtons {
   -webkit-box-pack: justify;
   -moz-box-pack: justify;
   -o-box-pack: justify;
@@ -4519,7 +4567,7 @@ il.new form div.stateButtons {
   justify-content: space-between;
   display: none;
 }
-il.new form div.stateButtons button {
+ul.gameList il.new form div.stateButtons button {
 /*width: 54px*/
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
@@ -4546,28 +4594,28 @@ il.new form div.stateButtons button {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-il.new form div.stateButtons button:hover {
+ul.gameList il.new form div.stateButtons button:hover {
   background-color: #f29224;
 }
-il.new form div.stateButtons button:nth-child(2),
-il.new form div.stateButtons button:nth-child(3) {
+ul.gameList il.new form div.stateButtons button:nth-child(2),
+ul.gameList il.new form div.stateButtons button:nth-child(3) {
   margin-left: 2px;
 }
-il.new form div.stateButtons .delete:hover {
+ul.gameList il.new form div.stateButtons .delete:hover {
   background-color: #e6334c;
 }
-il.new form .stateButtonsLabel {
+ul.gameList il.new form .stateButtonsLabel {
   display: none;
 }
-il.new form .publishButton,
-il.new form .secondButton {
+ul.gameList il.new form .publishButton,
+ul.gameList il.new form .secondButton {
   border: 0;
   font-size: 12px;
   height: 25px;
   position: absolute;
   width: 100%;
 }
-il.new form .secondButton {
+ul.gameList il.new form .secondButton {
   background-color: #00605b;
   color: #98ceb7;
   text-transform: uppercase;
@@ -4579,11 +4627,11 @@ il.new form .secondButton {
   -ms-transition: color 300ms, background-color 300ms;
   transition: color 300ms, background-color 300ms;
 }
-il.new form .secondButton:hover {
+ul.gameList il.new form .secondButton:hover {
   background-color: #f29224;
   color: #fff;
 }
-il.new form .publishButton {
+ul.gameList il.new form .publishButton {
   background-color: #e6334c;
   color: #fff;
   text-transform: uppercase;
@@ -4596,10 +4644,10 @@ il.new form .publishButton {
   -ms-transition: font-size 300ms;
   transition: font-size 300ms;
 }
-il.new form .publishButton:hover {
+ul.gameList il.new form .publishButton:hover {
   font-size: 11px;
 }
-il.new form div {
+ul.gameList il.new form div {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -4619,7 +4667,7 @@ il.new form div {
   -webkit-justify-content: center;
   justify-content: center;
 }
-il.new form div input[type='text'] {
+ul.gameList il.new form div input[type='text'] {
   width: 145px;
   -webkit-border-radius: 0;
   border-radius: 0;
@@ -4635,10 +4683,10 @@ il.new form div input[type='text'] {
   border: 1px solid #fff;
   color: #fff;
 }
-il.new form div input[type="radio"] {
+ul.gameList il.new form div input[type="radio"] {
   display: none;
 }
-il.new form div input[type="radio"]+label {
+ul.gameList il.new form div input[type="radio"]+label {
   display: inline-block;
   -webkit-border-radius: 0;
   border-radius: 0;
@@ -4660,40 +4708,40 @@ il.new form div input[type="radio"]+label {
   -ms-transition: color 300ms;
   transition: color 300ms;
 }
-il.new form div input[type="radio"]+label:hover {
+ul.gameList il.new form div input[type="radio"]+label:hover {
   color: #fff;
 }
-il.new form div input[type="radio"]:checked+label {
+ul.gameList il.new form div input[type="radio"]:checked+label {
   background-color: #e6334c;
   color: #fff;
 }
-il.new form div.exchange input+label {
+ul.gameList il.new form div.exchange input+label {
   text-transform: uppercase;
 }
-il.new form div.console input.ps+label,
-il.new form div.console input.xbox+label {
+ul.gameList il.new form div.console input.ps+label,
+ul.gameList il.new form div.console input.xbox+label {
   height: 27px;
   width: 72px;
   padding: 0px;
 }
-il.new form div.console input.ps+label:before,
-il.new form div.console input.xbox+label:before {
+ul.gameList il.new form div.console input.ps+label:before,
+ul.gameList il.new form div.console input.xbox+label:before {
   font-family: TruequeGamer;
   font-size: 20px;
   margin-top: 3px;
   display: inline-block;
   cursor: pointer;
 }
-il.new form div.console input.ps+label:before {
+ul.gameList il.new form div.console input.ps+label:before {
   content: '\e905';
 }
-il.new form div.console input.xbox+label:before {
+ul.gameList il.new form div.console input.xbox+label:before {
   content: '\e906';
 }
-il.new.editing form .stateButtonsLabel {
+ul.gameList il.new.editing form .stateButtonsLabel {
   display: block;
 }
-il.new.editing form .stateButtons {
+ul.gameList il.new.editing form .stateButtons {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -4701,23 +4749,43 @@ il.new.editing form .stateButtons {
   display: box;
   display: flex;
 }
-il.new.editing.onlyExchange form .stateButtons .sold {
+ul.gameList il.new.editing.onlyExchange form .stateButtons .sold {
   display: none;
 }
-il.new.editing.onlySell form .stateButtons .exchanged {
+ul.gameList il.new.editing.onlySell form .stateButtons .exchanged {
   display: none;
 }
-il.new:hover figure {
+ul.gameList il.new:hover figure {
   border-top: 2px solid #98ceb7 !important;
   border-right: 2px solid #98ceb7 !important;
   border-left: 2px solid #98ceb7 !important;
 }
-il.new:hover figure .img div,
-il.new:hover figure .img span {
+ul.gameList il.new:hover figure .img div,
+ul.gameList il.new:hover figure .img span {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
-il.new:hover .contentContainer {
+ul.gameList il.new:hover .contentContainer {
   background-color: #98ceb7 !important;
+}
+ul.gameList il.editing.showComment .contentContainer .chatButton span:before {
+  -webkit-transition: font-size 300ms;
+  -moz-transition: font-size 300ms;
+  -o-transition: font-size 300ms;
+  -ms-transition: font-size 300ms;
+  transition: font-size 300ms;
+  content: 'listo!';
+}
+ul.gameList il.editing.showComment .contentContainer .chatButton:hover span:before {
+  font-size: 15px;
+}
+ul.gameList il.editing.showComment .commentContainer .commentTextContainer .commentBody {
+  display: none;
+}
+ul.gameList il.editing.showComment .commentContainer .commentTextContainer .textArea {
+  display: inline-block !important;
+}
+ul.gameList il.showInfo figure .info {
+  display: inline-block;
 }

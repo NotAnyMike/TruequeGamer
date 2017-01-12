@@ -100,7 +100,7 @@
 								span
 									width: 28px
 
-				&.xboxUsed, &.psUsed
+				&.xboxUsed, &.psUsed, &.xboxNew, &.psNew
 					.contentContainer
 						.used
 							display: inline-block
@@ -120,7 +120,14 @@
 							.used
 								&:after
 									opacity: 1
-				
+
+					&.xboxNew
+						.contentContainer
+							.used
+								&:after
+									opacity: 1
+									content: 'nuevo'
+
 				&.ps
 					&.psUsed
 						.contentContainer
@@ -128,6 +135,12 @@
 								&:after
 									opacity: 1
 
+					&.psNew
+						.contentContainer
+							.used
+								&:after
+									opacity: 1
+									content: 'nuevo'
 				
 				.commentContainer
 					position: absolute
@@ -136,19 +149,19 @@
 					display:none
 					opacity: 0
 
-					.background,span
+					.background, .commentTextContainer
 						position: absolute
 						top: 0
 						left: 0
+						bottom: 0
 						width: 167px
-						height: 100%
 
 					.background
 						background-color: $green_hover_xbox
 						opacity: .92
 						z-index: 2
 
-					span
+					.commentTextContainer
 						z-index: 3
 						box-sizing: border-box
 						padding: 15px
@@ -157,16 +170,48 @@
 						padding-top: 20px
 						text-transform: uppercase
 						overflow-y: scroll
-				
+
+						.commentTitle
+							display: block
+							font-size: 15px
+							text-align: center
+							margin-bottom: 10px
+
+						.textArea
+							display: none
+							width: 134px
+							display: inline-block
+							border-radius: 0
+							background-color: transparent
+							border: 1px solid white
+							color: white
+							outline: none
+							resize: none
+							position: absolute
+							top: 44px
+							bottom: 20px
+							height: auto	
+							padding: 5px
+							font-size: 12px
+							text-transform: none
+
 				&.showComment
 					.commentContainer
 						opacity: 1
 						display: inline-block
 
+						.commentTextContainer
+							.textArea
+								display: none
+					
+					form
+						display: none
+
 					figure
 						.info
-							border-top: 20px transparent solid
-							border-right: 20px transparent solid
+							display: inline-block
+							border-top: 20px $green solid
+							border-right: 20px $green solid
 							
 							span
 								&:before
@@ -260,8 +305,8 @@
 					&:hover
 						figure
 							.info
-								border-top: 20px solid $red
-								border-right: 20px solid $red
+								border-top: 20px solid $red !important
+								border-right: 20px solid $red !important
 
 								span
 									&:before
@@ -280,8 +325,8 @@
 					&.showComment
 						figure
 							.info
-								border-top: 20px transparent solid
-								border-right: 20px transparent solid
+								border-top: 20px $dark_green solid
+								border-right: 20px $dark_green solid
 
 						.commentContainer
 							left: 0

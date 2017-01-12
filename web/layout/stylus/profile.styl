@@ -10,14 +10,29 @@
 					display: inline-block
 
 				span
-					&:nth-child(3), &:last-child
+					&:nth-child(3), &:nth-child(4)
 						font-size: 20px
 						font-weight: normal
 						padding-top: 20px
 
-				span:last-child
+				span:nth-child(4)
 					color: $green
 					padding-top: 10px
+
+				.openChatProfileButton
+					display: inline-block
+					width: 172px
+					margin-top: 20px
+					height: 30px
+					background-color: $red
+					text-transform: uppercase
+					border: 0
+					color: white
+					font-size: 17px
+
+				&.own
+					.openChatProfileButton
+						display: none
 	
 il
 	&.new
@@ -147,7 +162,8 @@ il
 					display: none
 					
 					button
-						width: 54px
+						/*width: 54px*/
+						flex-grow: 1
 						height: 27px
 						border: 0	
 						box-sizing: border-box
@@ -156,13 +172,18 @@ il
 						color: white
 						background-color: $darker_green
 						transition: background-color $time
+						box-sizing: border-box
 
 						&:hover
 							background-color: $orange
 
+						&:nth-child(2), &:nth-child(3)
+							margin-left: 2px
+
 					.delete
 						&:hover
 							background-color: $red
+
 
 			.stateButtonsLabel
 				display: none
@@ -278,6 +299,18 @@ il
 
 				.stateButtons
 					display: flex
+
+			&.onlyExchange
+				form
+					.stateButtons
+						.sold
+							display: none
+
+			&.onlySell
+				form
+					.stateButtons
+						.exchanged
+							display: none
 
 		&:hover
 			figure

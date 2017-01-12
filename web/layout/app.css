@@ -4227,10 +4227,10 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -webkit-flex-grow: 0.5;
   flex-grow: 0.5;
 }
-.gameDetails .gameDetailsContainer span:last-child,
-.profileDetails .gameDetailsContainer span:last-child,
-.gameDetails .profileDetailsContainer span:last-child,
-.profileDetails .profileDetailsContainer span:last-child {
+.gameDetails .gameDetailsContainer span:nth-child(4),
+.profileDetails .gameDetailsContainer span:nth-child(4),
+.gameDetails .profileDetailsContainer span:nth-child(4),
+.profileDetails .profileDetailsContainer span:nth-child(4) {
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
   -o-box-flex: 0;
@@ -4240,6 +4240,12 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   flex-grow: 0;
   font-size: 15px;
   font-weight: normal;
+}
+.gameDetails .gameDetailsContainer .openChatProfileButton,
+.profileDetails .gameDetailsContainer .openChatProfileButton,
+.gameDetails .profileDetailsContainer .openChatProfileButton,
+.profileDetails .profileDetailsContainer .openChatProfileButton {
+  display: none;
 }
 .both .gameDetails,
 .both .profileDetails {
@@ -4338,14 +4344,28 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   display: inline-block;
 }
 .profile .container .profileDetails .profileDetailsContainer span:nth-child(3),
-.profile .container .profileDetails .profileDetailsContainer span:last-child {
+.profile .container .profileDetails .profileDetailsContainer span:nth-child(4) {
   font-size: 20px;
   font-weight: normal;
   padding-top: 20px;
 }
-.profile .container .profileDetails .profileDetailsContainer span:last-child {
+.profile .container .profileDetails .profileDetailsContainer span:nth-child(4) {
   color: #98ceb7;
   padding-top: 10px;
+}
+.profile .container .profileDetails .profileDetailsContainer .openChatProfileButton {
+  display: inline-block;
+  width: 172px;
+  margin-top: 20px;
+  height: 30px;
+  background-color: #e6334c;
+  text-transform: uppercase;
+  border: 0;
+  color: #fff;
+  font-size: 17px;
+}
+.profile .container .profileDetails .profileDetailsContainer.own .openChatProfileButton {
+  display: none;
 }
 il.new {
   cursor: default;
@@ -4500,7 +4520,14 @@ il.new form div.stateButtons {
   display: none;
 }
 il.new form div.stateButtons button {
-  width: 54px;
+/*width: 54px*/
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
   height: 27px;
   border: 0;
   -webkit-box-sizing: border-box;
@@ -4515,9 +4542,16 @@ il.new form div.stateButtons button {
   -o-transition: background-color 300ms;
   -ms-transition: background-color 300ms;
   transition: background-color 300ms;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 il.new form div.stateButtons button:hover {
   background-color: #f29224;
+}
+il.new form div.stateButtons button:nth-child(2),
+il.new form div.stateButtons button:nth-child(3) {
+  margin-left: 2px;
 }
 il.new form div.stateButtons .delete:hover {
   background-color: #e6334c;
@@ -4666,6 +4700,12 @@ il.new.editing form .stateButtons {
   display: -ms-flexbox;
   display: box;
   display: flex;
+}
+il.new.editing.onlyExchange form .stateButtons .sold {
+  display: none;
+}
+il.new.editing.onlySell form .stateButtons .exchanged {
+  display: none;
 }
 il.new:hover figure {
   border-top: 2px solid #98ceb7 !important;

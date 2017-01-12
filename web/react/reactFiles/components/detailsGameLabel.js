@@ -59,8 +59,12 @@ const DetailsGameLabel = React.createClass({
 			);
 		}
 
+		classNameVar += "Details";
+
+		if(this.props.isProfile && true) classNameVar += " own"
+
 		return (
-			<div className={classNameVar + "Details"}>
+			<div className={classNameVar}>
 				<hr />
 				<figure><img src={coverVar} alt=""/></figure>
 				{container}

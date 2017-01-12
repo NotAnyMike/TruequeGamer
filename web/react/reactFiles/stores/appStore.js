@@ -37,9 +37,19 @@ var _store =  {
 			min_price: 0,
 			cover: 'img/cover.png',
 			higher_prices: false,
+			city: null,
 		},
 		list: [],
-	}
+	},
+	profile: {
+		profile: {
+			first_name: "loading",
+			last_name: "...",
+			numberOfGames: 0,
+			picture: null,
+		},
+		list: [],
+	},
 };
 
 if(self.fetch){
@@ -217,7 +227,41 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	getUser: function(){
 		return _store.user;
 	},
+
+	onProfileUpdated: function(){
+		this.emit(Constants.eventType.profileUpdated);
+	},
 	
+	getProfile: function(username){
+		if(self.fetch){
+			//use fetch
+			
+			var url = '/api/profile/profile.json';
+			if(process.env.NODE_ENV === "production"){
+				//TODO: CHANGE URL
+				url = '/api/profile/' + username + '/';
+			}
+			
+			fetch(url).then(function(response){
+				response.json().then(function(json){
+					//do something with json
+					_store.profile = json;
+					AppStore.onProfileUpdated()
+				});
+			});
+		}else{
+			//use xml
+		}
+	},
+
+	addOnProfileUpdatesListener: function(callback){
+		this.on(Constants.eventType.profileUpdated, callback);
+	},
+
+	removeOnProfileUpdatesListener: function(callback){
+		this.removeListener(Constants.eventType.profileUpdated, callback);
+	},
+
 	addOnGamesAvailableUpdateListener: function(callback){
 		this.on(Constants.eventType.availableGamesUpdate, callback);
 	},

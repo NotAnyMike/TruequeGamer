@@ -33,6 +33,7 @@ const Constants = {
 		goToProfile: 'go_to_profile',
 		gamesAvailableUpdated: 'games_available_for_a_game_updated',
 		availableGamesUpadate: 'available_games_update',
+		profileUpdated: 'profile_updated',
 	},
 	filter: {
 		not_used: 'not_used',

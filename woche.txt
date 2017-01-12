@@ -14,3 +14,6 @@ Viernes: trabajando en details para el diseño de ps y xbox, creando ruta para p
 Sábado: Nada
 Domingo: Nada
 Lunes: Creando los componentes de react para profile.js y adaptando lo que se usan en details, creando profile.json
+Martes: Adaptando itemGame for profile.html
+Miércoles: null
+Jueves: Arraging props of components

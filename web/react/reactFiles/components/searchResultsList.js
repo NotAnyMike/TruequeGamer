@@ -6,6 +6,7 @@ const SearchResultsList = React.createClass({
 
 	propTypes: {
 		goToDetailsFn: React.PropTypes.func.isRequired,
+		isProfile: React.PropTypes.bool.isRequired,
 		console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired,
 		list: React.PropTypes.array.isRequired,
 	},
@@ -28,6 +29,7 @@ const SearchResultsList = React.createClass({
 					
 					return (
 						<GameItem 
+							isProfile={self.props.isProfile}
 							console={consoleProp}
 							psNoExchange={!element.psExchange} 
 							xboxNoExchange={!element.xboxExchange} 

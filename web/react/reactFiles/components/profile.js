@@ -9,9 +9,22 @@ const React = require('react'),
 const Profile = React.createClass({
 
 	getInitialState: function(){
-		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
+		AppStore.getProfile(this.props.params.username);
 		var store = AppStore.getStore();
 		return store;
+	},
+
+	componentDidMount: function(){
+		AppStore.addOnProfileUpdatesListener(this.onProfileUpdates);
+	},
+
+	componentWillUnmount: function(){	
+		AppStore.removeOnProfileUpdatesListener(this.onProfileUpdates);
+	},
+
+	onProfileUpdates: function(){
+		store = AppStore.getStore();
+		this.setState(store);
 	},
 
 	render: function(){
@@ -24,15 +37,19 @@ const Profile = React.createClass({
 			chat = <Chat user={this.state.user} />;
 		}
 
+		var city = "somewhere";
+		if(typeof this.state.profile.profile.city !== 'undefined' && this.state.profile.profile !== null) city = this.state.profile.profile.city;
+
 		return (
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user} />
 				<DetailsMainContainer 
-					profile={true}
+					isProfile={true}
 					console={Constants.consoles.both} 
-					list={this.state.gameDetails.list}
-					city={"bogotá"}
-					numberOfGames={3}
+					list={this.state.profile.list}
+					name={this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name}
+					city={city}
+					numberOfGames={this.state.profile.profile.numberOfGames}
 				/>
 				<Footer version={footerVersion} />
 				{chat}

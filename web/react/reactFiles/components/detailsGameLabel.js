@@ -5,7 +5,7 @@ const React = require('react'),
 const DetailsGameLabel = React.createClass({
 	
 	propTypes: {
-		profile: React.PropTypes.bool.isRequired,
+		isProfile: React.PropTypes.bool.isRequired,
 		name: React.PropTypes.string.isRequired,
 		priceMin: React.PropTypes.number,
 		hasHigherPrices: React.PropTypes.bool,
@@ -36,10 +36,10 @@ const DetailsGameLabel = React.createClass({
 		}
 
 		var classNameVar = "game";
-		if(this.props.profile) classNameVar = "profile";
+		if(this.props.isProfile) classNameVar = "profile";
 
 		var container;
-		if(this.props.profile){
+		if(this.props.isProfile){
 			container = (
 				<div className={classNameVar + "DetailsContainer"}>
 					<div className="arrow-decorator"></div>

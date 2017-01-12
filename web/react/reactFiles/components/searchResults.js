@@ -68,7 +68,7 @@ const SearchResults = React.createClass({
 		return (
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user}/>
-				<SearchResultsMainContainer console={this.props.route.console} list={this.state.searchResult.results} goToDetailsFn={this.goToDetailsFn}/>
+				<SearchResultsMainContainer isProfile={false} console={this.props.route.console} list={this.state.searchResult.results} goToDetailsFn={this.goToDetailsFn}/>
 				<Footer version={footerVersion}/>
 				{chat}
 			</div>

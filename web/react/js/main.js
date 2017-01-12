@@ -26931,6 +26931,7 @@ const Details = React.createClass({
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
 			React.createElement(DetailsMainContainer, {
+				isProfile: false,
 				game: this.state.gameDetails.game,
 				console: this.props.route.console,
 				list: this.state.gameDetails.list,
@@ -26955,7 +26956,7 @@ const DetailsGameLabel = React.createClass({
 
 
 	propTypes: {
-		profile: React.PropTypes.bool.isRequired,
+		isProfile: React.PropTypes.bool.isRequired,
 		name: React.PropTypes.string.isRequired,
 		priceMin: React.PropTypes.number,
 		hasHigherPrices: React.PropTypes.bool,
@@ -26986,10 +26987,10 @@ const DetailsGameLabel = React.createClass({
 		}
 
 		var classNameVar = "game";
-		if (this.props.profile) classNameVar = "profile";
+		if (this.props.isProfile) classNameVar = "profile";
 
 		var container;
-		if (this.props.profile) {
+		if (this.props.isProfile) {
 			container = React.createElement(
 				'div',
 				{ className: classNameVar + "DetailsContainer" },
@@ -27060,6 +27061,7 @@ const DetailsList = React.createClass({
 
 
 	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired,
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func
@@ -27082,167 +27084,45 @@ const DetailsList = React.createClass({
 					consoleProp = Constants.consoles.xbox;
 				}
 
-				return React.createElement(GameItem, {
-					profile: true,
-					console: consoleProp,
-					psNoExchange: !element.psExchange,
-					xboxNoExchange: !element.xboxExchange,
-					notOnly: consoleVar === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs,
-					only: consoleVar === Constants.consoles.ps ? element.psOnly : element.xboxOnly,
-					psPrice: element.psPrice,
-					psOnlyPrice: element.psOnlyPrice,
-					xboxPrice: element.xboxPrice,
-					xboxOnlyPrice: element.xboxOnlyPrice,
-					psNoSell: element.psPrice === null ? true : false,
-					xboxNoSell: element.xboxPrice === null ? true : false,
-					cover: element.cover,
-					name: element.name,
-					both: consoleVar === Constants.consoles.both ? true : false,
-					psUsed: element.psUsed,
-					xboxUsed: element.xboxUsed,
-					comment: element.comment,
-					goToProfileFn: self.props.goToProfileFn,
-					key: element.pk
-				});
+				var gameItem;
+				if (self.props.isProfile) {
+					gameItem = React.createElement(GameItem, {
+						isProfile: self.props.isProfile,
+						console: element.console,
+						cover: element.cover,
+						name: element.name,
+						exchange: element.exchange,
+						price: element.price,
+						comment: element.comment,
+						key: element.pk
+					});
+				} else {
+					gameItem = React.createElement(GameItem, {
+						isProfile: self.props.isProfile,
+						console: consoleProp,
+						psNoExchange: !element.psExchange,
+						xboxNoExchange: !element.xboxExchange,
+						notOnly: consoleVar === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs,
+						only: consoleVar === Constants.consoles.ps ? element.psOnly : element.xboxOnly,
+						psPrice: element.psPrice,
+						psOnlyPrice: element.psOnlyPrice,
+						xboxPrice: element.xboxPrice,
+						xboxOnlyPrice: element.xboxOnlyPrice,
+						psNoSell: element.psPrice === null ? true : false,
+						xboxNoSell: element.xboxPrice === null ? true : false,
+						cover: element.cover,
+						name: element.name,
+						both: consoleVar === Constants.consoles.both ? true : false,
+						psUsed: element.psUsed,
+						xboxUsed: element.xboxUsed,
+						comment: element.comment,
+						goToProfileFn: self.props.goToProfileFn,
+						key: element.pk
+					});
+				}
+				return gameItem;
 			}),
-			React.createElement(
-				'il',
-				{ className: 'ps notOnly psUsed' },
-				React.createElement(
-					'figure',
-					null,
-					React.createElement(
-						'div',
-						{ className: 'info' },
-						React.createElement('span', null)
-					),
-					React.createElement('img', { src: 'img/details_profile.png', alt: '' })
-				),
-				React.createElement(
-					'div',
-					{ className: 'contentContainer' },
-					React.createElement(
-						'span',
-						{ className: 'name' },
-						'Alizr María'
-					),
-					React.createElement(
-						'div',
-						{ className: 'exchange' },
-						React.createElement('span', null),
-						React.createElement('span', null),
-						React.createElement('div', { className: 'used' })
-					),
-					React.createElement(
-						'div',
-						{ className: 'availableConsoles' },
-						React.createElement(
-							'div',
-							{ className: 'container' },
-							React.createElement('span', null),
-							React.createElement('span', null)
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'price' },
-						React.createElement(
-							'span',
-							null,
-							'Desde 70.000'
-						),
-						React.createElement(
-							'span',
-							null,
-							'Desde 80.000'
-						)
-					),
-					React.createElement(
-						'button',
-						{ className: 'chatButton' },
-						React.createElement('span', null)
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'commentContainer' },
-					React.createElement('div', { className: 'background' }),
-					React.createElement(
-						'span',
-						null,
-						'esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto estto es un comentario de pruba pero no se sabe que carajos es todo estoi esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto  es un comentario de pruba pero no se sabe que carajos es todo esto'
-					)
-				)
-			),
-			React.createElement(
-				'il',
-				{ className: 'xbox notOnly xboxUsed showComment' },
-				React.createElement(
-					'figure',
-					null,
-					React.createElement(
-						'div',
-						{ className: 'info' },
-						React.createElement('span', null)
-					),
-					React.createElement('img', { src: 'img/details_profile.png', alt: '' })
-				),
-				React.createElement(
-					'div',
-					{ className: 'contentContainer' },
-					React.createElement(
-						'span',
-						{ className: 'name' },
-						'Alizr María'
-					),
-					React.createElement(
-						'div',
-						{ className: 'exchange' },
-						React.createElement('span', null),
-						React.createElement('span', null),
-						React.createElement('div', { className: 'used' })
-					),
-					React.createElement(
-						'div',
-						{ className: 'availableConsoles' },
-						React.createElement(
-							'div',
-							{ className: 'container' },
-							React.createElement('span', null),
-							React.createElement('span', null)
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'price' },
-						React.createElement(
-							'span',
-							null,
-							'Desde 70.000'
-						),
-						React.createElement(
-							'span',
-							null,
-							'Desde 80.000'
-						)
-					),
-					React.createElement(
-						'button',
-						{ className: 'chatButton' },
-						React.createElement('span', null)
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'commentContainer' },
-					React.createElement('div', { className: 'background' }),
-					React.createElement(
-						'span',
-						null,
-						'esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto estto es un comentario de pruba pero no se sabe que carajos es todo estoi esto es un comentario de pruba pero no se sabe que carajos es todo esto esto es un comentario de pruba pero no se sabe que carajos es todo esto  es un comentario de pruba pero no se sabe que carajos es todo esto'
-					)
-				)
-			)
+			';'
 		);
 	}
 
@@ -27261,28 +27141,30 @@ const DetailsMainContainer = React.createClass({
 
 
 	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired,
 		game: React.PropTypes.object,
 		console: React.PropTypes.string.isRequired,
 		list: React.PropTypes.array.isRequired,
 		goToProfileFn: React.PropTypes.func,
+		name: React.PropTypes.string,
 		city: React.PropTypes.string,
 		numberOfGames: React.PropTypes.number
 	},
 
 	render: function () {
 		var detailsGameLabelVar;
-		if (this.props.profile) {
+		if (this.props.isProfile) {
 			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
-				profile: this.props.profile,
+				isProfile: this.props.isProfile,
 				console: Constants.consoles.both,
-				name: "mike",
+				name: this.props.name,
 				cover: "/img/details_profile.png",
 				city: this.props.city,
 				numberOfGames: this.props.numberOfGames
 			});
 		} else {
 			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
-				profile: this.props.profile,
+				isProfile: this.props.isProfile,
 				console: this.props.console,
 				name: this.props.game.name,
 				priceMin: this.props.game.min_price,
@@ -27294,10 +27176,10 @@ const DetailsMainContainer = React.createClass({
 		}
 
 		var classNameVar = "genericMainContainer detailsMainContainer " + this.props.console;
-		if (this.props.profile) classNameVar += " profile";
+		if (this.props.isProfile) classNameVar += " profile";
 
 		var titleVar;
-		if (this.props.profile) {
+		if (this.props.isProfile) {
 			titleVar = React.createElement(
 				'div',
 				{ className: 'title' },
@@ -27335,6 +27217,7 @@ const DetailsMainContainer = React.createClass({
 				detailsGameLabelVar,
 				React.createElement(DetailsList, {
 					console: this.props.console,
+					isProfile: this.props.isProfile,
 					list: this.props.list,
 					goToProfileFn: this.props.goToProfileFn
 				})
@@ -27569,9 +27452,10 @@ const GameItem = React.createClass({
 
 
 	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired, //in order to know if we are in the profile page
 		name: React.PropTypes.string.isRequired,
 		cover: React.PropTypes.string.isRequired,
-		both: React.PropTypes.bool.isRequired,
+		both: React.PropTypes.bool,
 		psNoSell: React.PropTypes.bool,
 		xboxNoSell: React.PropTypes.bool,
 		psNoExchange: React.PropTypes.bool,
@@ -27581,13 +27465,24 @@ const GameItem = React.createClass({
 		console: React.PropTypes.oneOf([Constants.consoles.xbox, Constants.consoles.ps, Constants.consoles.both]),
 		psPrice: React.PropTypes.number,
 		psOnlyPrice: React.PropTypes.bool,
-		xboxPrice: React.PropTypes.number,
-		xboxOnlyPrice: React.PropTypes.bool,
-		goToDetailsFn: React.PropTypes.func,
-		goToProfileFn: React.PropTypes.func,
-		comment: React.PropTypes.string,
+		xboxPrice: React.PropTypes.number, xboxOnlyPrice: React.PropTypes.bool,
+		goToDetailsFn: React.PropTypes.func, //this is not in order to know if we have to go to details, if goToProfileFn is null then we know
+		goToProfileFn: React.PropTypes.func, //in order to know if we have to go to profile (if not null or undefined)
+
+		/**** this values are used in details.html *****/
 		psUsed: React.PropTypes.bool,
-		xboxUsed: React.PropTypes.bool
+		xboxUsed: React.PropTypes.bool,
+		psNew: React.PropTypes.bool, //in order to know if all of the grouped games are new
+		psXbox: React.PropTypes.bool,
+
+		/**** this extra values is to show the gameItem in the profile page ****/
+		//Console
+		//cover
+		//name
+		exchange: React.PropTypes.bool,
+		used: React.PropTypes.bool,
+		price: React.PropTypes.number,
+		comment: React.PropTypes.string
 	},
 
 	getInitialState: function () {
@@ -27618,7 +27513,7 @@ const GameItem = React.createClass({
 	},
 
 	_goToPage: function () {
-		if (this.props.profile) this.props.goToProfileFn();else this.props.goToDetailsFn();
+		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else this.props.goToDetailsFn();
 	},
 
 	render: function () {
@@ -27631,105 +27526,192 @@ const GameItem = React.createClass({
 			}
 		}
 
-		var className = consoleVar + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "");
-		if (this.props.both || this.props.console === Constants.consoles.xbox) {
-			className += (this.props.xboxNoExchange ? " xboxNoExchange" : "") + (this.props.xboxNoSell ? " xboxNoSell" : "");
-		}
-		if (this.props.both || this.props.console === Constants.consoles.ps) {
-			className += (this.props.psNoExchange ? " psNoExchange" : "") + (this.props.psNoSell ? " psNoSell" : "");
-		}
-		if (this.props.both && this.props.console === Constants.consoles.ps && this.props.psUsed) {
-			className += " psUsed";
-		}
-		if ((this.props.both || this.props.console === Constants.consoles.xbox) && this.props.xboxUsed) {
-			className += " xboxUsed";
-		}
+		var className;
 
-		var comment;
-		if (this.props.profile && typeof this.props.comment !== 'undefined' || this.props.comment !== '') {
-			comment = React.createElement(
-				'div',
-				{ className: 'commentContainer' },
-				React.createElement('div', { className: 'background' }),
+		var toReturn;
+		if (this.props.isProfile) {
+
+			var comment;
+			if (this.props.isProfile && typeof this.props.comment !== 'undefined' || this.props.comment !== '') {
+				comment = React.createElement(
+					'div',
+					{ className: 'commentContainer' },
+					React.createElement('div', { className: 'background' }),
+					React.createElement(
+						'span',
+						null,
+						this.props.comment
+					)
+				);
+			}
+
+			className = this.props.console + " only";
+			if (this.props.console === Constants.consoles.xbox) {
+				className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
+			}
+			if (this.props.console === Constants.consoles.ps) {
+				className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
+			}
+			if (this.props.used) {
+				if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
+			} else {
+				if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
+			}
+
+			toReturn = React.createElement(
+				'il',
+				{ className: className, onClick: this._goToPage },
 				React.createElement(
-					'span',
+					'figure',
 					null,
-					this.props.comment
+					React.createElement(
+						'div',
+						{ className: 'info' },
+						React.createElement('span', null)
+					),
+					React.createElement('img', { src: this.props.cover, alt: '' })
+				),
+				React.createElement(
+					'div',
+					{ className: 'contentContainer' },
+					React.createElement(
+						'span',
+						{ className: 'name' },
+						this.props.name
+					),
+					React.createElement(
+						'div',
+						{ className: 'exchange' },
+						React.createElement('span', null),
+						React.createElement('span', null),
+						React.createElement('div', { className: 'used' })
+					),
+					React.createElement(
+						'div',
+						{ className: 'availableConsoles' },
+						React.createElement(
+							'div',
+							{ className: 'container' },
+							React.createElement('span', {
+								onMouseOver: this.props.console === Constants.consoles.xbox ? this._onMouseOver : null,
+								onMouseOut: this.props.console === Constants.consoles.xbox ? this._onMouseOut : null
+							}),
+							React.createElement('span', {
+								onMouseOver: this.props.console === Constants.consoles.ps ? this._onMouseOver : null,
+								onMouseOut: this.props.console === Constants.consoles.ps ? this._onMouseOut : null
+							})
+						)
+					),
+					React.createElement(
+						'div',
+						{ className: 'price' },
+						React.createElement(
+							'span',
+							null,
+							typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price)
+						),
+						React.createElement(
+							'span',
+							null,
+							typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price)
+						)
+					),
+					React.createElement(
+						'div',
+						{ className: 'alsoAvailableOn' },
+						React.createElement('span', null)
+					)
+				),
+				comment
+			);
+		} else {
+
+			className = consoleVar + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "");
+			if (this.props.both || this.props.console === Constants.consoles.xbox) {
+				className += (this.props.xboxNoExchange ? " xboxNoExchange" : "") + (this.props.xboxNoSell ? " xboxNoSell" : "");
+			}
+			if (this.props.both || this.props.console === Constants.consoles.ps) {
+				className += (this.props.psNoExchange ? " psNoExchange" : "") + (this.props.psNoSell ? " psNoSell" : "");
+			}
+			if (this.props.both && this.props.console === Constants.consoles.ps && this.props.psUsed) {
+				className += " psUsed";
+			}
+			if ((this.props.both || this.props.console === Constants.consoles.xbox) && this.props.xboxUsed) {
+				className += " xboxUsed";
+			}
+
+			toReturn = React.createElement(
+				'il',
+				{ className: className, onClick: this._goToPage },
+				React.createElement(
+					'figure',
+					null,
+					React.createElement(
+						'div',
+						{ className: 'info' },
+						React.createElement('span', null)
+					),
+					React.createElement('img', { src: this.props.cover, alt: '' })
+				),
+				React.createElement(
+					'div',
+					{ className: 'contentContainer' },
+					React.createElement(
+						'span',
+						{ className: 'name' },
+						this.props.name
+					),
+					React.createElement(
+						'div',
+						{ className: 'exchange' },
+						React.createElement('span', null),
+						React.createElement('span', null),
+						React.createElement('div', { className: 'used' })
+					),
+					React.createElement(
+						'div',
+						{ className: 'availableConsoles' },
+						React.createElement(
+							'div',
+							{ className: 'container' },
+							React.createElement('span', {
+								onMouseOver: this.props.console === Constants.consoles.xbox ? this._onMouseOver : null,
+								onMouseOut: this.props.console === Constants.consoles.xbox ? this._onMouseOut : null
+							}),
+							React.createElement('span', {
+								onMouseOver: this.props.console === Constants.consoles.ps ? this._onMouseOver : null,
+								onMouseOut: this.props.console === Constants.consoles.ps ? this._onMouseOut : null
+							})
+						)
+					),
+					React.createElement(
+						'div',
+						{ className: 'price' },
+						React.createElement(
+							'span',
+							null,
+							this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice)
+						),
+						React.createElement(
+							'span',
+							null,
+							this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice)
+						)
+					),
+					React.createElement(
+						'div',
+						{ className: 'alsoAvailableOn' },
+						React.createElement('span', null)
+					),
+					React.createElement(
+						'button',
+						{ className: 'chatButton' },
+						React.createElement('span', null)
+					)
 				)
 			);
 		}
-
-		return React.createElement(
-			'il',
-			{ className: className, onClick: this._goToPage },
-			React.createElement(
-				'figure',
-				null,
-				React.createElement(
-					'div',
-					{ className: 'info' },
-					React.createElement('span', null)
-				),
-				React.createElement('img', { src: this.props.cover, alt: '' })
-			),
-			React.createElement(
-				'div',
-				{ className: 'contentContainer' },
-				React.createElement(
-					'span',
-					{ className: 'name' },
-					this.props.name
-				),
-				React.createElement(
-					'div',
-					{ className: 'exchange' },
-					React.createElement('span', null),
-					React.createElement('span', null),
-					React.createElement('div', { className: 'used' })
-				),
-				React.createElement(
-					'div',
-					{ className: 'availableConsoles' },
-					React.createElement(
-						'div',
-						{ className: 'container' },
-						React.createElement('span', {
-							onMouseOver: this.props.console === Constants.consoles.xbox ? this._onMouseOver : null,
-							onMouseOut: this.props.console === Constants.consoles.xbox ? this._onMouseOut : null
-						}),
-						React.createElement('span', {
-							onMouseOver: this.props.console === Constants.consoles.ps ? this._onMouseOver : null,
-							onMouseOut: this.props.console === Constants.consoles.ps ? this._onMouseOut : null
-						})
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'price' },
-					React.createElement(
-						'span',
-						null,
-						this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice)
-					),
-					React.createElement(
-						'span',
-						null,
-						this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice)
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'alsoAvailableOn' },
-					React.createElement('span', null)
-				),
-				React.createElement(
-					'button',
-					{ className: 'chatButton' },
-					React.createElement('span', null)
-				)
-			),
-			comment
-		);
+		return toReturn;
 	}
 
 });
@@ -28097,9 +28079,22 @@ const Profile = React.createClass({
 
 
 	getInitialState: function () {
-		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
+		AppStore.getProfile(this.props.params.username);
 		var store = AppStore.getStore();
 		return store;
+	},
+
+	componentDidMount: function () {
+		AppStore.addOnProfileUpdatesListener(this.onProfileUpdates);
+	},
+
+	componentWillUnmount: function () {
+		AppStore.removeOnProfileUpdatesListener(this.onProfileUpdates);
+	},
+
+	onProfileUpdates: function () {
+		store = AppStore.getStore();
+		this.setState(store);
 	},
 
 	render: function () {
@@ -28112,16 +28107,20 @@ const Profile = React.createClass({
 			chat = React.createElement(Chat, { user: this.state.user });
 		}
 
+		var city = "somewhere";
+		if (typeof this.state.profile.profile.city !== 'undefined' && this.state.profile.profile !== null) city = this.state.profile.profile.city;
+
 		return React.createElement(
 			'div',
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
 			React.createElement(DetailsMainContainer, {
-				profile: true,
+				isProfile: true,
 				console: Constants.consoles.both,
-				list: this.state.gameDetails.list,
-				city: "bogotá",
-				numberOfGames: 3
+				list: this.state.profile.list,
+				name: this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name,
+				city: city,
+				numberOfGames: this.state.profile.profile.numberOfGames
 			}),
 			React.createElement(Footer, { version: footerVersion }),
 			chat
@@ -28381,7 +28380,7 @@ const SearchResults = React.createClass({
 			'div',
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
-			React.createElement(SearchResultsMainContainer, { console: this.props.route.console, list: this.state.searchResult.results, goToDetailsFn: this.goToDetailsFn }),
+			React.createElement(SearchResultsMainContainer, { isProfile: false, console: this.props.route.console, list: this.state.searchResult.results, goToDetailsFn: this.goToDetailsFn }),
 			React.createElement(Footer, { version: footerVersion }),
 			chat
 		);
@@ -28402,6 +28401,7 @@ const SearchResultsList = React.createClass({
 
 	propTypes: {
 		goToDetailsFn: React.PropTypes.func.isRequired,
+		isProfile: React.PropTypes.bool.isRequired,
 		console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired,
 		list: React.PropTypes.array.isRequired
 	},
@@ -28424,6 +28424,7 @@ const SearchResultsList = React.createClass({
 				}
 
 				return React.createElement(GameItem, {
+					isProfile: self.props.isProfile,
 					console: consoleProp,
 					psNoExchange: !element.psExchange,
 					xboxNoExchange: !element.xboxExchange,
@@ -28459,6 +28460,7 @@ const SearchResultsMainContainer = React.createClass({
 
 
 	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired,
 		goToDetailsFn: React.PropTypes.func.isRequired,
 		console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired,
 		list: React.PropTypes.array.isRequired
@@ -28472,7 +28474,7 @@ const SearchResultsMainContainer = React.createClass({
 				'div',
 				{ className: 'container' },
 				React.createElement('div', { className: 'title' }),
-				React.createElement(SearchResultsList, { console: this.props.console, list: this.props.list, goToDetailsFn: this.props.goToDetailsFn })
+				React.createElement(SearchResultsList, { isProfile: this.props.isProfile, console: this.props.console, list: this.props.list, goToDetailsFn: this.props.goToDetailsFn })
 			)
 		);
 	}
@@ -28783,7 +28785,17 @@ var _store = {
 			name: 'cargando...',
 			min_price: 0,
 			cover: 'img/cover.png',
-			higher_prices: false
+			higher_prices: false,
+			city: null
+		},
+		list: []
+	},
+	profile: {
+		profile: {
+			first_name: "loading",
+			last_name: "...",
+			numberOfGames: 0,
+			picture: null
 		},
 		list: []
 	}
@@ -28962,6 +28974,40 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 	getUser: function () {
 		return _store.user;
+	},
+
+	onProfileUpdated: function () {
+		this.emit(Constants.eventType.profileUpdated);
+	},
+
+	getProfile: function (username) {
+		if (self.fetch) {
+			//use fetch
+
+			var url = '/api/profile/profile.json';
+			if (process.env.NODE_ENV === "production") {
+				//TODO: CHANGE URL
+				url = '/api/profile/' + username + '/';
+			}
+
+			fetch(url).then(function (response) {
+				response.json().then(function (json) {
+					//do something with json
+					_store.profile = json;
+					AppStore.onProfileUpdated();
+				});
+			});
+		} else {
+			//use xml
+		}
+	},
+
+	addOnProfileUpdatesListener: function (callback) {
+		this.on(Constants.eventType.profileUpdated, callback);
+	},
+
+	removeOnProfileUpdatesListener: function (callback) {
+		this.removeListener(Constants.eventType.profileUpdated, callback);
 	},
 
 	addOnGamesAvailableUpdateListener: function (callback) {
@@ -29501,7 +29547,8 @@ const Constants = {
 		goToDetails: 'go_to_details_page',
 		goToProfile: 'go_to_profile',
 		gamesAvailableUpdated: 'games_available_for_a_game_updated',
-		availableGamesUpadate: 'available_games_update'
+		availableGamesUpadate: 'available_games_update',
+		profileUpdated: 'profile_updated'
 	},
 	filter: {
 		not_used: 'not_used',

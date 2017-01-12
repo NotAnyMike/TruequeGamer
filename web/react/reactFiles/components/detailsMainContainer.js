@@ -6,22 +6,24 @@ const React = require('react'),
 const DetailsMainContainer = React.createClass({
 
 	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired,
 		game: React.PropTypes.object,
 		console: React.PropTypes.string.isRequired,
 		list: React.PropTypes.array.isRequired,
 		goToProfileFn: React.PropTypes.func,
+		name: React.PropTypes.string,
 		city: React.PropTypes.string,
 		numberOfGames: React.PropTypes.number,
 	},
 
 	render: function(){
 		var detailsGameLabelVar;
-		if(this.props.profile){
+		if(this.props.isProfile){
 			detailsGameLabelVar = (
 				<DetailsGameLabel
-					profile={this.props.profile}
+					isProfile={this.props.isProfile}
 					console={Constants.consoles.both}
-					name={"mike"}
+					name={this.props.name}
 					cover={"/img/details_profile.png"}
 					city={this.props.city}
 					numberOfGames={this.props.numberOfGames}
@@ -30,7 +32,7 @@ const DetailsMainContainer = React.createClass({
 		}else{
 			detailsGameLabelVar = (
 				<DetailsGameLabel
-					profile={this.props.profile}
+					isProfile={this.props.isProfile}
 					console={this.props.console}
 					name={this.props.game.name}
 					priceMin={this.props.game.min_price}
@@ -43,10 +45,10 @@ const DetailsMainContainer = React.createClass({
 		}
 
 		var classNameVar = "genericMainContainer detailsMainContainer " + this.props.console;
-		if(this.props.profile) classNameVar += " profile";
+		if(this.props.isProfile) classNameVar += " profile";
 
 		var titleVar;
-		if(this.props.profile){
+		if(this.props.isProfile){
 			titleVar = <div className="title"><span>Bienvenido al perfil de Mike</span></div>
 		}else{
 			titleVar = <div className="title"><span>Estás en la sección de <span>The Witcher</span> para xbox one</span></div>
@@ -59,6 +61,7 @@ const DetailsMainContainer = React.createClass({
 					{detailsGameLabelVar}
 					<DetailsList 
 						console={this.props.console}
+						isProfile={this.props.isProfile}
 						list={this.props.list}
 						goToProfileFn={this.props.goToProfileFn}
 					/>

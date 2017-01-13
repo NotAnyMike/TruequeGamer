@@ -27200,15 +27200,27 @@ const DetailsMainContainer = React.createClass({
 
 		var titleVar;
 		if (this.props.isProfile) {
-			titleVar = React.createElement(
-				'div',
-				{ className: 'title' },
-				React.createElement(
-					'span',
-					null,
-					'Bienvenido al perfil de Mike'
-				)
-			);
+			if (this.props.isOwnerOfProfile) {
+				titleVar = React.createElement(
+					'div',
+					{ className: 'title' },
+					React.createElement(
+						'span',
+						null,
+						'Bienvenido a tu perfil'
+					)
+				);
+			} else {
+				titleVar = React.createElement(
+					'div',
+					{ className: 'title' },
+					React.createElement(
+						'span',
+						null,
+						'Bienvenido al perfil de Mike'
+					)
+				);
+			}
 		} else {
 			titleVar = React.createElement(
 				'div',
@@ -27577,6 +27589,8 @@ const GameItem = React.createClass({
 			} else {
 				if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
 			}
+
+			if (this.props.isProfile) className += " showInfo";
 
 			toReturn = React.createElement(
 				'il',

@@ -3082,6 +3082,10 @@ ul.gameList il .contentContainer .alsoAvailableOn span:before {
   -ms-transition: color 300ms;
   transition: color 300ms;
 }
+ul.gameList il form {
+  display: none;
+  z-index: 2;
+}
 ul.gameList il.only .availableConsoles:before,
 ul.gameList il.only .availableConsoles:after {
   background-image: url("img/onlyConsoleDecorator.png");
@@ -3916,11 +3920,13 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList il .commentContainer {
   position: absolute;
   top: 0;
+  left: 0;
   bottom: 30px;
   display: none;
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
+  z-index: 4;
 }
 .detailsMainContainer .container .gameList il .commentContainer .background,
 .detailsMainContainer .container .gameList il .commentContainer .commentTextContainer {
@@ -3958,7 +3964,6 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList il .commentContainer .commentTextContainer .textArea {
   display: none;
   width: 134px;
-  display: inline-block;
   -webkit-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
@@ -3987,6 +3992,7 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   display: none;
 }
 .detailsMainContainer .container .gameList il.showComment figure .info {
+  z-index: 5;
   display: inline-block;
   border-top: 20px #98ceb7 solid;
   border-right: 20px #98ceb7 solid;
@@ -4082,6 +4088,9 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList.both il.ps span:first-child {
   display: inline-block;
 }
+.detailsMainContainer .container .gameList.both il.ps .commentContainer .commentTextContainer .commentTitle {
+  display: block;
+}
 .detailsMainContainer .container .gameList.both il:hover figure .info {
   border-top: 20px solid #e6334c !important;
   border-right: 20px solid #e6334c !important;
@@ -4101,14 +4110,14 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList.both il:hover.psNoExchange .contentContainer .exchange span:after {
   color: #fff;
 }
-.detailsMainContainer .container .gameList.both il.showComment figure .info {
+.detailsMainContainer .container .gameList.both il figure .info {
   border-top: 20px #009992 solid;
   border-right: 20px #009992 solid;
 }
-.detailsMainContainer .container .gameList.both il.showComment .commentContainer {
+.detailsMainContainer .container .gameList.both il .commentContainer {
   left: 0;
 }
-.detailsMainContainer .container .gameList.both il.showComment .commentContainer .background {
+.detailsMainContainer .container .gameList.both il .commentContainer .background {
   background-color: #00605b;
 }
 .detailsMainContainer .container .gameList.ps il .contentContainer .exchange .used:after {
@@ -4644,6 +4653,9 @@ ul.gameList il.new form .publishButton {
   -ms-transition: font-size 300ms;
   transition: font-size 300ms;
 }
+ul.gameList il.new form .publishButton:before {
+  content: 'Publicar';
+}
 ul.gameList il.new form .publishButton:hover {
   font-size: 11px;
 }
@@ -4775,23 +4787,196 @@ ul.gameList il.new:hover figure .img span {
 ul.gameList il.new:hover .contentContainer {
   background-color: #98ceb7 !important;
 }
-ul.gameList il.editing.showComment .contentContainer .chatButton span:before {
+ul.gameList il.editing.showComment.new form {
+  display: inline-block;
+}
+ul.gameList il.editing.showComment.new form .publishButton:before {
+  content: 'Listo!';
+  font-size: 11px;
   -webkit-transition: font-size 300ms;
   -moz-transition: font-size 300ms;
   -o-transition: font-size 300ms;
   -ms-transition: font-size 300ms;
   transition: font-size 300ms;
-  content: 'listo!';
 }
-ul.gameList il.editing.showComment .contentContainer .chatButton:hover span:before {
+ul.gameList il.editing.showComment.new form .publishButton:hover:before {
   font-size: 15px;
 }
-ul.gameList il.editing.showComment .commentContainer .commentTextContainer .commentBody {
+ul.gameList il.editing.showComment.new .commentContainer {
+  bottom: 25px;
+}
+ul.gameList il.editing.showComment.new .commentContainer .commentTextContainer .commentBody {
   display: none;
 }
-ul.gameList il.editing.showComment .commentContainer .commentTextContainer .textArea {
+ul.gameList il.editing.showComment.new .commentContainer .commentTextContainer .textArea {
   display: inline-block !important;
 }
 ul.gameList il.showInfo figure .info {
   display: inline-block;
+}
+.detailsMainContainer .container ul.gameList.both.own il figure .info span {
+  background-color: transparent;
+}
+.detailsMainContainer .container ul.gameList.both.own il figure .info span:before {
+  content: "...";
+  color: #fff;
+}
+.detailsMainContainer .container ul.gameList.both.own il.editing.new figure .info {
+  display: none;
+}
+.detailsMainContainer .container ul.gameList.both.own il.editing.new form {
+  z-index: inherit;
+}
+.detailsMainContainer .container ul.gameList.both.own il.editing.new form .info {
+  display: inline-block;
+  z-index: 5;
+}
+.detailsMainContainer .container ul.gameList.both.own il.editing.new form .info:hover {
+  border-top: 20px #e6334c solid;
+  border-right: 20px #e6334c solid;
+}
+.detailsMainContainer .container ul.gameList.both.own il.editing.new form .info:hover span:before {
+  color: #e6334c;
+}
+.detailsMainContainer.profile .container ul.gameList.both.own il.commentContainerIn .commentContainer {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  display: inline-block;
+  -webkit-animation: commentContainerIn 300ms ease forwards;
+  -moz-animation: commentContainerIn 300ms ease forwards;
+  -o-animation: commentContainerIn 300ms ease forwards;
+  -ms-animation: commentContainerIn 300ms ease forwards;
+  animation: commentContainerIn 300ms ease forwards;
+}
+.detailsMainContainer.profile .container ul.gameList.both.own il.commentContainerOut .commentContainer {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  display: inline-block;
+  -webkit-animation: commentContainerOut 300ms ease forwards;
+  -moz-animation: commentContainerOut 300ms ease forwards;
+  -o-animation: commentContainerOut 300ms ease forwards;
+  -ms-animation: commentContainerOut 300ms ease forwards;
+  animation: commentContainerOut 300ms ease forwards;
+}
+@-moz-keyframes commentContainerOut {
+  0% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+    visiblity: visible;
+  }
+  100% {
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes commentContainerOut {
+  0% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+    visiblity: visible;
+  }
+  100% {
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    visibility: hidden;
+  }
+}
+@-o-keyframes commentContainerOut {
+  0% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+    visiblity: visible;
+  }
+  100% {
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    visibility: hidden;
+  }
+}
+@keyframes commentContainerOut {
+  0% {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+    visiblity: visible;
+  }
+  100% {
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    visibility: hidden;
+  }
+}
+@-moz-keyframes commentContainerIn {
+  0% {
+    display: inline-block;
+    visiblity: visible;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+  100% {
+    display: inline-block;
+    visiblity: visible;
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+}
+@-webkit-keyframes commentContainerIn {
+  0% {
+    display: inline-block;
+    visiblity: visible;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+  100% {
+    display: inline-block;
+    visiblity: visible;
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+}
+@-o-keyframes commentContainerIn {
+  0% {
+    display: inline-block;
+    visiblity: visible;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+  100% {
+    display: inline-block;
+    visiblity: visible;
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+}
+@keyframes commentContainerIn {
+  0% {
+    display: inline-block;
+    visiblity: visible;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+  100% {
+    display: inline-block;
+    visiblity: visible;
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
 }

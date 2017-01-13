@@ -112,6 +112,8 @@ const GameItem = React.createClass({
 				if(this.props.console === Constants.consoles.ps) className += " psNew";
 				else className += " xboxNew";
 			}
+
+			if(this.props.isProfile) className += " showInfo";
 			
 			toReturn = (
 				<il className={className} onClick={this._goToPage}>

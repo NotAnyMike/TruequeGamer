@@ -52,7 +52,11 @@ const DetailsMainContainer = React.createClass({
 
 		var titleVar;
 		if(this.props.isProfile){
-			titleVar = <div className="title"><span>Bienvenido al perfil de Mike</span></div>
+				if(this.props.isOwnerOfProfile){
+					titleVar = <div className="title"><span>Bienvenido a tu perfil</span></div>
+				}else{
+					titleVar = <div className="title"><span>Bienvenido al perfil de Mike</span></div>
+				}
 		}else{
 			titleVar = <div className="title"><span>Estás en la sección de <span>The Witcher</span> para xbox one</span></div>
 		}

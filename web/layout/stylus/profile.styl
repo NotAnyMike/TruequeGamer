@@ -218,6 +218,9 @@ ul
 						cursor: pointer
 						transition: font-size $time
 
+						&:before
+							content: 'Publicar'
+
 						&:hover
 							font-size: 11px
 
@@ -336,20 +339,23 @@ ul
 					.contentContainer
 						background-color: $green !important
 
-			&.editing.showComment
-				.contentContainer
-					.chatButton
-						span
-							&:before
-								transition: font-size $time
-								content: 'listo!'
+			&.editing.showComment.new
+				form
+					display: inline-block
+						
+					.publishButton
+						&:before
+							content: 'Listo!'
+							font-size: 11px
+							transition: font-size $time	
 
 						&:hover
-							span
-								&:before
-									font-size: 15px
+							&:before
+								font-size: 15px
 
 				.commentContainer
+					bottom: 25px
+
 					.commentTextContainer
 						.commentBody
 							display: none
@@ -361,3 +367,78 @@ ul
 				figure
 					.info
 						display: inline-block
+
+.detailsMainContainer
+	.container
+		ul
+			&.gameList.both.own
+				il
+					figure
+						.info
+							span
+								background-color: transparent
+
+								&:before
+									content: "..."
+									color: white
+
+					&.editing.new
+						figure
+							.info
+								display: none
+
+						form
+							z-index: inherit
+
+							.info
+								display: inline-block
+								z-index: 5
+
+								&:hover
+									border-top: 20px $red solid	
+									border-right: 20px $red solid
+
+									span
+										&:before
+											color: $red
+
+.detailsMainContainer.profile
+	.container
+		ul
+			&.gameList.both.own
+				il
+					&.commentContainerIn
+						.commentContainer
+							opacity: 0
+							display: inline-block
+							animation: commentContainerIn $time ease forwards
+
+					&.commentContainerOut
+						.commentContainer
+							opacity: 1
+							display: inline-block
+							animation: commentContainerOut $time ease forwards
+
+@keyframes commentContainerOut{
+	0%{
+		opacity: 1
+		visiblity: visible
+	}
+	100%{
+		opacity: 0
+		visibility: hidden
+	}
+}
+
+@keyframes commentContainerIn{
+	0%{
+		display: inline-block
+		visiblity: visible
+		opacity: 0
+	}
+	100%{
+		display: inline-block
+		visiblity: visible
+		opacity: 1
+	}
+}

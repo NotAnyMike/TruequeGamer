@@ -145,9 +145,11 @@
 				.commentContainer
 					position: absolute
 					top: 0
+					left: 0
 					bottom: 30px
 					display:none
 					opacity: 0
+					z-index: 4
 
 					.background, .commentTextContainer
 						position: absolute
@@ -180,7 +182,6 @@
 						.textArea
 							display: none
 							width: 134px
-							display: inline-block
 							border-radius: 0
 							background-color: transparent
 							border: 1px solid white
@@ -209,6 +210,7 @@
 
 					figure
 						.info
+							z-index: 5
 							display: inline-block
 							border-top: 20px $green solid
 							border-right: 20px $green solid
@@ -302,6 +304,11 @@
 						span:first-child
 							display: inline-block
 
+						.commentContainer
+							.commentTextContainer
+								.commentTitle
+									display: block
+
 					&:hover
 						figure
 							.info
@@ -322,17 +329,16 @@
 										&:before, &:after
 											color: white
 
-					&.showComment
-						figure
-							.info
-								border-top: 20px $dark_green solid
-								border-right: 20px $dark_green solid
+					figure
+						.info
+							border-top: 20px $dark_green solid
+							border-right: 20px $dark_green solid
 
-						.commentContainer
-							left: 0
+					.commentContainer
+						left: 0
 
-							.background
-								background-color: $darker_green
+						.background
+							background-color: $darker_green
 			&.ps
 				il	
 					.contentContainer

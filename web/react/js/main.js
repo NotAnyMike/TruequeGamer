@@ -27549,6 +27549,19 @@ const GameItem = React.createClass({
 	},
 
 	render: function () {
+
+		var onClickComponent = null;
+		var cover = null;
+		var name = null;
+		var onMouseOver1 = null;
+		var onMouseOut1 = null;
+		var onMouseOver2 = null;
+		var onMouseOut2 = null;
+		var pricePs = null;
+		var priceXbox = null;
+		var toReturn = null;
+		var className = null;
+
 		var consoleVar = this.props.console;
 		if (this.props.both && this.state.isHover && consoleVar !== null) {
 			if (consoleVar === Constants.consoles.xbox) {
@@ -27558,24 +27571,7 @@ const GameItem = React.createClass({
 			}
 		}
 
-		var className;
-
-		var toReturn;
 		if (this.props.isProfile) {
-
-			var comment;
-			if (this.props.isProfile && typeof this.props.comment !== 'undefined' || this.props.comment !== '') {
-				comment = React.createElement(
-					'div',
-					{ className: 'commentContainer' },
-					React.createElement('div', { className: 'background' }),
-					React.createElement(
-						'span',
-						null,
-						this.props.comment
-					)
-				);
-			}
 
 			className = this.props.console + " only";
 			if (this.props.console === Constants.consoles.xbox) {
@@ -27591,73 +27587,15 @@ const GameItem = React.createClass({
 			}
 
 			if (this.props.isProfile) className += " showInfo";
-
-			toReturn = React.createElement(
-				'il',
-				{ className: className, onClick: this._goToPage },
-				React.createElement(
-					'figure',
-					null,
-					React.createElement(
-						'div',
-						{ className: 'info' },
-						React.createElement('span', null)
-					),
-					React.createElement('img', { src: this.props.cover, alt: '' })
-				),
-				React.createElement(
-					'div',
-					{ className: 'contentContainer' },
-					React.createElement(
-						'span',
-						{ className: 'name' },
-						this.props.name
-					),
-					React.createElement(
-						'div',
-						{ className: 'exchange' },
-						React.createElement('span', null),
-						React.createElement('span', null),
-						React.createElement('div', { className: 'used' })
-					),
-					React.createElement(
-						'div',
-						{ className: 'availableConsoles' },
-						React.createElement(
-							'div',
-							{ className: 'container' },
-							React.createElement('span', {
-								onMouseOver: this.props.console === Constants.consoles.xbox ? this._onMouseOver : null,
-								onMouseOut: this.props.console === Constants.consoles.xbox ? this._onMouseOut : null
-							}),
-							React.createElement('span', {
-								onMouseOver: this.props.console === Constants.consoles.ps ? this._onMouseOver : null,
-								onMouseOut: this.props.console === Constants.consoles.ps ? this._onMouseOut : null
-							})
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'price' },
-						React.createElement(
-							'span',
-							null,
-							typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price)
-						),
-						React.createElement(
-							'span',
-							null,
-							typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price)
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'alsoAvailableOn' },
-						React.createElement('span', null)
-					)
-				),
-				comment
-			);
+			onClickComponent = this._goToPage;
+			cover = this.props.cover;
+			name = this.props.name;
+			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
+			onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
+			onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
+			onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut : null;
+			pricePs = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
+			priceXbox = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
 		} else {
 
 			className = consoleVar + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "");
@@ -27674,77 +27612,98 @@ const GameItem = React.createClass({
 				className += " xboxUsed";
 			}
 
-			toReturn = React.createElement(
-				'il',
-				{ className: className, onClick: this._goToPage },
+			onClickComponent = this._goToPage;
+			cover = this.props.cover;
+			name = this.props.name;
+			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
+			onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
+			onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
+			onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut : null;
+			pricePs = this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice);
+			priceXbox = this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice);
+		}
+
+		toReturn = React.createElement(
+			'il',
+			{ className: className, onClick: onClickComponent },
+			React.createElement(
+				'figure',
+				null,
 				React.createElement(
-					'figure',
-					null,
-					React.createElement(
-						'div',
-						{ className: 'info' },
-						React.createElement('span', null)
-					),
-					React.createElement('img', { src: this.props.cover, alt: '' })
+					'div',
+					{ className: 'info' },
+					React.createElement('span', null)
+				),
+				React.createElement('img', { src: cover, alt: '' })
+			),
+			React.createElement(
+				'div',
+				{ className: 'contentContainer' },
+				React.createElement(
+					'span',
+					{ className: 'name' },
+					name
 				),
 				React.createElement(
 					'div',
-					{ className: 'contentContainer' },
+					{ className: 'exchange' },
+					React.createElement('span', null),
+					React.createElement('span', null),
+					React.createElement('div', { className: 'used' })
+				),
+				React.createElement(
+					'div',
+					{ className: 'availableConsoles' },
+					React.createElement(
+						'div',
+						{ className: 'container' },
+						React.createElement('span', {
+							onMouseOver: onMouseOver1,
+							onMouseOut: onMouseOut1
+						}),
+						React.createElement('span', {
+							onMouseOver: onMouseOver2,
+							onMouseOut: onMouseOut2
+						})
+					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'price' },
 					React.createElement(
 						'span',
-						{ className: 'name' },
-						this.props.name
+						null,
+						pricePs
 					),
 					React.createElement(
-						'div',
-						{ className: 'exchange' },
-						React.createElement('span', null),
-						React.createElement('span', null),
-						React.createElement('div', { className: 'used' })
-					),
-					React.createElement(
-						'div',
-						{ className: 'availableConsoles' },
-						React.createElement(
-							'div',
-							{ className: 'container' },
-							React.createElement('span', {
-								onMouseOver: this.props.console === Constants.consoles.xbox ? this._onMouseOver : null,
-								onMouseOut: this.props.console === Constants.consoles.xbox ? this._onMouseOut : null
-							}),
-							React.createElement('span', {
-								onMouseOver: this.props.console === Constants.consoles.ps ? this._onMouseOver : null,
-								onMouseOut: this.props.console === Constants.consoles.ps ? this._onMouseOut : null
-							})
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'price' },
-						React.createElement(
-							'span',
-							null,
-							this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice)
-						),
-						React.createElement(
-							'span',
-							null,
-							this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice)
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'alsoAvailableOn' },
-						React.createElement('span', null)
-					),
-					React.createElement(
-						'button',
-						{ className: 'chatButton' },
-						React.createElement('span', null)
+						'span',
+						null,
+						priceXbox
 					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'alsoAvailableOn' },
+					React.createElement('span', null)
+				),
+				React.createElement(
+					'button',
+					{ className: 'chatButton' },
+					React.createElement('span', null)
 				)
-			);
-		}
+			),
+			React.createElement(
+				'div',
+				{ className: 'commentContainer' },
+				React.createElement('div', { className: 'background' }),
+				React.createElement(
+					'span',
+					null,
+					this.props.comment
+				)
+			)
+		);
+
 		return toReturn;
 	}
 

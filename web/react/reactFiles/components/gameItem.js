@@ -72,6 +72,19 @@ const GameItem = React.createClass({
 	},
 	
 	render: function(){
+
+		var onClickComponent = null;
+		var cover = null;
+		var name = null;
+		var onMouseOver1 = null;
+		var onMouseOut1 = null;
+		var onMouseOver2 = null;
+		var onMouseOut2 = null;
+		var pricePs = null;
+		var priceXbox = null;
+		var toReturn = null;
+		var className = null;
+
 		var consoleVar = this.props.console;
 		if(this.props.both && this.state.isHover && consoleVar !== null){
 			if(consoleVar === Constants.consoles.xbox){
@@ -81,21 +94,8 @@ const GameItem = React.createClass({
 			}
 		}	
 
-		var className;
-
-		var toReturn;
 		if(this.props.isProfile){
 			
-			var comment;
-			if(this.props.isProfile && typeof this.props.comment !== 'undefined' || this.props.comment !== ''){
-				comment = (
-					<div className="commentContainer">
-						<div className="background"></div>
-						<span>{this.props.comment}</span>
-					</div>
-				);
-			}
-
 			className = this.props.console + " only"
 			if(this.props.console === Constants.consoles.xbox){
 				className += (this.props.exchange ? " xboxNoExchange" : "") +
@@ -114,47 +114,15 @@ const GameItem = React.createClass({
 			}
 
 			if(this.props.isProfile) className += " showInfo";
-			
-			toReturn = (
-				<il className={className} onClick={this._goToPage}>
-					<figure>
-						<div className="info">
-							<span></span>
-						</div>
-						<img src={this.props.cover} alt=""/>
-					</figure>
-					<div className="contentContainer">
-						<span className="name">{this.props.name}</span>
-						<div className="exchange">
-							<span></span>
-							<span></span>
-							<div className="used"></div>
-						</div>
-						<div className="availableConsoles">
-							<div className="container">
-								<span 
-									onMouseOver={this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null}
-									onMouseOut={this.props.console === Constants.consoles.xbox ? this._onMouseOut  : null}
-								></span>
-								<span 
-									onMouseOver={this.props.console === Constants.consoles.ps ? this._onMouseOver  : null}
-									onMouseOut={this.props.console === Constants.consoles.ps ? this._onMouseOut  : null}
-								></span>
-							</div>
-						</div>
-						<div className="price">
-							<span>
-								{typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price)}
-							</span>
-							<span>
-								{typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price)}
-							</span>
-						</div>
-						<div className="alsoAvailableOn"><span></span></div>
-					</div>
-					{comment}
-				</il>
-			);
+			onClickComponent = this._goToPage;
+			cover = this.props.cover;
+			name = this.props.name;
+			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null;
+			onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut  : null;
+			onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver  : null;
+			onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut  : null;
+			pricePs = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
+			priceXbox = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
 
 		}else{
 
@@ -176,50 +144,65 @@ const GameItem = React.createClass({
 				className += " xboxUsed";
 			}
 
-			toReturn = (
-				<il className={className} onClick={this._goToPage}>
-					<figure>
-						<div className="info">
-							<span></span>
-						</div>
-						<img src={this.props.cover} alt=""/>
-					</figure>
-					<div className="contentContainer">
-						<span className="name">{this.props.name}</span>
-						<div className="exchange">
-							<span></span>
-							<span></span>
-							<div className="used"></div>
-						</div>
-						<div className="availableConsoles">
-							<div className="container">
-								<span 
-									onMouseOver={this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null}
-									onMouseOut={this.props.console === Constants.consoles.xbox ? this._onMouseOut  : null}
-								></span>
-								<span 
-									onMouseOver={this.props.console === Constants.consoles.ps ? this._onMouseOver  : null}
-									onMouseOut={this.props.console === Constants.consoles.ps ? this._onMouseOut  : null}
-								></span>
-							</div>
-						</div>
-						<div className="price">
-							<span>
-								{this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice)}
-							</span>
-							<span>
-								{this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice)}
-							</span>
-						</div>
-						<div className="alsoAvailableOn"><span></span></div>
-						<button className="chatButton">
-							<span></span>
-						</button>
-					</div>
-				</il>
-			);
+			onClickComponent = this._goToPage;
+			cover = this.props.cover;
+			name = this.props.name;
+			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null;
+			onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut  : null;
+			onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver  : null;
+			onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut  : null;
+			pricePs = this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice);
+			priceXbox = this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice);
 
 		}
+
+		toReturn = (
+			<il className={className} onClick={onClickComponent}>
+				<figure>
+					<div className="info">
+						<span></span>
+					</div>
+					<img src={cover} alt=""/>
+				</figure>
+				<div className="contentContainer">
+					<span className="name">{name}</span>
+					<div className="exchange">
+						<span></span>
+						<span></span>
+						<div className="used"></div>
+					</div>
+					<div className="availableConsoles">
+						<div className="container">
+							<span 
+								onMouseOver={onMouseOver1}
+								onMouseOut={onMouseOut1}
+							></span>
+							<span 
+								onMouseOver={onMouseOver2}
+								onMouseOut={onMouseOut2}
+							></span>
+						</div>
+					</div>
+					<div className="price">
+						<span>
+							{pricePs}
+						</span>
+						<span>
+							{priceXbox}
+						</span>
+					</div>
+					<div className="alsoAvailableOn"><span></span></div>
+					<button className="chatButton">
+						<span></span>
+					</button>
+				</div>
+				<div className="commentContainer">
+					<div className="background"></div>
+					<span>{this.props.comment}</span>
+				</div>
+			</il>
+		);
+
 		return toReturn
 	}
 

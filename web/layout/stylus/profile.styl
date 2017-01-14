@@ -388,7 +388,7 @@ ul
 								display: none
 
 						form
-							z-index: inherit
+							z-index: 1
 
 							.info
 								display: inline-block
@@ -401,6 +401,10 @@ ul
 									span
 										&:before
 											color: $red
+
+						&.showComment
+							form
+								z-index: inherit
 
 .detailsMainContainer.profile
 	.container

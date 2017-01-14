@@ -4825,7 +4825,7 @@ ul.gameList il.showInfo figure .info {
   display: none;
 }
 .detailsMainContainer .container ul.gameList.both.own il.editing.new form {
-  z-index: inherit;
+  z-index: 1;
 }
 .detailsMainContainer .container ul.gameList.both.own il.editing.new form .info {
   display: inline-block;
@@ -4837,6 +4837,9 @@ ul.gameList il.showInfo figure .info {
 }
 .detailsMainContainer .container ul.gameList.both.own il.editing.new form .info:hover span:before {
   color: #e6334c;
+}
+.detailsMainContainer .container ul.gameList.both.own il.editing.new.showComment form {
+  z-index: inherit;
 }
 .detailsMainContainer.profile .container ul.gameList.both.own il.commentContainerIn .commentContainer {
   opacity: 0;

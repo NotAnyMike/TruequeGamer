@@ -219,7 +219,7 @@ ul
 						transition: font-size $time
 
 						&:before
-							content: 'Publicar'
+							content: 'Guardar Cambios'
 
 						&:hover
 							font-size: 11px
@@ -313,7 +313,7 @@ ul
 					&.alreadyCreated
 						form
 							span
-								padding-top: 12px
+								padding-top: 4.5px
 
 							.info
 								span
@@ -340,8 +340,13 @@ ul
 						background-color: $green !important
 
 			&.editing.showComment.new
+				.contentContainer
+					.price
+						span
+							z-index: inherit
+
 				form
-					display: inline-block
+					display: flex
 						
 					.publishButton
 						&:before
@@ -375,12 +380,18 @@ ul
 				il
 					figure
 						.info
+							z-index: 5;
+
 							span
 								background-color: transparent
 
 								&:before
 									content: "..."
 									color: white
+
+					.contentContainer
+						.chatButton
+							display:none
 
 					&.editing.new
 						figure
@@ -409,7 +420,7 @@ ul
 .detailsMainContainer.profile
 	.container
 		ul
-			&.gameList.both.own
+			&.gameList.both
 				il
 					&.commentContainerIn
 						.commentContainer

@@ -69,6 +69,7 @@ const DetailsMainContainer = React.createClass({
 					<DetailsList 
 						console={this.props.console}
 						isProfile={this.props.isProfile}
+						isOwnerOfProfile={this.props.isOwnerOfProfile}
 						list={this.props.list}
 						goToProfileFn={this.props.goToProfileFn}
 					/>

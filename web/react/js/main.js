@@ -27090,9 +27090,11 @@ const DetailsList = React.createClass({
 		var consoleVar = this.props.console;
 		var self = this;
 
+		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "");
+
 		return React.createElement(
 			'ul',
-			{ className: "gameList " + this.props.console },
+			{ className: className },
 			this.props.list.map(function (element) {
 
 				var consoleProp = Constants.consoles.ps;
@@ -27105,6 +27107,7 @@ const DetailsList = React.createClass({
 				var gameItem;
 				if (self.props.isProfile) {
 					gameItem = React.createElement(GameItem, {
+						isOwnerOfProfile: self.props.isOwnerOfProfile,
 						isProfile: self.props.isProfile,
 						console: element.console,
 						cover: element.cover,
@@ -27112,6 +27115,7 @@ const DetailsList = React.createClass({
 						exchange: element.exchange,
 						price: element.price,
 						comment: element.comment,
+						isNew: false,
 						key: element.pk
 					});
 				} else {
@@ -27250,6 +27254,7 @@ const DetailsMainContainer = React.createClass({
 				React.createElement(DetailsList, {
 					console: this.props.console,
 					isProfile: this.props.isProfile,
+					isOwnerOfProfile: this.props.isOwnerOfProfile,
 					list: this.props.list,
 					goToProfileFn: this.props.goToProfileFn
 				})
@@ -27511,14 +27516,20 @@ const GameItem = React.createClass({
 		//Console
 		//cover
 		//name
+		isOwnerOfProfile: React.PropTypes.bool,
 		exchange: React.PropTypes.bool,
 		used: React.PropTypes.bool,
 		price: React.PropTypes.number,
-		comment: React.PropTypes.string
-	},
+		comment: React.PropTypes.string,
+		isNew: React.PropTypes.bool },
 
 	getInitialState: function () {
-		return { isHover: false };
+		return {
+			isHover: false,
+			isComponentHover: false,
+			isEditing: false,
+			isShowingComment: false
+		};
 	},
 
 	getDefaultProps: function () {
@@ -27544,8 +27555,49 @@ const GameItem = React.createClass({
 		this.setState({ isHover: false });
 	},
 
+	_onMouseOutComponent: function () {
+		if (this.props.isOwnerOfProfile === true) this.setState({ isComponentHover: false });
+	},
+
+	_onMouseOverComponent: function () {
+		if (this.props.isOwnerOfProfile === true) this.setState({ isComponentHover: true });
+	},
+
+	_onInfoClicked: function () {
+		//if own show editing
+		if (typeof this.props.isOwnerOfProfile !== 'undefined' && this.props.isOwnerOfProfile) {
+			if (this.state.isShowingComment) {
+				this.setState({ isEditing: this.state.isEditing, isShowingComment: false });
+			} else {
+				var newValue = !this.state.isEditing;
+				this.setState({
+					isEditing: newValue,
+					isShowingComment: false
+				});
+			}
+		} else {
+			//else show comment
+			this.setState({ isShowingComment: !this.state.isShowingComment });
+		}
+	},
+
+	_onEditCommentClicked: function () {
+		this.setState({ isShowingComment: true });
+	},
+
+	_onPublishButtonClicked: function () {
+		//if comment open save it and close
+		if (this.state.isShowingComment && this.state.isEditing) {
+			this.setState({ isShowingComment: false, isEditing: true });
+		} else {
+			//else publish
+			this.setState({ isEditing: false });
+			console.log("publishing game");
+		}
+	},
+
 	_goToPage: function () {
-		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else this.props.goToDetailsFn();
+		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn();
 	},
 
 	render: function () {
@@ -27553,14 +27605,22 @@ const GameItem = React.createClass({
 		var onClickComponent = null;
 		var cover = null;
 		var name = null;
+		var onMouseOverComponent = null;
+		var onMouseOutComponent = null;
 		var onMouseOver1 = null;
 		var onMouseOut1 = null;
 		var onMouseOver2 = null;
 		var onMouseOut2 = null;
+		var onInfoClick = null;
+		var onPublishButtonClick = null;
+		var onSecondButtonClick = null;
 		var pricePs = null;
 		var priceXbox = null;
 		var toReturn = null;
 		var className = null;
+		var psChecked = false;
+		var used = false;
+		var exchange = false;
 
 		var consoleVar = this.props.console;
 		if (this.props.both && this.state.isHover && consoleVar !== null) {
@@ -27586,16 +27646,44 @@ const GameItem = React.createClass({
 				if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
 			}
 
+			if (this.state.isEditing) {
+				className += " new editing";
+			}
+			if (this.state.isShowingComment) {
+				className += " showComment";
+			}
 			if (this.props.isProfile) className += " showInfo";
+			if (this.state.isComponentHover && this.state.isEditing === false || this.state.isEditing === true && this.state.isShowingComment === true || this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false) {
+				className += " commentContainerIn";
+			} else {
+				className += " commentContainerOut";
+			}
+			if (this.props.isNew === false) {
+				className += " alreadyCreated";
+				if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
+					className += " onlyExchange";
+				} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
+					className += " onlySell";
+				}
+			}
+
 			onClickComponent = this._goToPage;
 			cover = this.props.cover;
 			name = this.props.name;
+			onMouseOverComponent = this._onMouseOverComponent;
+			onMouseOutComponent = this._onMouseOutComponent;
 			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
 			onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
 			onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
 			onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut : null;
+			onInfoClick = this._onInfoClicked;
+			onSecondButtonClick = this._onEditCommentClicked;
+			onPublishButtonClick = this._onPublishButtonClicked;
 			pricePs = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
 			priceXbox = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
+			psChecked = this.props.console === Constants.consoles.ps ? true : false;
+			used = this.props.used;
+			exchange = this.props.exchange;
 		} else {
 
 			className = consoleVar + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "");
@@ -27625,13 +27713,18 @@ const GameItem = React.createClass({
 
 		toReturn = React.createElement(
 			'il',
-			{ className: className, onClick: onClickComponent },
+			{
+				className: className,
+				onClick: onClickComponent,
+				onMouseOver: onMouseOverComponent,
+				onMouseOut: onMouseOutComponent
+			},
 			React.createElement(
 				'figure',
 				null,
 				React.createElement(
 					'div',
-					{ className: 'info' },
+					{ className: 'info', onClick: onInfoClick },
 					React.createElement('span', null)
 				),
 				React.createElement('img', { src: cover, alt: '' })
@@ -27693,13 +27786,141 @@ const GameItem = React.createClass({
 				)
 			),
 			React.createElement(
+				'form',
+				{ action: '' },
+				React.createElement(
+					'div',
+					{ className: 'info', onClick: onInfoClick },
+					React.createElement('span', null)
+				),
+				React.createElement(
+					'div',
+					{ className: 'videoGameSection' },
+					React.createElement('input', { type: 'text', placeholder: 'nombre del videojuego', value: name }),
+					React.createElement(
+						'ul',
+						null,
+						React.createElement(
+							'il',
+							null,
+							'The Witcher'
+						),
+						React.createElement(
+							'il',
+							null,
+							'The Witcher 2'
+						)
+					)
+				),
+				React.createElement(
+					'div',
+					null,
+					React.createElement('input', { type: 'text', placeholder: 'precio (en caso de venta)', value: pricePs })
+				),
+				React.createElement(
+					'span',
+					null,
+					'¿Nuevo o Usado?'
+				),
+				React.createElement(
+					'div',
+					null,
+					React.createElement('input', { type: 'radio', id: 'new', name: 'new', checked: !used }),
+					React.createElement(
+						'label',
+						{ htmlFor: 'new' },
+						'Nuevo'
+					),
+					React.createElement('input', { type: 'radio', id: 'old', name: 'new', checked: used }),
+					React.createElement(
+						'label',
+						{ htmlFor: 'old' },
+						'Usado'
+					)
+				),
+				React.createElement(
+					'span',
+					null,
+					'¿Trueque?'
+				),
+				React.createElement(
+					'div',
+					{ className: 'exchange' },
+					React.createElement('input', { type: 'radio', id: 'exchange', name: 'exchange', checked: exchange }),
+					React.createElement(
+						'label',
+						{ htmlFor: 'exchange' },
+						'Sí'
+					),
+					React.createElement('input', { type: 'radio', id: 'noExchange', name: 'exchange', checked: !exchange }),
+					React.createElement(
+						'label',
+						{ htmlFor: 'noExchange' },
+						'No'
+					)
+				),
+				React.createElement(
+					'span',
+					null,
+					'Selecciona la consola'
+				),
+				React.createElement(
+					'div',
+					{ className: 'console' },
+					React.createElement('input', { type: 'radio', id: 'ps', className: 'ps', name: 'psOrxbox', checked: psChecked }),
+					React.createElement('label', { htmlFor: 'ps' }),
+					React.createElement('input', { type: 'radio', id: 'xbox', className: 'xbox', name: 'psOrxbox', checked: !psChecked }),
+					React.createElement('label', { htmlFor: 'xbox' })
+				),
+				React.createElement(
+					'span',
+					{ className: 'stateButtonsLabel' },
+					'Estado de la publicación'
+				),
+				React.createElement(
+					'div',
+					{ className: 'stateButtons' },
+					React.createElement(
+						'button',
+						{ type: 'button', className: 'delete' },
+						'Eliminar'
+					),
+					React.createElement(
+						'button',
+						{ type: 'button', className: 'exchanged' },
+						'Cambiado'
+					),
+					React.createElement(
+						'button',
+						{ type: 'button', className: 'sold' },
+						'Vendido'
+					)
+				),
+				React.createElement(
+					'button',
+					{ type: 'button', className: 'secondButton', onClick: onSecondButtonClick },
+					'Escribir comentario'
+				),
+				React.createElement('button', { type: 'button', className: 'publishButton', onClick: onPublishButtonClick })
+			),
+			React.createElement(
 				'div',
 				{ className: 'commentContainer' },
 				React.createElement('div', { className: 'background' }),
 				React.createElement(
-					'span',
-					null,
-					this.props.comment
+					'div',
+					{ className: 'commentTextContainer' },
+					React.createElement(
+						'span',
+						{ className: 'commentTitle' },
+						'The Witcher'
+					),
+					React.createElement(
+						'span',
+						{ className: 'commentBody' },
+						this.props.comment
+					),
+					React.createElement('textarea', { className: 'textArea', type: 'text', value: this.props.comment })
 				)
 			)
 		);

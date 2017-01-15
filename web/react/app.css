@@ -3082,6 +3082,9 @@ ul.gameList il .contentContainer .alsoAvailableOn span:before {
   -ms-transition: color 300ms;
   transition: color 300ms;
 }
+ul.gameList il .commentContainer {
+  display: none;
+}
 ul.gameList il form {
   display: none;
   z-index: 2;
@@ -3921,7 +3924,7 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 30px;
+  bottom: 0px;
   display: none;
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -4654,7 +4657,7 @@ ul.gameList il.new form .publishButton {
   transition: font-size 300ms;
 }
 ul.gameList il.new form .publishButton:before {
-  content: 'Publicar';
+  content: 'Guardar Cambios';
 }
 ul.gameList il.new form .publishButton:hover {
   font-size: 11px;
@@ -4757,7 +4760,7 @@ ul.gameList il.new.editing.onlySell form .stateButtons .exchanged {
   display: none;
 }
 ul.gameList il.new.editing.alreadyCreated form span {
-  padding-top: 12px;
+  padding-top: 4.5px;
 }
 ul.gameList il.new.editing.alreadyCreated form .info span {
   padding-top: 0px;
@@ -4787,8 +4790,16 @@ ul.gameList il.new:hover figure .img span {
 ul.gameList il.new:hover .contentContainer {
   background-color: #98ceb7 !important;
 }
+ul.gameList il.editing.showComment.new .contentContainer .price span {
+  z-index: inherit;
+}
 ul.gameList il.editing.showComment.new form {
-  display: inline-block;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
 }
 ul.gameList il.editing.showComment.new form .publishButton:before {
   content: 'Listo!';
@@ -4814,12 +4825,18 @@ ul.gameList il.editing.showComment.new .commentContainer .commentTextContainer .
 ul.gameList il.showInfo figure .info {
   display: inline-block;
 }
+.detailsMainContainer .container ul.gameList.both.own il figure .info {
+  z-index: 5;
+}
 .detailsMainContainer .container ul.gameList.both.own il figure .info span {
   background-color: transparent;
 }
 .detailsMainContainer .container ul.gameList.both.own il figure .info span:before {
   content: "...";
   color: #fff;
+}
+.detailsMainContainer .container ul.gameList.both.own il .contentContainer .chatButton {
+  display: none;
 }
 .detailsMainContainer .container ul.gameList.both.own il.editing.new figure .info {
   display: none;
@@ -4841,7 +4858,7 @@ ul.gameList il.showInfo figure .info {
 .detailsMainContainer .container ul.gameList.both.own il.editing.new.showComment form {
   z-index: inherit;
 }
-.detailsMainContainer.profile .container ul.gameList.both.own il.commentContainerIn .commentContainer {
+.detailsMainContainer.profile .container ul.gameList.both il.commentContainerIn .commentContainer {
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
@@ -4852,7 +4869,7 @@ ul.gameList il.showInfo figure .info {
   -ms-animation: commentContainerIn 300ms ease forwards;
   animation: commentContainerIn 300ms ease forwards;
 }
-.detailsMainContainer.profile .container ul.gameList.both.own il.commentContainerOut .commentContainer {
+.detailsMainContainer.profile .container ul.gameList.both il.commentContainerOut .commentContainer {
   opacity: 1;
   -ms-filter: none;
   filter: none;

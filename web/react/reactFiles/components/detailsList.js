@@ -17,8 +17,10 @@ const DetailsList = React.createClass({
 		var consoleVar = this.props.console;
 		var self = this;
 
+		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "");
+
 		return (
-			<ul className={"gameList " + this.props.console}>
+			<ul className={className}>
 				{this.props.list.map(function(element){
 					
 					var consoleProp = Constants.consoles.ps;
@@ -32,6 +34,7 @@ const DetailsList = React.createClass({
 					if(self.props.isProfile){
 						gameItem = (
 							<GameItem 
+								isOwnerOfProfile={self.props.isOwnerOfProfile}
 								isProfile={self.props.isProfile}
 								console={element.console}
 								cover={element.cover} 
@@ -39,6 +42,7 @@ const DetailsList = React.createClass({
 								exchange={element.exchange}
 								price={element.price}
 								comment={element.comment}
+								isNew={false}
 								key={element.pk}
 							/>
 						);

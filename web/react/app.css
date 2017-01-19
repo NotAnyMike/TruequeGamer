@@ -2819,6 +2819,7 @@ ul.gameList il .contentContainer .name {
   -o-transition: color 300ms;
   -ms-transition: color 300ms;
   transition: color 300ms;
+  min-height: 18px;
 }
 ul.gameList il .contentContainer .exchange {
   font-size: 14px;

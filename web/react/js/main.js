@@ -27523,12 +27523,33 @@ const GameItem = React.createClass({
 		comment: React.PropTypes.string,
 		isNew: React.PropTypes.bool },
 
+	componentDidMount: function () {
+		this.setState({
+			editing: {
+				name: this.props.name,
+				price: this.props.price,
+				exchange: this.props.exchange,
+				used: this.props.used,
+				comment: this.props.comment,
+				ps: this.props.console === null ? null : this.props.console === Constants.consoles.ps ? true : false
+			}
+		});
+	},
+
 	getInitialState: function () {
 		return {
 			isHover: false,
 			isComponentHover: false,
 			isEditing: false,
-			isShowingComment: false
+			isShowingComment: false,
+			editing: {
+				name: null,
+				price: null,
+				used: null,
+				ps: null,
+				exchange: null,
+				comment: null
+			}
 		};
 	},
 
@@ -27600,6 +27621,76 @@ const GameItem = React.createClass({
 		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn();
 	},
 
+	_changeCommentHandler: function (e) {
+		var newValue = e.target.value;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: newValue
+			}
+		});
+	},
+
+	_changeNameHandler: function (e) {
+		var newValue = e.target.value;
+		this.setState({
+			editing: {
+				name: newValue,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeNewHandler: function (e) {
+		var newValue = !e.target.value;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: newValue,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeUsedHandler: function (e) {
+		var newValue = e.target.value;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: newValue,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changePriceHandler: function (e) {
+		var newValue = e.target.value.replace(/[^0-9]/g, '');
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: newValue,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
 	render: function () {
 
 		var onClickComponent = null;
@@ -27614,6 +27705,11 @@ const GameItem = React.createClass({
 		var onInfoClick = null;
 		var onPublishButtonClick = null;
 		var onSecondButtonClick = null;
+		var changeNameHandler = null;
+		var changePriceHandler = null;
+		var changeUsedHandler = null;
+		var changeNewHandler = null;
+		var changeCommentHandler = null;
 		var pricePs = null;
 		var priceXbox = null;
 		var toReturn = null;
@@ -27621,6 +27717,7 @@ const GameItem = React.createClass({
 		var psChecked = false;
 		var used = false;
 		var exchange = false;
+		var comment = null;
 
 		var consoleVar = this.props.console;
 		if (this.props.both && this.state.isHover && consoleVar !== null) {
@@ -27669,7 +27766,7 @@ const GameItem = React.createClass({
 
 			onClickComponent = this._goToPage;
 			cover = this.props.cover;
-			name = this.props.name;
+			name = this.state.editing.name;
 			onMouseOverComponent = this._onMouseOverComponent;
 			onMouseOutComponent = this._onMouseOutComponent;
 			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
@@ -27679,11 +27776,17 @@ const GameItem = React.createClass({
 			onInfoClick = this._onInfoClicked;
 			onSecondButtonClick = this._onEditCommentClicked;
 			onPublishButtonClick = this._onPublishButtonClicked;
-			pricePs = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
-			priceXbox = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
+			changeNameHandler = this._changeNameHandler;
+			changePriceHandler = this._changePriceHandler;
+			changeUsedHandler = this._channgeUsedHandler;
+			changeNewHandler = this._changeNewHandler;
+			changeCommentHandler = this._changeCommentHandler;
+			pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+			priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
 			psChecked = this.props.console === Constants.consoles.ps ? true : false;
-			used = this.props.used;
+			used = this.state.editing.used;
 			exchange = this.props.exchange;
+			comment = this.state.editing.comment;
 		} else {
 
 			className = consoleVar + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "");
@@ -27790,13 +27893,13 @@ const GameItem = React.createClass({
 				{ action: '' },
 				React.createElement(
 					'div',
-					{ className: 'info', onClick: onInfoClick },
-					React.createElement('span', null)
+					{ className: 'info' },
+					React.createElement('span', { onClick: onInfoClick })
 				),
 				React.createElement(
 					'div',
 					{ className: 'videoGameSection' },
-					React.createElement('input', { type: 'text', placeholder: 'nombre del videojuego', value: name }),
+					React.createElement('input', { type: 'text', placeholder: 'nombre del videojuego', value: name, onChange: changeNameHandler }),
 					React.createElement(
 						'ul',
 						null,
@@ -27815,7 +27918,7 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'text', placeholder: 'precio (en caso de venta)', value: pricePs })
+					React.createElement('input', { type: 'text', placeholder: 'precio (en caso de venta)', value: pricePs, onChange: changePriceHandler })
 				),
 				React.createElement(
 					'span',
@@ -27825,13 +27928,13 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'radio', id: 'new', name: 'new', checked: !used }),
+					React.createElement('input', { type: 'radio', id: 'new', name: 'new', checked: !used, onChange: changeNewHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: 'new' },
 						'Nuevo'
 					),
-					React.createElement('input', { type: 'radio', id: 'old', name: 'new', checked: used }),
+					React.createElement('input', { type: 'radio', id: 'old', name: 'new', checked: used, onChange: changeUsedHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: 'old' },
@@ -27920,7 +28023,7 @@ const GameItem = React.createClass({
 						{ className: 'commentBody' },
 						this.props.comment
 					),
-					React.createElement('textarea', { className: 'textArea', type: 'text', value: this.props.comment })
+					React.createElement('textarea', { className: 'textArea', type: 'text', value: comment, onChange: changeCommentHandler })
 				)
 			)
 		);

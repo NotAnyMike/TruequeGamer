@@ -19,3 +19,5 @@ Miércoles: null
 Jueves: Arraging props of components, añadiendo botton para chat en profile.html, añadiendo onlySell and onlyExchange styles to the state Buttons, añadiendo title y textarea to comment, añadiendo psNew and xboxNew styles, añadiendo alreadyCreated style, anadiendo isOwenerOfProfile to react
 Viernes: Creando animaciones para fade in and out para comment container, creando styles para editar una entrada, fixing z-index problems
 Sábado: Corrigiendo gameItem
+Domingo, Lunes, Martes: nada
+Miércoles: Añadiendo dinamismo a los botones de game item

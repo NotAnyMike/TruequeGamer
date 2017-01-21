@@ -169,7 +169,7 @@ const GameItem = React.createClass({
 	},
 	
 	_changeNewHandler: function(e){
-		var newValue = !e.target.value;
+		var newValue = !e.target.checked;
 		this.setState({
 			editing: {
 				name: this.state.editing.name,
@@ -183,7 +183,7 @@ const GameItem = React.createClass({
 	},
 	
 	_changeUsedHandler: function(e){
-		var newValue = e.target.value;
+		var newValue = e.target.checked;
 		this.setState({
 			editing: {
 				name: this.state.editing.name,
@@ -301,7 +301,7 @@ const GameItem = React.createClass({
 			onPublishButtonClick = this._onPublishButtonClicked;
 			changeNameHandler = this._changeNameHandler;
 			changePriceHandler = this._changePriceHandler;
-			changeUsedHandler = this._channgeUsedHandler;
+			changeUsedHandler = this._changeUsedHandler;
 			changeNewHandler = this._changeNewHandler;
 			changeCommentHandler = this._changeCommentHandler;
 			pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
@@ -342,6 +342,8 @@ const GameItem = React.createClass({
 			priceXbox = this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice);
 
 		}
+
+		if(typeof used === 'undefined' || used === null) used = true;
 
 		toReturn = (
 			<il 
@@ -402,9 +404,9 @@ const GameItem = React.createClass({
 					<div><input type="text" placeholder="precio (en caso de venta)" value={pricePs} onChange={changePriceHandler}/></div>
 					<span>¿Nuevo o Usado?</span>
 					<div>
-						<input type="radio" id="new" name="new" checked={!used} onChange={changeNewHandler}></input>
+						<input type="radio" id="new" name="new" value={!used} checked={!used} onClick={changeNewHandler}></input>
 						<label htmlFor="new">Nuevo</label>
-						<input type="radio" id="old" name="new" checked={used} onChange={changeUsedHandler}></input>
+						<input type="radio" id="old" name="new" value={used} checked={used} onClick={changeUsedHandler}></input>
 						<label htmlFor="old">Usado</label>
 					</div>
 					<span>¿Trueque?</span>

@@ -27650,7 +27650,7 @@ const GameItem = React.createClass({
 	},
 
 	_changeNewHandler: function (e) {
-		var newValue = !e.target.value;
+		var newValue = !e.target.checked;
 		this.setState({
 			editing: {
 				name: this.state.editing.name,
@@ -27664,7 +27664,7 @@ const GameItem = React.createClass({
 	},
 
 	_changeUsedHandler: function (e) {
-		var newValue = e.target.value;
+		var newValue = e.target.checked;
 		this.setState({
 			editing: {
 				name: this.state.editing.name,
@@ -27778,7 +27778,7 @@ const GameItem = React.createClass({
 			onPublishButtonClick = this._onPublishButtonClicked;
 			changeNameHandler = this._changeNameHandler;
 			changePriceHandler = this._changePriceHandler;
-			changeUsedHandler = this._channgeUsedHandler;
+			changeUsedHandler = this._changeUsedHandler;
 			changeNewHandler = this._changeNewHandler;
 			changeCommentHandler = this._changeCommentHandler;
 			pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
@@ -27813,6 +27813,8 @@ const GameItem = React.createClass({
 			pricePs = this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice);
 			priceXbox = this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice);
 		}
+
+		if (typeof used === 'undefined' || used === null) used = true;
 
 		toReturn = React.createElement(
 			'il',
@@ -27928,13 +27930,13 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'radio', id: 'new', name: 'new', checked: !used, onChange: changeNewHandler }),
+					React.createElement('input', { type: 'radio', id: 'new', name: 'new', value: !used, checked: !used, onClick: changeNewHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: 'new' },
 						'Nuevo'
 					),
-					React.createElement('input', { type: 'radio', id: 'old', name: 'new', checked: used, onChange: changeUsedHandler }),
+					React.createElement('input', { type: 'radio', id: 'old', name: 'new', value: used, checked: used, onClick: changeUsedHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: 'old' },
@@ -28430,7 +28432,6 @@ const Profile = React.createClass({
 		var isOwnerOfProfile = false;
 		if (typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			isOwnerOfProfile = true;
-			console.log(this.state.user.id + " " + this.state.profile.profile.id);
 		}
 
 		return React.createElement(

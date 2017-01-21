@@ -27649,6 +27649,34 @@ const GameItem = React.createClass({
 		});
 	},
 
+	_changeExchangeHandler: function (e) {
+		var newValue = e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: newValue,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeNoExchangeHandler: function (e) {
+		var newValue = !e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: newValue,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
 	_changeNewHandler: function (e) {
 		var newValue = !e.target.checked;
 		this.setState({
@@ -27672,6 +27700,34 @@ const GameItem = React.createClass({
 				used: newValue,
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeConsoleXboxHandler: function (e) {
+		var newValue = !e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: newValue,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeConsolePsHandler: function (e) {
+		var newValue = e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: newValue,
 				comment: this.state.editing.comment
 			}
 		});
@@ -27709,7 +27765,11 @@ const GameItem = React.createClass({
 		var changePriceHandler = null;
 		var changeUsedHandler = null;
 		var changeNewHandler = null;
+		var changeExchangeHandler = null;
+		var changeNoExchangeHandler = null;
 		var changeCommentHandler = null;
+		var changeConsolePsHandler = null;
+		var changeConsoleXboxHandler = null;
 		var pricePs = null;
 		var priceXbox = null;
 		var toReturn = null;
@@ -27780,12 +27840,16 @@ const GameItem = React.createClass({
 			changePriceHandler = this._changePriceHandler;
 			changeUsedHandler = this._changeUsedHandler;
 			changeNewHandler = this._changeNewHandler;
+			changeConsolePsHandler = this._changeConsolePsHandler;
+			changeConsoleXboxHandler = this._changeConsoleXboxHandler;
+			changeExchangeHandler = this._changeExchangeHandler;
+			changeNoExchangeHandler = this._changeNoExchangeHandler;
 			changeCommentHandler = this._changeCommentHandler;
 			pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
 			priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
-			psChecked = this.props.console === Constants.consoles.ps ? true : false;
+			psChecked = this.state.editing.ps;
 			used = this.state.editing.used;
-			exchange = this.props.exchange;
+			exchange = this.state.editing.exchange;
 			comment = this.state.editing.comment;
 		} else {
 
@@ -27813,8 +27877,6 @@ const GameItem = React.createClass({
 			pricePs = this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice);
 			priceXbox = this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice);
 		}
-
-		if (typeof used === 'undefined' || used === null) used = true;
 
 		toReturn = React.createElement(
 			'il',
@@ -27951,13 +28013,13 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'exchange' },
-					React.createElement('input', { type: 'radio', id: 'exchange', name: 'exchange', checked: exchange }),
+					React.createElement('input', { type: 'radio', id: 'exchange', name: 'exchange', checked: exchange, onClick: changeExchangeHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: 'exchange' },
 						'Sí'
 					),
-					React.createElement('input', { type: 'radio', id: 'noExchange', name: 'exchange', checked: !exchange }),
+					React.createElement('input', { type: 'radio', id: 'noExchange', name: 'exchange', checked: !exchange, onClick: changeNoExchangeHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: 'noExchange' },
@@ -27972,9 +28034,9 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'console' },
-					React.createElement('input', { type: 'radio', id: 'ps', className: 'ps', name: 'psOrxbox', checked: psChecked }),
+					React.createElement('input', { type: 'radio', id: 'ps', className: 'ps', name: 'psOrxbox', checked: psChecked, onClick: changeConsolePsHandler }),
 					React.createElement('label', { htmlFor: 'ps' }),
-					React.createElement('input', { type: 'radio', id: 'xbox', className: 'xbox', name: 'psOrxbox', checked: !psChecked }),
+					React.createElement('input', { type: 'radio', id: 'xbox', className: 'xbox', name: 'psOrxbox', checked: !psChecked, onClick: changeConsoleXboxHandler }),
 					React.createElement('label', { htmlFor: 'xbox' })
 				),
 				React.createElement(

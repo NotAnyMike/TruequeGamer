@@ -21,3 +21,5 @@ Viernes: Creando animaciones para fade in and out para comment container, creand
 Sábado: Corrigiendo gameItem
 Domingo, Lunes, Martes: nada
 Miércoles: Añadiendo dinamismo a los botones de game item
+Jueves, Viernes: nada
+Sábado: Making gameItem a controlled component, radio buttons working

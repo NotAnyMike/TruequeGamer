@@ -43,7 +43,6 @@ const Profile = React.createClass({
 		var isOwnerOfProfile = false;
 		if(typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			isOwnerOfProfile = true;
-			console.log(this.state.user.id + " " + this.state.profile.profile.id);
 		}
 
 		return (

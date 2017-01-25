@@ -1451,7 +1451,7 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   opacity: 0.99;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
   filter: alpha(opacity=99);
-  z-index: 1;
+  z-index: 5;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;

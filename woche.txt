@@ -23,3 +23,5 @@ Domingo, Lunes, Martes: nada
 Miércoles: Añadiendo dinamismo a los botones de game item
 Jueves, Viernes: nada
 Sábado: Making gameItem a controlled component, radio buttons working
+Domingo, Lunes: Busy
+Martes: Adding create new game

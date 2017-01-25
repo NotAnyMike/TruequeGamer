@@ -32,20 +32,33 @@ const DetailsList = React.createClass({
 						
 					var gameItem;
 					if(self.props.isProfile){
-						gameItem = (
-							<GameItem 
-								isOwnerOfProfile={self.props.isOwnerOfProfile}
-								isProfile={self.props.isProfile}
-								console={element.console}
-								cover={element.cover} 
-								name={element.name} 
-								exchange={element.exchange}
-								price={element.price}
-								comment={element.comment}
-								isNew={false}
-								key={element.pk}
-							/>
-						);
+						if(typeof element.toCreate !== 'undefined' && element.toCreate === true){
+							gameItem = (
+								<GameItem 
+									isOwnerOfProfile={self.props.isOwnerOfProfile}
+									toCreate={true}
+									isProfile={self.props.isProfile}
+									isNew={false}
+									name={"lol"}
+									key={element.pk}
+								/>
+							);
+						}else{
+							gameItem = (
+								<GameItem 
+									isOwnerOfProfile={self.props.isOwnerOfProfile}
+									isProfile={self.props.isProfile}
+									console={element.console}
+									cover={element.cover} 
+									name={element.name} 
+									exchange={element.exchange}
+									price={element.price}
+									comment={element.comment}
+									isNew={false}
+									key={element.pk}
+								/>
+							);
+						}
 					}else{
 						gameItem = (
 							<GameItem 

@@ -27106,18 +27106,29 @@ const DetailsList = React.createClass({
 
 				var gameItem;
 				if (self.props.isProfile) {
-					gameItem = React.createElement(GameItem, {
-						isOwnerOfProfile: self.props.isOwnerOfProfile,
-						isProfile: self.props.isProfile,
-						console: element.console,
-						cover: element.cover,
-						name: element.name,
-						exchange: element.exchange,
-						price: element.price,
-						comment: element.comment,
-						isNew: false,
-						key: element.pk
-					});
+					if (typeof element.toCreate !== 'undefined' && element.toCreate === true) {
+						gameItem = React.createElement(GameItem, {
+							isOwnerOfProfile: self.props.isOwnerOfProfile,
+							toCreate: true,
+							isProfile: self.props.isProfile,
+							isNew: false,
+							name: "lol",
+							key: element.pk
+						});
+					} else {
+						gameItem = React.createElement(GameItem, {
+							isOwnerOfProfile: self.props.isOwnerOfProfile,
+							isProfile: self.props.isProfile,
+							console: element.console,
+							cover: element.cover,
+							name: element.name,
+							exchange: element.exchange,
+							price: element.price,
+							comment: element.comment,
+							isNew: false,
+							key: element.pk
+						});
+					}
 				} else {
 					gameItem = React.createElement(GameItem, {
 						isProfile: self.props.isProfile,
@@ -27790,67 +27801,73 @@ const GameItem = React.createClass({
 
 		if (this.props.isProfile) {
 
-			className = this.props.console + " only";
-			if (this.props.console === Constants.consoles.xbox) {
-				className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
-			}
-			if (this.props.console === Constants.consoles.ps) {
-				className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
-			}
-			if (this.props.used) {
-				if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
-			} else {
-				if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
-			}
+			if (typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true) {
 
-			if (this.state.isEditing) {
-				className += " new editing";
-			}
-			if (this.state.isShowingComment) {
-				className += " showComment";
-			}
-			if (this.props.isProfile) className += " showInfo";
-			if (this.state.isComponentHover && this.state.isEditing === false || this.state.isEditing === true && this.state.isShowingComment === true || this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false) {
-				className += " commentContainerIn";
+				className = "new";
 			} else {
-				className += " commentContainerOut";
-			}
-			if (this.props.isNew === false) {
-				className += " alreadyCreated";
-				if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
-					className += " onlyExchange";
-				} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
-					className += " onlySell";
+
+				className = this.props.console + " only";
+				if (this.props.console === Constants.consoles.xbox) {
+					className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
 				}
-			}
+				if (this.props.console === Constants.consoles.ps) {
+					className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
+				}
+				if (this.props.used) {
+					if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
+				} else {
+					if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
+				}
 
-			onClickComponent = this._goToPage;
-			cover = this.props.cover;
-			name = this.state.editing.name;
-			onMouseOverComponent = this._onMouseOverComponent;
-			onMouseOutComponent = this._onMouseOutComponent;
-			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
-			onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
-			onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
-			onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut : null;
-			onInfoClick = this._onInfoClicked;
-			onSecondButtonClick = this._onEditCommentClicked;
-			onPublishButtonClick = this._onPublishButtonClicked;
-			changeNameHandler = this._changeNameHandler;
-			changePriceHandler = this._changePriceHandler;
-			changeUsedHandler = this._changeUsedHandler;
-			changeNewHandler = this._changeNewHandler;
-			changeConsolePsHandler = this._changeConsolePsHandler;
-			changeConsoleXboxHandler = this._changeConsoleXboxHandler;
-			changeExchangeHandler = this._changeExchangeHandler;
-			changeNoExchangeHandler = this._changeNoExchangeHandler;
-			changeCommentHandler = this._changeCommentHandler;
-			pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
-			priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
-			psChecked = this.state.editing.ps;
-			used = this.state.editing.used;
-			exchange = this.state.editing.exchange;
-			comment = this.state.editing.comment;
+				if (this.state.isEditing) {
+					className += " editing";
+				}
+				if (this.state.isShowingComment) {
+					className += " showComment";
+				}
+				if (this.props.isProfile) className += " showInfo";
+				if (this.state.isComponentHover && this.state.isEditing === false || this.state.isEditing === true && this.state.isShowingComment === true || this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false) {
+					className += " commentContainerIn";
+				} else {
+					className += " commentContainerOut";
+				}
+				if (this.props.isNew === false) {
+					className += " alreadyCreated";
+					if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
+						className += " onlyExchange";
+					} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
+						className += " onlySell";
+					}
+				}
+
+				onClickComponent = this._goToPage;
+				cover = this.props.cover;
+				name = this.state.editing.name;
+				onMouseOverComponent = this._onMouseOverComponent;
+				onMouseOutComponent = this._onMouseOutComponent;
+				onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
+				onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
+				onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
+				onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut : null;
+				onInfoClick = this._onInfoClicked;
+				onSecondButtonClick = this._onEditCommentClicked;
+				onPublishButtonClick = this._onPublishButtonClicked;
+				changeNameHandler = this._changeNameHandler;
+				changePriceHandler = this._changePriceHandler;
+				changeUsedHandler = this._changeUsedHandler;
+				changeNewHandler = this._changeNewHandler;
+				changeConsolePsHandler = this._changeConsolePsHandler;
+				changeConsoleXboxHandler = this._changeConsoleXboxHandler;
+				changeExchangeHandler = this._changeExchangeHandler;
+				changeNoExchangeHandler = this._changeNoExchangeHandler;
+				changeCommentHandler = this._changeCommentHandler;
+				pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+				priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+				psChecked = this.state.editing.ps;
+				used = this.state.editing.used;
+				exchange = this.state.editing.exchange;
+				comment = this.state.editing.comment;
+			}
 		} else {
 
 			className = consoleVar + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "");
@@ -27894,11 +27911,26 @@ const GameItem = React.createClass({
 					{ className: 'info', onClick: onInfoClick },
 					React.createElement('span', null)
 				),
+				React.createElement(
+					'div',
+					{ className: 'img' },
+					React.createElement('div', null),
+					React.createElement(
+						'span',
+						null,
+						'Has click para agregar un videojuego'
+					)
+				),
 				React.createElement('img', { src: cover, alt: '' })
 			),
 			React.createElement(
 				'div',
 				{ className: 'contentContainer' },
+				React.createElement(
+					'span',
+					{ className: 'newText' },
+					'Añadir nuevo juego'
+				),
 				React.createElement(
 					'span',
 					{ className: 'name' },
@@ -28475,6 +28507,9 @@ const Profile = React.createClass({
 
 	onProfileUpdates: function () {
 		store = AppStore.getStore();
+		if (typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
+			store.profile.list.push({ toCreate: true });
+		}
 		this.setState(store);
 	},
 

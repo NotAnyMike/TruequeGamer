@@ -8,9 +8,10 @@ from chat.models import UserAuth
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("games.serializers")
 
-url = "https://graph.facebook.com/10153958248812809?fields=picture,location&access_token=EAAMFSTFTluYBAGZC6L4IaRSAORMFcrreGPArUL9t5viSYR44sjNKNbV3ZC8miPv2hMLLZB19ZAs8dBbyGxSvEUzeXE6pyPdVha2WkI7DOIoYcTJ5uuDh9oDr1hnKc5B4A2AXMYXZCzjhxyaR7stUL1FXr3zXvCqsZD"
+url = "https://graph.facebook.com/10153958248812809?fields=picture,location&access_token=EAAMFSTFTluYBACRT4t1ZALRsQZA2LsoRIJeEWFmeZBIuDPguZAXGXbpSt3zHFZCdJAFRzs4qsi2yH8jcdXq7zlc9PNkMfMTKyBv9po84wfspRE8uRQM3ky2fodYZA17cvF4mwXt3eKeqcwgWkRrNZBH7UIDYFSSNEzZCSQY0U85z8gG8D4ZBsl993"
 response = urllib.urlopen(url)
 data = json.load(response)
+print data
 
 class UserSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()

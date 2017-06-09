@@ -6,3 +6,7 @@
 * `gulp w-react`
 * `w-react-django`
 * `react-prod`
+
+## How to move react to django?
+1. Run `gulp react-prod-django`
+2. Run `gulp css-prod` 

@@ -26382,7 +26382,7 @@ var Chat = React.createClass({
 
 module.exports = Chat;
 
-},{"../stores/chatStore.js":275,"../utils/actions.js":276,"./chatBubble.js":242,"./chatContainer.js":243,"react":239}],242:[function(require,module,exports){
+},{"../stores/chatStore.js":280,"../utils/actions.js":281,"./chatBubble.js":242,"./chatContainer.js":243,"react":239}],242:[function(require,module,exports){
 var React = require('react');
 
 var ChatBubble = React.createClass({
@@ -26479,7 +26479,7 @@ var ChatContainer = React.createClass({
 
 module.exports = ChatContainer;
 
-},{"./chatList.js":244,"./singleChat.js":267,"react":239}],244:[function(require,module,exports){
+},{"./chatList.js":244,"./singleChat.js":272,"react":239}],244:[function(require,module,exports){
 var React = require('react'),
     ItemChat = require('./itemChat.js');
 
@@ -26573,7 +26573,7 @@ var ChatList = React.createClass({
 
 module.exports = ChatList;
 
-},{"./itemChat.js":258,"react":239}],245:[function(require,module,exports){
+},{"./itemChat.js":262,"react":239}],245:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js'),
     Actions = require('../utils/actions.js');
@@ -26610,7 +26610,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":276,"../utils/constants.js":277,"react":239}],246:[function(require,module,exports){
+},{"../utils/actions.js":281,"../utils/constants.js":282,"react":239}],246:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26644,7 +26644,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":277,"./consoleCheckbox.js":245,"react":239}],247:[function(require,module,exports){
+},{"../utils/constants.js":282,"./consoleCheckbox.js":245,"react":239}],247:[function(require,module,exports){
 var React = require('react'),
     Link = require('react-router').Link;
 
@@ -26665,6 +26665,425 @@ var ContactUs = React.createClass({
 module.exports = ContactUs;
 
 },{"react":239,"react-router":37}],248:[function(require,module,exports){
+const React = require('react'),
+      AppStore = require('../stores/appStore.js'),
+      Constants = require('../utils/constants.js'),
+      Actions = require('../utils/actions.js'),
+      Chat = require('./chat.js'),
+      Header = require('./header.js'),
+      Footer = require('./footer.js'),
+      DetailsMainContainer = require('./detailsMainContainer.js'),
+      browserHistory = require('react-router').browserHistory;
+
+const Details = React.createClass({
+	displayName: 'Details',
+
+
+	propTypes: {},
+
+	goToProfile: function () {
+		Actions.goToProfile();
+	},
+
+	getInitialState: function () {
+		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
+		var store = AppStore.getStore();
+		return store;
+	},
+
+	componentDidMount: function () {
+		AppStore.addOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
+		AppStore.addOnGoToProfileListener(this.loadProfilePage);
+	},
+
+	componentWillUnmount: function () {
+		AppStore.removeOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
+		AppStore.removeOnGoToProfileListener(this.loadProfilePage);
+	},
+
+	onGamesAvailableUpdated: function () {
+		var store = AppStore.getStore();
+		this.setState(store);
+	},
+
+	loadProfilePage: function () {
+		var route = "/profile/test";
+		browserHistory.push(route);
+	},
+
+	render: function () {
+
+		var headerVersion;
+		if (this.props.route.console === Constants.consoles.both) {
+			headerVersion = Constants.header.versions.normal;
+		} else {
+			headerVersion = Constants.header.versions.negative;
+		}
+
+		var footerVersion;
+		if (this.props.route.console === Constants.consoles.both) {
+			footerVersion = Constants.footer.versions.whiteBackground;
+		} else {
+			footerVersion = Constants.footer.versions.white;
+		}
+
+		var chat;
+		if (this.state.user.logged) {
+			chat = React.createElement(Chat, { user: this.state.user });
+		}
+
+		var isOwnerOfProfile = false;
+		if (typeof this.state.user.id !== 'undefined' && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
+			isOwnerOfProfile = true;
+		}
+
+		return React.createElement(
+			'div',
+			{ id: 'semi_body', className: this.props.route.console },
+			React.createElement(Header, { version: headerVersion, user: this.state.user }),
+			React.createElement(DetailsMainContainer, {
+				isProfile: false,
+				isOwnerOfProfile: isOwnerOfProfile,
+				game: this.state.gameDetails.game,
+				console: this.props.route.console,
+				list: this.state.gameDetails.list,
+				goToProfileFn: this.goToProfile
+			}),
+			React.createElement(Footer, { version: footerVersion }),
+			chat
+		);
+	}
+
+});
+
+module.exports = Details;
+
+},{"../stores/appStore.js":279,"../utils/actions.js":281,"../utils/constants.js":282,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239,"react-router":37}],249:[function(require,module,exports){
+const React = require('react'),
+      Constants = require('../utils/constants.js'),
+      functions = require('../utils/functions.js');
+
+const DetailsGameLabel = React.createClass({
+	displayName: 'DetailsGameLabel',
+
+
+	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired,
+		isOwnerOfProfile: React.PropTypes.bool,
+		name: React.PropTypes.string.isRequired,
+		priceMin: React.PropTypes.number,
+		hasHigherPrices: React.PropTypes.bool,
+		cover: React.PropTypes.string,
+		availableOnPs: React.PropTypes.bool,
+		availableOnXbox: React.PropTypes.bool,
+		numberOfGames: React.PropTypes.number,
+		city: React.PropTypes.string
+	},
+
+	render: function () {
+		var minPriceVar = "-";
+		if (typeof this.props.hasHigherPrices !== 'undefined' && typeof this.props.priceMin !== 'undefined') minPriceVar = "Desde " + functions.addDecimalPoints(this.props.priceMin);
+
+		var nameVar = 'cargando...';
+		if (typeof this.props.name !== 'undefined') nameVar = this.props.name;
+
+		var coverVar = '/img/games/cover.png';
+		if (typeof this.props.cover !== 'undefined') coverVar = this.props.cover;
+
+		var availableOn;
+		if (this.props.console !== Constants.consoles.both && (typeof this.props.availableOnPs !== 'undefined' || typeof this.props.availableOnXbox !== 'undefined')) {
+			if (this.props.console === Constants.consoles.xbox && typeof this.props.availableOnPs !== 'undefined' && this.props.availableOnPs === true) {
+				availableOn = "También disponible en play station 4";
+			} else if (this.props.console === Constants.consoles.ps && typeof this.props.availableOnXbox !== 'undefined' && this.props.availableOnXbox === true) {
+				availableOn = "También disponible en xbox one";
+			}
+		}
+
+		var classNameVar = "game";
+		if (this.props.isProfile) classNameVar = "profile";
+
+		var own = "";
+		if (this.props.isProfile && this.props.isOwnerOfProfile) own = " own";
+
+		var container;
+		if (this.props.isProfile) {
+			container = React.createElement(
+				'div',
+				{ className: classNameVar + "DetailsContainer" + own },
+				React.createElement('div', { className: 'arrow-decorator' }),
+				React.createElement(
+					'span',
+					null,
+					nameVar
+				),
+				React.createElement(
+					'span',
+					null,
+					this.props.city
+				),
+				React.createElement(
+					'span',
+					null,
+					this.props.numberOfGames + " videojuegos"
+				),
+				React.createElement(
+					'button',
+					{ className: 'openChatProfileButton' },
+					'abrir chat'
+				)
+			);
+		} else {
+			container = React.createElement(
+				'div',
+				{ className: classNameVar + "DetailsContainer" },
+				React.createElement('div', { className: 'arrow-decorator' }),
+				React.createElement(
+					'span',
+					null,
+					nameVar
+				),
+				React.createElement(
+					'span',
+					null,
+					minPriceVar
+				),
+				React.createElement(
+					'span',
+					null,
+					availableOn
+				)
+			);
+		}
+
+		classNameVar += "Details";
+
+		return React.createElement(
+			'div',
+			{ className: classNameVar },
+			React.createElement('hr', null),
+			React.createElement(
+				'figure',
+				null,
+				React.createElement('img', { src: coverVar, alt: '' })
+			),
+			container
+		);
+	}
+
+});
+
+module.exports = DetailsGameLabel;
+
+},{"../utils/constants.js":282,"../utils/functions.js":283,"react":239}],250:[function(require,module,exports){
+const React = require('react'),
+      GameItem = require('./gameItem.js'),
+      Constants = require('../utils/constants.js');
+
+const DetailsList = React.createClass({
+	displayName: 'DetailsList',
+
+
+	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired,
+		isOwnerOfProfile: React.PropTypes.bool,
+		list: React.PropTypes.array,
+		console: React.PropTypes.string.isRequired,
+		goToProfileFn: React.PropTypes.func
+	},
+
+	render: function () {
+
+		var consoleVar = this.props.console;
+		var self = this;
+
+		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "");
+
+		return React.createElement(
+			'ul',
+			{ className: className },
+			this.props.list.map(function (element) {
+
+				var consoleProp = Constants.consoles.ps;
+				if (consoleVar !== Constants.consoles.both) {
+					consoleProp = consoleVar;
+				} else if (element.xboxPrice && (!element.psPrice || element.xboxPrice < element.psPrice)) {
+					consoleProp = Constants.consoles.xbox;
+				}
+
+				var gameItem;
+				if (self.props.isProfile) {
+					if (typeof element.toCreate !== 'undefined' && element.toCreate === true) {
+						gameItem = React.createElement(GameItem, {
+							isOwnerOfProfile: self.props.isOwnerOfProfile,
+							toCreate: true,
+							isProfile: self.props.isProfile,
+							isNew: false,
+							name: "lol",
+							key: element.pk
+						});
+					} else {
+						gameItem = React.createElement(GameItem, {
+							isOwnerOfProfile: self.props.isOwnerOfProfile,
+							isProfile: self.props.isProfile,
+							console: element.console,
+							cover: element.cover,
+							name: element.name,
+							exchange: element.exchange,
+							price: element.price,
+							comment: element.comment,
+							isNew: false,
+							key: element.pk
+						});
+					}
+				} else {
+					gameItem = React.createElement(GameItem, {
+						isProfile: self.props.isProfile,
+						console: consoleProp,
+						psNoExchange: !element.psExchange,
+						xboxNoExchange: !element.xboxExchange,
+						notOnly: consoleVar === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs,
+						only: consoleVar === Constants.consoles.ps ? element.psOnly : element.xboxOnly,
+						psPrice: element.psPrice,
+						psOnlyPrice: element.psOnlyPrice,
+						xboxPrice: element.xboxPrice,
+						xboxOnlyPrice: element.xboxOnlyPrice,
+						psNoSell: element.psPrice === null ? true : false,
+						xboxNoSell: element.xboxPrice === null ? true : false,
+						cover: element.cover,
+						name: element.name,
+						both: consoleVar === Constants.consoles.both ? true : false,
+						psUsed: element.psUsed,
+						xboxUsed: element.xboxUsed,
+						comment: element.comment,
+						goToProfileFn: self.props.goToProfileFn,
+						key: element.pk
+					});
+				}
+				return gameItem;
+			})
+		);
+	}
+
+});
+
+module.exports = DetailsList;
+
+},{"../utils/constants.js":282,"./gameItem.js":256,"react":239}],251:[function(require,module,exports){
+const React = require('react'),
+      DetailsList = require('./detailsList.js'),
+      DetailsGameLabel = require('./detailsGameLabel.js'),
+      Constants = require('../utils/constants.js');
+
+const DetailsMainContainer = React.createClass({
+	displayName: 'DetailsMainContainer',
+
+
+	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired,
+		isOwnerOfProfile: React.PropTypes.bool,
+		game: React.PropTypes.object,
+		console: React.PropTypes.string.isRequired,
+		list: React.PropTypes.array.isRequired,
+		goToProfileFn: React.PropTypes.func,
+		name: React.PropTypes.string,
+		city: React.PropTypes.string,
+		numberOfGames: React.PropTypes.number
+	},
+
+	render: function () {
+		var detailsGameLabelVar;
+		if (this.props.isProfile) {
+			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
+				isProfile: this.props.isProfile,
+				isOwnerOfProfile: this.props.isOwnerOfProfile,
+				console: Constants.consoles.both,
+				name: this.props.name,
+				cover: "/img/details_profile.png",
+				city: this.props.city,
+				numberOfGames: this.props.numberOfGames
+			});
+		} else {
+			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
+				isProfile: this.props.isProfile,
+				isOwnerOfProfile: this.props.isOwnerOfProfile,
+				console: this.props.console,
+				name: this.props.game.name,
+				priceMin: this.props.game.min_price,
+				cover: this.props.game.cover,
+				hasHigherPrices: this.props.game.higher_prices,
+				availableOnPs: this.props.game.availableOnPs,
+				availableOnXbox: this.props.game.availableOnXbox
+			});
+		}
+
+		var classNameVar = "genericMainContainer detailsMainContainer " + this.props.console;
+		if (this.props.isProfile) classNameVar += " profile";
+
+		var titleVar;
+		if (this.props.isProfile) {
+			if (this.props.isOwnerOfProfile) {
+				titleVar = React.createElement(
+					'div',
+					{ className: 'title' },
+					React.createElement(
+						'span',
+						null,
+						'Bienvenido a tu perfil'
+					)
+				);
+			} else {
+				titleVar = React.createElement(
+					'div',
+					{ className: 'title' },
+					React.createElement(
+						'span',
+						null,
+						'Bienvenido al perfil de Mike'
+					)
+				);
+			}
+		} else {
+			titleVar = React.createElement(
+				'div',
+				{ className: 'title' },
+				React.createElement(
+					'span',
+					null,
+					'Estás en la sección de ',
+					React.createElement(
+						'span',
+						null,
+						'The Witcher'
+					),
+					' para xbox one'
+				)
+			);
+		}
+
+		return React.createElement(
+			'section',
+			{ className: classNameVar },
+			React.createElement(
+				'div',
+				{ className: 'container' },
+				titleVar,
+				detailsGameLabelVar,
+				React.createElement(DetailsList, {
+					console: this.props.console,
+					isProfile: this.props.isProfile,
+					isOwnerOfProfile: this.props.isOwnerOfProfile,
+					list: this.props.list,
+					goToProfileFn: this.props.goToProfileFn
+				})
+			)
+		);
+	}
+
+});
+
+module.exports = DetailsMainContainer;
+
+},{"../utils/constants.js":282,"./detailsGameLabel.js":249,"./detailsList.js":250,"react":239}],252:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26716,7 +27135,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":276,"../utils/constants.js":277,"react":239}],249:[function(require,module,exports){
+},{"../utils/actions.js":281,"../utils/constants.js":282,"react":239}],253:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26768,7 +27187,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":277,"./extraFilterButton":248,"react":239}],250:[function(require,module,exports){
+},{"../utils/constants.js":282,"./extraFilterButton":252,"react":239}],254:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26794,7 +27213,7 @@ module.exports = React.createClass({
 
 });
 
-},{"./consoleContainer.js":246,"./extraFilterContainer.js":249,"react":239}],251:[function(require,module,exports){
+},{"./consoleContainer.js":246,"./extraFilterContainer.js":253,"react":239}],255:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26876,7 +27295,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":277,"./socialLink.js":270,"react":239}],252:[function(require,module,exports){
+},{"../utils/constants.js":282,"./socialLink.js":275,"react":239}],256:[function(require,module,exports){
 const React = require('react'),
       AvailableConsoles = require('./availableConsoles.js'),
       Constants = require('../utils/constants.js'),
@@ -26887,9 +27306,10 @@ const GameItem = React.createClass({
 
 
 	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired, //in order to know if we are in the profile page
 		name: React.PropTypes.string.isRequired,
 		cover: React.PropTypes.string.isRequired,
-		both: React.PropTypes.bool.isRequired,
+		both: React.PropTypes.bool,
 		psNoSell: React.PropTypes.bool,
 		xboxNoSell: React.PropTypes.bool,
 		psNoExchange: React.PropTypes.bool,
@@ -26899,12 +27319,55 @@ const GameItem = React.createClass({
 		console: React.PropTypes.oneOf([Constants.consoles.xbox, Constants.consoles.ps, Constants.consoles.both]),
 		psPrice: React.PropTypes.number,
 		psOnlyPrice: React.PropTypes.bool,
-		xboxPrice: React.PropTypes.number,
-		xboxOnlyPrice: React.PropTypes.bool
+		xboxPrice: React.PropTypes.number, xboxOnlyPrice: React.PropTypes.bool,
+		goToDetailsFn: React.PropTypes.func, //this is not in order to know if we have to go to details, if goToProfileFn is null then we know
+		goToProfileFn: React.PropTypes.func, //in order to know if we have to go to profile (if not null or undefined)
+
+		/**** this values are used in details.html *****/
+		psUsed: React.PropTypes.bool,
+		xboxUsed: React.PropTypes.bool,
+		psNew: React.PropTypes.bool, //in order to know if all of the grouped games are new
+		psXbox: React.PropTypes.bool,
+
+		/**** this extra values is to show the gameItem in the profile page ****/
+		//Console
+		//cover
+		//name
+		isOwnerOfProfile: React.PropTypes.bool,
+		exchange: React.PropTypes.bool,
+		used: React.PropTypes.bool,
+		price: React.PropTypes.number,
+		comment: React.PropTypes.string,
+		isNew: React.PropTypes.bool },
+
+	componentDidMount: function () {
+		this.setState({
+			editing: {
+				name: this.props.name,
+				price: this.props.price,
+				exchange: this.props.exchange,
+				used: this.props.used,
+				comment: this.props.comment,
+				ps: this.props.console === null ? null : this.props.console === Constants.consoles.ps ? true : false
+			}
+		});
 	},
 
 	getInitialState: function () {
-		return { isHover: false };
+		return {
+			isHover: false,
+			isComponentHover: false,
+			isEditing: false,
+			isShowingComment: false,
+			editing: {
+				name: null,
+				price: null,
+				used: null,
+				ps: null,
+				exchange: null,
+				comment: null
+			}
+		};
 	},
 
 	getDefaultProps: function () {
@@ -26915,7 +27378,10 @@ const GameItem = React.createClass({
 			xboxNoExchange: false,
 			only: false,
 			notOnly: false,
-			console: null
+			console: null,
+			psUsed: false,
+			xboxUsed: false,
+			comment: null
 		};
 	},
 
@@ -26927,7 +27393,209 @@ const GameItem = React.createClass({
 		this.setState({ isHover: false });
 	},
 
+	_onMouseOutComponent: function () {
+		if (this.props.isOwnerOfProfile === true) this.setState({ isComponentHover: false });
+	},
+
+	_onMouseOverComponent: function () {
+		if (this.props.isOwnerOfProfile === true) this.setState({ isComponentHover: true });
+	},
+
+	_onInfoClicked: function () {
+		//if own show editing
+		if (typeof this.props.isOwnerOfProfile !== 'undefined' && this.props.isOwnerOfProfile) {
+			if (this.state.isShowingComment) {
+				this.setState({ isEditing: this.state.isEditing, isShowingComment: false });
+			} else {
+				var newValue = !this.state.isEditing;
+				this.setState({
+					isEditing: newValue,
+					isShowingComment: false
+				});
+			}
+		} else {
+			//else show comment
+			this.setState({ isShowingComment: !this.state.isShowingComment });
+		}
+	},
+
+	_onEditCommentClicked: function () {
+		this.setState({ isShowingComment: true });
+	},
+
+	_onPublishButtonClicked: function () {
+		//if comment open save it and close
+		if (this.state.isShowingComment && this.state.isEditing) {
+			this.setState({ isShowingComment: false, isEditing: true });
+		} else {
+			//else publish
+			this.setState({ isEditing: false });
+			console.log("publishing game");
+		}
+	},
+
+	_goToPage: function () {
+		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn();
+	},
+
+	_changeCommentHandler: function (e) {
+		var newValue = e.target.value;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: newValue
+			}
+		});
+	},
+
+	_changeNameHandler: function (e) {
+		var newValue = e.target.value;
+		this.setState({
+			editing: {
+				name: newValue,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeExchangeHandler: function (e) {
+		var newValue = e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: newValue,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeNoExchangeHandler: function (e) {
+		var newValue = !e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: newValue,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeNewHandler: function (e) {
+		var newValue = !e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: newValue,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeUsedHandler: function (e) {
+		var newValue = e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: newValue,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeConsoleXboxHandler: function (e) {
+		var newValue = !e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: newValue,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changeConsolePsHandler: function (e) {
+		var newValue = e.target.checked;
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: newValue,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
+	_changePriceHandler: function (e) {
+		var newValue = e.target.value.replace(/[^0-9]/g, '');
+		this.setState({
+			editing: {
+				name: this.state.editing.name,
+				price: newValue,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment
+			}
+		});
+	},
+
 	render: function () {
+
+		var onClickComponent = null;
+		var cover = null;
+		var name = null;
+		var onMouseOverComponent = null;
+		var onMouseOutComponent = null;
+		var onMouseOver1 = null;
+		var onMouseOut1 = null;
+		var onMouseOver2 = null;
+		var onMouseOut2 = null;
+		var onInfoClick = null;
+		var onPublishButtonClick = null;
+		var onSecondButtonClick = null;
+		var changeNameHandler = null;
+		var changePriceHandler = null;
+		var changeUsedHandler = null;
+		var changeNewHandler = null;
+		var changeExchangeHandler = null;
+		var changeNoExchangeHandler = null;
+		var changeCommentHandler = null;
+		var changeConsolePsHandler = null;
+		var changeConsoleXboxHandler = null;
+		var pricePs = null;
+		var priceXbox = null;
+		var toReturn = null;
+		var className = null;
+		var psChecked = false;
+		var used = false;
+		var exchange = false;
+		var comment = null;
+
 		var consoleVar = this.props.console;
 		if (this.props.both && this.state.isHover && consoleVar !== null) {
 			if (consoleVar === Constants.consoles.xbox) {
@@ -26937,35 +27605,149 @@ const GameItem = React.createClass({
 			}
 		}
 
-		var className = consoleVar + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "");
-		if (this.props.both || this.props.console === Constants.consoles.xbox) {
-			className += (this.props.xboxNoExchange ? " xboxNoExchange" : "") + (this.props.xboxNoSell ? " xboxNoSell" : "");
-		}
-		if (this.props.both || this.props.console === Constants.consoles.ps) {
-			className += (this.props.psNoExchange ? " psNoExchange" : "") + (this.props.psNoSell ? " psNoSell" : "");
+		if (this.props.isProfile) {
+
+			if (typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true) {
+
+				className = "new";
+			} else {
+
+				className = this.props.console + " only";
+				if (this.props.console === Constants.consoles.xbox) {
+					className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
+				}
+				if (this.props.console === Constants.consoles.ps) {
+					className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
+				}
+				if (this.props.used) {
+					if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
+				} else {
+					if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
+				}
+
+				if (this.state.isEditing) {
+					className += " editing";
+				}
+				if (this.state.isShowingComment) {
+					className += " showComment";
+				}
+				if (this.props.isProfile) className += " showInfo";
+				if (this.state.isComponentHover && this.state.isEditing === false || this.state.isEditing === true && this.state.isShowingComment === true || this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false) {
+					className += " commentContainerIn";
+				} else {
+					className += " commentContainerOut";
+				}
+				if (this.props.isNew === false) {
+					className += " alreadyCreated";
+					if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
+						className += " onlyExchange";
+					} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
+						className += " onlySell";
+					}
+				}
+
+				onClickComponent = this._goToPage;
+				cover = this.props.cover;
+				name = this.state.editing.name;
+				onMouseOverComponent = this._onMouseOverComponent;
+				onMouseOutComponent = this._onMouseOutComponent;
+				onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
+				onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
+				onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
+				onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut : null;
+				onInfoClick = this._onInfoClicked;
+				onSecondButtonClick = this._onEditCommentClicked;
+				onPublishButtonClick = this._onPublishButtonClicked;
+				changeNameHandler = this._changeNameHandler;
+				changePriceHandler = this._changePriceHandler;
+				changeUsedHandler = this._changeUsedHandler;
+				changeNewHandler = this._changeNewHandler;
+				changeConsolePsHandler = this._changeConsolePsHandler;
+				changeConsoleXboxHandler = this._changeConsoleXboxHandler;
+				changeExchangeHandler = this._changeExchangeHandler;
+				changeNoExchangeHandler = this._changeNoExchangeHandler;
+				changeCommentHandler = this._changeCommentHandler;
+				pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+				priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+				psChecked = this.state.editing.ps;
+				used = this.state.editing.used;
+				exchange = this.state.editing.exchange;
+				comment = this.state.editing.comment;
+			}
+		} else {
+
+			className = consoleVar + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "");
+			if (this.props.both || this.props.console === Constants.consoles.xbox) {
+				className += (this.props.xboxNoExchange ? " xboxNoExchange" : "") + (this.props.xboxNoSell ? " xboxNoSell" : "");
+			}
+			if (this.props.both || this.props.console === Constants.consoles.ps) {
+				className += (this.props.psNoExchange ? " psNoExchange" : "") + (this.props.psNoSell ? " psNoSell" : "");
+			}
+			if (this.props.both && this.props.console === Constants.consoles.ps && this.props.psUsed) {
+				className += " psUsed";
+			}
+			if ((this.props.both || this.props.console === Constants.consoles.xbox) && this.props.xboxUsed) {
+				className += " xboxUsed";
+			}
+
+			onClickComponent = this._goToPage;
+			cover = this.props.cover;
+			name = this.props.name;
+			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
+			onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
+			onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
+			onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut : null;
+			pricePs = this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice);
+			priceXbox = this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice);
 		}
 
-		return React.createElement(
+		toReturn = React.createElement(
 			'il',
-			{ className: className },
+			{
+				className: className,
+				onClick: onClickComponent,
+				onMouseOver: onMouseOverComponent,
+				onMouseOut: onMouseOutComponent
+			},
 			React.createElement(
 				'figure',
 				null,
-				React.createElement('img', { src: this.props.cover, alt: '' })
+				React.createElement(
+					'div',
+					{ className: 'info', onClick: onInfoClick },
+					React.createElement('span', null)
+				),
+				React.createElement(
+					'div',
+					{ className: 'img' },
+					React.createElement('div', null),
+					React.createElement(
+						'span',
+						null,
+						'Has click para agregar un videojuego'
+					)
+				),
+				React.createElement('img', { src: cover, alt: '' })
 			),
 			React.createElement(
 				'div',
 				{ className: 'contentContainer' },
 				React.createElement(
 					'span',
+					{ className: 'newText' },
+					'Añadir nuevo juego'
+				),
+				React.createElement(
+					'span',
 					{ className: 'name' },
-					this.props.name
+					name
 				),
 				React.createElement(
 					'div',
 					{ className: 'exchange' },
 					React.createElement('span', null),
-					React.createElement('span', null)
+					React.createElement('span', null),
+					React.createElement('div', { className: 'used' })
 				),
 				React.createElement(
 					'div',
@@ -26974,12 +27756,12 @@ const GameItem = React.createClass({
 						'div',
 						{ className: 'container' },
 						React.createElement('span', {
-							onMouseOver: this.props.console === Constants.consoles.xbox ? this._onMouseOver : null,
-							onMouseOut: this.props.console === Constants.consoles.xbox ? this._onMouseOut : null
+							onMouseOver: onMouseOver1,
+							onMouseOut: onMouseOut1
 						}),
 						React.createElement('span', {
-							onMouseOver: this.props.console === Constants.consoles.ps ? this._onMouseOver : null,
-							onMouseOut: this.props.console === Constants.consoles.ps ? this._onMouseOut : null
+							onMouseOver: onMouseOver2,
+							onMouseOut: onMouseOut2
 						})
 					)
 				),
@@ -26989,28 +27771,173 @@ const GameItem = React.createClass({
 					React.createElement(
 						'span',
 						null,
-						this.props.psNoSell ? "" : (this.props.psOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.psPrice)
+						pricePs
 					),
 					React.createElement(
 						'span',
 						null,
-						this.props.xboxNoSell ? "" : (this.props.xboxOnlyPrice ? "" : "desde ") + Functions.addDecimalPoints(this.props.xboxPrice)
+						priceXbox
 					)
 				),
 				React.createElement(
 					'div',
 					{ className: 'alsoAvailableOn' },
 					React.createElement('span', null)
+				),
+				React.createElement(
+					'button',
+					{ className: 'chatButton' },
+					React.createElement('span', null)
+				)
+			),
+			React.createElement(
+				'form',
+				{ action: '' },
+				React.createElement(
+					'div',
+					{ className: 'info' },
+					React.createElement('span', { onClick: onInfoClick })
+				),
+				React.createElement(
+					'div',
+					{ className: 'videoGameSection' },
+					React.createElement('input', { type: 'text', placeholder: 'nombre del videojuego', value: name, onChange: changeNameHandler }),
+					React.createElement(
+						'ul',
+						null,
+						React.createElement(
+							'il',
+							null,
+							'The Witcher'
+						),
+						React.createElement(
+							'il',
+							null,
+							'The Witcher 2'
+						)
+					)
+				),
+				React.createElement(
+					'div',
+					null,
+					React.createElement('input', { type: 'text', placeholder: 'precio (en caso de venta)', value: pricePs, onChange: changePriceHandler })
+				),
+				React.createElement(
+					'span',
+					null,
+					'¿Nuevo o Usado?'
+				),
+				React.createElement(
+					'div',
+					null,
+					React.createElement('input', { type: 'radio', id: 'new', name: 'new', value: !used, checked: !used, onClick: changeNewHandler }),
+					React.createElement(
+						'label',
+						{ htmlFor: 'new' },
+						'Nuevo'
+					),
+					React.createElement('input', { type: 'radio', id: 'old', name: 'new', value: used, checked: used, onClick: changeUsedHandler }),
+					React.createElement(
+						'label',
+						{ htmlFor: 'old' },
+						'Usado'
+					)
+				),
+				React.createElement(
+					'span',
+					null,
+					'¿Trueque?'
+				),
+				React.createElement(
+					'div',
+					{ className: 'exchange' },
+					React.createElement('input', { type: 'radio', id: 'exchange', name: 'exchange', checked: exchange, onClick: changeExchangeHandler }),
+					React.createElement(
+						'label',
+						{ htmlFor: 'exchange' },
+						'Sí'
+					),
+					React.createElement('input', { type: 'radio', id: 'noExchange', name: 'exchange', checked: !exchange, onClick: changeNoExchangeHandler }),
+					React.createElement(
+						'label',
+						{ htmlFor: 'noExchange' },
+						'No'
+					)
+				),
+				React.createElement(
+					'span',
+					null,
+					'Selecciona la consola'
+				),
+				React.createElement(
+					'div',
+					{ className: 'console' },
+					React.createElement('input', { type: 'radio', id: 'ps', className: 'ps', name: 'psOrxbox', checked: psChecked, onClick: changeConsolePsHandler }),
+					React.createElement('label', { htmlFor: 'ps' }),
+					React.createElement('input', { type: 'radio', id: 'xbox', className: 'xbox', name: 'psOrxbox', checked: !psChecked, onClick: changeConsoleXboxHandler }),
+					React.createElement('label', { htmlFor: 'xbox' })
+				),
+				React.createElement(
+					'span',
+					{ className: 'stateButtonsLabel' },
+					'Estado de la publicación'
+				),
+				React.createElement(
+					'div',
+					{ className: 'stateButtons' },
+					React.createElement(
+						'button',
+						{ type: 'button', className: 'delete' },
+						'Eliminar'
+					),
+					React.createElement(
+						'button',
+						{ type: 'button', className: 'exchanged' },
+						'Cambiado'
+					),
+					React.createElement(
+						'button',
+						{ type: 'button', className: 'sold' },
+						'Vendido'
+					)
+				),
+				React.createElement(
+					'button',
+					{ type: 'button', className: 'secondButton', onClick: onSecondButtonClick },
+					'Escribir comentario'
+				),
+				React.createElement('button', { type: 'button', className: 'publishButton', onClick: onPublishButtonClick })
+			),
+			React.createElement(
+				'div',
+				{ className: 'commentContainer' },
+				React.createElement('div', { className: 'background' }),
+				React.createElement(
+					'div',
+					{ className: 'commentTextContainer' },
+					React.createElement(
+						'span',
+						{ className: 'commentTitle' },
+						'The Witcher'
+					),
+					React.createElement(
+						'span',
+						{ className: 'commentBody' },
+						this.props.comment
+					),
+					React.createElement('textarea', { className: 'textArea', type: 'text', value: comment, onChange: changeCommentHandler })
 				)
 			)
 		);
+
+		return toReturn;
 	}
 
 });
 
 module.exports = GameItem;
 
-},{"../utils/constants.js":277,"../utils/functions.js":278,"./availableConsoles.js":240,"react":239}],253:[function(require,module,exports){
+},{"../utils/constants.js":282,"../utils/functions.js":283,"./availableConsoles.js":240,"react":239}],257:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27043,7 +27970,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants":277,"./isotypeContainer.js":257,"./profileLink.js":260,"./searchButtonHeader.js":262,"react":239}],254:[function(require,module,exports){
+},{"../utils/constants":282,"./isotypeContainer.js":261,"./profileLink.js":265,"./searchButtonHeader.js":267,"react":239}],258:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27159,7 +28086,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../stores/appStore.js":274,"../utils/actions.js":276,"../utils/constants.js":277,"../utils/functions.js":278,"./chat.js":241,"./footer.js":251,"./header.js":253,"./mainContainer.js":259,"react":239,"react-router":37}],255:[function(require,module,exports){
+},{"../stores/appStore.js":279,"../utils/actions.js":281,"../utils/constants.js":282,"../utils/functions.js":283,"./chat.js":241,"./footer.js":255,"./header.js":257,"./mainContainer.js":263,"react":239,"react-router":37}],259:[function(require,module,exports){
 var React = require('react'),
     ReactDOM = require('react-dom');
 
@@ -27203,7 +28130,7 @@ var InputChat = React.createClass({
 
 module.exports = InputChat;
 
-},{"react":239,"react-dom":7}],256:[function(require,module,exports){
+},{"react":239,"react-dom":7}],260:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -27232,7 +28159,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":277,"react":239}],257:[function(require,module,exports){
+},{"../utils/constants.js":282,"react":239}],261:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27263,7 +28190,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":277,"./isotype.js":256,"./slogan.js":269,"react":239}],258:[function(require,module,exports){
+},{"../utils/constants.js":282,"./isotype.js":260,"./slogan.js":274,"react":239}],262:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js');
 
@@ -27323,7 +28250,7 @@ var ItemChat = React.createClass({
 
 module.exports = ItemChat;
 
-},{"../utils/constants.js":277,"react":239}],259:[function(require,module,exports){
+},{"../utils/constants.js":282,"react":239}],263:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27357,7 +28284,82 @@ module.exports = React.createClass({
 
 });
 
-},{"./filterMainContainer.js":250,"./searchButton.js":261,"./searchField.js":263,"react":239}],260:[function(require,module,exports){
+},{"./filterMainContainer.js":254,"./searchButton.js":266,"./searchField.js":268,"react":239}],264:[function(require,module,exports){
+const React = require('react'),
+      AppStore = require('../stores/appStore.js'),
+      Constants = require('../utils/constants.js'),
+      Chat = require('./chat.js'),
+      Header = require('./header.js'),
+      Footer = require('./footer.js'),
+      DetailsMainContainer = require('./detailsMainContainer.js');
+
+const Profile = React.createClass({
+	displayName: 'Profile',
+
+
+	getInitialState: function () {
+		AppStore.getProfile(this.props.params.username);
+		var store = AppStore.getStore();
+		return store;
+	},
+
+	componentDidMount: function () {
+		AppStore.addOnProfileUpdatesListener(this.onProfileUpdates);
+	},
+
+	componentWillUnmount: function () {
+		AppStore.removeOnProfileUpdatesListener(this.onProfileUpdates);
+	},
+
+	onProfileUpdates: function () {
+		store = AppStore.getStore();
+		if (typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
+			store.profile.list.push({ toCreate: true });
+		}
+		this.setState(store);
+	},
+
+	render: function () {
+
+		var headerVersion = Constants.header.versions.normal;
+		var footerVersion = Constants.footer.versions.whiteBackground;
+
+		var chat;
+		if (this.state.user.logged) {
+			chat = React.createElement(Chat, { user: this.state.user });
+		}
+
+		var city = "somewhere";
+		if (typeof this.state.profile.profile.city !== 'undefined' && this.state.profile.profile !== null) city = this.state.profile.profile.city;
+
+		var isOwnerOfProfile = false;
+		if (typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
+			isOwnerOfProfile = true;
+		}
+
+		return React.createElement(
+			'div',
+			{ id: 'semi_body', className: this.props.route.console },
+			React.createElement(Header, { version: headerVersion, user: this.state.user }),
+			React.createElement(DetailsMainContainer, {
+				isProfile: true,
+				isOwnerOfProfile: isOwnerOfProfile,
+				console: Constants.consoles.both,
+				list: this.state.profile.list,
+				name: this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name,
+				city: city,
+				numberOfGames: this.state.profile.profile.numberOfGames
+			}),
+			React.createElement(Footer, { version: footerVersion }),
+			chat
+		);
+	}
+
+});
+
+module.exports = Profile;
+
+},{"../stores/appStore.js":279,"../utils/constants.js":282,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239}],265:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -27399,7 +28401,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":277,"react":239}],261:[function(require,module,exports){
+},{"../utils/constants.js":282,"react":239}],266:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27427,7 +28429,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/actions.js":276,"react":239}],262:[function(require,module,exports){
+},{"../utils/actions.js":281,"react":239}],267:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27455,7 +28457,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],263:[function(require,module,exports){
+},{"react":239}],268:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27532,14 +28534,16 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":276,"./suggestionItem.js":271,"react":239}],264:[function(require,module,exports){
+},{"../utils/actions.js":281,"./suggestionItem.js":276,"react":239}],269:[function(require,module,exports){
 const React = require('react'),
       SearchResultsMainContainer = require('./searchResultsMainContainer.js'),
       Header = require('./header.js'),
       Footer = require('./footer.js'),
       Constants = require('../utils/constants.js'),
       AppStore = require('../stores/appStore.js'),
-      Chat = require('./chat.js');
+      Actions = require('../utils/actions.js'),
+      Chat = require('./chat.js'),
+      browserHistory = require('react-router').browserHistory;
 
 const SearchResults = React.createClass({
 	displayName: 'SearchResults',
@@ -27558,15 +28562,26 @@ const SearchResults = React.createClass({
 
 	componentDidMount: function () {
 		AppStore.addOnResultsUpdatedListener(this.onResultsUpdated);
+		AppStore.addOnGoToDetailsListener(this.loadDetailsPage);
 	},
 
 	componentWillUnmount: function () {
 		AppStore.removeOnResultsUpdatedListener(this.onResultsUpdated);
+		AppStore.removeOnGoToDetailsListener(this.loadDetailsPage);
 	},
 
 	onResultsUpdated: function () {
 		var store = AppStore.getStore();
 		this.setState(store);
+	},
+
+	loadDetailsPage: function () {
+		var route = "/the witcher/xbox";
+		browserHistory.push(route);
+	},
+
+	goToDetailsFn: function () {
+		Actions.goToDetails();
 	},
 
 	render: function () {
@@ -27593,7 +28608,7 @@ const SearchResults = React.createClass({
 			'div',
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
-			React.createElement(SearchResultsMainContainer, { console: this.props.route.console, list: this.state.searchResult.results }),
+			React.createElement(SearchResultsMainContainer, { isProfile: false, console: this.props.route.console, list: this.state.searchResult.results, goToDetailsFn: this.goToDetailsFn }),
 			React.createElement(Footer, { version: footerVersion }),
 			chat
 		);
@@ -27603,7 +28618,7 @@ const SearchResults = React.createClass({
 
 module.exports = SearchResults;
 
-},{"../stores/appStore.js":274,"../utils/constants.js":277,"./chat.js":241,"./footer.js":251,"./header.js":253,"./searchResultsMainContainer.js":266,"react":239}],265:[function(require,module,exports){
+},{"../stores/appStore.js":279,"../utils/actions.js":281,"../utils/constants.js":282,"./chat.js":241,"./footer.js":255,"./header.js":257,"./searchResultsMainContainer.js":271,"react":239,"react-router":37}],270:[function(require,module,exports){
 const React = require('react'),
       GameItem = require('./gameItem.js'),
       Constants = require('../utils/constants.js');
@@ -27613,6 +28628,8 @@ const SearchResultsList = React.createClass({
 
 
 	propTypes: {
+		goToDetailsFn: React.PropTypes.func.isRequired,
+		isProfile: React.PropTypes.bool.isRequired,
 		console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired,
 		list: React.PropTypes.array.isRequired
 	},
@@ -27620,6 +28637,7 @@ const SearchResultsList = React.createClass({
 	render: function () {
 
 		var consoleVar = this.props.console;
+		var self = this;
 
 		return React.createElement(
 			'ul',
@@ -27634,6 +28652,7 @@ const SearchResultsList = React.createClass({
 				}
 
 				return React.createElement(GameItem, {
+					isProfile: self.props.isProfile,
 					console: consoleProp,
 					psNoExchange: !element.psExchange,
 					xboxNoExchange: !element.xboxExchange,
@@ -27648,6 +28667,7 @@ const SearchResultsList = React.createClass({
 					cover: element.cover,
 					name: element.name,
 					both: consoleVar === Constants.consoles.both ? true : false,
+					goToDetailsFn: self.props.goToDetailsFn,
 					key: element.pk
 				});
 			})
@@ -27658,7 +28678,7 @@ const SearchResultsList = React.createClass({
 
 module.exports = SearchResultsList;
 
-},{"../utils/constants.js":277,"./gameItem.js":252,"react":239}],266:[function(require,module,exports){
+},{"../utils/constants.js":282,"./gameItem.js":256,"react":239}],271:[function(require,module,exports){
 const React = require('react'),
       SearchResultsList = require('./searchResultsList.js'),
       Constants = require('../utils/constants.js');
@@ -27668,6 +28688,8 @@ const SearchResultsMainContainer = React.createClass({
 
 
 	propTypes: {
+		isProfile: React.PropTypes.bool.isRequired,
+		goToDetailsFn: React.PropTypes.func.isRequired,
 		console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired,
 		list: React.PropTypes.array.isRequired
 	},
@@ -27675,12 +28697,12 @@ const SearchResultsMainContainer = React.createClass({
 	render: function () {
 		return React.createElement(
 			'section',
-			{ className: "searchResultsMainContainer " + this.props.console },
+			{ className: "genericMainContainer searchResultsMainContainer " + this.props.console },
 			React.createElement(
 				'div',
 				{ className: 'container' },
 				React.createElement('div', { className: 'title' }),
-				React.createElement(SearchResultsList, { console: this.props.console, list: this.props.list })
+				React.createElement(SearchResultsList, { isProfile: this.props.isProfile, console: this.props.console, list: this.props.list, goToDetailsFn: this.props.goToDetailsFn })
 			)
 		);
 	}
@@ -27689,7 +28711,7 @@ const SearchResultsMainContainer = React.createClass({
 
 module.exports = SearchResultsMainContainer;
 
-},{"../utils/constants.js":277,"./searchResultsList.js":265,"react":239}],267:[function(require,module,exports){
+},{"../utils/constants.js":282,"./searchResultsList.js":270,"react":239}],272:[function(require,module,exports){
 var React = require('react'),
     SingleMessage = require('./singleMessage.js'),
     InputChat = require('./inputChat.js');
@@ -27768,7 +28790,7 @@ var SingleChat = React.createClass({
 
 module.exports = SingleChat;
 
-},{"./inputChat.js":255,"./singleMessage.js":268,"react":239}],268:[function(require,module,exports){
+},{"./inputChat.js":259,"./singleMessage.js":273,"react":239}],273:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js');
 
@@ -27812,7 +28834,7 @@ var SingleMessage = React.createClass({
 
 module.exports = SingleMessage;
 
-},{"../utils/constants.js":277,"react":239}],269:[function(require,module,exports){
+},{"../utils/constants.js":282,"react":239}],274:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -27858,7 +28880,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":277,"react":239}],270:[function(require,module,exports){
+},{"../utils/constants.js":282,"react":239}],275:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27877,7 +28899,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],271:[function(require,module,exports){
+},{"react":239}],276:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -27906,14 +28928,14 @@ const SuggestionItem = React.createClass({
 
 module.exports = SuggestionItem;
 
-},{"react":239}],272:[function(require,module,exports){
+},{"react":239}],277:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 
 var AppDispatcher = new Dispatcher();
 
 module.exports = AppDispatcher;
 
-},{"flux":3}],273:[function(require,module,exports){
+},{"flux":3}],278:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27927,6 +28949,8 @@ var browserHistory = require('react-router').browserHistory;
 var Index = require('./components/index.js'),
     ContactUs = require('./components/contactUs.js'),
     SearchResults = require('./components/searchResults.js'),
+    Details = require('./components/details.js'),
+    Profile = require('./components/profile.js'),
     Testing = require('./components/searchResults.js'),
     Constants = require('./utils/constants.js');
 
@@ -27940,13 +28964,17 @@ React.createElement(
 		React.createElement(Route, { path: '/search/ps-xbox/(:search)', console: Constants.consoles.both, component: SearchResults }),
 		React.createElement(Route, { path: '/search/ps/(:search)', console: Constants.consoles.ps, component: SearchResults }),
 		React.createElement(Route, { path: '/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults }),
+		React.createElement(Route, { path: '/(:gameName)/ps-xbox', console: Constants.consoles.both, component: Details }),
+		React.createElement(Route, { path: '/(:gameName)/ps', console: Constants.consoles.ps, component: Details }),
+		React.createElement(Route, { path: '/(:gameName)/xbox', console: Constants.consoles.xbox, component: Details }),
+		React.createElement(Route, { path: '/profile/(:username)', component: Profile }),
 		React.createElement(Route, { path: '/test/', component: Index }),
 		React.createElement(Route, { path: '/test/search/ps-xbox/(:search)', console: Constants.consoles.both, component: SearchResults }),
 		React.createElement(Route, { path: '/test/search/ps/(:search)', console: Constants.consoles.ps, component: SearchResults }),
 		React.createElement(Route, { path: '/test/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults })
 ), document.getElementById('mainContainer'));
 
-},{"./components/contactUs.js":247,"./components/index.js":254,"./components/searchResults.js":264,"./utils/constants.js":277,"react":239,"react-dom":7,"react-router":37}],274:[function(require,module,exports){
+},{"./components/contactUs.js":247,"./components/details.js":248,"./components/index.js":258,"./components/profile.js":264,"./components/searchResults.js":269,"./utils/constants.js":282,"react":239,"react-dom":7,"react-router":37}],279:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter,
@@ -27978,6 +29006,25 @@ var _store = {
 	},
 	searchResult: {
 		results: []
+	},
+	gameDetails: {
+		game: {
+			name: 'cargando...',
+			min_price: 0,
+			cover: 'img/cover.png',
+			higher_prices: false,
+			city: null
+		},
+		list: []
+	},
+	profile: {
+		profile: {
+			first_name: "loading",
+			last_name: "...",
+			numberOfGames: 0,
+			picture: null
+		},
+		list: []
 	}
 };
 
@@ -28120,6 +29167,30 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.userUpdated, callback);
 	},
 
+	addOnGoToProfileListener: function (callback) {
+		this.on(Constants.eventType.goToProfile, callback);
+	},
+
+	removeOnGoToProfileListener: function (callback) {
+		this.removeListener(Constants.eventType.goToProfile, callback);
+	},
+
+	goToProfilePage: function () {
+		this.emit(Constants.eventType.goToProfile);
+	},
+
+	addOnGoToDetailsListener: function (callback) {
+		this.on(Constants.eventType.goToDetails, callback);
+	},
+
+	removeOnGoToDetailsListener: function (callback) {
+		this.removeListener(Constants.eventType.goToDetails, callback);
+	},
+
+	goToDetailsPage: function () {
+		this.emit(Constants.eventType.goToDetails);
+	},
+
 	getStore: function () {
 		return _store;
 	},
@@ -28132,8 +29203,82 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		return _store.user;
 	},
 
+	onProfileUpdated: function () {
+		this.emit(Constants.eventType.profileUpdated);
+	},
+
+	getProfile: function (username) {
+		if (self.fetch) {
+			//use fetch
+
+			var url = '/api/profile/profile.json';
+			if ("production" === "production") {
+				//TODO: CHANGE URL
+				url = '/api/profile/' + username + '/';
+			}
+
+			fetch(url).then(function (response) {
+				response.json().then(function (json) {
+					//do something with json
+					_store.profile = json;
+					AppStore.onProfileUpdated();
+				});
+			});
+		} else {
+			//use xml
+		}
+	},
+
+	addOnProfileUpdatesListener: function (callback) {
+		this.on(Constants.eventType.profileUpdated, callback);
+	},
+
+	removeOnProfileUpdatesListener: function (callback) {
+		this.removeListener(Constants.eventType.profileUpdated, callback);
+	},
+
+	addOnGamesAvailableUpdateListener: function (callback) {
+		this.on(Constants.eventType.availableGamesUpdate, callback);
+	},
+
+	removeOnGamesAvailableUpdateListener: function (callback) {
+		this.removeListener(Constants.eventType.availableGamesUpdate, callback);
+	},
+
+	getGamesAvailable: function (gameConsole, game) {
+		//get results
+		if (self.fetch) {
+			//use fetch
+			var stringValue = game;
+
+			var consoles = 'ps-xbox';
+			if (gameConsole === Constants.consoles.both || gameConsole === "ps-xbox" || gameConsole === 'xbox-ps') consoles = 'ps-xbox';else if (gameConsole === 'ps') consoles = 'ps';else consoles = 'xbox';
+
+			var sell = 'both';
+			if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+
+			var newVariable = 'both';
+			if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
+
+			var url = '/api/game_details/thewitcher.json';
+			if ("production" === "production") {
+				//TODO: CHANGE URL
+				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
+			}
+
+			fetch(url).then(function (response) {
+				response.json().then(function (json) {
+					//do something with json
+					_store.gameDetails = json;
+					AppStore.emit(Constants.eventType.availableGamesUpdate);
+				});
+			});
+		} else {
+			//use xml
+		}
+	},
+
 	search: function (gameConsole, game) {
-		console.log("search for " + gameConsole + " the game with name " + game);
 		//get results
 		if (self.fetch) {
 			//use fetch
@@ -28247,6 +29392,12 @@ AppDispatcher.register(function (payload) {
 		case Constants.actionType.searchButtonClicked:
 			AppStore.searchButtonClicked();
 			break;
+		case Constants.actionType.goToDetails:
+			AppStore.goToDetailsPage();
+			break;
+		case Constants.actionType.goToProfile:
+			AppStore.goToProfilePage();
+			break;
 	};
 
 	return true;
@@ -28254,7 +29405,7 @@ AppDispatcher.register(function (payload) {
 
 module.exports = AppStore;
 
-},{"../dispatcher.js":272,"../utils/constants.js":277,"./chatStore.js":275,"events":1,"object-assign":6}],275:[function(require,module,exports){
+},{"../dispatcher.js":277,"../utils/constants.js":282,"./chatStore.js":280,"events":1,"object-assign":6}],280:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
     assign = require('object-assign'),
@@ -28520,7 +29671,7 @@ AppDispatcher.register(function (payload) {
 
 module.exports = ChatStore;
 
-},{"../dispatcher.js":272,"../utils/constants.js":277,"events":1,"object-assign":6}],276:[function(require,module,exports){
+},{"../dispatcher.js":277,"../utils/constants.js":282,"events":1,"object-assign":6}],281:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher,
     Constants = require('./constants.js');
 
@@ -28569,13 +29720,25 @@ var Actions = {
 			actionType: Constants.actionType.changeSearchChatValue,
 			value: value
 		});
+	},
+
+	goToDetails: function () {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.goToDetails
+		});
+	},
+
+	goToProfile: function () {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.goToProfile
+		});
 	}
 
 };
 
 module.exports = Actions;
 
-},{"../dispatcher.js":272,"./constants.js":277,"flux":3}],277:[function(require,module,exports){
+},{"../dispatcher.js":277,"./constants.js":282,"flux":3}],282:[function(require,module,exports){
 const consoles = {
 	xbox: 'xbox',
 	ps: 'ps',
@@ -28594,7 +29757,9 @@ const Constants = {
 		openCertainChat: 'open_certain_chat',
 		sendMessage: 'send_message',
 		chatOpen: 'chat_open',
-		changeSearchChatValue: 'change_search_chat_value'
+		changeSearchChatValue: 'change_search_chat_value',
+		goToDetails: 'go_to_details_page',
+		goToProfile: 'go_to_profile_page'
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -28604,7 +29769,12 @@ const Constants = {
 		messageAdded: 'message_added',
 		userUpdated: 'user_update',
 		resultsUpdated: 'results_updated',
-		unreadMessageCountUpdated: 'unread_message_count_updated'
+		unreadMessageCountUpdated: 'unread_message_count_updated',
+		goToDetails: 'go_to_details_page',
+		goToProfile: 'go_to_profile',
+		gamesAvailableUpdated: 'games_available_for_a_game_updated',
+		availableGamesUpadate: 'available_games_update',
+		profileUpdated: 'profile_updated'
 	},
 	filter: {
 		not_used: 'not_used',
@@ -28636,13 +29806,18 @@ const Constants = {
 			ps: '/search/ps/',
 			xbox: '/search/xbox/',
 			both: '/search/ps-xbox/'
+		},
+		details: {
+			ps: '/ps/',
+			xbox: '/xbox/',
+			both: '/ps-xbox/'
 		}
 	}
 };
 
 module.exports = Constants;
 
-},{}],278:[function(require,module,exports){
+},{}],283:[function(require,module,exports){
 'use strict';
 
 const Functions = {
@@ -28673,4 +29848,4 @@ const Functions = {
 
 module.exports = Functions;
 
-},{}]},{},[273]);
+},{}]},{},[278]);

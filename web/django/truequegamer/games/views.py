@@ -10,8 +10,6 @@ from rest_framework.response import Response
 from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer
 from games.models import Game
 
-
-# Create your views here.
 def index(req):
     template = 'games/base.html'
     if settings.DEBUG:

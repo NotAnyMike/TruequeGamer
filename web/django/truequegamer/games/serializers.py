@@ -59,6 +59,20 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')
+
+class GameDetailsSerializer(serializers.ModelSerializer):
+    higher_prices = serializers.SerializerMethodField()
+    min_price = serializers.SerializerMethodField()
+
+    def get_min_price(self, instance):
+        return 13000
+
+    def get_higher_prices(self, instance):
+        return True
+
+    class Meta:
+        model = Game
+        fields = ('pk','name','min_price','higher_prices','cover','availableOnPs','availableOnXbox')
         
 class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,6 +80,12 @@ class SuggestionSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 class DvdSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
+    psPrice = serializers.SerializerMethodField()
+    xboxPrice = serializers.SerializerMethodField()
+    psExchange = serializers.SerializerMethodField()
+
     class Meta:
         model = Dvd
-        fields = ('pk','exchange')
+        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')

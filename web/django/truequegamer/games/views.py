@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer
+from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer
 from games.models import Game, Dvd
 
 def index(req):
@@ -131,12 +131,65 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
 
             #Get games for that console and with those values
             if game != None:
-                dvds = Dvd.objects.filter(game=game)
-                dvdSerializer = DvdSerializer(dvds, many=True)
-                gameSerializer = GameSerializer(game[0], many = False)
+                game = game[0]
+
+                dvds = Dvd.objects.order_by('owner__pk').filter(game=game) #Needed in order to make the for work as expected
+                gameSerializer = GameDetailsSerializer(game, many = False)
+
+                #Create a list of 'games' with the Dvds
+                owner = None
+                gamesList = []
+                for dvd in dvds:
+                    if owner == None or owner != dvd.owner:
+                        owner = dvd.owner.pk
+                        gameFromDvds = Game()
+
+                        gameFromDvds.name = "%s %s" % (dvd.owner.first_name, dvd.owner.last_name)
+                        gameFromDvds.cover = game.cover
+                        gameFromDvds.xboxOnly = game.xboxOnly
+                        gameFromDvds.psOnly = game.psOnly 
+                        gameFromDvds.xboxOnlyPrice = True
+                        gameFromDvds.psOnlyPrice = True
+                        gameFromDvds.availableOnXbox = False
+                        gameFromDvds.availableOnPs = False
+
+                        #Adding the game created to a list
+                        gamesList.append(gameFromDvds)
+                    
+                    #Get all the values to create a valid Game object from the dvds for the same user (and the same game)
+                    if dvd.console == 'xbox':
+                        
+                        gameFromDvds.availableOnXbox = True
+                        
+                        if dvd.price > gameFromDvds.xboxPrice: 
+                            if gameFromDvds.xboxPrice != None: #This if must be before the xboxprice = dvd.price
+                                gamefromDvds.xboxonlyprice = false
+                            gameFromDvds.xboxPrice = dvd.price
+
+                        if dvd.exchange: gameFromDvd.sxboxExchange = True
+                        if dvd.new : gameFromDvds.xboxNew = True
+                        if dvd.new == False : gameFromDvds.xboxUsed = False
+                        
+                    else:
+                        
+                        gameFromDvds.availableOnPs = True
+                        
+                        if dvd.price > gameFromDvds.psPrice: 
+                            if gameFromDvds.psPrice != None: #This if must be before the psprice = dvd.price
+                                gamefromDvds.psonlyprice = false
+                            gameFromDvds.psPrice = dvd.price
+
+                        if dvd.exchange: gameFromDvds.psExchange = True
+                        if dvd.new : gameFromDvds.psNew = True
+                        if dvd.new == False : gameFromDvds.psUsed = False
+
+
+                gamesSerializer = GameSerializer(gamesList, many = True)
+
+
                 return Response({
                         'game': gameSerializer.data,
-                        'list': dvdSerializer.data,
+                        'list': gamesSerializer.data,
                     })
             else:
                 #throw error

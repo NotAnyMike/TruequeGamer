@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 import urllib, json, logging
 
-from .models import Game
+from .models import Game, Dvd
 from chat.models import UserAuth
 
 logging.basicConfig(level=logging.INFO)
@@ -64,3 +64,8 @@ class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ('name',)
+
+class DvdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dvd
+        fields = ('pk','exchange')

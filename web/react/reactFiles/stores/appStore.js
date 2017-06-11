@@ -287,12 +287,15 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			if(_store.search.not_used && !_store.search.used) newVariable = 'new';
 			else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
 
-			var url = '/api/game_details/thewitcher.json';
+			var url = "";
 			if(process.env.NODE_ENV === "production"){
 				//TODO: CHANGE URL
-				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
-				console.log(url)
+				url = '/api/game/'.concat(consoles,'/',newVariable,'/',sell,'/',stringValue,'/');
+				console.log(url);
+			}else{
+				url = '/api/game_details/thewitcher.json';
 			}
+
 			
 			fetch(url).then(function(response){
 				response.json().then(function(json){

@@ -27435,7 +27435,7 @@ const GameItem = React.createClass({
 	},
 
 	_goToPage: function () {
-		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn();
+		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
 	},
 
 	_changeCommentHandler: function (e) {
@@ -28575,13 +28575,30 @@ const SearchResults = React.createClass({
 		this.setState(store);
 	},
 
-	loadDetailsPage: function () {
-		var route = "/the witcher/xbox";
+	loadDetailsPage: function (name) {
+		var route = "";
+		//TODO: Change this hardcoded stuff
+		if ("production" === 'production') {
+			//Get console from store search
+			var consoleVar = "";
+			if (this.state.search.xbox) {
+				if (this.state.search.ps) {
+					consoleVar = "ps-xbox";
+				} else {
+					consoleVar = 'ps';
+				}
+			} else {
+				consoleVar = 'xbox';
+			}
+			route = "/".concat(name, "/", consoleVar);
+		} else {
+			route = "/until dawn/xbox";
+		}
 		browserHistory.push(route);
 	},
 
-	goToDetailsFn: function () {
-		Actions.goToDetails();
+	goToDetailsFn: function (name) {
+		Actions.goToDetails(name);
 	},
 
 	render: function () {
@@ -29187,8 +29204,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.goToDetails, callback);
 	},
 
-	goToDetailsPage: function () {
-		this.emit(Constants.eventType.goToDetails);
+	goToDetailsPage: function (name) {
+		this.emit(Constants.eventType.goToDetails, name);
 	},
 
 	getStore: function () {
@@ -29211,8 +29228,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		if (self.fetch) {
 			//use fetch
 
-			var url = '/api/profile/profile.json';
-			if ("production" === "production") {
+			var url = '/api/profile/profile.json';if ("production" === "production") {
 				//TODO: CHANGE URL
 				url = '/api/profile/' + username + '/';
 			}
@@ -29264,6 +29280,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			if ("production" === "production") {
 				//TODO: CHANGE URL
 				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
+				console.log(url);
 			}
 
 			fetch(url).then(function (response) {
@@ -29393,7 +29410,7 @@ AppDispatcher.register(function (payload) {
 			AppStore.searchButtonClicked();
 			break;
 		case Constants.actionType.goToDetails:
-			AppStore.goToDetailsPage();
+			AppStore.goToDetailsPage(payload.gameName);
 			break;
 		case Constants.actionType.goToProfile:
 			AppStore.goToProfilePage();
@@ -29722,9 +29739,10 @@ var Actions = {
 		});
 	},
 
-	goToDetails: function () {
+	goToDetails: function (gameName) {
 		AppDispatcher.dispatch({
-			actionType: Constants.actionType.goToDetails
+			actionType: Constants.actionType.goToDetails,
+			gameName: gameName
 		});
 	},
 

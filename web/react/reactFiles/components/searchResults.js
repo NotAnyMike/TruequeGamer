@@ -36,13 +36,30 @@ const SearchResults = React.createClass({
 		this.setState(store);
 	},
 
-	loadDetailsPage: function(){
-		var route = "/the witcher/xbox";
+	loadDetailsPage: function(name){
+		var route = ""
+		//TODO: Change this hardcoded stuff
+		if(process.env.NODE_ENV === 'production'){
+			//Get console from store search
+			var consoleVar = ""
+			if(this.state.search.xbox){
+				if(this.state.search.ps){
+					consoleVar = "ps-xbox";
+				}else{
+					consoleVar = 'ps';
+				}
+			}else{
+				consoleVar = 'xbox';	
+			}
+			route = "/".concat(name,"/", consoleVar)
+		}else{
+			route = "/until dawn/xbox";
+		}
 		browserHistory.push(route);
 	},
 
-	goToDetailsFn: function(){
-		Actions.goToDetails();
+	goToDetailsFn: function(name){
+		Actions.goToDetails(name);
 	},
 
 	render: function(){

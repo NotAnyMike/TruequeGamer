@@ -137,7 +137,7 @@ const GameItem = React.createClass({
 	
 	_goToPage: function(){
 		if(typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();
-		else if(typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn();
+		else if(typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
 	},
 
 	_changeCommentHandler: function(e){

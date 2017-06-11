@@ -16,8 +16,7 @@ const SearchResults = React.createClass({
 	},
 
 	getInitialState: function(){
-		AppStore.search(this.props.route.console,this.props.params.search);
-		var store = AppStore.getStore();
+		AppStore.search(this.props.route.console,this.props.params.search); var store = AppStore.getStore();
 		return store;
 	},
 
@@ -44,14 +43,14 @@ const SearchResults = React.createClass({
 			var consoleVar = ""
 			if(this.state.search.xbox){
 				if(this.state.search.ps){
-					consoleVar = "ps-xbox";
+					consoleVar = Constants.routes.details.both;
 				}else{
-					consoleVar = 'ps';
+					consoleVar = Constants.routes.details.ps;
 				}
 			}else{
-				consoleVar = 'xbox';	
+				consoleVar = Consotans.routes.details.xbox;	
 			}
-			route = "/".concat(name,"/", consoleVar)
+			route = "/".concat(name, consoleVar)
 		}else{
 			route = "/until dawn/xbox";
 		}

@@ -26901,6 +26901,7 @@ const Details = React.createClass({
 	},
 
 	loadProfilePage: function () {
+		//TODO: change this
 		var route = "/profile/test";
 		browserHistory.push(route);
 	},
@@ -27629,7 +27630,7 @@ const GameItem = React.createClass({
 	},
 
 	_goToPage: function () {
-		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn();
+		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
 	},
 
 	_changeCommentHandler: function (e) {
@@ -28729,6 +28730,7 @@ module.exports = React.createClass({
 });
 
 },{"../utils/actions.js":281,"./suggestionItem.js":276,"react":239}],269:[function(require,module,exports){
+(function (process){
 const React = require('react'),
       SearchResultsMainContainer = require('./searchResultsMainContainer.js'),
       Header = require('./header.js'),
@@ -28749,8 +28751,7 @@ const SearchResults = React.createClass({
 	},
 
 	getInitialState: function () {
-		AppStore.search(this.props.route.console, this.props.params.search);
-		var store = AppStore.getStore();
+		AppStore.search(this.props.route.console, this.props.params.search);var store = AppStore.getStore();
 		return store;
 	},
 
@@ -28769,13 +28770,30 @@ const SearchResults = React.createClass({
 		this.setState(store);
 	},
 
-	loadDetailsPage: function () {
-		var route = "/the witcher/xbox";
+	loadDetailsPage: function (name) {
+		var route = "";
+		//TODO: Change this hardcoded stuff
+		if (process.env.NODE_ENV === 'production') {
+			//Get console from store search
+			var consoleVar = "";
+			if (this.state.search.xbox) {
+				if (this.state.search.ps) {
+					consoleVar = Constants.routes.details.both;
+				} else {
+					consoleVar = Constants.routes.details.ps;
+				}
+			} else {
+				consoleVar = Constants.routes.details.xbox;
+			}
+			route = "/".concat(name, consoleVar);
+		} else {
+			route = "/until dawn/ps-xbox";
+		}
 		browserHistory.push(route);
 	},
 
-	goToDetailsFn: function () {
-		Actions.goToDetails();
+	goToDetailsFn: function (name) {
+		Actions.goToDetails(name);
 	},
 
 	render: function () {
@@ -28812,7 +28830,8 @@ const SearchResults = React.createClass({
 
 module.exports = SearchResults;
 
-},{"../stores/appStore.js":279,"../utils/actions.js":281,"../utils/constants.js":282,"./chat.js":241,"./footer.js":255,"./header.js":257,"./searchResultsMainContainer.js":271,"react":239,"react-router":37}],270:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"../stores/appStore.js":279,"../utils/actions.js":281,"../utils/constants.js":282,"./chat.js":241,"./footer.js":255,"./header.js":257,"./searchResultsMainContainer.js":271,"_process":2,"react":239,"react-router":37}],270:[function(require,module,exports){
 const React = require('react'),
       GameItem = require('./gameItem.js'),
       Constants = require('../utils/constants.js');
@@ -29382,8 +29401,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.goToDetails, callback);
 	},
 
-	goToDetailsPage: function () {
-		this.emit(Constants.eventType.goToDetails);
+	goToDetailsPage: function (name) {
+		this.emit(Constants.eventType.goToDetails, name);
 	},
 
 	getStore: function () {
@@ -29406,8 +29425,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		if (self.fetch) {
 			//use fetch
 
-			var url = '/api/profile/profile.json';
-			if (process.env.NODE_ENV === "production") {
+			var url = '/api/profile/profile.json';if (process.env.NODE_ENV === "production") {
 				//TODO: CHANGE URL
 				url = '/api/profile/' + username + '/';
 			}
@@ -29455,10 +29473,13 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			var newVariable = 'both';
 			if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
 
-			var url = '/api/game_details/thewitcher.json';
+			var url = "";
 			if (process.env.NODE_ENV === "production") {
 				//TODO: CHANGE URL
-				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
+				url = '/api/game/'.concat(consoles, '/', newVariable, '/', sell, '/', stringValue, '/');
+				console.log(url);
+			} else {
+				url = '/api/game_details/thewitcher.json';
 			}
 
 			fetch(url).then(function (response) {
@@ -29488,9 +29509,11 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			var newVariable = 'both';
 			if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
 
-			var url = '/api/games.json';
+			var url = "";
 			if (process.env.NODE_ENV === "production") {
 				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
+			} else {
+				var url = '/api/games.json';
 			}
 
 			fetch(url).then(function (response) {
@@ -29588,7 +29611,7 @@ AppDispatcher.register(function (payload) {
 			AppStore.searchButtonClicked();
 			break;
 		case Constants.actionType.goToDetails:
-			AppStore.goToDetailsPage();
+			AppStore.goToDetailsPage(payload.gameName);
 			break;
 		case Constants.actionType.goToProfile:
 			AppStore.goToProfilePage();
@@ -29918,9 +29941,10 @@ var Actions = {
 		});
 	},
 
-	goToDetails: function () {
+	goToDetails: function (gameName) {
 		AppDispatcher.dispatch({
-			actionType: Constants.actionType.goToDetails
+			actionType: Constants.actionType.goToDetails,
+			gameName: gameName
 		});
 	},
 

@@ -328,10 +328,13 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			if(_store.search.not_used && !_store.search.used) newVariable = 'new';
 			else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
 
-			var url = '/api/games.json';
+			var url = ""
 			if(process.env.NODE_ENV === "production"){
 				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
+			}else{
+				var url = '/api/games.json';
 			}
+
 
 			fetch(url).then(function(response){
 				response.json().then(function(json){

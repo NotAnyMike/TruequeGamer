@@ -4098,6 +4098,9 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList.both il.ps span:first-child {
   display: inline-block;
 }
+.detailsMainContainer .container .gameList.both il.ps span:first-child.newText {
+  display: none;
+}
 .detailsMainContainer .container .gameList.both il.ps .commentContainer .commentTextContainer .commentTitle {
   display: block;
 }

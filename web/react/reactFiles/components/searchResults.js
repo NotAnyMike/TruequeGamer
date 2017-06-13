@@ -48,11 +48,11 @@ const SearchResults = React.createClass({
 					consoleVar = Constants.routes.details.ps;
 				}
 			}else{
-				consoleVar = Consotans.routes.details.xbox;	
+				consoleVar = Constants.routes.details.xbox;	
 			}
 			route = "/".concat(name, consoleVar)
 		}else{
-			route = "/until dawn/xbox";
+			route = "/until dawn/ps-xbox";
 		}
 		browserHistory.push(route);
 	},

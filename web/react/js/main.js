@@ -27873,10 +27873,12 @@ const GameItem = React.createClass({
 
 			className = consoleVar + (this.props.only ? " only" : "") + (this.props.notOnly ? " notOnly" : "");
 			if (this.props.both || this.props.console === Constants.consoles.xbox) {
-				className += (this.props.xboxNoExchange ? " xboxNoExchange" : "") + (this.props.xboxNoSell ? " xboxNoSell" : "");
+				className += (this.props.xboxNoExchange ? " xboxNoExchange" : " xboxExchange") + ( //adding some stuff here, if ater a while it is still working then remove this comment
+				this.props.xboxNoSell ? " xboxNoSell" : "");
 			}
 			if (this.props.both || this.props.console === Constants.consoles.ps) {
-				className += (this.props.psNoExchange ? " psNoExchange" : "") + (this.props.psNoSell ? " psNoSell" : "");
+				className += (this.props.psNoExchange ? " psNoExchange" : " psExchange") + ( //adding some stuff here, if ater a while it is still working then remove this comment
+				this.props.psNoSell ? " psNoSell" : "");
 			}
 			if (this.props.both && this.props.console === Constants.consoles.ps && this.props.psUsed) {
 				className += " psUsed";
@@ -27943,6 +27945,25 @@ const GameItem = React.createClass({
 					React.createElement('span', null),
 					React.createElement('span', null),
 					React.createElement('div', { className: 'used' })
+				),
+				React.createElement(
+					'div',
+					{ className: 'threeAttributes' },
+					React.createElement(
+						'div',
+						{ className: 'exchange3' },
+						'trueque'
+					),
+					React.createElement(
+						'div',
+						{ className: 'used3' },
+						'usado'
+					),
+					React.createElement(
+						'div',
+						{ className: 'new3' },
+						'nuevo'
+					)
 				),
 				React.createElement(
 					'div',

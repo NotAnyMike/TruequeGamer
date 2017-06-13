@@ -2800,6 +2800,9 @@ ul.gameList il .contentContainer {
 ul.gameList il .contentContainer .newText {
   display: none;
 }
+ul.gameList il .contentContainer .threeAttributes {
+  display: none;
+}
 ul.gameList il .contentContainer .chatButton {
   display: none;
 }
@@ -2859,9 +2862,10 @@ ul.gameList il .contentContainer .exchange:before {
 }
 ul.gameList il .contentContainer .exchange:after {
   content: '\e901';
-  bottom: -1px;
-  font-size: 7px;
-  padding-left: 2px;
+  bottom: 10px;
+  font-size: 6px;
+  padding-left: 35px;
+  position: absolute;
 }
 ul.gameList il .contentContainer .exchange span {
   position: relative;
@@ -3804,7 +3808,90 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList il .contentContainer .name {
   margin-top: 10px;
 }
+.detailsMainContainer .container .gameList il .contentContainer .threeAttributes {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -o-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  position: relative;
+  padding: 0 12px;
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -o-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-box-ordinal-group: 3;
+  -moz-box-ordinal-group: 3;
+  -o-box-ordinal-group: 3;
+  -ms-flex-order: 3;
+  -webkit-order: 3;
+  order: 3;
+}
+.detailsMainContainer .container .gameList il .contentContainer .threeAttributes div {
+  right: auto;
+  left: auto;
+  bottom: auto;
+  top: auto;
+  display: inline-block;
+  position: relative;
+  margin: 0px;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+  -webkit-transition: opacity 300ms;
+  -moz-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  -ms-transition: opacity 300ms;
+  transition: opacity 300ms;
+  color: #00605b;
+  font-size: 8pt;
+  text-transform: uppercase;
+  font-family: 'Cabin', sans-serif;
+  margin: 6px 0;
+}
+.detailsMainContainer .container .gameList il .contentContainer .threeAttributes div:after,
+.detailsMainContainer .container .gameList il .contentContainer .threeAttributes div:before {
+  font-family: 'TruequeGamer';
+  color: #009992;
+  position: absolute;
+  bottom: 3px;
+  left: -4px;
+  font-size: 6pt;
+  -webkit-transition: opacity 300ms;
+  -moz-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  -ms-transition: opacity 300ms;
+  transition: opacity 300ms;
+}
+.detailsMainContainer .container .gameList il .contentContainer .threeAttributes div:after {
+  content: '\e909';
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.detailsMainContainer .container .gameList il .contentContainer .threeAttributes div:before {
+  content: '\e900';
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+  font-size: 3pt;
+  bottom: 6px;
+  left: -7px;
+}
+.detailsMainContainer .container .gameList il .contentContainer .threeAttributes div.exchange3:before {
+  display: none;
+}
 .detailsMainContainer .container .gameList il .contentContainer .exchange {
+  display: none;
   margin-bottom: 10px;
   margin-top: 3px;
   position: relative;
@@ -3852,11 +3939,11 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -ms-flex-order: 4;
   -webkit-order: 4;
   order: 4;
-  -webkit-transition: background-color 300ms;
-  -moz-transition: background-color 300ms;
-  -o-transition: background-color 300ms;
-  -ms-transition: background-color 300ms;
-  transition: background-color 300ms;
+  -webkit-transition: background-color, color 300ms;
+  -moz-transition: background-color, color 300ms;
+  -o-transition: background-color, color 300ms;
+  -ms-transition: background-color, color 300ms;
+  transition: background-color, color 300ms;
 }
 .detailsMainContainer .container .gameList il .contentContainer .chatButton span {
   display: inherit;
@@ -3882,6 +3969,19 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList il:hover .contentContainer .exchange .used:after {
   color: #fff;
 }
+.detailsMainContainer .container .gameList il:hover .contentContainer .threeAttributes div {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList il:hover .contentContainer .threeAttributes div:after,
+.detailsMainContainer .container .gameList il:hover .contentContainer .threeAttributes div:before {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList il:hover.ps.psExchange.psUsed .contentContainer .threeAttributes .used3:before {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList il:hover.xbox.xboxExchange.xboxUsed .contentContainer .threeAttributes .used3:before {
+  color: #fff;
+}
 .detailsMainContainer .container .gameList il.only .contentContainer .availableConsoles .container span {
   width: 28px;
 }
@@ -3905,27 +4005,99 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
-.detailsMainContainer .container .gameList il.xbox.xboxUsed .contentContainer .used:after {
+.detailsMainContainer .container .gameList il.xbox.xboxExchange .contentContainer .threeAttributes .exchange3 {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  font-weight: bold;
+  color: #e6334c;
+}
+.detailsMainContainer .container .gameList il.xbox.xboxExchange .contentContainer .threeAttributes .exchange3:before {
+  color: #009992;
+}
+.detailsMainContainer .container .gameList il.xbox.xboxExchange .contentContainer .threeAttributes .exchange3:after {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.detailsMainContainer .container .gameList il.xbox.xboxUsed .contentContainer .threeAttributes .used3 {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  font-weight: bold;
+  color: #e6334c;
+}
+.detailsMainContainer .container .gameList il.xbox.xboxUsed .contentContainer .threeAttributes .used3:before {
+  color: #98ceb7;
+}
+.detailsMainContainer .container .gameList il.xbox.xboxUsed .contentContainer .threeAttributes .used3:after {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.detailsMainContainer .container .gameList il.xbox.xboxNew .contentContainer .threeAttributes .new3 {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  font-weight: bold;
+}
+.detailsMainContainer .container .gameList il.xbox.xboxNew .contentContainer .threeAttributes .new3:after {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.detailsMainContainer .container .gameList il.xbox.xboxUsed.xboxNew .contentContainer .threeAttributes .new3:before {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
-.detailsMainContainer .container .gameList il.xbox.xboxNew .contentContainer .used:after {
-  opacity: 1;
-  -ms-filter: none;
-  filter: none;
-  content: 'nuevo';
-}
-.detailsMainContainer .container .gameList il.ps.psUsed .contentContainer .used:after {
+.detailsMainContainer .container .gameList il.xbox.xboxExchange.xboxUsed .contentContainer .threeAttributes .used3:before {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
-.detailsMainContainer .container .gameList il.ps.psNew .contentContainer .used:after {
+.detailsMainContainer .container .gameList il.ps.psExchange .contentContainer .threeAttributes .exchange3 {
   opacity: 1;
   -ms-filter: none;
   filter: none;
-  content: 'nuevo';
+  font-weight: bold;
+}
+.detailsMainContainer .container .gameList il.ps.psExchange .contentContainer .threeAttributes .exchange3:after {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.detailsMainContainer .container .gameList il.ps.psUsed .contentContainer .threeAttributes .used3 {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  font-weight: bold;
+}
+.detailsMainContainer .container .gameList il.ps.psUsed .contentContainer .threeAttributes .used3:after {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.detailsMainContainer .container .gameList il.ps.psNew .contentContainer .threeAttributes .new3 {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  font-weight: bold;
+}
+.detailsMainContainer .container .gameList il.ps.psNew .contentContainer .threeAttributes .new3:after {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.detailsMainContainer .container .gameList il.ps.psUsed.psNew .contentContainer .threeAttributes .new3:before {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.detailsMainContainer .container .gameList il.ps.psExchange.psUsed .contentContainer .threeAttributes .used3:before {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
 }
 .detailsMainContainer .container .gameList il .commentContainer {
   position: absolute;
@@ -4095,6 +4267,22 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList.both il.xbox span:nth-child(2) {
   display: inline-block;
 }
+.detailsMainContainer .container .gameList.both il.xbox .threeAttributes div {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.xbox .threeAttributes div:before,
+.detailsMainContainer .container .gameList.both il.xbox .threeAttributes div:after {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.xbox.xboxUsed .contentContainer .threeAttributes .used3 {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.xbox.xboxNew .contentContainer .threeAttributes .new3 {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.xbox.xboxExchange .contentContainer .threeAttributes .exchange3 {
+  color: #fff;
+}
 .detailsMainContainer .container .gameList.both il.ps span:first-child {
   display: inline-block;
 }
@@ -4103,6 +4291,29 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 }
 .detailsMainContainer .container .gameList.both il.ps .commentContainer .commentTextContainer .commentTitle {
   display: block;
+}
+.detailsMainContainer .container .gameList.both il.ps .threeAttributes div.used3 {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.ps .threeAttributes div:before,
+.detailsMainContainer .container .gameList.both il.ps .threeAttributes div:after {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.ps .threeAttributes div {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.ps .threeAttributes div:before,
+.detailsMainContainer .container .gameList.both il.ps .threeAttributes div:after {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.ps.psUsed .contentContainer .threeAttributes .used3 {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.ps.psNew .contentContainer .threeAttributes .new3 {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both il.ps.psExchange .contentContainer .threeAttributes .exchange3 {
+  color: #fff;
 }
 .detailsMainContainer .container .gameList.both il:hover figure .info {
   border-top: 20px solid #e6334c !important;
@@ -4141,6 +4352,22 @@ ul.xbox.gameList il:hover.only .contentContainer .alsoAvailableOn span {
 }
 .detailsMainContainer .container .gameList.ps il .contentContainer .chatButton:hover span:before {
   color: #e6334c;
+}
+.detailsMainContainer .container .gameList.ps il .contentContainer .threeAttributes div {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.ps il .contentContainer .threeAttributes div:before,
+.detailsMainContainer .container .gameList.ps il .contentContainer .threeAttributes div:after {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.ps il .contentContainer.xboxUsed .contentContainer .threeAttributes .used3 {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.ps il .contentContainer.xboxNew .contentContainer .threeAttributes .new3 {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.ps il .contentContainer.xboxExchange .contentContainer .threeAttributes .exchange3 {
+  color: #fff;
 }
 .detailsMainContainer .container .gameList.ps il:hover figure .info {
   border-top: 20px #e6334c solid;

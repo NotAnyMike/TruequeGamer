@@ -42,7 +42,56 @@
 					.name
 						margin-top: 10px
 
+					.threeAttributes
+						display: flex
+						flex-direction: row
+						position: relative
+						padding: 0 12px
+						justify-content: space-between
+						order: 3
+
+						div
+							right: auto
+							left: auto
+							bottom: auto
+							top: auto
+							display: inline-block
+							position: relative
+							margin: 0px
+							opacity: 0.5
+							transition: opacity $time
+							color: $darker_green
+							font-size: 8pt
+							text-transform: uppercase
+							font-family: 'Cabin', sans-serif
+							margin: 6px 0
+
+							&:after, &:before
+								font-family: 'TruequeGamer'
+								color: $dark_green
+								position: absolute
+								bottom: 3px
+								left: -4px
+								font-size: 6pt
+								transition: opacity $time
+
+							&:after
+								content: '\e909'
+								opacity: 1
+
+							&:before
+								content: '\e900'
+								opacity: 0.5
+								font-size: 3pt
+								bottom: 6px
+								left: -7px
+
+							&.exchange3
+								&:before
+									display: none
+
 					.exchange
+						display: none
 						margin-bottom: 10px
 						margin-top: 3px
 						position: relative
@@ -66,7 +115,7 @@
 						height: 30px
 						justify-content: center
 						order: 4
-						transition: background-color $time
+						transition: background-color, color $time
 
 						span
 							display: inherit
@@ -93,6 +142,29 @@
 								&:after
 									color: white
 
+						.threeAttributes
+							div
+								color: white
+
+								&:after, &:before
+									color: white
+
+					&.ps
+						&.psExchange.psUsed
+							.contentContainer
+								.threeAttributes
+									.used3
+										&:before
+											color: white
+
+					&.xbox
+						&.xboxExchange.xboxUsed
+							.contentContainer
+								.threeAttributes
+									.used3
+										&:before
+											color: white
+
 				&.only
 					.contentContainer
 						.availableConsoles
@@ -115,33 +187,105 @@
 								opacity: 0
 
 				&.xbox
+					&.xboxExchange
+						.contentContainer
+							.threeAttributes
+								.exchange3
+									opacity: 1
+									font-weight: bold				
+									color: $red
+
+									&:before
+										color: $dark_green
+
+									&:after
+										opacity: 0
+
 					&.xboxUsed
 						.contentContainer
-							.used
-								&:after
+							.threeAttributes
+								.used3
 									opacity: 1
+									font-weight: bold				
+									color: $red
+
+									&:before
+										color: $green
+
+									&:after
+										opacity: 0
 
 					&.xboxNew
 						.contentContainer
-							.used
-								&:after
+							.threeAttributes
+								.new3
 									opacity: 1
-									content: 'nuevo'
+									font-weight: bold				
+
+									&:after
+										opacity: 0
+
+					//In order to show the dot dividing two active options
+					&.xboxUsed.xboxNew
+						.contentContainer
+							.threeAttributes
+								.new3
+									&:before
+										opacity: 1
+
+					&.xboxExchange.xboxUsed
+						.contentContainer
+							.threeAttributes
+								.used3
+									&:before
+										opacity: 1
 
 				&.ps
+					&.psExchange
+						.contentContainer
+							.threeAttributes
+								.exchange3
+									opacity: 1
+									font-weight: bold				
+
+									&:after
+										opacity: 0
+
 					&.psUsed
 						.contentContainer
-							.used
-								&:after
+							.threeAttributes
+								.used3
 									opacity: 1
+									font-weight: bold				
+
+									&:after
+										opacity: 0
 
 					&.psNew
 						.contentContainer
-							.used
-								&:after
+							.threeAttributes
+								.new3
 									opacity: 1
-									content: 'nuevo'
-				
+									font-weight: bold				
+
+									&:after
+										opacity: 0
+
+					//In order to show the dot dividing two active options
+					&.psUsed.psNew
+						.contentContainer
+							.threeAttributes
+								.new3
+									&:before
+										opacity: 1
+
+					&.psExchange.psUsed
+						.contentContainer
+							.threeAttributes
+								.used3
+									&:before
+										opacity: 1
+
 				.commentContainer
 					position: absolute
 					top: 0
@@ -218,7 +362,8 @@
 							span
 								&:before
 									content: 'X'
-				
+
+			//Thre wont be a .xbox at this same level because the default styles are from xbox	
 			&.both, $.profile
 				il	
 					figure
@@ -300,6 +445,31 @@
 						span:nth-child(2)
 							display: inline-block
 
+						.threeAttributes
+							div
+								color: white
+
+								&:before, &:after
+									color: white
+
+						&.xboxUsed
+							.contentContainer
+								.threeAttributes
+									.used3
+										color: white
+
+						&.xboxNew
+							.contentContainer
+								.threeAttributes
+									.new3
+										color: white
+
+						&.xboxExchange
+							.contentContainer
+								.threeAttributes
+									.exchange3
+										color: white
+
 					&.ps
 						span:first-child
 							display: inline-block
@@ -312,6 +482,40 @@
 							.commentTextContainer
 								.commentTitle
 									display: block
+
+						.threeAttributes
+							div
+								&.used3
+									color: white
+
+								&:before, &:after
+									color: white
+
+						.threeAttributes
+							div
+								color: white
+
+								&:before, &:after
+									color: white
+
+						&.psUsed
+							.contentContainer
+								.threeAttributes
+									.used3
+										color: white
+
+						&.psNew
+							.contentContainer
+								.threeAttributes
+									.new3
+										color: white
+
+						&.psExchange
+							.contentContainer
+								.threeAttributes
+									.exchange3
+										color: white
+
 
 					&:hover
 						figure
@@ -343,6 +547,8 @@
 
 						.background
 							background-color: $darker_green
+
+			//Thre wont be a .xbox at this same level because the default styles are from xbox	
 			&.ps
 				il	
 					.contentContainer
@@ -358,6 +564,32 @@
 								span
 									&:before
 										color: $red
+
+					
+						.threeAttributes
+							div
+								color: white
+
+								&:before, &:after
+									color: white
+
+						&.xboxUsed
+							.contentContainer
+								.threeAttributes
+									.used3
+										color: white
+
+						&.xboxNew
+							.contentContainer
+								.threeAttributes
+									.new3
+										color: white
+
+						&.xboxExchange
+							.contentContainer
+								.threeAttributes
+									.exchange3
+										color: white
 
 					&:hover
 						figure

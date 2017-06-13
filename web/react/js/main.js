@@ -27943,8 +27943,7 @@ const GameItem = React.createClass({
 					'div',
 					{ className: 'exchange' },
 					React.createElement('span', null),
-					React.createElement('span', null),
-					React.createElement('div', { className: 'used' })
+					React.createElement('span', null)
 				),
 				React.createElement(
 					'div',

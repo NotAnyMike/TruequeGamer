@@ -95,14 +95,7 @@
 						margin-bottom: 10px
 						margin-top: 3px
 						position: relative
-
-						.used
-							display: none
-
-							&:after
-								transition: color $time
-								color: white
-					
+	
 					.alsoAvailableOn
 						display: none
 
@@ -137,11 +130,6 @@
 							border-right: 20px solid $green_hover_xbox
 
 					.contentContainer
-						.exchange
-							.used
-								&:after
-									color: white
-
 						.threeAttributes
 							div
 								color: white
@@ -171,20 +159,6 @@
 							.container
 								span
 									width: 28px
-
-				&.xboxUsed, &.psUsed, &.xboxNew, &.psNew
-					.contentContainer
-						.used
-							display: inline-block
-							position: absolute
-							right: 0
-							top: -3px
-
-							&:after
-								content: 'usado'
-								color: $red
-								font-size: 12px
-								opacity: 0
 
 				&.xbox
 					&.xboxExchange
@@ -414,14 +388,6 @@
 							&:after
 								bottom: 2px
 
-							.used
-								bottom: 0
-								top: auto
-								
-								&:after
-									color: white
-									font-weight: bold
-
 						.chatButton
 							&:hover
 								background-color: $darker_green
@@ -552,11 +518,6 @@
 			&.ps
 				il	
 					.contentContainer
-						.exchange
-							.used
-								&:after
-									color: white
-
 						.chatButton
 							&:hover
 								background-color: white
@@ -565,7 +526,6 @@
 									&:before
 										color: $red
 
-					
 						.threeAttributes
 							div
 								color: white

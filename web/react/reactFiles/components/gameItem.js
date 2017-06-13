@@ -437,7 +437,6 @@ const GameItem = React.createClass({
 					<div className="exchange">
 						<span></span>
 						<span></span>
-						<div className="used"></div>
 					</div>
 					<div className="threeAttributes">
 						<div className="exchange3">trueque</div>

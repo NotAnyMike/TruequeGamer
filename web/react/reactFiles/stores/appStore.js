@@ -236,8 +236,11 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		if(self.fetch){
 			//use fetch
 			
-			var url = '/api/profile/profile.json'; if(process.env.NODE_ENV === "production"){ //TODO: CHANGE URL
+			var url = '';
+			if(process.env.NODE_ENV === "production"){
 				url = '/api/profile/' + username + '/';
+			}else{
+				url = '/api/profile/profile.json';
 			}
 			
 			fetch(url).then(function(response){

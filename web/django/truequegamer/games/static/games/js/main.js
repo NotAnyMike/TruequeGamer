@@ -29248,9 +29248,11 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		if (self.fetch) {
 			//use fetch
 
-			var url = '/api/profile/profile.json';if ("production" === "production") {
-				//TODO: CHANGE URL
+			var url = '';
+			if ("production" === "production") {
 				url = '/api/profile/' + username + '/';
+			} else {
+				url = '/api/profile/profile.json';
 			}
 
 			fetch(url).then(function (response) {

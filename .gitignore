@@ -2,4 +2,5 @@ node_modules/
 **/*.swp
 **/*/token.py
 **/*/token.pyc
-**/*.pyc
+**/**/*.pyc
+/**/**/*.pyc

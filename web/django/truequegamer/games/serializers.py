@@ -25,7 +25,29 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'picture')
+        fields = ('id', 'username', 'first_name', 'last_name', 'picture',)
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    picture = serializers.SerializerMethodField()
+    location = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
+    numberOfGames = serializers.SerializerMethodField()
+
+    def get_picture(self, user):
+        return "/img/details_profile.png"
+
+    def get_location(self, user):
+        return "bogota, colombia"
+
+    def get_city(self, user):
+        return "bogota"
+
+    def get_numberOfGames(self, user):
+        return "4" #TODO: return the real value
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'picture', 'city','numberOfGames', 'location')
 
 class CurrentUserSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()
@@ -89,3 +111,25 @@ class DvdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dvd
         fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')
+
+class SingleDvdSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
+    used = serializers.SerializerMethodField()
+    comment = serializers.SerializerMethodField() #TODO: remove this later
+
+    def get_name(self, dvd):
+        return dvd.game.name
+
+    def get_cover(self, dvd):
+        return dvd.game.cover
+
+    def get_used(self, dvd):
+        return not dvd.new
+
+    def get_comment(self, dvd):
+        return "Hola esto es de prueba"
+
+    class Meta:
+        model = Dvd
+        fields = ('pk', 'name', 'cover', 'price', 'exchange', 'used', 'console', 'comment')

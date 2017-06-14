@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer
+from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer, UserProfileSerializer, SingleDvdSerializer
 from games.models import Game, Dvd
 
 def index(req):
@@ -33,6 +33,29 @@ def CurrentUser(request):
             return Response(serializer.data)
 
     else: 
+        return HttpResponse('Unauthorized', status=401)
+
+@api_view(['GET'])
+def SomeUser(request, username):
+    if request.method == 'GET':
+        user = User.objects.filter(username='test')
+        if user != None:
+            user = user[0]
+
+            #Get her dvds
+            dvds = Dvd.objects.filter(owner=user)
+            #TODO: remove the repeated games
+
+            dvdsSerializer = SingleDvdSerializer(dvds, many=True)
+            profileSerializer = UserProfileSerializer(user, many=False)
+
+            return Response({
+                'profile' : profileSerializer.data,
+                'list' : dvdsSerializer.data,
+                })
+        else:
+            return HttpResponse('Not found', status=404)
+    else:
         return HttpResponse('Unauthorized', status=401)
 
 @api_view(['GET'])

@@ -8,7 +8,8 @@ from chat.models import UserAuth
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("games.serializers")
 
-url = "https://graph.facebook.com/10153958248812809?fields=picture,location&access_token=EAAMFSTFTluYBACRT4t1ZALRsQZA2LsoRIJeEWFmeZBIuDPguZAXGXbpSt3zHFZCdJAFRzs4qsi2yH8jcdXq7zlc9PNkMfMTKyBv9po84wfspRE8uRQM3ky2fodYZA17cvF4mwXt3eKeqcwgWkRrNZBH7UIDYFSSNEzZCSQY0U85z8gG8D4ZBsl993"
+url = "https://graph.facebook.com/me?fields=picture,location&access_token=EAAMFSTFTluYBACcJ8W3bYSH3iIrOVrQbF7qjFp2qNIk8AOEuVngdC929Fb4wTCilZCRZArAcaLyrpoUhXJJ4RuWbTefyvp7paAb8fVvy9t6f9KPoAbZCt26PZCTxhOrxSTYbXNWX51WDvIhnXMhbeHXYN0OA9723UcJP5L5uXNz6tH3u8VVAQ7MxfYtEYPQZD"
+
 response = urllib.urlopen(url)
 data = json.load(response)
 print data
@@ -116,7 +117,6 @@ class SingleDvdSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     cover = serializers.SerializerMethodField()
     used = serializers.SerializerMethodField()
-    comment = serializers.SerializerMethodField() #TODO: remove this later
 
     def get_name(self, dvd):
         return dvd.game.name
@@ -126,9 +126,6 @@ class SingleDvdSerializer(serializers.ModelSerializer):
 
     def get_used(self, dvd):
         return not dvd.new
-
-    def get_comment(self, dvd):
-        return "Hola esto es de prueba"
 
     class Meta:
         model = Dvd

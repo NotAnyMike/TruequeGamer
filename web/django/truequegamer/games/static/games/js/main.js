@@ -28396,9 +28396,10 @@ module.exports = React.createClass({
 	},
 
 	render: function () {
+		var loginUrl = "/login/facebook/?next=".concat(window.location.pathname);
 		var toReturn = React.createElement(
 			'a',
-			{ className: "login arrow-decorator dot-decorator " + this.props.version, href: '#' },
+			{ className: "login arrow-decorator dot-decorator " + this.props.version, href: loginUrl },
 			'Ingresa con Facebook'
 		);
 		if (this.props.user.logged) {
@@ -29250,7 +29251,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 			var url = '';
 			if ("production" === "production") {
-				url = '/api/profile/' + username + '/';
+				url = '/api/profile/'.concat(username, '/');
 			} else {
 				url = '/api/profile/profile.json';
 			}

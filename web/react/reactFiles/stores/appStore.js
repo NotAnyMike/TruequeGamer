@@ -291,7 +291,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			if(process.env.NODE_ENV === "production"){
 				//TODO: CHANGE URL
 				url = '/api/game/'.concat(consoles,'/',newVariable,'/',sell,'/',stringValue,'/');
-				console.log(url);
 			}else{
 				url = '/api/game_details/thewitcher.json';
 			}

@@ -2,15 +2,16 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 import urllib, json, logging
 
-from .models import Game
+from .models import Game, Dvd
 from chat.models import UserAuth
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("games.serializers")
 
-url = "https://graph.facebook.com/10153958248812809?fields=picture,location&access_token=EAAMFSTFTluYBAGZC6L4IaRSAORMFcrreGPArUL9t5viSYR44sjNKNbV3ZC8miPv2hMLLZB19ZAs8dBbyGxSvEUzeXE6pyPdVha2WkI7DOIoYcTJ5uuDh9oDr1hnKc5B4A2AXMYXZCzjhxyaR7stUL1FXr3zXvCqsZD"
+url = "https://graph.facebook.com/10153958248812809?fields=picture,location&access_token=EAAMFSTFTluYBACRT4t1ZALRsQZA2LsoRIJeEWFmeZBIuDPguZAXGXbpSt3zHFZCdJAFRzs4qsi2yH8jcdXq7zlc9PNkMfMTKyBv9po84wfspRE8uRQM3ky2fodYZA17cvF4mwXt3eKeqcwgWkRrNZBH7UIDYFSSNEzZCSQY0U85z8gG8D4ZBsl993"
 response = urllib.urlopen(url)
 data = json.load(response)
+print data
 
 class UserSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()
@@ -58,8 +59,33 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')
+
+class GameDetailsSerializer(serializers.ModelSerializer):
+    higher_prices = serializers.SerializerMethodField()
+    min_price = serializers.SerializerMethodField()
+
+    def get_min_price(self, instance):
+        return 13000
+
+    def get_higher_prices(self, instance):
+        return True
+
+    class Meta:
+        model = Game
+        fields = ('pk','name','min_price','higher_prices','cover','availableOnPs','availableOnXbox')
         
 class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ('name',)
+
+class DvdSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
+    psPrice = serializers.SerializerMethodField()
+    xboxPrice = serializers.SerializerMethodField()
+    psExchange = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Dvd
+        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')

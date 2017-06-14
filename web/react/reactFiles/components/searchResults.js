@@ -16,8 +16,7 @@ const SearchResults = React.createClass({
 	},
 
 	getInitialState: function(){
-		AppStore.search(this.props.route.console,this.props.params.search);
-		var store = AppStore.getStore();
+		AppStore.search(this.props.route.console,this.props.params.search); var store = AppStore.getStore();
 		return store;
 	},
 
@@ -36,13 +35,30 @@ const SearchResults = React.createClass({
 		this.setState(store);
 	},
 
-	loadDetailsPage: function(){
-		var route = "/the witcher/xbox";
+	loadDetailsPage: function(name){
+		var route = ""
+		//TODO: Change this hardcoded stuff
+		if(process.env.NODE_ENV === 'production'){
+			//Get console from store search
+			var consoleVar = ""
+			if(this.state.search.xbox){
+				if(this.state.search.ps){
+					consoleVar = Constants.routes.details.both;
+				}else{
+					consoleVar = Constants.routes.details.ps;
+				}
+			}else{
+				consoleVar = Constants.routes.details.xbox;	
+			}
+			route = "/".concat(name, consoleVar)
+		}else{
+			route = "/until dawn/ps-xbox";
+		}
 		browserHistory.push(route);
 	},
 
-	goToDetailsFn: function(){
-		Actions.goToDetails();
+	goToDetailsFn: function(name){
+		Actions.goToDetails(name);
 	},
 
 	render: function(){

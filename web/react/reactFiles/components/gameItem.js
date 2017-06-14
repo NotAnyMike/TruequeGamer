@@ -137,7 +137,7 @@ const GameItem = React.createClass({
 	
 	_goToPage: function(){
 		if(typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();
-		else if(typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn();
+		else if(typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
 	},
 
 	_changeCommentHandler: function(e){
@@ -388,11 +388,11 @@ const GameItem = React.createClass({
 					(this.props.only ? " only" : "") +
 					(this.props.notOnly ? " notOnly" : "");
 			if(this.props.both || this.props.console === Constants.consoles.xbox){
-				className += (this.props.xboxNoExchange ? " xboxNoExchange" : "") +
+				className += (this.props.xboxNoExchange ? " xboxNoExchange" : " xboxExchange") + //adding some stuff here, if ater a while it is still working then remove this comment
 					(this.props.xboxNoSell ? " xboxNoSell" : "");
 			}
 			if(this.props.both || this.props.console === Constants.consoles.ps){
-				className += (this.props.psNoExchange ? " psNoExchange" : "") +
+				className += (this.props.psNoExchange ? " psNoExchange" : " psExchange") + //adding some stuff here, if ater a while it is still working then remove this comment
 					(this.props.psNoSell ? " psNoSell" : "");
 			}
 			if((this.props.both && this.props.console === Constants.consoles.ps) && this.props.psUsed){
@@ -437,7 +437,11 @@ const GameItem = React.createClass({
 					<div className="exchange">
 						<span></span>
 						<span></span>
-						<div className="used"></div>
+					</div>
+					<div className="threeAttributes">
+						<div className="exchange3">trueque</div>
+						<div className="used3">usado</div>
+						<div className="new3">nuevo</div>
 					</div>
 					<div className="availableConsoles">
 						<div className="container">

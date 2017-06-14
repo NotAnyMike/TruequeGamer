@@ -48,9 +48,10 @@ var Actions = {
 		});
 	},
 
-	goToDetails: function(){
+	goToDetails: function(gameName){
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.goToDetails,
+			gameName: gameName,
 		});
 	},
 

@@ -212,8 +212,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.goToDetails, callback);
 	},
 
-	goToDetailsPage: function(){
-		this.emit(Constants.eventType.goToDetails);
+	goToDetailsPage: function(name){
+		this.emit(Constants.eventType.goToDetails, name);
 	},
 
 	getStore: function(){
@@ -236,9 +236,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		if(self.fetch){
 			//use fetch
 			
-			var url = '/api/profile/profile.json';
-			if(process.env.NODE_ENV === "production"){
-				//TODO: CHANGE URL
+			var url = '/api/profile/profile.json'; if(process.env.NODE_ENV === "production"){ //TODO: CHANGE URL
 				url = '/api/profile/' + username + '/';
 			}
 			
@@ -289,11 +287,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			if(_store.search.not_used && !_store.search.used) newVariable = 'new';
 			else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
 
-			var url = '/api/game_details/thewitcher.json';
+			var url = "";
 			if(process.env.NODE_ENV === "production"){
 				//TODO: CHANGE URL
-				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
+				url = '/api/game/'.concat(consoles,'/',newVariable,'/',sell,'/',stringValue,'/');
+			}else{
+				url = '/api/game_details/thewitcher.json';
 			}
+
 			
 			fetch(url).then(function(response){
 				response.json().then(function(json){
@@ -326,10 +327,13 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			if(_store.search.not_used && !_store.search.used) newVariable = 'new';
 			else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
 
-			var url = '/api/games.json';
+			var url = ""
 			if(process.env.NODE_ENV === "production"){
 				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
+			}else{
+				var url = '/api/games.json';
 			}
+
 
 			fetch(url).then(function(response){
 				response.json().then(function(json){
@@ -430,7 +434,7 @@ AppDispatcher.register(function(payload){
 			AppStore.searchButtonClicked();
 			break;
 		case Constants.actionType.goToDetails:
-			AppStore.goToDetailsPage();
+			AppStore.goToDetailsPage(payload.gameName);
 			break;
 		case Constants.actionType.goToProfile:
 			AppStore.goToProfilePage();

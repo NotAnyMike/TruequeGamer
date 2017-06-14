@@ -7,11 +7,9 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer
-from games.models import Game
+from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer
+from games.models import Game, Dvd
 
-
-# Create your views here.
 def index(req):
     template = 'games/base.html'
     if settings.DEBUG:
@@ -20,7 +18,6 @@ def index(req):
 
 def img(req):
     return redirect('/static/games' + req.path)
-
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -42,89 +39,165 @@ def CurrentUser(request):
 def LocalSuggestions(request, serializerType, console, new, sell, string):
     if request.method == 'GET':
         
-        games = Game.objects.filter(name__icontains=string)
-        
-        #Checking console
-        if console == "ps-xbox":
-            games = games.filter(Q(availableOnPs=True) | Q(availableOnXbox=True))
+        if serializerType != 'game':
+            games = Game.objects.filter(name__icontains=string)
             
-            #Checking new
-            if new == 'both':
-                games = games.filter(Q(xboxNew=True) | Q(psNew=True) | Q(psUsed=True) | Q(xboxUsed=True))
-                print "count: %i" % games.count()
-            elif new == 'new':
-                games = games.filter(Q(xboxNew=True) | Q(psNew=True)) 
-            elif new == 'used':
-                games = games.filter(Q(psUsed=True) | Q(xboxUsed=True))
-            else:
-                return Response('Bad request', status=400)
-
-            #Checking sell
-            if sell == 'both':
-                games = games.filter(Q(psPrice__isnull=False) | Q(xboxPrice__isnull=False) | Q(psExchange=True) | Q(xboxExchange=True))
-            elif sell == 'sell':
-                games = games.filter(Q(psPrice__isnull=False) | Q(xboxPrice__isnull=False))
-            elif sell == 'exchange':
-                games = games.filter(Q(psExchange=True) | Q(xboxExchange=True))
-            else:
-                return Response('Bad request', status=400)
+            #Checking console
+            if console == "ps-xbox":
+                games = games.filter(Q(availableOnPs=True) | Q(availableOnXbox=True))
                 
-        elif console == "ps":
-            games = games.filter(availableOnPs=True)
+                #Checking new
+                if new == 'both':
+                    games = games.filter(Q(xboxNew=True) | Q(psNew=True) | Q(psUsed=True) | Q(xboxUsed=True))
+                    print "count: %i" % games.count()
+                elif new == 'new':
+                    games = games.filter(Q(xboxNew=True) | Q(psNew=True)) 
+                elif new == 'used':
+                    games = games.filter(Q(psUsed=True) | Q(xboxUsed=True))
+                else:
+                    return Response('Bad request', status=400)
 
-            #Checking new
-            if new == 'both':
-                games = games.filter(Q(psNew=True) | Q(psUsed=True))
-            elif new == 'new':
-                games = games.filter(psNew=True)
-            elif new == 'used':
-                games = games.filter(psUsed=True)
+                #Checking sell
+                if sell == 'both':
+                    games = games.filter(Q(psPrice__isnull=False) | Q(xboxPrice__isnull=False) | Q(psExchange=True) | Q(xboxExchange=True))
+                elif sell == 'sell':
+                    games = games.filter(Q(psPrice__isnull=False) | Q(xboxPrice__isnull=False))
+                elif sell == 'exchange':
+                    games = games.filter(Q(psExchange=True) | Q(xboxExchange=True))
+                else:
+                    return Response('Bad request', status=400)
+                    
+            elif console == "ps":
+                games = games.filter(availableOnPs=True)
+
+                #Checking new
+                if new == 'both':
+                    games = games.filter(Q(psNew=True) | Q(psUsed=True))
+                elif new == 'new':
+                    games = games.filter(psNew=True)
+                elif new == 'used':
+                    games = games.filter(psUsed=True)
+                else:
+                    return Response('Bad request', status=400)
+
+                #Checking sell
+                if sell == 'both':
+                    games = games.filter(Q(psPrice__isnull=False) | Q(psExchange=True))
+                elif sell == 'sell':
+                    games = games.filter(psPrice__isnull=False)
+                elif sell == 'exchange':
+                    games = games.filter(psExchange=True)
+                else:
+                    return Response('Bad request', status=400)
+                    
+            elif console == "xbox":
+                games = games.filter(availableOnXbox=True)
+
+                #Checking new
+                if new == 'both':
+                    games = games.filter(Q(xboxNew=True) | Q(xboxUsed=True))
+                elif new == 'new':
+                    games = games.filter(xboxNew=True)
+                elif new == 'used':
+                    games = games.filter(xboxUsed=True)
+                else:
+                    return Response('Bad request', status=400)
+
+                #Checking sell
+                if sell == 'both':
+                    games = games.filter(Q(xboxPrice__isnull=False) | Q(xboxExchange=True))
+                elif sell == 'sell':
+                    games = games.filter(xboxPrice__isnull=False)
+                elif sell == 'exchange':
+                    games = games.filter(xboxExchange=True)
+                else:
+                    return Response('Bad request', status=400)
             else:
                 return Response('Bad request', status=400)
 
-            #Checking sell
-            if sell == 'both':
-                games = games.filter(Q(psPrice__isnull=False) | Q(psExchange=True))
-            elif sell == 'sell':
-                games = games.filter(psPrice__isnull=False)
-            elif sell == 'exchange':
-                games = games.filter(psExchange=True)
-            else:
-                return Response('Bad request', status=400)
-                
-        elif console == "xbox":
-            games = games.filter(availableOnXbox=True)
 
-            #Checking new
-            if new == 'both':
-                games = games.filter(Q(xboxNew=True) | Q(xboxUsed=True))
-            elif new == 'new':
-                games = games.filter(xboxNew=True)
-            elif new == 'used':
-                games = games.filter(xboxUsed=True)
+            if serializerType == "suggestions":
+                games = games[:5]
+                serializer = SuggestionSerializer(games, many=True)
             else:
-                return Response('Bad request', status=400)
+                serializer = GameSerializer(games, many=True)
+            
+            
+            return Response(serializer.data)
 
-            #Checking sell
-            if sell == 'both':
-                games = games.filter(Q(xboxPrice__isnull=False) | Q(xboxExchange=True))
-            elif sell == 'sell':
-                games = games.filter(xboxPrice__isnull=False)
-            elif sell == 'exchange':
-                games = games.filter(xboxExchange=True)
-            else:
-                return Response('Bad request', status=400)
         else:
-            return Response('Bad request', status=400)
+            #Get game
+            game = Game.objects.filter(name=string)
+
+            #Get games for that console and with those values
+            if game != None:
+                game = game[0]
+
+                dvds = Dvd.objects.order_by('owner__pk').filter(game=game) #Needed in order to make the for work as expected
+                gameSerializer = GameDetailsSerializer(game, many = False)
+
+                #Create a list of 'games' with the Dvds
+                owner = None
+                gamesList = []
+                for dvd in dvds:
+                    if owner == None or owner != dvd.owner:
+                        owner = dvd.owner.pk
+                        gameFromDvds = Game()
+
+                        gameFromDvds.name = "%s %s" % (dvd.owner.first_name, dvd.owner.last_name)
+                        gameFromDvds.cover = game.cover
+                        gameFromDvds.xboxOnly = game.xboxOnly
+                        gameFromDvds.psOnly = game.psOnly 
+                        gameFromDvds.xboxOnlyPrice = True
+                        gameFromDvds.psOnlyPrice = True
+                        gameFromDvds.availableOnXbox = False
+                        gameFromDvds.availableOnPs = False
+
+                        #Adding the game created to a list
+                        gamesList.append(gameFromDvds)
+                    
+                    #Get all the values to create a valid Game object from the dvds for the same user (and the same game)
+                    if dvd.console == 'xbox':
+                        
+                        gameFromDvds.availableOnXbox = True
+                        
+                        if dvd.price > gameFromDvds.xboxPrice: 
+                            if gameFromDvds.xboxPrice != None: #This if must be before the xboxprice = dvd.price
+                                gamefromDvds.xboxonlyprice = false
+                            gameFromDvds.xboxPrice = dvd.price
+
+                        if dvd.exchange: gameFromDvd.sxboxExchange = True
+                        if dvd.new : gameFromDvds.xboxNew = True
+                        if dvd.new == False : gameFromDvds.xboxUsed = False
+                        
+                    else:
+                        
+                        gameFromDvds.availableOnPs = True
+                        
+                        if dvd.price > gameFromDvds.psPrice: 
+                            if gameFromDvds.psPrice != None: #This if must be before the psprice = dvd.price
+                                gamefromDvds.psonlyprice = false
+                            gameFromDvds.psPrice = dvd.price
+
+                        if dvd.exchange: gameFromDvds.psExchange = True
+                        if dvd.new : gameFromDvds.psNew = True
+                        if dvd.new == False : gameFromDvds.psUsed = False
 
 
-        if serializerType == "suggestions":
-            games = games[:5]
-            serializer = SuggestionSerializer(games, many=True)
-        else:
-            serializer = GameSerializer(games, many=True)
+                gamesSerializer = GameSerializer(gamesList, many = True)
 
-        return Response(serializer.data)
+
+                return Response({
+                        'game': gameSerializer.data,
+                        'list': gamesSerializer.data,
+                    })
+            else:
+                #throw error
+                return Response('Bad request', status=400)
+
+
+        #Every case in the if ( != "game") has its own return statement, if it comes to here something happened
+        return Response('Internal error', status=500)
 
     else:
         return Response('Unauthorized', status=401)

@@ -38,6 +38,7 @@ const Details = React.createClass({
 	},
 
 	loadProfilePage: function(){
+		//TODO: change this
 		var route = "/profile/test";
 		browserHistory.push(route);
 	},

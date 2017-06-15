@@ -44,7 +44,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return utils.get_user_location(user)
 
     def get_city(self, user):
-        return "bogota"
+        return "bogota" #TODO: correct this bullshit, location and city? wtf?
 
     def get_numberOfGames(self, user):
         return "4" #TODO: return the real value

@@ -28384,7 +28384,8 @@ module.exports = Profile;
 'use strict';
 
 const React = require('react'),
-      Constants = require('../utils/constants.js');
+      Constants = require('../utils/constants.js'),
+      browserHistory = require('react-router').browserHistory;
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -28393,6 +28394,11 @@ module.exports = React.createClass({
 	propsType: {
 		user: React.PropTypes.object.isRequired,
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
+	},
+
+	_goToMyProfile: function () {
+		var ownProfileLink = "/profile/".concat(this.props.user.username);
+		browserHistory.push(ownProfileLink);
 	},
 
 	render: function () {
@@ -28405,7 +28411,7 @@ module.exports = React.createClass({
 		if (this.props.user.logged) {
 			toReturn = React.createElement(
 				'a',
-				{ href: '#', className: "profileContainer " + this.props.version },
+				{ onClick: this._goToMyProfile, className: "profileContainer " + this.props.version },
 				React.createElement(
 					'span',
 					null,
@@ -28423,7 +28429,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":282,"react":239}],266:[function(require,module,exports){
+},{"../utils/constants.js":282,"react":239,"react-router":37}],266:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),

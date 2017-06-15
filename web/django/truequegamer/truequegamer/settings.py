@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'games',
     'chat',
+    'accounts',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -138,6 +139,7 @@ SOCIAL_AUTH_FACEBOOK_SECRET = '8f1853a562daa9775488b4ecbad612fa'
 SOCIAL_AUTH_FACEBOOK_SCOPE = [
     'email',
     'user_location',
+    'user_about_me',
 ]
 
 REST_FRAMEWORK = {

@@ -3,4 +3,4 @@ node_modules/
 **/*/token.py
 **/*/token.pyc
 **/**/*.pyc
-/**/**/*.pyc
+**/*.pyc

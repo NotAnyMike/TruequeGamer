@@ -14,7 +14,6 @@ url = "https://graph.facebook.com/me?fields=id,name,first_name,last_name,picture
 
 response = urllib.urlopen(url)
 data = json.load(response)
-print data
 
 class UserSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()

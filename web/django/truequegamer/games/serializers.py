@@ -1,16 +1,17 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 import urllib, json, logging
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Game, Dvd
 from chat.models import UserAuth
 
-import constants as Constants
+import constants,utils
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("games.serializers")
 
-url = "https://graph.facebook.com/me?fields=id,name,first_name,last_name,picture,location&access_token=%s" % Constants.FB_ACCESS_TOKEN
+url = "https://graph.facebook.com/me?fields=id,name,first_name,last_name,picture,location&access_token=%s" % constants.FB_ACCESS_TOKEN
 
 response = urllib.urlopen(url)
 data = json.load(response)
@@ -36,7 +37,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
     numberOfGames = serializers.SerializerMethodField()
 
     def get_picture(self, user):
-        return "/img/details_profile.png"
+        toReturn = constants.LARGE_PROFILE_PIC_URL
+        try:
+            if user.profile.facebook_id != None:
+               toReturn = utils.get_fb_large_profile_pic(user.profile.facebook_id) 
+        except ObjectDoesNotExist:
+            pass
+        return toReturn
 
     def get_location(self, user):
         return "bogota, colombia"

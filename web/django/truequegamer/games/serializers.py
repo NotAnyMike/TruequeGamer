@@ -5,10 +5,12 @@ import urllib, json, logging
 from .models import Game, Dvd
 from chat.models import UserAuth
 
+import constants as Constants
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("games.serializers")
 
-url = "https://graph.facebook.com/me?fields=picture,location&access_token=EAAMFSTFTluYBACcJ8W3bYSH3iIrOVrQbF7qjFp2qNIk8AOEuVngdC929Fb4wTCilZCRZArAcaLyrpoUhXJJ4RuWbTefyvp7paAb8fVvy9t6f9KPoAbZCt26PZCTxhOrxSTYbXNWX51WDvIhnXMhbeHXYN0OA9723UcJP5L5uXNz6tH3u8VVAQ7MxfYtEYPQZD"
+url = "https://graph.facebook.com/me?fields=id,name,first_name,last_name,picture,location&access_token=%s" % Constants.FB_ACCESS_TOKEN
 
 response = urllib.urlopen(url)
 data = json.load(response)

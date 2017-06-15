@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponse
@@ -9,6 +11,7 @@ from rest_framework.response import Response
 
 from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer, UserProfileSerializer, SingleDvdSerializer
 from games.models import Game, Dvd
+import constants, utils
 
 def index(req):
     template = 'games/base.html'
@@ -168,7 +171,7 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
                         gameFromDvds = Game()
 
                         gameFromDvds.name = "%s %s" % (dvd.owner.first_name, dvd.owner.last_name)
-                        gameFromDvds.cover = game.cover
+                        gameFromDvds.cover = utils.get_user_large_profile_pic(dvd.owner)
                         gameFromDvds.xboxOnly = game.xboxOnly
                         gameFromDvds.psOnly = game.psOnly 
                         gameFromDvds.xboxOnlyPrice = True

@@ -1,7 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from rest_framework import serializers
 from django.contrib.auth.models import User
 import urllib, json, logging
-from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Game, Dvd
 from chat.models import UserAuth
@@ -37,16 +38,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
     numberOfGames = serializers.SerializerMethodField()
 
     def get_picture(self, user):
-        toReturn = constants.LARGE_PROFILE_PIC_URL
-        try:
-            if user.profile.facebook_id != None:
-               toReturn = utils.get_fb_large_profile_pic(user.profile.facebook_id) 
-        except ObjectDoesNotExist:
-            pass
-        return toReturn
+        return utils.get_user_large_profile_pic(user)
 
     def get_location(self, user):
-        return "bogota, colombia"
+        return utils.get_user_location(user)
 
     def get_city(self, user):
         return "bogota"

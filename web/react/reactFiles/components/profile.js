@@ -26,6 +26,7 @@ const Profile = React.createClass({
 		store = AppStore.getStore();
 		if(typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			store.profile.list.push({toCreate:true});
+			store.profile.list = store.profile.list.map(item => {item.temp_id = store.profile.list.indexOf(item); return item})
 		}
 		this.setState(store);
 	},

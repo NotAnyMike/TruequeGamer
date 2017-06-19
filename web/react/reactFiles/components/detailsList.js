@@ -41,6 +41,7 @@ const DetailsList = React.createClass({
 									isNew={false}
 									name={"lol"}
 									key={element.pk}
+									temp_id={element.temp_id}
 								/>
 							);
 						}else{
@@ -56,6 +57,7 @@ const DetailsList = React.createClass({
 									comment={element.comment}
 									isNew={false}
 									key={element.pk}
+									temp_id={element.temp_id}
 								/>
 							);
 						}

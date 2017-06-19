@@ -27114,7 +27114,8 @@ const DetailsList = React.createClass({
 							isProfile: self.props.isProfile,
 							isNew: false,
 							name: "lol",
-							key: element.pk
+							key: element.pk,
+							temp_id: element.temp_id
 						});
 					} else {
 						gameItem = React.createElement(GameItem, {
@@ -27127,7 +27128,8 @@ const DetailsList = React.createClass({
 							price: element.price,
 							comment: element.comment,
 							isNew: false,
-							key: element.pk
+							key: element.pk,
+							temp_id: element.temp_id
 						});
 					}
 				} else {
@@ -27761,6 +27763,7 @@ const GameItem = React.createClass({
 
 	render: function () {
 
+		var temp_id = 0; //Only to controll the readio buttons on  the new from in profile page
 		var onClickComponent = null;
 		var cover = null;
 		var name = null;
@@ -27802,22 +27805,51 @@ const GameItem = React.createClass({
 
 		if (this.props.isProfile) {
 
-			if (typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true) {
+			temp_id = this.props.temp_id;
+
+			//TODO: to remove
+			if (false && typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true) {
 
 				className = "new";
+				if (this.state.isEditing) {
+					className += " editing";
+				} else {
+					onClickComponent = this._onInfoClicked;
+				}
 			} else {
 
-				className = this.props.console + " only";
-				if (this.props.console === Constants.consoles.xbox) {
-					className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
-				}
-				if (this.props.console === Constants.consoles.ps) {
-					className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
-				}
-				if (this.props.used) {
-					if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
+				var isNew = typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true;
+				if (isNew) {
+
+					className = "new";
+					if (this.state.isEditing === false) {
+						onClickComponent = this._onInfoClicked;
+					}
 				} else {
-					if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
+
+					className = this.props.console + " only";
+					if (this.props.console === Constants.consoles.xbox) {
+						className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
+					}
+					if (this.props.console === Constants.consoles.ps) {
+						className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
+					}
+					if (this.props.used) {
+						if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
+					} else {
+						if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
+					}
+
+					if (this.props.isNew === false) {
+						className += " alreadyCreated";
+						if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
+							className += " onlyExchange";
+						} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
+							className += " onlySell";
+						}
+					}
+
+					if (this.props.isProfile) className += " showInfo";
 				}
 
 				if (this.state.isEditing) {
@@ -27826,26 +27858,17 @@ const GameItem = React.createClass({
 				if (this.state.isShowingComment) {
 					className += " showComment";
 				}
-				if (this.props.isProfile) className += " showInfo";
 				if (this.state.isComponentHover && this.state.isEditing === false || this.state.isEditing === true && this.state.isShowingComment === true || this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false) {
 					className += " commentContainerIn";
 				} else {
 					className += " commentContainerOut";
 				}
-				if (this.props.isNew === false) {
-					className += " alreadyCreated";
-					if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
-						className += " onlyExchange";
-					} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
-						className += " onlySell";
-					}
-				}
 
 				onClickComponent = this._goToPage;
 				cover = this.props.cover;
 				name = this.state.editing.name;
-				onMouseOverComponent = this._onMouseOverComponent;
-				onMouseOutComponent = this._onMouseOutComponent;
+				onMouseOverComponent = isNew ? null : this._onMouseOverComponent;
+				onMouseOutComponent = isNew ? null : this._onMouseOutComponent;
 				onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
 				onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
 				onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
@@ -27868,6 +27891,12 @@ const GameItem = React.createClass({
 				used = this.state.editing.used;
 				exchange = this.state.editing.exchange;
 				comment = this.state.editing.comment;
+
+				if (isNew) {
+					if (this.state.isEditing === false) {
+						onClickComponent = this._onInfoClicked;
+					}
+				}
 			}
 		} else {
 
@@ -28045,16 +28074,16 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'radio', id: 'new', name: 'new', value: !used, checked: !used, onClick: changeNewHandler }),
+					React.createElement('input', { type: 'radio', id: "new" + temp_id, name: "new" + temp_id, value: !used, checked: !used, onClick: changeNewHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'new' },
+						{ htmlFor: "new" + temp_id },
 						'Nuevo'
 					),
-					React.createElement('input', { type: 'radio', id: 'old', name: 'new', value: used, checked: used, onClick: changeUsedHandler }),
+					React.createElement('input', { type: 'radio', id: "old" + temp_id, name: "new" + temp_id, value: used, checked: used, onClick: changeUsedHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'old' },
+						{ htmlFor: "old" + temp_id },
 						'Usado'
 					)
 				),
@@ -28066,16 +28095,16 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'exchange' },
-					React.createElement('input', { type: 'radio', id: 'exchange', name: 'exchange', checked: exchange, onClick: changeExchangeHandler }),
+					React.createElement('input', { type: 'radio', id: "exchange" + temp_id, name: "exchange" + temp_id, checked: exchange, onClick: changeExchangeHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'exchange' },
+						{ htmlFor: "exchange" + temp_id },
 						'Sí'
 					),
-					React.createElement('input', { type: 'radio', id: 'noExchange', name: 'exchange', checked: !exchange, onClick: changeNoExchangeHandler }),
+					React.createElement('input', { type: 'radio', id: "noExchange" + temp_id, name: "exchange" + temp_id, checked: !exchange, onClick: changeNoExchangeHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'noExchange' },
+						{ htmlFor: "noExchange" + temp_id },
 						'No'
 					)
 				),
@@ -28087,10 +28116,10 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'console' },
-					React.createElement('input', { type: 'radio', id: 'ps', className: 'ps', name: 'psOrxbox', checked: psChecked, onClick: changeConsolePsHandler }),
-					React.createElement('label', { htmlFor: 'ps' }),
-					React.createElement('input', { type: 'radio', id: 'xbox', className: 'xbox', name: 'psOrxbox', checked: !psChecked, onClick: changeConsoleXboxHandler }),
-					React.createElement('label', { htmlFor: 'xbox' })
+					React.createElement('input', { type: 'radio', id: "ps" + temp_id, className: 'ps', name: "psOrxbox" + temp_id, checked: psChecked, onClick: changeConsolePsHandler }),
+					React.createElement('label', { htmlFor: "ps" + temp_id }),
+					React.createElement('input', { type: 'radio', id: "xbox" + temp_id, className: 'xbox', name: "psOrxbox" + temp_id, checked: !psChecked, onClick: changeConsoleXboxHandler }),
+					React.createElement('label', { htmlFor: "xbox" + temp_id })
 				),
 				React.createElement(
 					'span',
@@ -28530,6 +28559,9 @@ const Profile = React.createClass({
 		store = AppStore.getStore();
 		if (typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			store.profile.list.push({ toCreate: true });
+			store.profile.list = store.profile.list.map(item => {
+				item.temp_id = store.profile.list.indexOf(item);return item;
+			});
 		}
 		this.setState(store);
 	},

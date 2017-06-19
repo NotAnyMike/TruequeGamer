@@ -250,6 +250,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 					AppStore.onProfileUpdated()
 				});
 			});
+
 		}else{
 			//use xml
 		}

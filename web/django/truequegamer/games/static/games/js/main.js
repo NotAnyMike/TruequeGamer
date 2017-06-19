@@ -28338,6 +28338,7 @@ const Profile = React.createClass({
 			store.profile.list.push({ toCreate: true });
 		}
 		this.setState(store);
+		debugger;
 	},
 
 	render: function () {

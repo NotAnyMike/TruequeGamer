@@ -41,7 +41,7 @@ def CurrentUser(request):
 @api_view(['GET'])
 def SomeUser(request, username):
     if request.method == 'GET':
-        user = User.objects.filter(username='test')
+        user = User.objects.filter(username=username)
         if user != None:
             user = user[0]
 

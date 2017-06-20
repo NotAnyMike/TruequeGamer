@@ -236,20 +236,31 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
         #return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
         if serializer.is_valid():
             #Check if the user is logged in
-            if True or request.user.is_authenticated():
+            if request.user.is_authenticated():
                 #Check if the price is positive
-                if request.data['price'] >= 0:
+                if data['price'] >= 0:
                     #Check if the console is right
-                    #if serializer.data.console in list(constants.CONSOLES.values()):
+                    if data['console'] in list(constants.CONSOLES.values()):
                         #Construct an Dvd Object
-                        #Save it
-                        #pass
-                    pass
+                        #Get the game with the id field
+                        game = Game.objects.get(pk=data['pk'])
+                        if game is not None:
+                            dvdToSave = Dvd(
+                                    price = data['price'],
+                                    exchange = data['exchange'],
+                                    new = data['new'],
+                                    owner = request.user,
+                                    game = game,
+                                    console = data['console'],
+                                    comment = data['comment'],
+                                    )
+                            #Save it
+                            dvdToSave.save()
+                            serializer = SingleDvdSerializer(dvdToSave)
+                            return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)
-
-            
-            return Response("ok", status=status.HTTP_201_CREATED)
+    
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     #Every case in the if ( != "game") has its own return statement, if it comes to here something happened

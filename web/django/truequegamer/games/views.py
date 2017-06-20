@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -61,7 +61,8 @@ def SomeUser(request, username):
     else:
         return HttpResponse('Unauthorized', status=401)
 
-@api_view(['GET'])
+#The POST: Update and the PUT add
+@api_view(['GET', 'PUT', 'POST'])
 def LocalSuggestions(request, serializerType, console, new, sell, string):
     if request.method == 'GET':
         
@@ -221,9 +222,36 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
                 #throw error
                 return Response('Bad request', status=400)
 
+    #Update
+    elif request.method == 'POST':
+        pass
+    
+    #Add
+    elif request.method == 'PUT':
+        data = request.data
+        new_data = dict((key.encode('utf-8'), value) for key, value in data.items())
+        data.update(new_data) #adding data without the unicode encoding on the key's items
 
-        #Every case in the if ( != "game") has its own return statement, if it comes to here something happened
-        return Response('Internal error', status=500)
+        serializer = SingleDvdSerializer(data=data, partial=True)
+        #return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            #Check if the user is logged in
+            if True or request.user.is_authenticated():
+                #Check if the price is positive
+                if request.data['price'] >= 0:
+                    #Check if the console is right
+                    #if serializer.data.console in list(constants.CONSOLES.values()):
+                        #Construct an Dvd Object
+                        #Save it
+                        #pass
+                    pass
+            else:
+                return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
+            
+            return Response("ok", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    #Every case in the if ( != "game") has its own return statement, if it comes to here something happened
     else:
         return Response('Unauthorized', status=401)

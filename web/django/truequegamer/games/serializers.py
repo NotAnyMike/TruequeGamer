@@ -133,3 +133,4 @@ class SingleDvdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dvd
         fields = ('pk', 'name', 'cover', 'price', 'exchange', 'used', 'console', 'comment')
+        #validators = [] 

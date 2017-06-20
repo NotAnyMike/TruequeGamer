@@ -26170,13 +26170,15 @@ arguments[4][6][0].apply(exports,arguments)
 module.exports = require('./lib/React');
 
 },{"./lib/React":96}],240:[function(require,module,exports){
-const React = require('react');
+"use strict";
 
-const AvailableConsoles = React.createClass({
+var React = require('react');
+
+var AvailableConsoles = React.createClass({
 	displayName: "AvailableConsoles",
 
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			"div",
 			{ className: "availableConsoles" },
@@ -26194,6 +26196,10 @@ const AvailableConsoles = React.createClass({
 module.exports = AvailableConsoles;
 
 },{"react":239}],241:[function(require,module,exports){
+'use strict';
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var React = require('react'),
     ChatContainer = require('./chatContainer.js'),
     ChatBubble = require('./chatBubble.js'),
@@ -26204,7 +26210,7 @@ var Chat = React.createClass({
 	displayName: 'Chat',
 
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		var store = ChatStore.getStore();
 		var id = null;
 		if (store.chats.length > 0) {
@@ -26222,35 +26228,35 @@ var Chat = React.createClass({
 		};
 	},
 
-	componentDidMount: function () {
+	componentDidMount: function componentDidMount() {
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
 		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
-	componentWillUnmount: function () {
+	componentWillUnmount: function componentWillUnmount() {
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
 		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
-	onChatsUpdated: function () {
+	onChatsUpdated: function onChatsUpdated() {
 		chats = ChatStore.getChats();
 		this.setState({ chats: chats });
 	},
 
-	onMessageAdded: function () {
+	onMessageAdded: function onMessageAdded() {
 		this.setState({
 			store: ChatStore.getStore()
 		});
 	},
 
-	onUnreadMessageCountUpdated: function () {
+	onUnreadMessageCountUpdated: function onUnreadMessageCountUpdated() {
 		console.log("unread msg: " + this.state.store.unread);
 		this.forceUpdate();
 	},
 
-	showChatFn: function () {
+	showChatFn: function showChatFn() {
 		var singleChatVisible;
 		if (this.state.singleChatVisible === null) {
 			singleChatVisible = null;
@@ -26263,7 +26269,7 @@ var Chat = React.createClass({
 		});
 	},
 
-	closeChatFn: function () {
+	closeChatFn: function closeChatFn() {
 		var singleChatVisibility = null;
 		if (this.state.singleChatVisible) singleChatVisibility = false;
 		this.setState({
@@ -26272,13 +26278,13 @@ var Chat = React.createClass({
 		});
 	},
 
-	closeSingleChatFn: function () {
+	closeSingleChatFn: function closeSingleChatFn() {
 		this.setState({
 			singleChatVisible: false
 		});
 	},
 
-	openCertainChatFn: function (id) {
+	openCertainChatFn: function openCertainChatFn(id) {
 		//get the position of the chat with id id
 		if (this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null) {
 			this.setState({
@@ -26291,7 +26297,7 @@ var Chat = React.createClass({
 		}
 	},
 
-	sendFn: function () {
+	sendFn: function sendFn() {
 		var text = this.state.textToSend.replace(/\s+/g, '');
 		if (text !== '') {
 			this.setState({ textToSend: '' });
@@ -26299,7 +26305,7 @@ var Chat = React.createClass({
 		}
 	},
 
-	onChangeInputChatFn: function (e) {
+	onChangeInputChatFn: function onChangeInputChatFn(e) {
 		var value;
 		//Firefox does not support .innerText
 		if (!e.target.innerText) {
@@ -26310,14 +26316,16 @@ var Chat = React.createClass({
 		this.setState({ textToSend: value });
 	},
 
-	onKeyDownFn: function (e) {
+	onKeyDownFn: function onKeyDownFn(e) {
 		if (e.keyCode === 13 && !e.shiftKey) {
 			e.preventDefault();
 			this.sendFn();
 		}
 	},
 
-	onSearchChatFn: function () {
+	onSearchChatFn: function onSearchChatFn() {
+		var _this = this;
+
 		//what to do when the search button on the chats is clicked
 		var valueToSearch = ChatStore.getSearchChatValue();
 
@@ -26327,8 +26335,10 @@ var Chat = React.createClass({
 			});
 		} else {
 			//filter function, it returns elements which have at least one member with the same nickname (all in lowercase) and different id from the user logged in
-			var filteredChats = this.state.store.chats.filter(chat => {
-				return !!chat.members.find(member => member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id);
+			var filteredChats = this.state.store.chats.filter(function (chat) {
+				return !!chat.members.find(function (member) {
+					return member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + _this.state.store.user.id;
+				});
 			});
 			console.log(filteredChats);
 			this.setState({
@@ -26338,18 +26348,23 @@ var Chat = React.createClass({
 		}
 	},
 
-	onSearchChatValueChangeFn: function (value) {
+	onSearchChatValueChangeFn: function onSearchChatValueChangeFn(value) {
 		Actions.setSearchChatValue(value);
 		this.onSearchChatFn();
 	},
 
-	onCloseButtonSearchChatFn: function () {
+	onCloseButtonSearchChatFn: function onCloseButtonSearchChatFn() {
 		Actions.setSearchChatValue("");
 		this.onSearchChatFn();
 	},
 
-	render: function () {
-		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(x => x.id === this.state.activeChat));
+	render: function render() {
+		var _this2 = this,
+		    _React$createElement;
+
+		var activeChat = this.state.store.chats.indexOf(this.state.store.chats.find(function (x) {
+			return x.id === _this2.state.activeChat;
+		}));
 		var chats = this.state.searchingChat ? this.state.filteredChats : this.state.store.chats;
 		var searchChatValue = ChatStore.getSearchChatValue();
 
@@ -26357,7 +26372,7 @@ var Chat = React.createClass({
 			'div',
 			null,
 			React.createElement(ChatBubble, { unread: this.state.store.unread, showChatFn: this.showChatFn }),
-			React.createElement(ChatContainer, {
+			React.createElement(ChatContainer, (_React$createElement = {
 				visible: this.state.visible,
 				singleChatVisible: this.state.singleChatVisible,
 				chats: chats,
@@ -26370,12 +26385,8 @@ var Chat = React.createClass({
 				sendFn: this.sendFn,
 				onKeyDownFn: this.onKeyDownFn,
 				value: this.state.textToSend,
-				onSearchChatFn: this.onSearchChatFn,
-				searchingChat: this.state.searchingChat,
-				onSearchChatValueChangeFn: this.onSearchChatValueChangeFn,
-				searchChatValue: searchChatValue,
-				onCloseButtonSearchChatFn: this.onCloseButtonSearchChatFn
-			})
+				onSearchChatFn: this.onSearchChatFn
+			}, _defineProperty(_React$createElement, 'searchingChat', this.state.searchingChat), _defineProperty(_React$createElement, 'onSearchChatValueChangeFn', this.onSearchChatValueChangeFn), _defineProperty(_React$createElement, 'searchChatValue', searchChatValue), _defineProperty(_React$createElement, 'onCloseButtonSearchChatFn', this.onCloseButtonSearchChatFn), _React$createElement))
 		);
 	}
 });
@@ -26383,6 +26394,8 @@ var Chat = React.createClass({
 module.exports = Chat;
 
 },{"../stores/chatStore.js":280,"../utils/actions.js":281,"./chatBubble.js":242,"./chatContainer.js":243,"react":239}],242:[function(require,module,exports){
+"use strict";
+
 var React = require('react');
 
 var ChatBubble = React.createClass({
@@ -26394,7 +26407,7 @@ var ChatBubble = React.createClass({
 		showChatFn: React.PropTypes.func.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		var className = "messagesNumber " + (this.props.unread == 0 ? "hidden" : "");
 		return React.createElement(
 			"section",
@@ -26417,6 +26430,8 @@ var ChatBubble = React.createClass({
 module.exports = ChatBubble;
 
 },{"react":239}],243:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     ChatList = require('./chatList.js'),
     SingleChat = require('./singleChat.js');
@@ -26443,7 +26458,7 @@ var ChatContainer = React.createClass({
 		searchChatValue: React.PropTypes.string
 	},
 
-	render: function () {
+	render: function render() {
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 
@@ -26480,6 +26495,8 @@ var ChatContainer = React.createClass({
 module.exports = ChatContainer;
 
 },{"./chatList.js":244,"./singleChat.js":272,"react":239}],244:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     ItemChat = require('./itemChat.js');
 
@@ -26498,17 +26515,17 @@ var ChatList = React.createClass({
 		searchChatValue: React.PropTypes.string
 	},
 
-	onSearchChatChangeFn: function (e) {
+	onSearchChatChangeFn: function onSearchChatChangeFn(e) {
 		this.props.onSearchChatValueChangeFn(e.target.value);
 	},
 
-	onKeyDown: function (e) {
+	onKeyDown: function onKeyDown(e) {
 		if (e.keyCode === 27) {
 			this.props.onCloseButtonSearchChatFn();
 		}
 	},
 
-	render: function () {
+	render: function render() {
 		chats = [];
 		if (this.props.chats && this.props.chats.length != null && this.props.chats.length > 0) {
 			this.props.chats.map(function (element) {
@@ -26574,6 +26591,8 @@ var ChatList = React.createClass({
 module.exports = ChatList;
 
 },{"./itemChat.js":262,"react":239}],245:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     Constants = require('../utils/constants.js'),
     Actions = require('../utils/actions.js');
@@ -26582,7 +26601,7 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	handleClick: function () {
+	handleClick: function handleClick() {
 		Actions.changeFilterState(this.props.console, !this.props.checked);
 	},
 
@@ -26593,7 +26612,7 @@ module.exports = React.createClass({
 		filterType: React.PropTypes.oneOf([Constants.filter.ps, Constants.filter.xbox]).isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		var consoleClassName = "";
 		if (this.props.console === Constants.consoles.ps) consoleClassName = "ps4";else consoleClassName = "xboxone";
 		var className = "consoleCheckbox " + consoleClassName + (this.props.checked ? ' checked' : '');
@@ -26626,14 +26645,14 @@ module.exports = React.createClass({
 		ps: React.PropTypes.bool.isRequired
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return {
 			xbox: false,
 			ps: false
 		};
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'section',
 			{ className: 'consoleContainer' },
@@ -26645,6 +26664,8 @@ module.exports = React.createClass({
 });
 
 },{"../utils/constants.js":282,"./consoleCheckbox.js":245,"react":239}],247:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     Link = require('react-router').Link;
 
@@ -26652,7 +26673,7 @@ var ContactUs = React.createClass({
 	displayName: 'ContactUs',
 
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			Link,
 			{ to: '/' },
@@ -26665,54 +26686,56 @@ var ContactUs = React.createClass({
 module.exports = ContactUs;
 
 },{"react":239,"react-router":37}],248:[function(require,module,exports){
-const React = require('react'),
-      AppStore = require('../stores/appStore.js'),
-      Constants = require('../utils/constants.js'),
-      Actions = require('../utils/actions.js'),
-      Chat = require('./chat.js'),
-      Header = require('./header.js'),
-      Footer = require('./footer.js'),
-      DetailsMainContainer = require('./detailsMainContainer.js'),
-      browserHistory = require('react-router').browserHistory;
+'use strict';
 
-const Details = React.createClass({
+var React = require('react'),
+    AppStore = require('../stores/appStore.js'),
+    Constants = require('../utils/constants.js'),
+    Actions = require('../utils/actions.js'),
+    Chat = require('./chat.js'),
+    Header = require('./header.js'),
+    Footer = require('./footer.js'),
+    DetailsMainContainer = require('./detailsMainContainer.js'),
+    browserHistory = require('react-router').browserHistory;
+
+var Details = React.createClass({
 	displayName: 'Details',
 
 
 	propTypes: {},
 
-	goToProfile: function () {
+	goToProfile: function goToProfile() {
 		Actions.goToProfile();
 	},
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
 		var store = AppStore.getStore();
 		return store;
 	},
 
-	componentDidMount: function () {
+	componentDidMount: function componentDidMount() {
 		AppStore.addOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
 		AppStore.addOnGoToProfileListener(this.loadProfilePage);
 	},
 
-	componentWillUnmount: function () {
+	componentWillUnmount: function componentWillUnmount() {
 		AppStore.removeOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
 		AppStore.removeOnGoToProfileListener(this.loadProfilePage);
 	},
 
-	onGamesAvailableUpdated: function () {
+	onGamesAvailableUpdated: function onGamesAvailableUpdated() {
 		var store = AppStore.getStore();
 		this.setState(store);
 	},
 
-	loadProfilePage: function () {
+	loadProfilePage: function loadProfilePage() {
 		//TODO: change this
 		var route = "/profile/test";
 		browserHistory.push(route);
 	},
 
-	render: function () {
+	render: function render() {
 
 		var headerVersion;
 		if (this.props.route.console === Constants.consoles.both) {
@@ -26760,11 +26783,13 @@ const Details = React.createClass({
 module.exports = Details;
 
 },{"../stores/appStore.js":279,"../utils/actions.js":281,"../utils/constants.js":282,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239,"react-router":37}],249:[function(require,module,exports){
-const React = require('react'),
-      Constants = require('../utils/constants.js'),
-      functions = require('../utils/functions.js');
+'use strict';
 
-const DetailsGameLabel = React.createClass({
+var React = require('react'),
+    Constants = require('../utils/constants.js'),
+    functions = require('../utils/functions.js');
+
+var DetailsGameLabel = React.createClass({
 	displayName: 'DetailsGameLabel',
 
 
@@ -26781,7 +26806,7 @@ const DetailsGameLabel = React.createClass({
 		city: React.PropTypes.string
 	},
 
-	render: function () {
+	render: function render() {
 		var minPriceVar = "-";
 		if (typeof this.props.hasHigherPrices !== 'undefined' && typeof this.props.priceMin !== 'undefined') minPriceVar = "Desde " + functions.addDecimalPoints(this.props.priceMin);
 
@@ -26876,11 +26901,13 @@ const DetailsGameLabel = React.createClass({
 module.exports = DetailsGameLabel;
 
 },{"../utils/constants.js":282,"../utils/functions.js":283,"react":239}],250:[function(require,module,exports){
-const React = require('react'),
-      GameItem = require('./gameItem.js'),
-      Constants = require('../utils/constants.js');
+'use strict';
 
-const DetailsList = React.createClass({
+var React = require('react'),
+    GameItem = require('./gameItem.js'),
+    Constants = require('../utils/constants.js');
+
+var DetailsList = React.createClass({
 	displayName: 'DetailsList',
 
 
@@ -26892,7 +26919,7 @@ const DetailsList = React.createClass({
 		goToProfileFn: React.PropTypes.func
 	},
 
-	render: function () {
+	render: function render() {
 
 		var consoleVar = this.props.console;
 		var self = this;
@@ -26920,7 +26947,8 @@ const DetailsList = React.createClass({
 							isProfile: self.props.isProfile,
 							isNew: false,
 							name: "lol",
-							key: element.pk
+							key: element.pk,
+							temp_id: element.temp_id
 						});
 					} else {
 						gameItem = React.createElement(GameItem, {
@@ -26933,7 +26961,8 @@ const DetailsList = React.createClass({
 							price: element.price,
 							comment: element.comment,
 							isNew: false,
-							key: element.pk
+							key: element.pk,
+							temp_id: element.temp_id
 						});
 					}
 				} else {
@@ -26970,12 +26999,14 @@ const DetailsList = React.createClass({
 module.exports = DetailsList;
 
 },{"../utils/constants.js":282,"./gameItem.js":256,"react":239}],251:[function(require,module,exports){
-const React = require('react'),
-      DetailsList = require('./detailsList.js'),
-      DetailsGameLabel = require('./detailsGameLabel.js'),
-      Constants = require('../utils/constants.js');
+'use strict';
 
-const DetailsMainContainer = React.createClass({
+var React = require('react'),
+    DetailsList = require('./detailsList.js'),
+    DetailsGameLabel = require('./detailsGameLabel.js'),
+    Constants = require('../utils/constants.js');
+
+var DetailsMainContainer = React.createClass({
 	displayName: 'DetailsMainContainer',
 
 
@@ -26991,7 +27022,7 @@ const DetailsMainContainer = React.createClass({
 		numberOfGames: React.PropTypes.number
 	},
 
-	render: function () {
+	render: function render() {
 		var detailsGameLabelVar;
 		if (this.props.isProfile) {
 			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
@@ -27100,12 +27131,12 @@ module.exports = React.createClass({
 		filterType: React.PropTypes.oneOf([Constants.filter.not_used, Constants.filter.used, Constants.filter.exchange, Constants.filter.to_sell]).isRequired
 	},
 
-	clickHandler: function () {
+	clickHandler: function clickHandler() {
 		var new_state = !this.props.checked;
 		Actions.changeFilterState(this.props.filterType, new_state);
 	},
 
-	render: function () {
+	render: function render() {
 		var className = 'extraFilterButton' + (this.props.checked ? ' checked' : '');
 		var title = '';
 		switch (this.props.filterType) {
@@ -27151,7 +27182,7 @@ module.exports = React.createClass({
 		searchValues: React.PropTypes.object.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'extraFilterContainer' },
@@ -27203,7 +27234,7 @@ module.exports = React.createClass({
 		searchValues: React.PropTypes.object.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'filterMainContainer' },
@@ -27229,11 +27260,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.footer.versions.normal, Constants.footer.versions.white, Constants.footer.versions.whiteBackground])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.footer.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'footer',
 			{ className: this.props.version },
@@ -27297,12 +27328,14 @@ module.exports = React.createClass({
 });
 
 },{"../utils/constants.js":282,"./socialLink.js":275,"react":239}],256:[function(require,module,exports){
-const React = require('react'),
-      AvailableConsoles = require('./availableConsoles.js'),
-      Constants = require('../utils/constants.js'),
-      Functions = require('../utils/functions.js');
+'use strict';
 
-const GameItem = React.createClass({
+var React = require('react'),
+    AvailableConsoles = require('./availableConsoles.js'),
+    Constants = require('../utils/constants.js'),
+    Functions = require('../utils/functions.js');
+
+var GameItem = React.createClass({
 	displayName: 'GameItem',
 
 
@@ -27341,7 +27374,7 @@ const GameItem = React.createClass({
 		comment: React.PropTypes.string,
 		isNew: React.PropTypes.bool },
 
-	componentDidMount: function () {
+	componentDidMount: function componentDidMount() {
 		this.setState({
 			editing: {
 				name: this.props.name,
@@ -27354,7 +27387,7 @@ const GameItem = React.createClass({
 		});
 	},
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		return {
 			isHover: false,
 			isComponentHover: false,
@@ -27371,7 +27404,7 @@ const GameItem = React.createClass({
 		};
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return {
 			psNoSell: false,
 			xboxNoSell: false,
@@ -27386,23 +27419,23 @@ const GameItem = React.createClass({
 		};
 	},
 
-	_onMouseOver: function () {
+	_onMouseOver: function _onMouseOver() {
 		this.setState({ isHover: true });
 	},
 
-	_onMouseOut: function () {
+	_onMouseOut: function _onMouseOut() {
 		this.setState({ isHover: false });
 	},
 
-	_onMouseOutComponent: function () {
+	_onMouseOutComponent: function _onMouseOutComponent() {
 		if (this.props.isOwnerOfProfile === true) this.setState({ isComponentHover: false });
 	},
 
-	_onMouseOverComponent: function () {
+	_onMouseOverComponent: function _onMouseOverComponent() {
 		if (this.props.isOwnerOfProfile === true) this.setState({ isComponentHover: true });
 	},
 
-	_onInfoClicked: function () {
+	_onInfoClicked: function _onInfoClicked() {
 		//if own show editing
 		if (typeof this.props.isOwnerOfProfile !== 'undefined' && this.props.isOwnerOfProfile) {
 			if (this.state.isShowingComment) {
@@ -27420,11 +27453,11 @@ const GameItem = React.createClass({
 		}
 	},
 
-	_onEditCommentClicked: function () {
+	_onEditCommentClicked: function _onEditCommentClicked() {
 		this.setState({ isShowingComment: true });
 	},
 
-	_onPublishButtonClicked: function () {
+	_onPublishButtonClicked: function _onPublishButtonClicked() {
 		//if comment open save it and close
 		if (this.state.isShowingComment && this.state.isEditing) {
 			this.setState({ isShowingComment: false, isEditing: true });
@@ -27435,11 +27468,11 @@ const GameItem = React.createClass({
 		}
 	},
 
-	_goToPage: function () {
+	_goToPage: function _goToPage() {
 		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
 	},
 
-	_changeCommentHandler: function (e) {
+	_changeCommentHandler: function _changeCommentHandler(e) {
 		var newValue = e.target.value;
 		this.setState({
 			editing: {
@@ -27453,7 +27486,7 @@ const GameItem = React.createClass({
 		});
 	},
 
-	_changeNameHandler: function (e) {
+	_changeNameHandler: function _changeNameHandler(e) {
 		var newValue = e.target.value;
 		this.setState({
 			editing: {
@@ -27467,7 +27500,7 @@ const GameItem = React.createClass({
 		});
 	},
 
-	_changeExchangeHandler: function (e) {
+	_changeExchangeHandler: function _changeExchangeHandler(e) {
 		var newValue = e.target.checked;
 		this.setState({
 			editing: {
@@ -27481,7 +27514,7 @@ const GameItem = React.createClass({
 		});
 	},
 
-	_changeNoExchangeHandler: function (e) {
+	_changeNoExchangeHandler: function _changeNoExchangeHandler(e) {
 		var newValue = !e.target.checked;
 		this.setState({
 			editing: {
@@ -27495,7 +27528,7 @@ const GameItem = React.createClass({
 		});
 	},
 
-	_changeNewHandler: function (e) {
+	_changeNewHandler: function _changeNewHandler(e) {
 		var newValue = !e.target.checked;
 		this.setState({
 			editing: {
@@ -27509,7 +27542,7 @@ const GameItem = React.createClass({
 		});
 	},
 
-	_changeUsedHandler: function (e) {
+	_changeUsedHandler: function _changeUsedHandler(e) {
 		var newValue = e.target.checked;
 		this.setState({
 			editing: {
@@ -27523,7 +27556,7 @@ const GameItem = React.createClass({
 		});
 	},
 
-	_changeConsoleXboxHandler: function (e) {
+	_changeConsoleXboxHandler: function _changeConsoleXboxHandler(e) {
 		var newValue = !e.target.checked;
 		this.setState({
 			editing: {
@@ -27537,7 +27570,7 @@ const GameItem = React.createClass({
 		});
 	},
 
-	_changeConsolePsHandler: function (e) {
+	_changeConsolePsHandler: function _changeConsolePsHandler(e) {
 		var newValue = e.target.checked;
 		this.setState({
 			editing: {
@@ -27551,7 +27584,7 @@ const GameItem = React.createClass({
 		});
 	},
 
-	_changePriceHandler: function (e) {
+	_changePriceHandler: function _changePriceHandler(e) {
 		var newValue = e.target.value.replace(/[^0-9]/g, '');
 		this.setState({
 			editing: {
@@ -27565,8 +27598,9 @@ const GameItem = React.createClass({
 		});
 	},
 
-	render: function () {
+	render: function render() {
 
+		var temp_id = 0; //Only to controll the readio buttons on  the new from in profile page
 		var onClickComponent = null;
 		var cover = null;
 		var name = null;
@@ -27608,22 +27642,51 @@ const GameItem = React.createClass({
 
 		if (this.props.isProfile) {
 
-			if (typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true) {
+			temp_id = this.props.temp_id;
+
+			//TODO: to remove
+			if (false && typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true) {
 
 				className = "new";
+				if (this.state.isEditing) {
+					className += " editing";
+				} else {
+					onClickComponent = this._onInfoClicked;
+				}
 			} else {
 
-				className = this.props.console + " only";
-				if (this.props.console === Constants.consoles.xbox) {
-					className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
-				}
-				if (this.props.console === Constants.consoles.ps) {
-					className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
-				}
-				if (this.props.used) {
-					if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
+				var isNew = typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true;
+				if (isNew) {
+
+					className = "new";
+					if (this.state.isEditing === false) {
+						onClickComponent = this._onInfoClicked;
+					}
 				} else {
-					if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
+
+					className = this.props.console + " only";
+					if (this.props.console === Constants.consoles.xbox) {
+						className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
+					}
+					if (this.props.console === Constants.consoles.ps) {
+						className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
+					}
+					if (this.props.used) {
+						if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
+					} else {
+						if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
+					}
+
+					if (this.props.isNew === false) {
+						className += " alreadyCreated";
+						if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
+							className += " onlyExchange";
+						} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
+							className += " onlySell";
+						}
+					}
+
+					if (this.props.isProfile) className += " showInfo";
 				}
 
 				if (this.state.isEditing) {
@@ -27632,26 +27695,17 @@ const GameItem = React.createClass({
 				if (this.state.isShowingComment) {
 					className += " showComment";
 				}
-				if (this.props.isProfile) className += " showInfo";
 				if (this.state.isComponentHover && this.state.isEditing === false || this.state.isEditing === true && this.state.isShowingComment === true || this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false) {
 					className += " commentContainerIn";
 				} else {
 					className += " commentContainerOut";
 				}
-				if (this.props.isNew === false) {
-					className += " alreadyCreated";
-					if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
-						className += " onlyExchange";
-					} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
-						className += " onlySell";
-					}
-				}
 
 				onClickComponent = this._goToPage;
 				cover = this.props.cover;
 				name = this.state.editing.name;
-				onMouseOverComponent = this._onMouseOverComponent;
-				onMouseOutComponent = this._onMouseOutComponent;
+				onMouseOverComponent = isNew ? null : this._onMouseOverComponent;
+				onMouseOutComponent = isNew ? null : this._onMouseOutComponent;
 				onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
 				onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
 				onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
@@ -27674,6 +27728,12 @@ const GameItem = React.createClass({
 				used = this.state.editing.used;
 				exchange = this.state.editing.exchange;
 				comment = this.state.editing.comment;
+
+				if (isNew) {
+					if (this.state.isEditing === false) {
+						onClickComponent = this._onInfoClicked;
+					}
+				}
 			}
 		} else {
 
@@ -27851,16 +27911,16 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'radio', id: 'new', name: 'new', value: !used, checked: !used, onClick: changeNewHandler }),
+					React.createElement('input', { type: 'radio', id: "new" + temp_id, name: "new" + temp_id, value: !used, checked: !used, onClick: changeNewHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'new' },
+						{ htmlFor: "new" + temp_id },
 						'Nuevo'
 					),
-					React.createElement('input', { type: 'radio', id: 'old', name: 'new', value: used, checked: used, onClick: changeUsedHandler }),
+					React.createElement('input', { type: 'radio', id: "old" + temp_id, name: "new" + temp_id, value: used, checked: used, onClick: changeUsedHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'old' },
+						{ htmlFor: "old" + temp_id },
 						'Usado'
 					)
 				),
@@ -27872,16 +27932,16 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'exchange' },
-					React.createElement('input', { type: 'radio', id: 'exchange', name: 'exchange', checked: exchange, onClick: changeExchangeHandler }),
+					React.createElement('input', { type: 'radio', id: "exchange" + temp_id, name: "exchange" + temp_id, checked: exchange, onClick: changeExchangeHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'exchange' },
+						{ htmlFor: "exchange" + temp_id },
 						'Sí'
 					),
-					React.createElement('input', { type: 'radio', id: 'noExchange', name: 'exchange', checked: !exchange, onClick: changeNoExchangeHandler }),
+					React.createElement('input', { type: 'radio', id: "noExchange" + temp_id, name: "exchange" + temp_id, checked: !exchange, onClick: changeNoExchangeHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'noExchange' },
+						{ htmlFor: "noExchange" + temp_id },
 						'No'
 					)
 				),
@@ -27893,10 +27953,10 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'console' },
-					React.createElement('input', { type: 'radio', id: 'ps', className: 'ps', name: 'psOrxbox', checked: psChecked, onClick: changeConsolePsHandler }),
-					React.createElement('label', { htmlFor: 'ps' }),
-					React.createElement('input', { type: 'radio', id: 'xbox', className: 'xbox', name: 'psOrxbox', checked: !psChecked, onClick: changeConsoleXboxHandler }),
-					React.createElement('label', { htmlFor: 'xbox' })
+					React.createElement('input', { type: 'radio', id: "ps" + temp_id, className: 'ps', name: "psOrxbox" + temp_id, checked: psChecked, onClick: changeConsolePsHandler }),
+					React.createElement('label', { htmlFor: "ps" + temp_id }),
+					React.createElement('input', { type: 'radio', id: "xbox" + temp_id, className: 'xbox', name: "psOrxbox" + temp_id, checked: !psChecked, onClick: changeConsoleXboxHandler }),
+					React.createElement('label', { htmlFor: "xbox" + temp_id })
 				),
 				React.createElement(
 					'span',
@@ -27975,11 +28035,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.header.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'header',
 			{ className: this.props.version },
@@ -28011,12 +28071,12 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		var store = AppStore.getStore();
 		return store;
 	},
 
-	componentDidMount: function () {
+	componentDidMount: function componentDidMount() {
 		AppStore.addSearchButtonClickedListener(this.onSearch);
 		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.addOnUserUpdateListener(this.onUserUpdated);
@@ -28024,29 +28084,29 @@ module.exports = React.createClass({
 		Functions.startAnalytics();
 	},
 
-	componentWillUnmount: function () {
+	componentWillUnmount: function componentWillUnmount() {
 		AppStore.removeSearchButtonClickedListener(this.onSearch);
 		AppStore.removeOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.removeOnUserUpdateListener(this.onUserUpdated);
 		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
 	},
 
-	onUserUpdated: function () {
+	onUserUpdated: function onUserUpdated() {
 		var userData = AppStore.getUser();
 		this.setState({ user: userData });
 	},
 
-	onFilterRefresh: function () {
+	onFilterRefresh: function onFilterRefresh() {
 		var search = AppStore.getSearchValues();
 		this.setState({ search: search });
 	},
 
-	onSuggestionRefresh: function () {
+	onSuggestionRefresh: function onSuggestionRefresh() {
 		var suggestions = AppStore.getSuggestions();
 		this.setState({ suggestions: { value: suggestions.value, list: suggestions.list } });
 	},
 
-	changeHandlerForSearchInputFn: function (new_value) {
+	changeHandlerForSearchInputFn: function changeHandlerForSearchInputFn(new_value) {
 		//this.setState({value: new_value});
 		Actions.changeSearchInput(new_value);
 
@@ -28057,17 +28117,17 @@ module.exports = React.createClass({
 		this.setState({ suggestions: { value: new_value, list: suggestionsVar } });
 	},
 
-	suggestionSelectedHandlerFn: function (value) {
+	suggestionSelectedHandlerFn: function suggestionSelectedHandlerFn(value) {
 		var suggestionsList = this.state.suggestions.list;
 		this.setState({ suggestions: { value: value, list: suggestionsList } });
 		Actions.changeSearchInput(value);
 	},
 
-	onKeyDownHandlerForSearchInput: function () {
+	onKeyDownHandlerForSearchInput: function onKeyDownHandlerForSearchInput() {
 		Actions.searchButtonClicked();
 	},
 
-	onSearch: function () {
+	onSearch: function onSearch() {
 		var store = AppStore.getStore();
 		//console.log('title: ' + store.search.text + ' xbox: ' + store.search.xbox + ' ps: ' + store.search.ps + ' not_used: ' + store.search.not_used + ' used: ' + store.search.used + ' exchange: ' + store.search.exchange + ' to_sell: ' + store.search.to_sell + ' city: ' + store.search.city);
 		var route = "";
@@ -28083,7 +28143,7 @@ module.exports = React.createClass({
 		browserHistory.push(route + store.search.text);
 	},
 
-	render: function () {
+	render: function render() {
 		var chat;
 		if (this.state.user.logged) {
 			chat = React.createElement(Chat, { user: this.state.user });
@@ -28108,6 +28168,8 @@ module.exports = React.createClass({
 });
 
 },{"../stores/appStore.js":279,"../utils/actions.js":281,"../utils/constants.js":282,"../utils/functions.js":283,"./chat.js":241,"./footer.js":255,"./header.js":257,"./mainContainer.js":263,"react":239,"react-router":37}],259:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     ReactDOM = require('react-dom');
 
@@ -28122,7 +28184,7 @@ var InputChat = React.createClass({
 		onChangeInputChatFn: React.PropTypes.func.isRequired
 	},
 
-	shouldComponentUpdate: function (nextProps, nextState) {
+	shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
 		if (nextProps.visible === false || nextProps.visible === null || nextProps.value === this.props.value //in order to avoid that the input field focus when by some reason it updates and the focus was in other element (eg searching chat)
 		|| nextProps.value !== '' && this.props.onKeyDownFn === nextProps.onKeyDownFn && this.props.onChangeInputChat === nextProps.onChangeInputChat && this.props.visible === nextProps.visible) {
 			return false;
@@ -28131,13 +28193,13 @@ var InputChat = React.createClass({
 		}
 	},
 
-	componentDidUpdate: function () {
+	componentDidUpdate: function componentDidUpdate() {
 		if (this.props.visible) {
 			ReactDOM.findDOMNode(this).focus();
 		}
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement('span', { id: 'chatInputDiv',
 			className: 'content',
 			contentEditable: true,
@@ -28154,8 +28216,8 @@ module.exports = InputChat;
 },{"react":239,"react-dom":7}],260:[function(require,module,exports){
 'use strict';
 
-const React = require('react'),
-      Constants = require('../utils/constants.js');
+var React = require('react'),
+    Constants = require('../utils/constants.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -28165,11 +28227,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.header.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'figure',
 			{ className: this.props.version },
@@ -28196,11 +28258,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.header.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'isotypeContainer' },
@@ -28212,6 +28274,8 @@ module.exports = React.createClass({
 });
 
 },{"../utils/constants.js":282,"./isotype.js":260,"./slogan.js":274,"react":239}],262:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     Constants = require('../utils/constants.js');
 
@@ -28219,7 +28283,7 @@ var ItemChat = React.createClass({
 	displayName: 'ItemChat',
 
 
-	setInitialState: function () {
+	setInitialState: function setInitialState() {
 		return {};
 	},
 
@@ -28232,14 +28296,18 @@ var ItemChat = React.createClass({
 		id: React.PropTypes.string.isRequired
 	},
 
-	render: function () {
+	render: function render() {
+		var _this = this;
+
 		var img = this.props.user.pic;
 		if (!img) {
 			img = Constants.genericProfile;
 		}
 		return React.createElement(
 			'li',
-			{ className: this.props.read ? "" : "unread", onClick: () => this.props.openCertainChatFn(this.props.id) },
+			{ className: this.props.read ? "" : "unread", onClick: function onClick() {
+					return _this.props.openCertainChatFn(_this.props.id);
+				} },
 			React.createElement(
 				'figure',
 				null,
@@ -28287,7 +28355,7 @@ module.exports = React.createClass({
 		searchValues: React.PropTypes.object.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'mainContainer' },
@@ -28306,42 +28374,46 @@ module.exports = React.createClass({
 });
 
 },{"./filterMainContainer.js":254,"./searchButton.js":266,"./searchField.js":268,"react":239}],264:[function(require,module,exports){
-const React = require('react'),
-      AppStore = require('../stores/appStore.js'),
-      Constants = require('../utils/constants.js'),
-      Chat = require('./chat.js'),
-      Header = require('./header.js'),
-      Footer = require('./footer.js'),
-      DetailsMainContainer = require('./detailsMainContainer.js');
+'use strict';
 
-const Profile = React.createClass({
+var React = require('react'),
+    AppStore = require('../stores/appStore.js'),
+    Constants = require('../utils/constants.js'),
+    Chat = require('./chat.js'),
+    Header = require('./header.js'),
+    Footer = require('./footer.js'),
+    DetailsMainContainer = require('./detailsMainContainer.js');
+
+var Profile = React.createClass({
 	displayName: 'Profile',
 
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		AppStore.getProfile(this.props.params.username);
 		var store = AppStore.getStore();
 		return store;
 	},
 
-	componentDidMount: function () {
+	componentDidMount: function componentDidMount() {
 		AppStore.addOnProfileUpdatesListener(this.onProfileUpdates);
 	},
 
-	componentWillUnmount: function () {
+	componentWillUnmount: function componentWillUnmount() {
 		AppStore.removeOnProfileUpdatesListener(this.onProfileUpdates);
 	},
 
-	onProfileUpdates: function () {
+	onProfileUpdates: function onProfileUpdates() {
 		store = AppStore.getStore();
 		if (typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			store.profile.list.push({ toCreate: true });
+			store.profile.list = store.profile.list.map(function (item) {
+				item.temp_id = store.profile.list.indexOf(item);return item;
+			});
 		}
 		this.setState(store);
-		debugger;
 	},
 
-	render: function () {
+	render: function render() {
 
 		var headerVersion = Constants.header.versions.normal;
 		var footerVersion = Constants.footer.versions.whiteBackground;
@@ -28384,9 +28456,9 @@ module.exports = Profile;
 },{"../stores/appStore.js":279,"../utils/constants.js":282,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239}],265:[function(require,module,exports){
 'use strict';
 
-const React = require('react'),
-      Constants = require('../utils/constants.js'),
-      browserHistory = require('react-router').browserHistory;
+var React = require('react'),
+    Constants = require('../utils/constants.js'),
+    browserHistory = require('react-router').browserHistory;
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -28397,12 +28469,12 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	_goToMyProfile: function () {
+	_goToMyProfile: function _goToMyProfile() {
 		var ownProfileLink = "/profile/".concat(this.props.user.username);
 		browserHistory.push(ownProfileLink);
 	},
 
-	render: function () {
+	render: function render() {
 		var loginUrl = "/login/facebook/?next=".concat(window.location.pathname);
 		var toReturn = React.createElement(
 			'a',
@@ -28440,7 +28512,7 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'dot-decorator arrow-decorator searchButtonSection' },
@@ -28452,7 +28524,7 @@ module.exports = React.createClass({
 		);
 	},
 
-	_clickHandler: function () {
+	_clickHandler: function _clickHandler() {
 		Actions.searchButtonClicked();
 	}
 
@@ -28467,7 +28539,7 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: 'searchHeaderButtonContainer' },
@@ -28520,7 +28592,7 @@ module.exports = React.createClass({
  	},
  */
 
-	_changeHandler: function (e) {
+	_changeHandler: function _changeHandler(e) {
 		/*var new_value = e.target.value;
   this.setState({value: new_value});
   if(new_value.length > 3){
@@ -28531,7 +28603,7 @@ module.exports = React.createClass({
 		this.props.changeHandlerForSearchInputFn(e.target.value);
 	},
 
-	_onKeyDownHandler: function (e) {
+	_onKeyDownHandler: function _onKeyDownHandler(e) {
 		if (e.keyCode === 13) {
 			//send
 			//Actions.searchButtonClicked();
@@ -28540,13 +28612,13 @@ module.exports = React.createClass({
 		}
 	},
 
-	suggestionSelectedHandler: function (value) {
+	suggestionSelectedHandler: function suggestionSelectedHandler(value) {
 		/*this.setState({value: value});
   Actions.changeSearchInput(value);*/
 		this.props.suggestionsSelectedHandlerFn(value);
 	},
 
-	render: function () {
+	render: function render() {
 		var clickHandler = this.props.suggestionSelectedHandlerFn;
 		return React.createElement(
 			'div',
@@ -28564,17 +28636,19 @@ module.exports = React.createClass({
 });
 
 },{"../utils/actions.js":281,"./suggestionItem.js":276,"react":239}],269:[function(require,module,exports){
-const React = require('react'),
-      SearchResultsMainContainer = require('./searchResultsMainContainer.js'),
-      Header = require('./header.js'),
-      Footer = require('./footer.js'),
-      Constants = require('../utils/constants.js'),
-      AppStore = require('../stores/appStore.js'),
-      Actions = require('../utils/actions.js'),
-      Chat = require('./chat.js'),
-      browserHistory = require('react-router').browserHistory;
+'use strict';
 
-const SearchResults = React.createClass({
+var React = require('react'),
+    SearchResultsMainContainer = require('./searchResultsMainContainer.js'),
+    Header = require('./header.js'),
+    Footer = require('./footer.js'),
+    Constants = require('../utils/constants.js'),
+    AppStore = require('../stores/appStore.js'),
+    Actions = require('../utils/actions.js'),
+    Chat = require('./chat.js'),
+    browserHistory = require('react-router').browserHistory;
+
+var SearchResults = React.createClass({
 	displayName: 'SearchResults',
 
 
@@ -28583,27 +28657,27 @@ const SearchResults = React.createClass({
 		//console: React.PropTypes.oneOf(Constants.searchResults.types).isRequired
 	},
 
-	getInitialState: function () {
+	getInitialState: function getInitialState() {
 		AppStore.search(this.props.route.console, this.props.params.search);var store = AppStore.getStore();
 		return store;
 	},
 
-	componentDidMount: function () {
+	componentDidMount: function componentDidMount() {
 		AppStore.addOnResultsUpdatedListener(this.onResultsUpdated);
 		AppStore.addOnGoToDetailsListener(this.loadDetailsPage);
 	},
 
-	componentWillUnmount: function () {
+	componentWillUnmount: function componentWillUnmount() {
 		AppStore.removeOnResultsUpdatedListener(this.onResultsUpdated);
 		AppStore.removeOnGoToDetailsListener(this.loadDetailsPage);
 	},
 
-	onResultsUpdated: function () {
+	onResultsUpdated: function onResultsUpdated() {
 		var store = AppStore.getStore();
 		this.setState(store);
 	},
 
-	loadDetailsPage: function (name) {
+	loadDetailsPage: function loadDetailsPage(name) {
 		var route = "";
 		//TODO: Change this hardcoded stuff
 		if ("production" === 'production') {
@@ -28625,11 +28699,11 @@ const SearchResults = React.createClass({
 		browserHistory.push(route);
 	},
 
-	goToDetailsFn: function (name) {
+	goToDetailsFn: function goToDetailsFn(name) {
 		Actions.goToDetails(name);
 	},
 
-	render: function () {
+	render: function render() {
 		var headerVersion;
 		if (this.props.route.console === Constants.consoles.both) {
 			headerVersion = Constants.header.versions.normal;
@@ -28664,11 +28738,13 @@ const SearchResults = React.createClass({
 module.exports = SearchResults;
 
 },{"../stores/appStore.js":279,"../utils/actions.js":281,"../utils/constants.js":282,"./chat.js":241,"./footer.js":255,"./header.js":257,"./searchResultsMainContainer.js":271,"react":239,"react-router":37}],270:[function(require,module,exports){
-const React = require('react'),
-      GameItem = require('./gameItem.js'),
-      Constants = require('../utils/constants.js');
+'use strict';
 
-const SearchResultsList = React.createClass({
+var React = require('react'),
+    GameItem = require('./gameItem.js'),
+    Constants = require('../utils/constants.js');
+
+var SearchResultsList = React.createClass({
 	displayName: 'SearchResultsList',
 
 
@@ -28679,7 +28755,7 @@ const SearchResultsList = React.createClass({
 		list: React.PropTypes.array.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 
 		var consoleVar = this.props.console;
 		var self = this;
@@ -28724,11 +28800,13 @@ const SearchResultsList = React.createClass({
 module.exports = SearchResultsList;
 
 },{"../utils/constants.js":282,"./gameItem.js":256,"react":239}],271:[function(require,module,exports){
-const React = require('react'),
-      SearchResultsList = require('./searchResultsList.js'),
-      Constants = require('../utils/constants.js');
+'use strict';
 
-const SearchResultsMainContainer = React.createClass({
+var React = require('react'),
+    SearchResultsList = require('./searchResultsList.js'),
+    Constants = require('../utils/constants.js');
+
+var SearchResultsMainContainer = React.createClass({
 	displayName: 'SearchResultsMainContainer',
 
 
@@ -28739,7 +28817,7 @@ const SearchResultsMainContainer = React.createClass({
 		list: React.PropTypes.array.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'section',
 			{ className: "genericMainContainer searchResultsMainContainer " + this.props.console },
@@ -28757,6 +28835,8 @@ const SearchResultsMainContainer = React.createClass({
 module.exports = SearchResultsMainContainer;
 
 },{"../utils/constants.js":282,"./searchResultsList.js":270,"react":239}],272:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     SingleMessage = require('./singleMessage.js'),
     InputChat = require('./inputChat.js');
@@ -28775,7 +28855,7 @@ var SingleChat = React.createClass({
 		onChangeInputChatFn: React.PropTypes.func.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 
@@ -28836,6 +28916,8 @@ var SingleChat = React.createClass({
 module.exports = SingleChat;
 
 },{"./inputChat.js":259,"./singleMessage.js":273,"react":239}],273:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     Constants = require('../utils/constants.js');
 
@@ -28850,7 +28932,7 @@ var SingleMessage = React.createClass({
 		user: React.PropTypes.object.isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		img = this.props.user.profileUrl;
 		if (!img || img === "") {
 			img = Constants.genericProfile;
@@ -28882,8 +28964,8 @@ module.exports = SingleMessage;
 },{"../utils/constants.js":282,"react":239}],274:[function(require,module,exports){
 'use strict';
 
-const React = require('react'),
-      Constants = require('../utils/constants.js');
+var React = require('react'),
+    Constants = require('../utils/constants.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -28893,11 +28975,11 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps: function getDefaultProps() {
 		return { version: Constants.header.versions.normal };
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'div',
 			{ className: "sloganContainer " + this.props.version },
@@ -28938,7 +29020,7 @@ module.exports = React.createClass({
 		type: React.PropTypes.oneOf(['instagram', 'facebook', 'youtube', 'twitter', 'pinterest']).isRequired
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement('a', { className: this.props.type + "Link", href: '#' });
 	}
 
@@ -28947,9 +29029,9 @@ module.exports = React.createClass({
 },{"react":239}],276:[function(require,module,exports){
 'use strict';
 
-const React = require('react');
+var React = require('react');
 
-const SuggestionItem = React.createClass({
+var SuggestionItem = React.createClass({
 	displayName: 'SuggestionItem',
 
 
@@ -28958,11 +29040,11 @@ const SuggestionItem = React.createClass({
 		onClickHandler: React.PropTypes.func.isRequired
 	},
 
-	_onClickHandler: function () {
+	_onClickHandler: function _onClickHandler() {
 		this.props.onClickHandler(this.props.text);
 	},
 
-	render: function () {
+	render: function render() {
 		return React.createElement(
 			'li',
 			{ onClick: this._onClickHandler },
@@ -28974,6 +29056,8 @@ const SuggestionItem = React.createClass({
 module.exports = SuggestionItem;
 
 },{"react":239}],277:[function(require,module,exports){
+'use strict';
+
 var Dispatcher = require('flux').Dispatcher;
 
 var AppDispatcher = new Dispatcher();
@@ -29097,7 +29181,7 @@ if (self.fetch) {
 
 var AppStore = assign({}, EventEmitter.prototype, {
 
-	changeFilterState: function (filterName, new_state) {
+	changeFilterState: function changeFilterState(filterName, new_state) {
 		switch (filterName) {
 			case Constants.filter.ps:
 				_store.search.ps = new_state;
@@ -29151,7 +29235,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.emit(Constants.eventType.filterRefresh);
 	},
 
-	getFilterState: function (filterName) {
+	getFilterState: function getFilterState(filterName) {
 		var toReturn = false;
 		switch (filterName) {
 			case Constants.filter.not_used:
@@ -29176,83 +29260,83 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		return toReturn;
 	},
 
-	changeSearchInput: function (value) {
+	changeSearchInput: function changeSearchInput(value) {
 		_store.search.text = value;
 	},
 
-	searchButtonClicked: function () {
+	searchButtonClicked: function searchButtonClicked() {
 		this.emit(Constants.eventType.search);
 	},
 
-	addSearchButtonClickedListener: function (callback) {
+	addSearchButtonClickedListener: function addSearchButtonClickedListener(callback) {
 		this.on(Constants.eventType.search, callback);
 	},
 
-	removeSearchButtonClickedListener: function (callback) {
+	removeSearchButtonClickedListener: function removeSearchButtonClickedListener(callback) {
 		this.removeListener(Constants.eventType.search, callback);
 	},
 
-	addOnFilterRefreshListener: function (callback) {
+	addOnFilterRefreshListener: function addOnFilterRefreshListener(callback) {
 		this.on(Constants.eventType.filterRefresh, callback);
 	},
 
-	removeOnFilterRefreshListener: function (callback) {
+	removeOnFilterRefreshListener: function removeOnFilterRefreshListener(callback) {
 		this.removeListener(Constants.eventType.filterRefresh, callback);
 	},
 
-	userUpdated: function () {
+	userUpdated: function userUpdated() {
 		this.emit(Constants.eventType.userUpdated);
 	},
 
-	addOnUserUpdateListener: function (callback) {
+	addOnUserUpdateListener: function addOnUserUpdateListener(callback) {
 		this.on(Constants.eventType.userUpdated, callback);
 	},
 
-	removeOnUserUpdateListener: function (callback) {
+	removeOnUserUpdateListener: function removeOnUserUpdateListener(callback) {
 		this.removeListener(Constants.eventType.userUpdated, callback);
 	},
 
-	addOnGoToProfileListener: function (callback) {
+	addOnGoToProfileListener: function addOnGoToProfileListener(callback) {
 		this.on(Constants.eventType.goToProfile, callback);
 	},
 
-	removeOnGoToProfileListener: function (callback) {
+	removeOnGoToProfileListener: function removeOnGoToProfileListener(callback) {
 		this.removeListener(Constants.eventType.goToProfile, callback);
 	},
 
-	goToProfilePage: function () {
+	goToProfilePage: function goToProfilePage() {
 		this.emit(Constants.eventType.goToProfile);
 	},
 
-	addOnGoToDetailsListener: function (callback) {
+	addOnGoToDetailsListener: function addOnGoToDetailsListener(callback) {
 		this.on(Constants.eventType.goToDetails, callback);
 	},
 
-	removeOnGoToDetailsListener: function (callback) {
+	removeOnGoToDetailsListener: function removeOnGoToDetailsListener(callback) {
 		this.removeListener(Constants.eventType.goToDetails, callback);
 	},
 
-	goToDetailsPage: function (name) {
+	goToDetailsPage: function goToDetailsPage(name) {
 		this.emit(Constants.eventType.goToDetails, name);
 	},
 
-	getStore: function () {
+	getStore: function getStore() {
 		return _store;
 	},
 
-	getSearchValues: function () {
+	getSearchValues: function getSearchValues() {
 		return _store.search;
 	},
 
-	getUser: function () {
+	getUser: function getUser() {
 		return _store.user;
 	},
 
-	onProfileUpdated: function () {
+	onProfileUpdated: function onProfileUpdated() {
 		this.emit(Constants.eventType.profileUpdated);
 	},
 
-	getProfile: function (username) {
+	getProfile: function getProfile(username) {
 		if (self.fetch) {
 			//use fetch
 
@@ -29275,23 +29359,23 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	addOnProfileUpdatesListener: function (callback) {
+	addOnProfileUpdatesListener: function addOnProfileUpdatesListener(callback) {
 		this.on(Constants.eventType.profileUpdated, callback);
 	},
 
-	removeOnProfileUpdatesListener: function (callback) {
+	removeOnProfileUpdatesListener: function removeOnProfileUpdatesListener(callback) {
 		this.removeListener(Constants.eventType.profileUpdated, callback);
 	},
 
-	addOnGamesAvailableUpdateListener: function (callback) {
+	addOnGamesAvailableUpdateListener: function addOnGamesAvailableUpdateListener(callback) {
 		this.on(Constants.eventType.availableGamesUpdate, callback);
 	},
 
-	removeOnGamesAvailableUpdateListener: function (callback) {
+	removeOnGamesAvailableUpdateListener: function removeOnGamesAvailableUpdateListener(callback) {
 		this.removeListener(Constants.eventType.availableGamesUpdate, callback);
 	},
 
-	getGamesAvailable: function (gameConsole, game) {
+	getGamesAvailable: function getGamesAvailable(gameConsole, game) {
 		//get results
 		if (self.fetch) {
 			//use fetch
@@ -29326,7 +29410,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	search: function (gameConsole, game) {
+	search: function search(gameConsole, game) {
 		//get results
 		if (self.fetch) {
 			//use fetch
@@ -29360,7 +29444,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	onChangeSearchInput: function (text) {
+	onChangeSearchInput: function onChangeSearchInput(text) {
 		//get the list from the server
 		//for now one let's just add 1 2 and 3 to the text
 		if (text.length > 3) {
@@ -29399,31 +29483,31 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	onSuggestionsRefresh: function () {
+	onSuggestionsRefresh: function onSuggestionsRefresh() {
 		this.emit(Constants.eventType.suggestionsRefresh);
 	},
 
-	addSuggestionsRefreshListener: function (callback) {
+	addSuggestionsRefreshListener: function addSuggestionsRefreshListener(callback) {
 		this.on(Constants.eventType.suggestionsRefresh, callback);
 	},
 
-	removeSuggestionsRefreshListener: function (callback) {
+	removeSuggestionsRefreshListener: function removeSuggestionsRefreshListener(callback) {
 		this.removeListener(Constants.eventType.suggestionsRefresh, callback);
 	},
 
-	addOnResultsUpdatedListener: function (callback) {
+	addOnResultsUpdatedListener: function addOnResultsUpdatedListener(callback) {
 		this.on(Constants.eventType.resultsUpdated, callback);
 	},
 
-	removeOnResultsUpdatedListener: function (callback) {
+	removeOnResultsUpdatedListener: function removeOnResultsUpdatedListener(callback) {
 		this.removeListener(Constants.eventType.resultsUpdated, callback);
 	},
 
-	getSuggestionsList: function () {
+	getSuggestionsList: function getSuggestionsList() {
 		return _store.suggestions.list;
 	},
 
-	getSuggestions: function () {
+	getSuggestions: function getSuggestions() {
 		return _store.suggestions;
 	}
 
@@ -29456,6 +29540,8 @@ AppDispatcher.register(function (payload) {
 module.exports = AppStore;
 
 },{"../dispatcher.js":277,"../utils/constants.js":282,"./chatStore.js":280,"events":1,"object-assign":6}],280:[function(require,module,exports){
+'use strict';
+
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
     assign = require('object-assign'),
@@ -29468,12 +29554,12 @@ var _store = {
 	searchChatValue: ""
 };
 
-var _setSearchChatValue = function (value) {
+var _setSearchChatValue = function _setSearchChatValue(value) {
 	_store.searchChatValue = value;
 };
 
-var _retrieveMessages = function (chat) {
-	var promiseToReturn = new Promise((resolve, reject) => {
+var _retrieveMessages = function _retrieveMessages(chat) {
+	var promiseToReturn = new Promise(function (resolve, reject) {
 		//retrive message
 		var messageListQuery = chat.createPreviousMessageListQuery();
 		var fromLast = true;
@@ -29504,11 +29590,11 @@ var _retrieveMessages = function (chat) {
 
 var ChatStore = assign({}, EventEmitter.prototype, {
 
-	getStore: function () {
+	getStore: function getStore() {
 		return _store;
 	},
 
-	_entryPoint: function (payload) {
+	_entryPoint: function _entryPoint(payload) {
 		switch (payload.actionType) {
 			case Constants.actionType.sendMessage:
 				ChatStore.sendMessage(payload.chat_id, payload.value);
@@ -29522,9 +29608,13 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	chatOpen: function (id) {
+	chatOpen: function chatOpen(id) {
+		var _this = this;
+
 		//get chat
-		var chat = _store.chats.find(element => element.id === id);
+		var chat = _store.chats.find(function (element) {
+			return element.id === id;
+		});
 		if (chat != null) {
 			//has more than 1 message?
 			if (chat.messages.length <= 1 || true) {
@@ -29537,7 +29627,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						//emit event
 						this.emit(Constants.eventType.chatsUpdated);
 					}
-					let test = _retrieveMessages(chat).then(messageList => {
+					var test = _retrieveMessages(chat).then(function (messageList) {
 						messageList.splice(0, chat.messages.length || 1);
 						chat.messages.push.apply(chat.messages, messageList);
 						if (messageList.length < Constants.messageNumber) {
@@ -29552,10 +29642,10 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 							//next line is beacause markAsRead does not make unreadMessageCount = 0
 							chat.unreadMessageCount = 0;
-							this.getUnreadMessageCount();
+							_this.getUnreadMessageCount();
 						}
-						this.emit(Constants.eventType.chatsUpdated);
-					}).catch(error => {
+						_this.emit(Constants.eventType.chatsUpdated);
+					}).catch(function (error) {
 						console.error(error);
 					});
 				}
@@ -29563,10 +29653,10 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	getUnreadMessageCount: function () {
+	getUnreadMessageCount: function getUnreadMessageCount() {
 		var unread = 0;
 		if (_store.chats.length > 0) {
-			_store.chats.forEach(chat => {
+			_store.chats.forEach(function (chat) {
 				if (chat.unreadMessageCount > 0) unread++;
 			});
 		}
@@ -29574,16 +29664,18 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		this.emit(Constants.eventType.onUnreadMessageCountUpdated);
 	},
 
-	addChatsUpdatedListener: function (callback) {
+	addChatsUpdatedListener: function addChatsUpdatedListener(callback) {
 		this.on(Constants.eventType.chatsUpdated, callback);
 	},
 
-	removeChatsUpdatedListener: function (callback) {
+	removeChatsUpdatedListener: function removeChatsUpdatedListener(callback) {
 		this.removeListener(Constants.eventType.chatsUpdated, callback);
 	},
 
-	sendMessage: function (chat_id, value) {
-		var index = _store.chats.indexOf(_store.chats.find(element => element.id === chat_id));
+	sendMessage: function sendMessage(chat_id, value) {
+		var index = _store.chats.indexOf(_store.chats.find(function (element) {
+			return element.id === chat_id;
+		}));
 		var id = -1 * index;
 		if (_store.chats[index].messages.length > 0) {
 			id = _store.chats[index].messages[_store.chats[index].messages.length - 1].id + 1;
@@ -29610,12 +29702,12 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		});
 	},
 
-	setUser: function (user) {
+	setUser: function setUser(user) {
 		_store.user = user;
 		this.run();
 	},
 
-	run: function () {
+	run: function run() {
 		//Connect to the sendbird api and get the list for chats
 		var sb = new SendBird({
 
@@ -29659,7 +29751,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 							}
 							chat.messages.push(chat.lastMessage);
 						};
-						let otherUser = chat.members[0];
+						var otherUser = chat.members[0];
 						if (otherUser.userId === user.userId) {
 							otherUser = chat.members[1];
 						}
@@ -29678,9 +29770,11 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		//Receiving messages		
 		var UNIQUE_CHANNEL_HANDLER = "12";
 		var ChannelHandler = new sb.ChannelHandler();
-		let self = this;
+		var self = this;
 		ChannelHandler.onMessageReceived = function (channel, message) {
-			let chat = _store.chats.find(element => element.id === channel.id);
+			var chat = _store.chats.find(function (element) {
+				return element.id === channel.id;
+			});
 			chat.messages.unshift(message);
 			self.emit(Constants.eventType.messageAdded);
 			self.getUnreadMessageCount();
@@ -29688,27 +29782,27 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
 	},
 
-	addOnMessageAddedListener: function (callback) {
+	addOnMessageAddedListener: function addOnMessageAddedListener(callback) {
 		this.on(Constants.eventType.messageAdded, callback);
 	},
 
-	removeOnMessageAddedListener: function (callback) {
+	removeOnMessageAddedListener: function removeOnMessageAddedListener(callback) {
 		this.removeListener(Constants.eventType.messageAdded, callback);
 	},
 
-	addOnUnreadMessageCountUpdatedListener: function (callback) {
+	addOnUnreadMessageCountUpdatedListener: function addOnUnreadMessageCountUpdatedListener(callback) {
 		this.on(Constants.eventType.unreadMessageCountUpdate, callback);
 	},
 
-	removeOnUnreadMessageCountUpdatedListener: function (callback) {
+	removeOnUnreadMessageCountUpdatedListener: function removeOnUnreadMessageCountUpdatedListener(callback) {
 		this.removeListener(Constants.eventType.unreadMessageCountUpdate, callback);
 	},
 
-	getChats: function () {
+	getChats: function getChats() {
 		return _store.chats;
 	},
 
-	getSearchChatValue: function () {
+	getSearchChatValue: function getSearchChatValue() {
 		return _store.searchChatValue;
 	}
 
@@ -29722,6 +29816,8 @@ AppDispatcher.register(function (payload) {
 module.exports = ChatStore;
 
 },{"../dispatcher.js":277,"../utils/constants.js":282,"events":1,"object-assign":6}],281:[function(require,module,exports){
+'use strict';
+
 var Dispatcher = require('flux').Dispatcher,
     Constants = require('./constants.js');
 
@@ -29729,7 +29825,7 @@ var AppDispatcher = require('../dispatcher.js');
 
 var Actions = {
 
-	changeFilterState: function (filter, value) {
+	changeFilterState: function changeFilterState(filter, value) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.changeFilterState,
 			filter: filter,
@@ -29737,20 +29833,20 @@ var Actions = {
 		});
 	},
 
-	changeSearchInput: function (text) {
+	changeSearchInput: function changeSearchInput(text) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.changeSearchInput,
 			value: text
 		});
 	},
 
-	searchButtonClicked: function () {
+	searchButtonClicked: function searchButtonClicked() {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.searchButtonClicked
 		});
 	},
 
-	sendMessage: function (chat_id, value) {
+	sendMessage: function sendMessage(chat_id, value) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.sendMessage,
 			chat_id: chat_id,
@@ -29758,28 +29854,28 @@ var Actions = {
 		});
 	},
 
-	chatOpen: function (id) {
+	chatOpen: function chatOpen(id) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.chatOpen,
 			value: id
 		});
 	},
 
-	setSearchChatValue: function (value) {
+	setSearchChatValue: function setSearchChatValue(value) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.changeSearchChatValue,
 			value: value
 		});
 	},
 
-	goToDetails: function (gameName) {
+	goToDetails: function goToDetails(gameName) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.goToDetails,
 			gameName: gameName
 		});
 	},
 
-	goToProfile: function () {
+	goToProfile: function goToProfile() {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.goToProfile
 		});
@@ -29790,13 +29886,15 @@ var Actions = {
 module.exports = Actions;
 
 },{"../dispatcher.js":277,"./constants.js":282,"flux":3}],282:[function(require,module,exports){
-const consoles = {
+'use strict';
+
+var consoles = {
 	xbox: 'xbox',
 	ps: 'ps',
 	both: 'both'
 };
 
-const Constants = {
+var Constants = {
 	bogota: 'bogota',
 	genericProfile: 'profile',
 	consoles: consoles,
@@ -29871,8 +29969,8 @@ module.exports = Constants;
 },{}],283:[function(require,module,exports){
 'use strict';
 
-const Functions = {
-	startAnalytics: function () {
+var Functions = {
+	startAnalytics: function startAnalytics() {
 		{
 			(function (i, s, o, g, r, a, m) {
 				i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
@@ -29884,7 +29982,7 @@ const Functions = {
 		}
 	},
 
-	addDecimalPoints: function (nStr) {
+	addDecimalPoints: function addDecimalPoints(nStr) {
 		nStr += '';
 		var x = nStr.split('.');
 		var x1 = x[0];

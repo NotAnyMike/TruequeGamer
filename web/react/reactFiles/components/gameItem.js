@@ -39,19 +39,22 @@ const GameItem = React.createClass({
 		price: React.PropTypes.number,
 		comment: React.PropTypes.string,	
 		isNew: React.PropTypes.bool, //in order to know if this compoentn will show a "add new game" message
+		onPublishGameFn: React.PropTypes.func, //in order to fetch a put or post request
 	},
 
 	componentDidMount: function(){
-		this.setState({
-			editing: {
-				name: this.props.name,
-				price: this.props.price,
-				exchange: this.props.exchange,
-				used: this.props.used,
-				comment: this.props.comment,
-				ps: (this.props.console === null ? null : (this.props.console === Constants.consoles.ps ? true : false)),
-			}
-		});
+		if(this._isNew() === false){
+			this.setState({
+				editing: {
+					name: this.props.name,
+					price: this.props.price,
+					exchange: this.props.exchange,
+					used: this.props.used,
+					comment: this.props.comment,
+					ps: (this.props.console === null ? null : (this.props.console === Constants.consoles.ps ? true : false)),
+				}
+			});
+		}
 	},
 
 	getInitialState: function(){
@@ -63,9 +66,9 @@ const GameItem = React.createClass({
 			editing:{
 				name: null,
 				price: null,
-				used: null,
-				ps: null,
-				exchange: null,
+				used: false,
+				ps: true,
+				exchange: true,
 				comment: null,
 			},
 		});
@@ -84,6 +87,10 @@ const GameItem = React.createClass({
 			xboxUsed: false,
 			comment: null,
 		});
+	},
+
+	_isNew: function(){
+		return typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true;
 	},
 
 	_onMouseOver: function(){
@@ -131,7 +138,7 @@ const GameItem = React.createClass({
 		}else{
 			//else publish
 			this.setState({isEditing: false});
-			console.log("publishing game");
+			this.props.onPublishGameFn(this.state.editing)
 		}
 	},
 	
@@ -325,8 +332,7 @@ const GameItem = React.createClass({
 
 			}else{
 	
-				var isNew = typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true;
-				if(isNew){
+				if(this._isNew()){
 
 					className = "new";
 					if(this.state.isEditing === false) {
@@ -381,8 +387,8 @@ const GameItem = React.createClass({
 				onClickComponent = this._goToPage;
 				cover = this.props.cover;
 				name = this.state.editing.name;
-				onMouseOverComponent = isNew ? null : this._onMouseOverComponent;
-				onMouseOutComponent = isNew ? null : this._onMouseOutComponent;
+				onMouseOverComponent = this._isNew() ? null : this._onMouseOverComponent;
+				onMouseOutComponent = this._isNew() ? null : this._onMouseOutComponent;
 				onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null;
 				onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut  : null;
 				onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver  : null;
@@ -406,7 +412,7 @@ const GameItem = React.createClass({
 				exchange = this.state.editing.exchange;
 				comment = this.state.editing.comment;
 
-				if(isNew){
+				if(this._isNew()){
 					if(this.state.isEditing === false) {
 						onClickComponent = this._onInfoClicked;
 					}

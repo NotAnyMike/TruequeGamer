@@ -20,3 +20,6 @@
 ## How to move react to django?
 1. Run `gulp react-prod-django`
 2. Run `gulp css-prod` 
+
+### In order to use fetch with REST framework
+See [here](https://gist.github.com/marteinn/3785ff3c1a3745ae955c)

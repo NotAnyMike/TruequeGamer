@@ -61,8 +61,54 @@ def SomeUser(request, username):
     else:
         return HttpResponse('Unauthorized', status=401)
 
+@api_view(['PUT','POST'])
+def DvdApi(request):
+    #Update
+    if request.method == 'POST':
+        pass
+    
+    #Add
+    elif request.method == 'PUT':
+        data = request.data
+        new_data = dict((key.encode('utf-8'), value) for key, value in data.items())
+        data.update(new_data) #adding data without the unicode encoding on the key's items
+
+        serializer = SingleDvdSerializer(data=data, partial=True)
+        #return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            #Check if the user is logged in
+            if request.user.is_authenticated():
+                #Check if the price is positive
+                if data['price'] >= 0:
+                    #Check if the console is right
+                    if data['console'] in list(constants.CONSOLES.values()):
+                        #Construct an Dvd Object
+                        #Get the game with the id field
+                        game = Game.objects.get(pk=data['pk'])
+                        if game is not None:
+                            dvdToSave = Dvd(
+                                    price = data['price'],
+                                    exchange = data['exchange'],
+                                    new = data['new'],
+                                    owner = request.user,
+                                    game = game,
+                                    console = data['console'],
+                                    comment = data['comment'],
+                                    )
+                            #Save it
+                            dvdToSave.save()
+                            serializer = SingleDvdSerializer(dvdToSave)
+                            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+        return Response('Unauthorized', status=401)
+
 #The POST: Update and the PUT add
-@api_view(['GET', 'PUT', 'POST'])
+@api_view(['GET'])
 def LocalSuggestions(request, serializerType, console, new, sell, string):
     if request.method == 'GET':
         
@@ -221,47 +267,6 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
             else:
                 #throw error
                 return Response('Bad request', status=400)
-
-    #Update
-    elif request.method == 'POST':
-        pass
-    
-    #Add
-    elif request.method == 'PUT':
-        data = request.data
-        new_data = dict((key.encode('utf-8'), value) for key, value in data.items())
-        data.update(new_data) #adding data without the unicode encoding on the key's items
-
-        serializer = SingleDvdSerializer(data=data, partial=True)
-        #return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
-        if serializer.is_valid():
-            #Check if the user is logged in
-            if request.user.is_authenticated():
-                #Check if the price is positive
-                if data['price'] >= 0:
-                    #Check if the console is right
-                    if data['console'] in list(constants.CONSOLES.values()):
-                        #Construct an Dvd Object
-                        #Get the game with the id field
-                        game = Game.objects.get(pk=data['pk'])
-                        if game is not None:
-                            dvdToSave = Dvd(
-                                    price = data['price'],
-                                    exchange = data['exchange'],
-                                    new = data['new'],
-                                    owner = request.user,
-                                    game = game,
-                                    console = data['console'],
-                                    comment = data['comment'],
-                                    )
-                            #Save it
-                            dvdToSave.save()
-                            serializer = SingleDvdSerializer(dvdToSave)
-                            return Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)
-    
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     #Every case in the if ( != "game") has its own return statement, if it comes to here something happened
     else:

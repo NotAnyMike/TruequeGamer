@@ -20,7 +20,32 @@ const Functions = {
 			x1 = x1.replace(rgx, '$1' + '.' + '$2');
 		}
 		return x1 + x2;
-	}
+	},
+
+	fetchAdvanced: function(req){
+		if(self.fetch){
+			return fetch(req)
+		}else{
+			//use xml
+			return null
+		}
+	},
+
+	getCookie: function(cname) {
+		    var name = cname + "=";
+		    var decodedCookie = decodeURIComponent(document.cookie);
+		    var ca = decodedCookie.split(';');
+		    for(var i = 0; i <ca.length; i++) {
+					        var c = ca[i];
+					        while (c.charAt(0) == ' ') {
+										            c = c.substring(1);
+										        }
+					        if (c.indexOf(name) == 0) {
+										            return c.substring(name.length, c.length);
+										        }
+					    }
+		    return "";
+	},
 };
 
 module.exports = Functions;

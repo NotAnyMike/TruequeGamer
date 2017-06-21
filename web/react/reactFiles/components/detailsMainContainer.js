@@ -15,6 +15,7 @@ const DetailsMainContainer = React.createClass({
 		name: React.PropTypes.string,
 		city: React.PropTypes.string,
 		numberOfGames: React.PropTypes.number,
+		onPublishGameFn: React.PropTypes.func,
 	},
 
 	render: function(){
@@ -72,6 +73,7 @@ const DetailsMainContainer = React.createClass({
 						isOwnerOfProfile={this.props.isOwnerOfProfile}
 						list={this.props.list}
 						goToProfileFn={this.props.goToProfileFn}
+						onPublishGameFn={this.props.onPublishGameFn}
 					/>
 				</div>
 			</section>

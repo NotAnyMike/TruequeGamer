@@ -5,8 +5,10 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-CONSOLES = {'xbox':'xbox','ps':'ps'}
-CONSOLES_TUPLE = ((CONSOLES['xbox'],'xbox one'),(CONSOLES['ps'],'ps4'))
+import constants
+
+#constants.CONSOLES = {'xbox':'xbox','ps':'ps'}
+#constants.CONSOLES_TUPLE = ((constants.CONSOLES['xbox'],'xbox one'),(constants.CONSOLES['ps'],'ps4'))
 
 
 class Game(models.Model):
@@ -37,7 +39,8 @@ class Dvd(models.Model):
     new = models.BooleanField(null=False, blank=False, default=False)
     owner = models.ForeignKey(User, null=False, blank=False, default=False)
     game = models.ForeignKey('Game', null=False, blank=False, default=False)
-    console = models.CharField(null=False, blank=False, default=CONSOLES_TUPLE[0][1], choices=CONSOLES_TUPLE, max_length=30)
+    console = models.CharField(null=False, blank=False, default=constants.CONSOLES_TUPLE[0][1], choices=constants.CONSOLES_TUPLE, max_length=30)
+    comment = models.TextField(null=True, blank=False, default=None, max_length=500)
 
     def __str__(self):
         return "%s, console: %s" % (self.game.name, self.console)
@@ -46,7 +49,7 @@ class Dvd(models.Model):
 def updatingGames(sender, instance, **kwargs):
 
     modified = False
-    if instance.console == CONSOLES['ps']:
+    if instance.console == constants.CONSOLES['ps']:
         if instance.price != None and instance.game.psPrice > instance.price: 
             instance.game.psPrice = instance.price
             modified = True
@@ -64,7 +67,7 @@ def updatingGames(sender, instance, **kwargs):
             modified = True
 
         #Get all Dvds for this game which are for ps
-        dvds = Dvd.objects.filter(game=instance.game, console=CONSOLES['ps'])
+        dvds = Dvd.objects.filter(game=instance.game, console=constants.CONSOLES['ps'])
         for dvd in dvds: 
             #Are at least two prices different
             if instance.price != None and dvd.price != None and instance.price != dvd.price:  
@@ -88,7 +91,7 @@ def updatingGames(sender, instance, **kwargs):
             modified = True
 
         #Get all Dvds for this game which are for xbox
-        dvds = Dvd.objects.filter(game=instance.game, console=CONSOLES['xbox'])
+        dvds = Dvd.objects.filter(game=instance.game, console=constants.CONSOLES['xbox'])
         for dvd in dvds: 
             #Are at least two prices different
             if instance.price != None and dvd.price != None and instance.price != dvd.price:  

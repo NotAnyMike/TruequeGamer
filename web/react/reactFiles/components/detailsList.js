@@ -10,6 +10,7 @@ const DetailsList = React.createClass({
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func,
+		onPublishNameFn: React.PropTypes.func,
 	},
 
 	render: function(){
@@ -41,6 +42,8 @@ const DetailsList = React.createClass({
 									isNew={false}
 									name={"lol"}
 									key={element.pk}
+									temp_id={element.temp_id}
+									onPublishGameFn={self.props.onPublishGameFn}
 								/>
 							);
 						}else{
@@ -56,6 +59,8 @@ const DetailsList = React.createClass({
 									comment={element.comment}
 									isNew={false}
 									key={element.pk}
+									temp_id={element.temp_id}
+									onPublishGameFn={self.props.onPublishGameFn}
 								/>
 							);
 						}

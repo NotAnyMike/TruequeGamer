@@ -238,7 +238,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			
 			var url = '';
 			if(process.env.NODE_ENV === "production"){
-				url = '/api/profile/' + username + '/';
+				url = '/api/profile/'.concat(username,'/');
 			}else{
 				url = '/api/profile/profile.json';
 			}
@@ -250,6 +250,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 					AppStore.onProfileUpdated()
 				});
 			});
+
 		}else{
 			//use xml
 		}

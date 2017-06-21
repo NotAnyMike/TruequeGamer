@@ -39,19 +39,22 @@ const GameItem = React.createClass({
 		price: React.PropTypes.number,
 		comment: React.PropTypes.string,	
 		isNew: React.PropTypes.bool, //in order to know if this compoentn will show a "add new game" message
+		onPublishGameFn: React.PropTypes.func, //in order to fetch a put or post request
 	},
 
 	componentDidMount: function(){
-		this.setState({
-			editing: {
-				name: this.props.name,
-				price: this.props.price,
-				exchange: this.props.exchange,
-				used: this.props.used,
-				comment: this.props.comment,
-				ps: (this.props.console === null ? null : (this.props.console === Constants.consoles.ps ? true : false)),
-			}
-		});
+		if(this._isNew() === false){
+			this.setState({
+				editing: {
+					name: this.props.name,
+					price: this.props.price,
+					exchange: this.props.exchange,
+					used: this.props.used,
+					comment: this.props.comment,
+					ps: (this.props.console === null ? null : (this.props.console === Constants.consoles.ps ? true : false)),
+				}
+			});
+		}
 	},
 
 	getInitialState: function(){
@@ -63,9 +66,9 @@ const GameItem = React.createClass({
 			editing:{
 				name: null,
 				price: null,
-				used: null,
-				ps: null,
-				exchange: null,
+				used: false,
+				ps: true,
+				exchange: true,
 				comment: null,
 			},
 		});
@@ -84,6 +87,10 @@ const GameItem = React.createClass({
 			xboxUsed: false,
 			comment: null,
 		});
+	},
+
+	_isNew: function(){
+		return typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true;
 	},
 
 	_onMouseOver: function(){
@@ -131,7 +138,7 @@ const GameItem = React.createClass({
 		}else{
 			//else publish
 			this.setState({isEditing: false});
-			console.log("publishing game");
+			this.props.onPublishGameFn(this.state.editing)
 		}
 	},
 	
@@ -268,6 +275,7 @@ const GameItem = React.createClass({
 	
 	render: function(){
 
+		var temp_id = 0; //Only to controll the readio buttons on  the new from in profile page
 		var onClickComponent = null;
 		var cover = null;
 		var name = null;
@@ -309,28 +317,60 @@ const GameItem = React.createClass({
 
 		if(this.props.isProfile){
 
-			if(typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true){
+			temp_id = this.props.temp_id;
+
+			//TODO: to remove
+			if(false && typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true){
 
 				className = "new";
+				if(this.state.isEditing) {
+					className += " editing";
+				}else{
+					onClickComponent = this._onInfoClicked;
+				}
+
 
 			}else{
+	
+				if(this._isNew()){
 
-				className = this.props.console + " only"
-				if(this.props.console === Constants.consoles.xbox){
-					className += (this.props.exchange ? " xboxNoExchange" : "") +
-						(typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
-				}
-				if(this.props.console === Constants.consoles.ps){
-					className += (this.props.exchange ? " psNoExchange" : "") +
-						(typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
-				}
-				if(this.props.used){
-					if(this.props.console === Constants.consoles.ps) className += " psUsed";
-					else className += " xboxUsed";
+					className = "new";
+					if(this.state.isEditing === false) {
+						onClickComponent = this._onInfoClicked;
+					}
+
 				}else{
-					if(this.props.console === Constants.consoles.ps) className += " psNew";
-					else className += " xboxNew";
+
+					className = this.props.console + " only"
+					if(this.props.console === Constants.consoles.xbox){
+						className += (this.props.exchange ? " xboxNoExchange" : "") +
+							(typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
+					}
+					if(this.props.console === Constants.consoles.ps){
+						className += (this.props.exchange ? " psNoExchange" : "") +
+							(typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
+					}
+					if(this.props.used){
+						if(this.props.console === Constants.consoles.ps) className += " psUsed";
+						else className += " xboxUsed";
+					}else{
+						if(this.props.console === Constants.consoles.ps) className += " psNew";
+						else className += " xboxNew";
+					}
+					
+					if(this.props.isNew === false){
+						className += " alreadyCreated";
+						if(this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)){
+							className += " onlyExchange";
+						}else if((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number'){
+							className += " onlySell";
+						}
+					}
+					
+					if(this.props.isProfile) className += " showInfo";
+					
 				}
+
 
 				if(this.state.isEditing) {
 					className += " editing";
@@ -338,26 +378,17 @@ const GameItem = React.createClass({
 				if(this.state.isShowingComment){
 					className += " showComment";
 				}
-				if(this.props.isProfile) className += " showInfo";
 				if((this.state.isComponentHover && this.state.isEditing === false) || (this.state.isEditing === true && this.state.isShowingComment === true) || (this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false)){
 					className += " commentContainerIn";
 				}else{
 					className += " commentContainerOut";
 				}
-				if(this.props.isNew === false){
-					className += " alreadyCreated";
-					if(this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)){
-						className += " onlyExchange";
-					}else if((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number'){
-						className += " onlySell";
-					}
-				}
 
 				onClickComponent = this._goToPage;
 				cover = this.props.cover;
 				name = this.state.editing.name;
-				onMouseOverComponent = this._onMouseOverComponent;
-				onMouseOutComponent = this._onMouseOutComponent;
+				onMouseOverComponent = this._isNew() ? null : this._onMouseOverComponent;
+				onMouseOutComponent = this._isNew() ? null : this._onMouseOutComponent;
 				onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null;
 				onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut  : null;
 				onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver  : null;
@@ -380,6 +411,13 @@ const GameItem = React.createClass({
 				used = this.state.editing.used;
 				exchange = this.state.editing.exchange;
 				comment = this.state.editing.comment;
+
+				if(this._isNew()){
+					if(this.state.isEditing === false) {
+						onClickComponent = this._onInfoClicked;
+					}
+				}
+
 			}
 		
 		}else{
@@ -482,24 +520,24 @@ const GameItem = React.createClass({
 					<div><input type="text" placeholder="precio (en caso de venta)" value={pricePs} onChange={changePriceHandler}/></div>
 					<span>¿Nuevo o Usado?</span>
 					<div>
-						<input type="radio" id="new" name="new" value={!used} checked={!used} onClick={changeNewHandler}></input>
-						<label htmlFor="new">Nuevo</label>
-						<input type="radio" id="old" name="new" value={used} checked={used} onClick={changeUsedHandler}></input>
-						<label htmlFor="old">Usado</label>
+						<input type="radio" id={"new" + temp_id} name={"new" + temp_id} value={!used} checked={!used} onClick={changeNewHandler}></input>
+						<label htmlFor={"new" + temp_id}>Nuevo</label>
+						<input type="radio" id={"old" + temp_id} name={"new" + temp_id} value={used} checked={used} onClick={changeUsedHandler}></input>
+						<label htmlFor={"old" + temp_id}>Usado</label>
 					</div>
 					<span>¿Trueque?</span>
 					<div className="exchange">
-						<input type="radio" id="exchange" name="exchange" checked={exchange} onClick={changeExchangeHandler}></input>
-						<label htmlFor="exchange">Sí</label>
-						<input type="radio" id="noExchange" name="exchange" checked={!exchange} onClick={changeNoExchangeHandler}></input>
-						<label htmlFor="noExchange">No</label>
+						<input type="radio" id={"exchange" + temp_id} name={"exchange" + temp_id} checked={exchange} onClick={changeExchangeHandler}></input>
+						<label htmlFor={"exchange" + temp_id}>Sí</label>
+						<input type="radio" id={"noExchange" + temp_id} name={"exchange" + temp_id} checked={!exchange} onClick={changeNoExchangeHandler}></input>
+						<label htmlFor={"noExchange" + temp_id}>No</label>
 					</div>
 					<span>Selecciona la consola</span>
 					<div className="console">
-						<input type="radio" id="ps" className="ps" name="psOrxbox" checked={psChecked} onClick={changeConsolePsHandler}></input>
-						<label htmlFor="ps"></label>
-						<input type="radio" id="xbox" className="xbox" name="psOrxbox" checked={!psChecked} onClick={changeConsoleXboxHandler}></input>
-						<label htmlFor="xbox"></label>
+						<input type="radio" id={"ps" + temp_id} className="ps" name={"psOrxbox" + temp_id} checked={psChecked} onClick={changeConsolePsHandler}></input>
+						<label htmlFor={"ps" + temp_id}></label>
+						<input type="radio" id={"xbox" + temp_id} className="xbox" name={"psOrxbox" + temp_id} checked={!psChecked} onClick={changeConsoleXboxHandler}></input>
+						<label htmlFor={"xbox" + temp_id}></label>
 					</div>
 					<span className="stateButtonsLabel">Estado de la publicación</span>
 					<div className="stateButtons">

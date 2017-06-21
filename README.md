@@ -6,7 +6,9 @@
 1. Django: Adding the backend for the site
 
 # Important information
+* In order to see only the react components working make sure the code is not in `production`
 * Once the layout has come out to react production or to django, any change should be made directly into react process and not anymore in layout
+* Use `'UNICODE_JSON': False` in settings under `REST_FRAMEWORK` configuration variable in odert to show utf-8 characters form the constants file in games app
 
 ## Important Commands
 * `http-server web/react -p 8000`
@@ -18,3 +20,6 @@
 ## How to move react to django?
 1. Run `gulp react-prod-django`
 2. Run `gulp css-prod` 
+
+### In order to use fetch with REST framework
+See [here](https://gist.github.com/marteinn/3785ff3c1a3745ae955c)

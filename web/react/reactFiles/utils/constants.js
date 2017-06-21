@@ -70,7 +70,11 @@ const Constants = {
 			ps: '/ps/',
 			xbox: '/xbox/',
 			both: '/ps-xbox/',
-		}
+		},
+		api: {
+			games: '/api/games/[console]/[used]/[exchange]/[name]/',
+			publishDvd: '/api/game/',
+		},
 	}
 };
 

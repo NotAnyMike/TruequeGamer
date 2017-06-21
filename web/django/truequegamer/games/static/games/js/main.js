@@ -26889,7 +26889,8 @@ const DetailsList = React.createClass({
 		isOwnerOfProfile: React.PropTypes.bool,
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
-		goToProfileFn: React.PropTypes.func
+		goToProfileFn: React.PropTypes.func,
+		onPublishNameFn: React.PropTypes.func
 	},
 
 	render: function () {
@@ -26920,7 +26921,9 @@ const DetailsList = React.createClass({
 							isProfile: self.props.isProfile,
 							isNew: false,
 							name: "lol",
-							key: element.pk
+							key: element.pk,
+							temp_id: element.temp_id,
+							onPublishGameFn: self.props.onPublishGameFn
 						});
 					} else {
 						gameItem = React.createElement(GameItem, {
@@ -26933,7 +26936,9 @@ const DetailsList = React.createClass({
 							price: element.price,
 							comment: element.comment,
 							isNew: false,
-							key: element.pk
+							key: element.pk,
+							temp_id: element.temp_id,
+							onPublishGameFn: self.props.onPublishGameFn
 						});
 					}
 				} else {
@@ -26988,7 +26993,8 @@ const DetailsMainContainer = React.createClass({
 		goToProfileFn: React.PropTypes.func,
 		name: React.PropTypes.string,
 		city: React.PropTypes.string,
-		numberOfGames: React.PropTypes.number
+		numberOfGames: React.PropTypes.number,
+		onPublishGameFn: React.PropTypes.func
 	},
 
 	render: function () {
@@ -27074,7 +27080,8 @@ const DetailsMainContainer = React.createClass({
 					isProfile: this.props.isProfile,
 					isOwnerOfProfile: this.props.isOwnerOfProfile,
 					list: this.props.list,
-					goToProfileFn: this.props.goToProfileFn
+					goToProfileFn: this.props.goToProfileFn,
+					onPublishGameFn: this.props.onPublishGameFn
 				})
 			)
 		);
@@ -27339,19 +27346,22 @@ const GameItem = React.createClass({
 		used: React.PropTypes.bool,
 		price: React.PropTypes.number,
 		comment: React.PropTypes.string,
-		isNew: React.PropTypes.bool },
+		isNew: React.PropTypes.bool, //in order to know if this compoentn will show a "add new game" message
+		onPublishGameFn: React.PropTypes.func },
 
 	componentDidMount: function () {
-		this.setState({
-			editing: {
-				name: this.props.name,
-				price: this.props.price,
-				exchange: this.props.exchange,
-				used: this.props.used,
-				comment: this.props.comment,
-				ps: this.props.console === null ? null : this.props.console === Constants.consoles.ps ? true : false
-			}
-		});
+		if (this._isNew() === false) {
+			this.setState({
+				editing: {
+					name: this.props.name,
+					price: this.props.price,
+					exchange: this.props.exchange,
+					used: this.props.used,
+					comment: this.props.comment,
+					ps: this.props.console === null ? null : this.props.console === Constants.consoles.ps ? true : false
+				}
+			});
+		}
 	},
 
 	getInitialState: function () {
@@ -27363,9 +27373,9 @@ const GameItem = React.createClass({
 			editing: {
 				name: null,
 				price: null,
-				used: null,
-				ps: null,
-				exchange: null,
+				used: false,
+				ps: true,
+				exchange: true,
 				comment: null
 			}
 		};
@@ -27384,6 +27394,10 @@ const GameItem = React.createClass({
 			xboxUsed: false,
 			comment: null
 		};
+	},
+
+	_isNew: function () {
+		return typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true;
 	},
 
 	_onMouseOver: function () {
@@ -27431,7 +27445,7 @@ const GameItem = React.createClass({
 		} else {
 			//else publish
 			this.setState({ isEditing: false });
-			console.log("publishing game");
+			this.props.onPublishGameFn(this.state.editing);
 		}
 	},
 
@@ -27567,6 +27581,7 @@ const GameItem = React.createClass({
 
 	render: function () {
 
+		var temp_id = 0; //Only to controll the readio buttons on  the new from in profile page
 		var onClickComponent = null;
 		var cover = null;
 		var name = null;
@@ -27608,22 +27623,50 @@ const GameItem = React.createClass({
 
 		if (this.props.isProfile) {
 
-			if (typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true) {
+			temp_id = this.props.temp_id;
+
+			//TODO: to remove
+			if (false && typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true) {
 
 				className = "new";
+				if (this.state.isEditing) {
+					className += " editing";
+				} else {
+					onClickComponent = this._onInfoClicked;
+				}
 			} else {
 
-				className = this.props.console + " only";
-				if (this.props.console === Constants.consoles.xbox) {
-					className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
-				}
-				if (this.props.console === Constants.consoles.ps) {
-					className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
-				}
-				if (this.props.used) {
-					if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
+				if (this._isNew()) {
+
+					className = "new";
+					if (this.state.isEditing === false) {
+						onClickComponent = this._onInfoClicked;
+					}
 				} else {
-					if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
+
+					className = this.props.console + " only";
+					if (this.props.console === Constants.consoles.xbox) {
+						className += (this.props.exchange ? " xboxNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
+					}
+					if (this.props.console === Constants.consoles.ps) {
+						className += (this.props.exchange ? " psNoExchange" : "") + (typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
+					}
+					if (this.props.used) {
+						if (this.props.console === Constants.consoles.ps) className += " psUsed";else className += " xboxUsed";
+					} else {
+						if (this.props.console === Constants.consoles.ps) className += " psNew";else className += " xboxNew";
+					}
+
+					if (this.props.isNew === false) {
+						className += " alreadyCreated";
+						if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
+							className += " onlyExchange";
+						} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
+							className += " onlySell";
+						}
+					}
+
+					if (this.props.isProfile) className += " showInfo";
 				}
 
 				if (this.state.isEditing) {
@@ -27632,26 +27675,17 @@ const GameItem = React.createClass({
 				if (this.state.isShowingComment) {
 					className += " showComment";
 				}
-				if (this.props.isProfile) className += " showInfo";
 				if (this.state.isComponentHover && this.state.isEditing === false || this.state.isEditing === true && this.state.isShowingComment === true || this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false) {
 					className += " commentContainerIn";
 				} else {
 					className += " commentContainerOut";
 				}
-				if (this.props.isNew === false) {
-					className += " alreadyCreated";
-					if (this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)) {
-						className += " onlyExchange";
-					} else if ((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number') {
-						className += " onlySell";
-					}
-				}
 
 				onClickComponent = this._goToPage;
 				cover = this.props.cover;
 				name = this.state.editing.name;
-				onMouseOverComponent = this._onMouseOverComponent;
-				onMouseOutComponent = this._onMouseOutComponent;
+				onMouseOverComponent = this._isNew() ? null : this._onMouseOverComponent;
+				onMouseOutComponent = this._isNew() ? null : this._onMouseOutComponent;
 				onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
 				onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut : null;
 				onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver : null;
@@ -27674,6 +27708,12 @@ const GameItem = React.createClass({
 				used = this.state.editing.used;
 				exchange = this.state.editing.exchange;
 				comment = this.state.editing.comment;
+
+				if (this._isNew()) {
+					if (this.state.isEditing === false) {
+						onClickComponent = this._onInfoClicked;
+					}
+				}
 			}
 		} else {
 
@@ -27851,16 +27891,16 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'radio', id: 'new', name: 'new', value: !used, checked: !used, onClick: changeNewHandler }),
+					React.createElement('input', { type: 'radio', id: "new" + temp_id, name: "new" + temp_id, value: !used, checked: !used, onClick: changeNewHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'new' },
+						{ htmlFor: "new" + temp_id },
 						'Nuevo'
 					),
-					React.createElement('input', { type: 'radio', id: 'old', name: 'new', value: used, checked: used, onClick: changeUsedHandler }),
+					React.createElement('input', { type: 'radio', id: "old" + temp_id, name: "new" + temp_id, value: used, checked: used, onClick: changeUsedHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'old' },
+						{ htmlFor: "old" + temp_id },
 						'Usado'
 					)
 				),
@@ -27872,16 +27912,16 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'exchange' },
-					React.createElement('input', { type: 'radio', id: 'exchange', name: 'exchange', checked: exchange, onClick: changeExchangeHandler }),
+					React.createElement('input', { type: 'radio', id: "exchange" + temp_id, name: "exchange" + temp_id, checked: exchange, onClick: changeExchangeHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'exchange' },
+						{ htmlFor: "exchange" + temp_id },
 						'Sí'
 					),
-					React.createElement('input', { type: 'radio', id: 'noExchange', name: 'exchange', checked: !exchange, onClick: changeNoExchangeHandler }),
+					React.createElement('input', { type: 'radio', id: "noExchange" + temp_id, name: "exchange" + temp_id, checked: !exchange, onClick: changeNoExchangeHandler }),
 					React.createElement(
 						'label',
-						{ htmlFor: 'noExchange' },
+						{ htmlFor: "noExchange" + temp_id },
 						'No'
 					)
 				),
@@ -27893,10 +27933,10 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'console' },
-					React.createElement('input', { type: 'radio', id: 'ps', className: 'ps', name: 'psOrxbox', checked: psChecked, onClick: changeConsolePsHandler }),
-					React.createElement('label', { htmlFor: 'ps' }),
-					React.createElement('input', { type: 'radio', id: 'xbox', className: 'xbox', name: 'psOrxbox', checked: !psChecked, onClick: changeConsoleXboxHandler }),
-					React.createElement('label', { htmlFor: 'xbox' })
+					React.createElement('input', { type: 'radio', id: "ps" + temp_id, className: 'ps', name: "psOrxbox" + temp_id, checked: psChecked, onClick: changeConsolePsHandler }),
+					React.createElement('label', { htmlFor: "ps" + temp_id }),
+					React.createElement('input', { type: 'radio', id: "xbox" + temp_id, className: 'xbox', name: "psOrxbox" + temp_id, checked: !psChecked, onClick: changeConsoleXboxHandler }),
+					React.createElement('label', { htmlFor: "xbox" + temp_id })
 				),
 				React.createElement(
 					'span',
@@ -28312,7 +28352,8 @@ const React = require('react'),
       Chat = require('./chat.js'),
       Header = require('./header.js'),
       Footer = require('./footer.js'),
-      DetailsMainContainer = require('./detailsMainContainer.js');
+      DetailsMainContainer = require('./detailsMainContainer.js'),
+      Functions = require('../utils/functions.js');
 
 const Profile = React.createClass({
 	displayName: 'Profile',
@@ -28336,8 +28377,30 @@ const Profile = React.createClass({
 		store = AppStore.getStore();
 		if (typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			store.profile.list.push({ toCreate: true });
+			store.profile.list = store.profile.list.map(item => {
+				item.temp_id = store.profile.list.indexOf(item);return item;
+			});
 		}
 		this.setState(store);
+	},
+
+	onPublishGame: function (editing) {
+		var myCookie = Functions.getCookie("csrftoken");
+		var init = {
+			method: 'put',
+			credentials: "same-origin",
+			headers: {
+				"X-CSRFToken": myCookie,
+				"Accept": "application/json",
+				"Content-Type": "application/json"
+			}
+		};
+		console.log(editing); //TODO: send this as part of the init
+		var url = Constants.routes.api.publishDvd;
+		var req = new Request(url, init);
+		Functions.fetchAdvanced(req).then(function (res) {
+			console.log(res);
+		});
 	},
 
 	render: function () {
@@ -28369,7 +28432,8 @@ const Profile = React.createClass({
 				list: this.state.profile.list,
 				name: this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name,
 				city: city,
-				numberOfGames: this.state.profile.profile.numberOfGames
+				numberOfGames: this.state.profile.profile.numberOfGames,
+				onPublishGameFn: this.onPublishGame
 			}),
 			React.createElement(Footer, { version: footerVersion }),
 			chat
@@ -28380,11 +28444,12 @@ const Profile = React.createClass({
 
 module.exports = Profile;
 
-},{"../stores/appStore.js":279,"../utils/constants.js":282,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239}],265:[function(require,module,exports){
+},{"../stores/appStore.js":279,"../utils/constants.js":282,"../utils/functions.js":283,"./chat.js":241,"./detailsMainContainer.js":251,"./footer.js":255,"./header.js":257,"react":239}],265:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
-      Constants = require('../utils/constants.js');
+      Constants = require('../utils/constants.js'),
+      browserHistory = require('react-router').browserHistory;
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -28395,16 +28460,22 @@ module.exports = React.createClass({
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
 	},
 
+	_goToMyProfile: function () {
+		var ownProfileLink = "/profile/".concat(this.props.user.username);
+		browserHistory.push(ownProfileLink);
+	},
+
 	render: function () {
+		var loginUrl = "/login/facebook/?next=".concat(window.location.pathname);
 		var toReturn = React.createElement(
 			'a',
-			{ className: "login arrow-decorator dot-decorator " + this.props.version, href: '#' },
+			{ className: "login arrow-decorator dot-decorator " + this.props.version, href: loginUrl },
 			'Ingresa con Facebook'
 		);
 		if (this.props.user.logged) {
 			toReturn = React.createElement(
 				'a',
-				{ href: '#', className: "profileContainer " + this.props.version },
+				{ onClick: this._goToMyProfile, className: "profileContainer " + this.props.version },
 				React.createElement(
 					'span',
 					null,
@@ -28422,7 +28493,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":282,"react":239}],266:[function(require,module,exports){
+},{"../utils/constants.js":282,"react":239,"react-router":37}],266:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -29250,7 +29321,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 			var url = '';
 			if ("production" === "production") {
-				url = '/api/profile/' + username + '/';
+				url = '/api/profile/'.concat(username, '/');
 			} else {
 				url = '/api/profile/profile.json';
 			}
@@ -29854,6 +29925,10 @@ const Constants = {
 			ps: '/ps/',
 			xbox: '/xbox/',
 			both: '/ps-xbox/'
+		},
+		api: {
+			games: '/api/games/[console]/[used]/[exchange]/[name]/',
+			publishDvd: '/api/game/'
 		}
 	}
 };
@@ -29886,6 +29961,31 @@ const Functions = {
 			x1 = x1.replace(rgx, '$1' + '.' + '$2');
 		}
 		return x1 + x2;
+	},
+
+	fetchAdvanced: function (req) {
+		if (self.fetch) {
+			return fetch(req);
+		} else {
+			//use xml
+			return null;
+		}
+	},
+
+	getCookie: function (cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
 	}
 };
 

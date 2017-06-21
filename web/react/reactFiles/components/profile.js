@@ -4,7 +4,8 @@ const React = require('react'),
 			Chat = require('./chat.js'),
 			Header = require('./header.js'),
 			Footer = require('./footer.js'),
-			DetailsMainContainer = require('./detailsMainContainer.js');
+			DetailsMainContainer = require('./detailsMainContainer.js'),
+			Functions = require('../utils/functions.js');
 
 const Profile = React.createClass({
 
@@ -26,8 +27,26 @@ const Profile = React.createClass({
 		store = AppStore.getStore();
 		if(typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			store.profile.list.push({toCreate:true});
+			store.profile.list = store.profile.list.map(item => {item.temp_id = store.profile.list.indexOf(item); return item})
 		}
 		this.setState(store);
+	},
+
+	onPublishGame : function(editing){
+		var myCookie = Functions.getCookie("csrftoken");
+		var init = {
+			method: 'put',
+			credentials: "same-origin",
+			headers: {
+				"X-CSRFToken": myCookie,
+				"Accept": "application/json",
+				"Content-Type": "application/json"
+			},
+		};
+		console.log(editing) //TODO: send this as part of the init
+		var url = Constants.routes.api.publishDvd;
+		var req = new Request(url, init)
+		Functions.fetchAdvanced(req).then(function(res){console.log(res)})
 	},
 
 	render: function(){
@@ -59,6 +78,7 @@ const Profile = React.createClass({
 					name={this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name}
 					city={city}
 					numberOfGames={this.state.profile.profile.numberOfGames}
+					onPublishGameFn={this.onPublishGame}
 				/>
 				<Footer version={footerVersion} />
 				{chat}

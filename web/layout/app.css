@@ -4687,6 +4687,9 @@ ul.gameList il.new .contentContainer span,
 ul.gameList il.new .contentContainer div {
   display: none;
 }
+ul.gameList il.new .contentContainer .threeAttributes {
+  display: none !important;
+}
 ul.gameList il.new .contentContainer span.newText {
   text-transform: uppercase;
   margin: 20px;

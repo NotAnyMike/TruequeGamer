@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from rest_framework import serializers
 from django.contrib.auth.models import User
 import urllib, json, logging
@@ -5,13 +7,15 @@ import urllib, json, logging
 from .models import Game, Dvd
 from chat.models import UserAuth
 
+import constants,utils
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("games.serializers")
 
-url = "https://graph.facebook.com/10153958248812809?fields=picture,location&access_token=EAAMFSTFTluYBACRT4t1ZALRsQZA2LsoRIJeEWFmeZBIuDPguZAXGXbpSt3zHFZCdJAFRzs4qsi2yH8jcdXq7zlc9PNkMfMTKyBv9po84wfspRE8uRQM3ky2fodYZA17cvF4mwXt3eKeqcwgWkRrNZBH7UIDYFSSNEzZCSQY0U85z8gG8D4ZBsl993"
+url = "https://graph.facebook.com/me?fields=id,name,first_name,last_name,picture,location&access_token=%s" % constants.FB_ACCESS_TOKEN
+
 response = urllib.urlopen(url)
 data = json.load(response)
-print data
 
 class UserSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()
@@ -25,7 +29,29 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'picture')
+        fields = ('id', 'username', 'first_name', 'last_name', 'picture',)
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    picture = serializers.SerializerMethodField()
+    location = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
+    numberOfGames = serializers.SerializerMethodField()
+
+    def get_picture(self, user):
+        return utils.get_user_large_profile_pic(user)
+
+    def get_location(self, user):
+        return utils.get_user_location(user)
+
+    def get_city(self, user):
+        return "bogota" #TODO: correct this bullshit, location and city? wtf?
+
+    def get_numberOfGames(self, user):
+        return "4" #TODO: return the real value
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'picture', 'city','numberOfGames', 'location')
 
 class CurrentUserSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()
@@ -89,3 +115,22 @@ class DvdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dvd
         fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')
+
+class SingleDvdSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
+    used = serializers.SerializerMethodField()
+
+    def get_name(self, dvd):
+        return dvd.game.name
+
+    def get_cover(self, dvd):
+        return dvd.game.cover
+
+    def get_used(self, dvd):
+        return not dvd.new
+
+    class Meta:
+        model = Dvd
+        fields = ('pk', 'name', 'cover', 'price', 'exchange', 'used', 'console', 'comment')
+        #validators = [] 

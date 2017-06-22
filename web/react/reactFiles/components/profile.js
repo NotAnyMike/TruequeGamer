@@ -49,6 +49,13 @@ const Profile = React.createClass({
 		Functions.fetchAdvanced(req).then(function(res){console.log(res)})
 	},
 
+	changeHandlerForSearchInput: function(id, console,string){
+		//id del gameItem que está siendo cambiado
+		//console
+		//string
+		console.log("suggestions")
+	},
+
 	render: function(){
 		
 		var headerVersion = Constants.header.versions.normal;	
@@ -79,6 +86,7 @@ const Profile = React.createClass({
 					city={city}
 					numberOfGames={this.state.profile.profile.numberOfGames}
 					onPublishGameFn={this.onPublishGame}
+					changeHandlerForSearchInputFn={this.changeHandlerForSearchInput}
 				/>
 				<Footer version={footerVersion} />
 				{chat}

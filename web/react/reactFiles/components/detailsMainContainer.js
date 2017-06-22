@@ -16,6 +16,7 @@ const DetailsMainContainer = React.createClass({
 		city: React.PropTypes.string,
 		numberOfGames: React.PropTypes.number,
 		onPublishGameFn: React.PropTypes.func,
+		changeHandlerForSearchInputFn: React.PropTypes.func,
 	},
 
 	render: function(){
@@ -74,6 +75,7 @@ const DetailsMainContainer = React.createClass({
 						list={this.props.list}
 						goToProfileFn={this.props.goToProfileFn}
 						onPublishGameFn={this.props.onPublishGameFn}
+						changeHandlerForSearchInputFn={this.props.changeHandlerForSearchInputFn}
 					/>
 				</div>
 			</section>

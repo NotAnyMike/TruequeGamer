@@ -11,6 +11,7 @@ const DetailsList = React.createClass({
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func,
 		onPublishNameFn: React.PropTypes.func,
+		changeHandlerForSearchInputFn: React.PropTypes.func,
 	},
 
 	render: function(){
@@ -44,6 +45,7 @@ const DetailsList = React.createClass({
 									key={element.pk}
 									temp_id={element.temp_id}
 									onPublishGameFn={self.props.onPublishGameFn}
+									changeHandlerForSearchInputFn={self.props.changeHandlerForSearchInputFn}
 								/>
 							);
 						}else{
@@ -61,6 +63,7 @@ const DetailsList = React.createClass({
 									key={element.pk}
 									temp_id={element.temp_id}
 									onPublishGameFn={self.props.onPublishGameFn}
+									changeHandlerForSearchInputFn={self.props.changeHandlerForSearchInputFn}
 								/>
 							);
 						}

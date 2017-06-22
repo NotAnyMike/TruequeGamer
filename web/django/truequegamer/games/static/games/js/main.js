@@ -26890,7 +26890,8 @@ const DetailsList = React.createClass({
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func,
-		onPublishNameFn: React.PropTypes.func
+		onPublishNameFn: React.PropTypes.func,
+		changeHandlerForSearchInputFn: React.PropTypes.func
 	},
 
 	render: function () {
@@ -26923,7 +26924,8 @@ const DetailsList = React.createClass({
 							name: "lol",
 							key: element.pk,
 							temp_id: element.temp_id,
-							onPublishGameFn: self.props.onPublishGameFn
+							onPublishGameFn: self.props.onPublishGameFn,
+							changeHandlerForSearchInputFn: self.props.changeHandlerForSearchInputFn
 						});
 					} else {
 						gameItem = React.createElement(GameItem, {
@@ -26938,7 +26940,8 @@ const DetailsList = React.createClass({
 							isNew: false,
 							key: element.pk,
 							temp_id: element.temp_id,
-							onPublishGameFn: self.props.onPublishGameFn
+							onPublishGameFn: self.props.onPublishGameFn,
+							changeHandlerForSearchInputFn: self.props.changeHandlerForSearchInputFn
 						});
 					}
 				} else {
@@ -26994,7 +26997,8 @@ const DetailsMainContainer = React.createClass({
 		name: React.PropTypes.string,
 		city: React.PropTypes.string,
 		numberOfGames: React.PropTypes.number,
-		onPublishGameFn: React.PropTypes.func
+		onPublishGameFn: React.PropTypes.func,
+		changeHandlerForSearchInputFn: React.PropTypes.func
 	},
 
 	render: function () {
@@ -27081,7 +27085,8 @@ const DetailsMainContainer = React.createClass({
 					isOwnerOfProfile: this.props.isOwnerOfProfile,
 					list: this.props.list,
 					goToProfileFn: this.props.goToProfileFn,
-					onPublishGameFn: this.props.onPublishGameFn
+					onPublishGameFn: this.props.onPublishGameFn,
+					changeHandlerForSearchInputFn: this.props.changeHandlerForSearchInputFn
 				})
 			)
 		);
@@ -27305,6 +27310,7 @@ module.exports = React.createClass({
 
 },{"../utils/constants.js":282,"./socialLink.js":275,"react":239}],256:[function(require,module,exports){
 const React = require('react'),
+      SuggestionItem = require('./suggestionItem.js'),
       AvailableConsoles = require('./availableConsoles.js'),
       Constants = require('../utils/constants.js'),
       Functions = require('../utils/functions.js');
@@ -27347,7 +27353,9 @@ const GameItem = React.createClass({
 		price: React.PropTypes.number,
 		comment: React.PropTypes.string,
 		isNew: React.PropTypes.bool, //in order to know if this compoentn will show a "add new game" message
-		onPublishGameFn: React.PropTypes.func },
+		onPublishGameFn: React.PropTypes.func, //in order to fetch a put or post request
+		changeHandlerForSearchInputFn: React.PropTypes.func, //in order to show suggestions in the form
+		suggestions: React.PropTypes.array },
 
 	componentDidMount: function () {
 		if (this._isNew() === false) {
@@ -27392,7 +27400,8 @@ const GameItem = React.createClass({
 			console: null,
 			psUsed: false,
 			xboxUsed: false,
-			comment: null
+			comment: null,
+			suggestions: [{ name: "hola", id: 1 }]
 		};
 	},
 
@@ -27479,6 +27488,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment
 			}
 		});
+		this.props.changeHandlerForSearchInputFn();
 	},
 
 	_changeExchangeHandler: function (e) {
@@ -27745,7 +27755,7 @@ const GameItem = React.createClass({
 		}
 
 		toReturn = React.createElement(
-			'il',
+			'li',
 			{
 				className: className,
 				onClick: onClickComponent,
@@ -27866,16 +27876,9 @@ const GameItem = React.createClass({
 					React.createElement(
 						'ul',
 						null,
-						React.createElement(
-							'il',
-							null,
-							'The Witcher'
-						),
-						React.createElement(
-							'il',
-							null,
-							'The Witcher 2'
-						)
+						this.props.suggestions.map(element => {
+							return React.createElement(SuggestionItem, { key: element.id, text: element.name, onClickHandler: null });
+						})
 					)
 				),
 				React.createElement(
@@ -27998,7 +28001,7 @@ const GameItem = React.createClass({
 
 module.exports = GameItem;
 
-},{"../utils/constants.js":282,"../utils/functions.js":283,"./availableConsoles.js":240,"react":239}],257:[function(require,module,exports){
+},{"../utils/constants.js":282,"../utils/functions.js":283,"./availableConsoles.js":240,"./suggestionItem.js":276,"react":239}],257:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -28403,6 +28406,13 @@ const Profile = React.createClass({
 		});
 	},
 
+	changeHandlerForSearchInput: function (id, console, string) {
+		//id del gameItem que está siendo cambiado
+		//console
+		//string
+		console.log("suggestions");
+	},
+
 	render: function () {
 
 		var headerVersion = Constants.header.versions.normal;
@@ -28433,7 +28443,8 @@ const Profile = React.createClass({
 				name: this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name,
 				city: city,
 				numberOfGames: this.state.profile.profile.numberOfGames,
-				onPublishGameFn: this.onPublishGame
+				onPublishGameFn: this.onPublishGame,
+				changeHandlerForSearchInputFn: this.changeHandlerForSearchInput
 			}),
 			React.createElement(Footer, { version: footerVersion }),
 			chat
@@ -28559,53 +28570,19 @@ var React = require('react'),
 module.exports = React.createClass({
 	displayName: 'exports',
 
-	/*
- 	getInitialState: function(){
- 		return ({ 
- 			value: '',
- 			suggestions: []
- 		});
- 	},
- */
-	/*
- 	componentDidMount: function(){
- 		SuggestionStore.addSuggestionsRefreshListener(this._onSuggestionRefresh);
- 	},
- 
- 	componentWillUnmount: function(){
- 		SuggestionStore.removeSuggestionsRefreshListener(this._onSuggestionRefresh);
- 	},	
- */
-	/*
- 	_onSuggestionRefresh: function(){
- 		var suggestions = SuggestionStore.getSuggestions();
- 		this.setState({ suggestions: suggestions });
- 	},
- */
 
 	_changeHandler: function (e) {
-		/*var new_value = e.target.value;
-  this.setState({value: new_value});
-  if(new_value.length > 3){
-  	Actions.changeSearchInput(new_value);
-  }else{
-  	this.setState({suggestions: []});
-  };*/
 		this.props.changeHandlerForSearchInputFn(e.target.value);
 	},
 
 	_onKeyDownHandler: function (e) {
 		if (e.keyCode === 13) {
 			//send
-			//Actions.searchButtonClicked();
-			//this.props.suggestionSelectedHandlerFn();
 			this.props.onKeyDownHandlerForSearchInputFn();
 		}
 	},
 
 	suggestionSelectedHandler: function (value) {
-		/*this.setState({value: value});
-  Actions.changeSearchInput(value);*/
 		this.props.suggestionsSelectedHandlerFn(value);
 	},
 

@@ -1,4 +1,5 @@
 const React = require('react'),
+			SuggestionItem = require('./suggestionItem.js'),
 			AvailableConsoles = require('./availableConsoles.js'),
 			Constants = require('../utils/constants.js'),
 			Functions = require('../utils/functions.js');
@@ -40,6 +41,8 @@ const GameItem = React.createClass({
 		comment: React.PropTypes.string,	
 		isNew: React.PropTypes.bool, //in order to know if this compoentn will show a "add new game" message
 		onPublishGameFn: React.PropTypes.func, //in order to fetch a put or post request
+		changeHandlerForSearchInputFn: React.PropTypes.func, //in order to show suggestions in the form
+		suggestions: React.PropTypes.array, //the list of all suggestions
 	},
 
 	componentDidMount: function(){
@@ -86,6 +89,7 @@ const GameItem = React.createClass({
 			psUsed: false,
 			xboxUsed: false,
 			comment: null,
+			suggestions: [{name: "hola", id: 1}],
 		});
 	},
 
@@ -141,7 +145,7 @@ const GameItem = React.createClass({
 			this.props.onPublishGameFn(this.state.editing)
 		}
 	},
-	
+
 	_goToPage: function(){
 		if(typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();
 		else if(typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
@@ -173,6 +177,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 			}
 		});
+		this.props.changeHandlerForSearchInputFn()
 	},
 	
 	_changeExchangeHandler: function(e){
@@ -453,7 +458,7 @@ const GameItem = React.createClass({
 		}
 
 		toReturn = (
-			<il 
+			<li 
 				className={className} 
 				onClick={onClickComponent} 
 				onMouseOver={onMouseOverComponent}
@@ -513,8 +518,7 @@ const GameItem = React.createClass({
 					<div className="videoGameSection">
 						<input type="text" placeholder="nombre del videojuego" value={name} onChange={changeNameHandler}/>
 						<ul>
-							<il>The Witcher</il>
-							<il>The Witcher 2</il>
+							{this.props.suggestions.map(element => {return <SuggestionItem key={element.id} text={element.name} onClickHandler={null} />;})}
 						</ul>
 					</div>
 					<div><input type="text" placeholder="precio (en caso de venta)" value={pricePs} onChange={changePriceHandler}/></div>
@@ -556,7 +560,7 @@ const GameItem = React.createClass({
 						<textarea className="textArea" type="text" value={comment} onChange={changeCommentHandler}></textarea>
 					</div>
 				</div>
-			</il>
+			</li>
 		);
 
 		return toReturn

@@ -15,7 +15,7 @@ CONSOLES_TUPLE = ((CONSOLES['xbox'],'xbox one'),(CONSOLES['ps'],'ps4'))
 IGDB_API = {
         "base_url": "https://igdbcom-internet-game-database-v1.p.mashape.com",
         "games_url": "/games/",
-        "normal_query": "?fields=name,slug,release_dates&limit=10&offset=0&search={search}&filter[release_dates.platform][any]={platform},49&filter[release_dates.date][lte]=1498144264392&filter[category][any]=0,3,4",
+        "normal_query": "?fields=name,slug&limit=5&offset=0&search={search}&filter[release_dates.platform][any]={platform},49&filter[release_dates.date][lte]={time_in_epoch}&filter[category][any]=0,3,4",
         "consoles": {
             "xbox": '49',
             "ps": '48',

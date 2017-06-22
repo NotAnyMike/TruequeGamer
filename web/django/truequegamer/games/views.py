@@ -8,6 +8,7 @@ from django.conf import settings
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import urllib2,json
 
 from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer, UserProfileSerializer, SingleDvdSerializer
 from games.models import Game, Dvd
@@ -60,6 +61,23 @@ def SomeUser(request, username):
             return HttpResponse('Not found', status=404)
     else:
         return HttpResponse('Unauthorized', status=401)
+
+@api_view(['GET'])
+def GetListOfGames(request,console,string):
+    if request.method == 'GET':
+        url = utils.get_IGDB_url(console,string)
+        print "url: " + url
+        opener = urllib2.build_opener(urllib2.HTTPHandler)
+        request = urllib2.Request(url)
+        request.add_header("Accept", "application/json")
+        request.add_header("X-Mashape-Key", constants.IGDB_ACCESS_TOKEN)
+
+        response = opener.open(request)
+        
+        response_str = response.read()
+        return Response(json.loads(response_str))
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT','POST'])
 def DvdApi(request):

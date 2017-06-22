@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^api/profile/(?P<username>.+)/$', views.SomeUser, name='user'),
     url(r'^api/(?P<serializerType>(suggestions)|(games)|(game))/(?P<console>.+)/(?P<new>.+)/(?P<sell>.+)/(?P<string>.*)/$', views.LocalSuggestions, name='local_suggestions'),
     url(r'^api/game/$', views.DvdApi, name='add_dvd'),
+    url(r'^api/game/suggestions/(?P<console>.+)/(?P<string>.+)/$', views.GetListOfGames, name='get_list_of_games'),
     url(r'^api/', include(router.urls)),
     url(r'^$', views.index, name='index'),
     url(r'^img/', views.img, name='img'),

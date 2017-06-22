@@ -89,7 +89,7 @@ const GameItem = React.createClass({
 			psUsed: false,
 			xboxUsed: false,
 			comment: null,
-			suggestions: [{name: "hola", id: 1}],
+			suggestions: [],
 		});
 	},
 

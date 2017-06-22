@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+import time
 import constants
 
 def get_fb_large_profile_pic(fb_id):
@@ -23,9 +24,10 @@ def get_user_location(user):
     return toReturn
 
 def get_IGDB_url(console=','.join(constants.IGDB_API['consoles'].values()), string = ""):
-    if consoles == contants.CONSOLES['xbox']: consoles = constants.IGDB_API['consoles']['xbox']
-    elif consoles == constants.CONSOLES['ps']: consoles = constants.IGDB_API['consoles']['ps']
+    timeInEpoch = str(long(time.time()*1000 + (31*24*60*60*1000)))
+    if console == constants.CONSOLES['xbox']: console = constants.IGDB_API['consoles']['xbox']
+    elif console == constants.CONSOLES['ps']: console = constants.IGDB_API['consoles']['ps']
     return "%s%s%s" % (
             constants.IGDB_API['base_url'],
-            constants.IGBD_API['games_url'],
-            constnats.IGBD_API['normal_query'].replace('{string}', str(string)).replace('{platform}', consoles))
+            constants.IGDB_API['games_url'],
+            constants.IGDB_API['normal_query'].replace('{search}', str(string).replace(' ', '+')).replace('{platform}', console).replace('{time_in_epoch}', timeInEpoch))

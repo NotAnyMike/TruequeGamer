@@ -11,8 +11,8 @@
 * Has up to 70.000 with no cost
 * Has no limit per second to the free api
 * Is currently being mantained
+* Has the filter for platform
 #### Cons -
-* Has not plataform filter or attribute when retriving the list (look if retriving the exact game has it)
 * The docs are not good
 * Has not exact match search
 

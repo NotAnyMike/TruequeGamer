@@ -21,3 +21,11 @@ def get_user_location(user):
     except ObjectDoesNotExist:
         pass
     return toReturn
+
+def get_IGDB_url(console=','.join(constants.IGDB_API['consoles'].values()), string = ""):
+    if consoles == contants.CONSOLES['xbox']: consoles = constants.IGDB_API['consoles']['xbox']
+    elif consoles == constants.CONSOLES['ps']: consoles = constants.IGDB_API['consoles']['ps']
+    return "%s%s%s" % (
+            constants.IGDB_API['base_url'],
+            constants.IGBD_API['games_url'],
+            constnats.IGBD_API['normal_query'].replace('{string}', str(string)).replace('{platform}', consoles))

@@ -8,13 +8,12 @@
 ## Pros and cons of each one of them
 ### IGBD.com
 #### Pros +
-* Has up to 70.000 with no cost
+* Has up to 7.000 with no cost per day
 * Has no limit per second to the free api
 * Is currently being mantained
 * Has the filter for platform
 #### Cons -
 * The docs are not good
-* Has not exact match search
 
 ### The Game db.net
 #### Pros +

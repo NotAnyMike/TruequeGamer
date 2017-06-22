@@ -48,9 +48,10 @@
 * only 200 request per hour
 * Has no picture for consoles, just on general
 
-### Moby
+### Moby Games
 #### Pros +
 * Free
 * Easy to use
+
 #### Cons -
 * One request per second, 360 per hour

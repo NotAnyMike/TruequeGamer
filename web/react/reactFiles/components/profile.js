@@ -74,10 +74,26 @@ const Profile = React.createClass({
 			},
 			body: data,
 		};
-		console.log(editing) //TODO: send this as part of the init
 		var url = Constants.routes.api.publishDvd;
 		var req = new Request(url, init)
-		Functions.fetchAdvanced(req).then(function(res){console.log(res)})
+		Functions.fetchAdvanced(req).then(function(res){this._newGameCreated(res)}.bind(this))
+	},
+
+	_newGameCreated: function(res){
+		if(res.ok && res.status === 201){
+			res.json().then(function(json){
+				//if profile.user is the same as the logged in then add it to the list at the end
+				if(this.state.user.logged !== 'undefined' && this.state.user.logged === true && this.state.profile.profile.id === this.state.user.id){
+					//add json to the list
+					state = this.state;
+					console.log(json)
+					state.profile.list.splice(this.state.profile.list.length-1, 0, json);
+					console.log(state)
+					this.setState(state);
+					
+				}
+			}.bind(this));
+		}
 	},
 
 	changeHandlerForSearchInput: function(id,isPs,string){

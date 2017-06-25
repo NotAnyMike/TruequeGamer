@@ -4758,8 +4758,11 @@ ul.gameList li.editing form div:nth-child(3) {
 ul.gameList li.editing form div.videoGameSection {
   position: relative;
 }
-ul.gameList li.editing form div.videoGameSection ul {
+ul.gameList li.editing form div.videoGameSection input[type="text"]:focus + ul {
   display: inline-block;
+}
+ul.gameList li.editing form div.videoGameSection ul {
+  display: none;
   position: absolute;
   background-color: #fff;
   top: 40px;
@@ -4791,6 +4794,9 @@ ul.gameList li.editing form div.videoGameSection ul li {
 ul.gameList li.editing form div.videoGameSection ul li:hover {
   background-color: rgba(0,153,146,0.5);
   color: #fff;
+}
+ul.gameList li.editing form div.videoGameSection ul:hover {
+  display: inline-block;
 }
 ul.gameList li.editing form div.stateButtons {
   -webkit-box-pack: justify;

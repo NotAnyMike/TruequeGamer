@@ -35,15 +35,17 @@ const DetailsList = React.createClass({
 					var gameItem;
 					if(self.props.isProfile){
 						if(typeof element.toCreate !== 'undefined' && element.toCreate === true){
+							var name = element.name !== 'undefined' ? element.name : "";
 							gameItem = (
 								<GameItem 
 									isOwnerOfProfile={self.props.isOwnerOfProfile}
 									toCreate={true}
 									isProfile={self.props.isProfile}
 									isNew={false}
-									name={"lol"}
+									name={name}
 									key={element.pk}
 									temp_id={element.temp_id}
+									suggestions={element.suggestions}
 									onPublishGameFn={self.props.onPublishGameFn}
 									changeHandlerForSearchInputFn={self.props.changeHandlerForSearchInputFn}
 								/>
@@ -62,6 +64,7 @@ const DetailsList = React.createClass({
 									isNew={false}
 									key={element.pk}
 									temp_id={element.temp_id}
+									suggestions={element.suggestions}
 									onPublishGameFn={self.props.onPublishGameFn}
 									changeHandlerForSearchInputFn={self.props.changeHandlerForSearchInputFn}
 								/>

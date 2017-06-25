@@ -74,6 +74,7 @@ const Constants = {
 		api: {
 			games: '/api/games/[console]/[used]/[exchange]/[name]/',
 			publishDvd: '/api/game/',
+			suggestions_igdb: '/api/game/suggestions/[console]/[string]/',
 		},
 	}
 };

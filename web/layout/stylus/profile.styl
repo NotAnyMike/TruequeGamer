@@ -168,9 +168,12 @@ ul
 
 						&.videoGameSection
 							position: relative
+
+							input[type="text"]:focus + ul
+								display: inline-block
 						
 							ul
-								display: inline-block
+								display: none
 								position: absolute
 								background-color: white
 								top: 40px
@@ -195,6 +198,9 @@ ul
 									&:hover	
 										background-color: rgba($dark_green,0.5)
 										color: white
+
+								&:hover
+									display: inline-block
 
 						&.stateButtons
 							justify-content: space-between

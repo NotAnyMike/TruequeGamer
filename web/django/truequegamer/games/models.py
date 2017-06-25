@@ -14,9 +14,11 @@ import constants
 class Game(models.Model):
     name = models.CharField(max_length=300, null=False, blank=False, unique=True)
     cover = models.URLField(max_length=300, null=False, blank=False, unique=True) 
+    score = models.IntegerField(null=True, blank=True, default=None)
+    id_igdb = models.BigIntegerField(null=False, blank=False, default=None, unique=True)
+    slug = models.CharField(max_length=300, null=False, blank=False, default=None,unique=True)
     psOnly = models.BooleanField(null=False, blank=False, default=False)
     xboxOnly = models.BooleanField(null=False, blank=False, default=False)
-    score = models.IntegerField(null=True, blank=True, default=None)
     psPrice= models.IntegerField(null=True, blank=True, default=None)
     xboxPrice= models.IntegerField(null=True, blank=True, default=None)
     psExchange= models.BooleanField(null=False, blank=False, default=False)

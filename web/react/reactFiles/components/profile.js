@@ -9,6 +9,10 @@ const React = require('react'),
 
 const Profile = React.createClass({
 
+	doneTypingInterval: 500,
+	
+	typingTimer: null,
+
 	getInitialState: function(){
 		AppStore.getProfile(this.props.params.username);
 		var store = AppStore.getStore();
@@ -32,8 +36,34 @@ const Profile = React.createClass({
 		this.setState(store);
 	},
 
+	doneTypingFn: function(id,isPs,string){
+		var url = Constants.routes.api.suggestions_igdb;
+		var consoles = isPs ? Constants.consoles.ps : Constants.consoles.xbox;
+		url = url.replace('[console]', consoles.toString()).replace('[string]', string.toString());
+		var self = this;
+		var req = url;
+		//Get them and add them to the store
+		Functions.fetchAdvanced(req).then(res => {return res.json()}).then(json => {this.retreivingSuggestionsFromIGBD(id,json)});
+
+	},
+
+	retreivingSuggestionsFromIGBD: function(id,json){
+		var element = this.state.profile.list.filter(element => element.temp_id === id)
+		if(element.length > 0){
+			element = element[0]
+
+			element.suggestions = json;
+			this.setState(this.store);
+			console.log(this.state.profile.list)
+		}
+		
+	},
+
 	onPublishGame : function(editing){
 		var myCookie = Functions.getCookie("csrftoken");
+		var data = new FormData();
+		//data.append( "json", JSON.stringify( editing ) );
+		data = JSON.stringify( editing );
 		var init = {
 			method: 'put',
 			credentials: "same-origin",
@@ -42,6 +72,7 @@ const Profile = React.createClass({
 				"Accept": "application/json",
 				"Content-Type": "application/json"
 			},
+			body: data,
 		};
 		console.log(editing) //TODO: send this as part of the init
 		var url = Constants.routes.api.publishDvd;
@@ -49,11 +80,14 @@ const Profile = React.createClass({
 		Functions.fetchAdvanced(req).then(function(res){console.log(res)})
 	},
 
-	changeHandlerForSearchInput: function(id, console,string){
+	changeHandlerForSearchInput: function(id,isPs,string){
 		//id del gameItem que está siendo cambiado
 		//console
 		//string
-		console.log("suggestions")
+		//Search the api for suggestions
+		
+		clearTimeout(this.typingTimer);
+		this.typingTimer = setTimeout(function(){this.doneTypingFn(id,isPs,string)}.bind(this), this.doneTypingInterval);
 	},
 
 	render: function(){

@@ -7,6 +7,7 @@ const React = require('react'),
 const GameItem = React.createClass({
 
 	propTypes: {
+		key: React.PropTypes.number.isRequired,
 		isProfile: React.PropTypes.bool.isRequired, //in order to know if we are in the profile page
 		name: React.PropTypes.string.isRequired,
 		cover: React.PropTypes.string.isRequired,
@@ -40,9 +41,10 @@ const GameItem = React.createClass({
 		price: React.PropTypes.number,
 		comment: React.PropTypes.string,	
 		isNew: React.PropTypes.bool, //in order to know if this compoentn will show a "add new game" message
+		suggestions: React.PropTypes.array, //the list of all suggestions
 		onPublishGameFn: React.PropTypes.func, //in order to fetch a put or post request
 		changeHandlerForSearchInputFn: React.PropTypes.func, //in order to show suggestions in the form
-		suggestions: React.PropTypes.array, //the list of all suggestions
+		updatingNameOfGameItemFn: React.PropTypes.func,//needed when the user choses a suggestion
 	},
 
 	componentDidMount: function(){
@@ -55,24 +57,27 @@ const GameItem = React.createClass({
 					used: this.props.used,
 					comment: this.props.comment,
 					ps: (this.props.console === null ? null : (this.props.console === Constants.consoles.ps ? true : false)),
+					idOfGame: null,
 				}
 			});
 		}
 	},
 
 	getInitialState: function(){
+		var name = this.props.name !== 'undefined' ? this.props.name : "";
 		return ({
 			isHover: false,
 			isComponentHover: false,
 			isEditing: false,
 			isShowingComment: false,
 			editing:{
-				name: null,
+				name: name,
 				price: null,
 				used: false,
 				ps: true,
 				exchange: true,
 				comment: null,
+				idOfGame: null,
 			},
 		});
 	},
@@ -161,6 +166,7 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: newValue,
+				idOfGame: this.state.editing.idOfGame
 			}
 		});
 	},
@@ -175,9 +181,10 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
+				idOfGame: this.state.editing.idOfGame
 			}
 		});
-		this.props.changeHandlerForSearchInputFn()
+		this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps,newValue)
 	},
 	
 	_changeExchangeHandler: function(e){
@@ -190,6 +197,7 @@ const GameItem = React.createClass({
 				exchange: newValue,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
+				idOfGame: this.state.editing.idOfGame
 			}
 		});
 	},
@@ -204,6 +212,7 @@ const GameItem = React.createClass({
 				exchange: newValue,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
+				idOfGame: this.state.editing.idOfGame
 			}
 		});
 	},
@@ -218,6 +227,7 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
+				idOfGame: this.state.editing.idOfGame
 			}
 		});
 	},
@@ -232,6 +242,7 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
+				idOfGame: this.state.editing.idOfGame
 			}
 		});
 	},
@@ -246,6 +257,7 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: newValue,
 				comment: this.state.editing.comment,
+				idOfGame: this.state.editing.idOfGame
 			}
 		});
 	},
@@ -260,6 +272,7 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: newValue,
 				comment: this.state.editing.comment,
+				idOfGame: this.state.editing.idOfGame
 			}
 		});
 	},
@@ -274,6 +287,21 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
+				idOfGame: this.state.editing.idOfGame
+			}
+		});
+	},
+
+	_clickSuggestionHandler: function(id,string){
+		this.setState({
+			editing: {
+				name: string,
+				price: this.state.editing.price,
+				used: this.state.editing.used,
+				exchange: this.state.editing.exchange,
+				ps: this.state.editing.ps,
+				comment: this.state.editing.comment,
+				idOfGame: id,
 			}
 		});
 	},
@@ -293,6 +321,7 @@ const GameItem = React.createClass({
 		var onInfoClick = null;
 		var onPublishButtonClick = null;
 		var onSecondButtonClick = null;
+		var onClickOnSuggestion = null;
 		var changeNameHandler = null;
 		var changePriceHandler = null;
 		var changeUsedHandler = null;
@@ -324,106 +353,94 @@ const GameItem = React.createClass({
 
 			temp_id = this.props.temp_id;
 
-			//TODO: to remove
-			if(false && typeof this.props.toCreate !== 'undefined' && this.props.toCreate === true){
+			if(this._isNew()){
 
 				className = "new";
-				if(this.state.isEditing) {
-					className += " editing";
-				}else{
+				if(this.state.isEditing === false) {
 					onClickComponent = this._onInfoClicked;
 				}
 
-
 			}else{
-	
-				if(this._isNew()){
 
-					className = "new";
-					if(this.state.isEditing === false) {
-						onClickComponent = this._onInfoClicked;
-					}
-
+				className = this.props.console + " only"
+				if(this.props.console === Constants.consoles.xbox){
+					className += (this.props.exchange ? " xboxNoExchange" : "") +
+						(typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
+				}
+				if(this.props.console === Constants.consoles.ps){
+					className += (this.props.exchange ? " psNoExchange" : "") +
+						(typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
+				}
+				if(this.props.used){
+					if(this.props.console === Constants.consoles.ps) className += " psUsed";
+					else className += " xboxUsed";
 				}else{
-
-					className = this.props.console + " only"
-					if(this.props.console === Constants.consoles.xbox){
-						className += (this.props.exchange ? " xboxNoExchange" : "") +
-							(typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
-					}
-					if(this.props.console === Constants.consoles.ps){
-						className += (this.props.exchange ? " psNoExchange" : "") +
-							(typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
-					}
-					if(this.props.used){
-						if(this.props.console === Constants.consoles.ps) className += " psUsed";
-						else className += " xboxUsed";
-					}else{
-						if(this.props.console === Constants.consoles.ps) className += " psNew";
-						else className += " xboxNew";
-					}
-					
-					if(this.props.isNew === false){
-						className += " alreadyCreated";
-						if(this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)){
-							className += " onlyExchange";
-						}else if((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number'){
-							className += " onlySell";
-						}
-					}
-					
-					if(this.props.isProfile) className += " showInfo";
-					
+					if(this.props.console === Constants.consoles.ps) className += " psNew";
+					else className += " xboxNew";
 				}
-
-
-				if(this.state.isEditing) {
-					className += " editing";
-				}
-				if(this.state.isShowingComment){
-					className += " showComment";
-				}
-				if((this.state.isComponentHover && this.state.isEditing === false) || (this.state.isEditing === true && this.state.isShowingComment === true) || (this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false)){
-					className += " commentContainerIn";
-				}else{
-					className += " commentContainerOut";
-				}
-
-				onClickComponent = this._goToPage;
-				cover = this.props.cover;
-				name = this.state.editing.name;
-				onMouseOverComponent = this._isNew() ? null : this._onMouseOverComponent;
-				onMouseOutComponent = this._isNew() ? null : this._onMouseOutComponent;
-				onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null;
-				onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut  : null;
-				onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver  : null;
-				onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut  : null;
-				onInfoClick = this._onInfoClicked;
-				onSecondButtonClick = this._onEditCommentClicked;
-				onPublishButtonClick = this._onPublishButtonClicked;
-				changeNameHandler = this._changeNameHandler;
-				changePriceHandler = this._changePriceHandler;
-				changeUsedHandler = this._changeUsedHandler;
-				changeNewHandler = this._changeNewHandler;
-				changeConsolePsHandler = this._changeConsolePsHandler;
-				changeConsoleXboxHandler = this._changeConsoleXboxHandler;
-				changeExchangeHandler = this._changeExchangeHandler;
-				changeNoExchangeHandler = this._changeNoExchangeHandler;
-				changeCommentHandler = this._changeCommentHandler;
-				pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
-				priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
-				psChecked = this.state.editing.ps;
-				used = this.state.editing.used;
-				exchange = this.state.editing.exchange;
-				comment = this.state.editing.comment;
-
-				if(this._isNew()){
-					if(this.state.isEditing === false) {
-						onClickComponent = this._onInfoClicked;
+				
+				if(this.props.isNew === false){
+					className += " alreadyCreated";
+					if(this.props.exchange === true && (typeof this.props.price === 'undefined' || this.props.price === null)){
+						className += " onlyExchange";
+					}else if((typeof this.props.exchange === 'undefined' || this.props.exchange === false) && typeof this.props.price === 'number'){
+						className += " onlySell";
 					}
 				}
-
+				
+				if(this.props.isProfile) className += " showInfo";
+				
 			}
+
+
+			if(this.state.isEditing) {
+				className += " editing";
+			}
+			if(this.state.isShowingComment){
+				className += " showComment";
+			}
+			if((this.state.isComponentHover && this.state.isEditing === false) || (this.state.isEditing === true && this.state.isShowingComment === true) || (this.state.isEditing === false && this.state.isShowingComment === true && this.props.isOwnerOfProfile === false)){
+				className += " commentContainerIn";
+			}else{
+				className += " commentContainerOut";
+			}
+
+			onClickComponent = this._goToPage;
+			cover = this.props.cover;
+			name = this.state.editing.name; //in order to change the name when a suggestion is clicked when modifying
+			onMouseOverComponent = this._isNew() ? null : this._onMouseOverComponent;
+			onMouseOutComponent = this._isNew() ? null : this._onMouseOutComponent;
+			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null;
+			onMouseOut1 = this.props.console === Constants.consoles.xbox ? this._onMouseOut  : null;
+			onMouseOver2 = this.props.console === Constants.consoles.ps ? this._onMouseOver  : null;
+			onMouseOut2 = this.props.console === Constants.consoles.ps ? this._onMouseOut  : null;
+			onInfoClick = this._onInfoClicked;
+			onSecondButtonClick = this._onEditCommentClicked;
+			onPublishButtonClick = this._onPublishButtonClicked;
+			onClickOnSuggestion = this._clickSuggestionHandler;
+			changeNameHandler = this._changeNameHandler;
+			changePriceHandler = this._changePriceHandler;
+			changeUsedHandler = this._changeUsedHandler;
+			changeNewHandler = this._changeNewHandler;
+			changeConsolePsHandler = this._changeConsolePsHandler;
+			changeConsoleXboxHandler = this._changeConsoleXboxHandler;
+			changeExchangeHandler = this._changeExchangeHandler;
+			changeNoExchangeHandler = this._changeNoExchangeHandler;
+			changeCommentHandler = this._changeCommentHandler;
+			pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+			priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+			psChecked = this.state.editing.ps;
+			used = this.state.editing.used;
+			exchange = this.state.editing.exchange;
+			comment = this.state.editing.comment;
+
+			if(this._isNew()){
+				if(this.state.isEditing === false) {
+					onClickComponent = this._onInfoClicked;
+				}
+			}
+
+		
 		
 		}else{
 
@@ -516,9 +533,9 @@ const GameItem = React.createClass({
 						<span onClick={onInfoClick}></span>
 					</div>
 					<div className="videoGameSection">
-						<input type="text" placeholder="nombre del videojuego" value={name} onChange={changeNameHandler}/>
+						<input type="text" placeholder="Selecciona el juego" value={name} onChange={changeNameHandler}/>
 						<ul>
-							{this.props.suggestions.map(element => {return <SuggestionItem key={element.id} text={element.name} onClickHandler={null} />;})}
+							{this.props.suggestions.map(element => {return <SuggestionItem id={element.id} key={element.id} text={element.name} page={'profile'} onClickHandler={onClickOnSuggestion} />;})}
 						</ul>
 					</div>
 					<div><input type="text" placeholder="precio (en caso de venta)" value={pricePs} onChange={changePriceHandler}/></div>

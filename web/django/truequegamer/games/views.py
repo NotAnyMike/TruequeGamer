@@ -9,6 +9,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import urllib2,json
+from django.core.exceptions import ObjectDoesNotExist
 
 from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer, UserProfileSerializer, SingleDvdSerializer
 from games.models import Game, Dvd
@@ -65,19 +66,13 @@ def SomeUser(request, username):
 @api_view(['GET'])
 def GetListOfGames(request,console,string):
     if request.method == 'GET':
-        url = utils.get_IGDB_url(console,string)
-        print "url: " + url
-        opener = urllib2.build_opener(urllib2.HTTPHandler)
-        request = urllib2.Request(url)
-        request.add_header("Accept", "application/json")
-        request.add_header("X-Mashape-Key", constants.IGDB_ACCESS_TOKEN)
-
-        response = opener.open(request)
+        response = utils.get_list_from_IGDB(console,string)
         
         response_str = response.read()
-        return Response(json.loads(response_str))
-    else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        if response.getcode() >= 200 and response.getcode() < 300: 
+            return Response(json.loads(response_str), status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT','POST'])
 def DvdApi(request):
@@ -88,8 +83,14 @@ def DvdApi(request):
     #Add
     elif request.method == 'PUT':
         data = request.data
-        new_data = dict((key.encode('utf-8'), value) for key, value in data.items())
-        data.update(new_data) #adding data without the unicode encoding on the key's items
+        newData = dict((key.encode('utf-8'), value) for key,value in data.items())
+        #data.update(newData)
+        data = newData
+        
+        data['console'] = constants.CONSOLES['xbox']
+        if 'ps' in data:
+            if data['ps']:
+                data['console'] = constants.CONSOLES['ps']
 
         serializer = SingleDvdSerializer(data=data, partial=True)
         #return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
@@ -97,26 +98,48 @@ def DvdApi(request):
             #Check if the user is logged in
             if request.user.is_authenticated():
                 #Check if the price is positive
-                if data['price'] >= 0:
+                if data['price'] == None or data['price'] >= 0:
                     #Check if the console is right
                     if data['console'] in list(constants.CONSOLES.values()):
                         #Construct an Dvd Object
                         #Get the game with the id field
-                        game = Game.objects.get(pk=data['pk'])
-                        if game is not None:
-                            dvdToSave = Dvd(
-                                    price = data['price'],
-                                    exchange = data['exchange'],
-                                    new = data['new'],
-                                    owner = request.user,
-                                    game = game,
-                                    console = data['console'],
-                                    comment = data['comment'],
-                                    )
-                            #Save it
-                            dvdToSave.save()
-                            serializer = SingleDvdSerializer(dvdToSave)
-                            return Response(serializer.data, status=status.HTTP_201_CREATED)
+                        #Get the game from IGDB
+                        
+                        if 'idOfGame' in data and data['idOfGame'] != None :
+                            game = None
+                            try:
+                                game = Game.objects.get(id_igdb=data['idOfGame'])
+                            except ObjectDoesNotExist:
+                                resp = utils.get_list_from_IGDB(console=data['console'], string="", id_of_game= data['idOfGame'])
+                    
+                                if resp.getcode() >= 200 and resp.getcode() <300:
+                                    #Try to get the game
+                                    print resp
+                                    print dir(resp)
+                                    game = Game(
+                                        name= resp['name'],
+                                        cover = resp['cover']['url'].replace('//','https://'),
+                                        score = resp['popularity'],
+                                        id_igdb = resp['id'],
+                                        slug = resp['slug']
+                                        )
+
+                            if game is not None:
+                                dvdToSave = Dvd(
+                                        price = data['price'],
+                                        exchange = data['exchange'],
+                                        new = data['new'],
+                                        owner = request.user,
+                                        game = game,
+                                        console = data['console'],
+                                        comment = data['comment'],
+                                        )
+                                #Save it
+                                dvdToSave.save()
+                                serializer = SingleDvdSerializer(dvdToSave)
+                                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                        
+
             else:
                 return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)
     

@@ -8,6 +8,7 @@ const GameItem = React.createClass({
 
 	propTypes: {
 		key: React.PropTypes.number.isRequired,
+		id: React.PropTypes.number, //in order to know if update or if create a dvd
 		isProfile: React.PropTypes.bool.isRequired, //in order to know if we are in the profile page
 		name: React.PropTypes.string.isRequired,
 		cover: React.PropTypes.string.isRequired,
@@ -58,6 +59,7 @@ const GameItem = React.createClass({
 					comment: this.props.comment,
 					ps: (this.props.console === null ? null : (this.props.console === Constants.consoles.ps ? true : false)),
 					idOfGame: null,
+					id: this.props.id,
 				}
 			});
 		}
@@ -65,6 +67,8 @@ const GameItem = React.createClass({
 
 	getInitialState: function(){
 		var name = this.props.name !== 'undefined' ? this.props.name : "";
+		var id = this.props.id;
+		if(id === 'undefined') id=null;
 		return ({
 			isHover: false,
 			isComponentHover: false,
@@ -78,6 +82,7 @@ const GameItem = React.createClass({
 				exchange: true,
 				comment: null,
 				idOfGame: null,
+				id: id,
 			},
 		});
 	},
@@ -166,7 +171,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: newValue,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id,
 			}
 		});
 	},
@@ -181,7 +187,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id,
 			}
 		});
 		this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps,newValue)
@@ -197,7 +204,8 @@ const GameItem = React.createClass({
 				exchange: newValue,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id,
 			}
 		});
 	},
@@ -212,7 +220,8 @@ const GameItem = React.createClass({
 				exchange: newValue,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id,
 			}
 		});
 	},
@@ -227,7 +236,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id,
 			}
 		});
 	},
@@ -242,7 +252,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id,
 			}
 		});
 	},
@@ -257,7 +268,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: newValue,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id,
 			}
 		});
 	},
@@ -272,7 +284,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: newValue,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id,
 			}
 		});
 	},
@@ -287,7 +300,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id,
 			}
 		});
 	},
@@ -302,6 +316,7 @@ const GameItem = React.createClass({
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
 				idOfGame: id,
+				id: this.state.editing.id,
 			}
 		});
 	},
@@ -339,6 +354,11 @@ const GameItem = React.createClass({
 		var used = false;
 		var exchange = false;
 		var comment = null;
+		var nameEditing = null;
+		var priceEditing = null;
+		var usedEditing = null;
+		var exchangeEditing = null;
+		var psCheckedEditing = null;
 
 		var consoleVar = this.props.console;
 		if(this.props.both && this.state.isHover && consoleVar !== null){
@@ -407,7 +427,8 @@ const GameItem = React.createClass({
 
 			onClickComponent = this._goToPage;
 			cover = this.props.cover;
-			name = this.state.editing.name; //in order to change the name when a suggestion is clicked when modifying
+			name = this.props.name; //in order to change the name when a suggestion is clicked when modifying
+			nameEditing = this.state.editing.name; //in order to change the name when a suggestion is clicked when modifying
 			onMouseOverComponent = this._isNew() ? null : this._onMouseOverComponent;
 			onMouseOutComponent = this._isNew() ? null : this._onMouseOutComponent;
 			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null;
@@ -427,11 +448,17 @@ const GameItem = React.createClass({
 			changeExchangeHandler = this._changeExchangeHandler;
 			changeNoExchangeHandler = this._changeNoExchangeHandler;
 			changeCommentHandler = this._changeCommentHandler;
-			pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
-			priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
-			psChecked = this.state.editing.ps;
-			used = this.state.editing.used;
-			exchange = this.state.editing.exchange;
+			//pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+			pricePs = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
+			//priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+			priceXbox = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
+			priceEditing = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+			psChecked = this.props.ps;
+			psCheckedEditing = this.state.editing.ps;
+			used = this.props.used;
+			usedEditing = this.state.editing.used;
+			exchange = this.props.exchange;
+			exchangeEditing = this.state.editing.exchange;
 			comment = this.state.editing.comment;
 
 			if(this._isNew()){
@@ -533,31 +560,31 @@ const GameItem = React.createClass({
 						<span onClick={onInfoClick}></span>
 					</div>
 					<div className="videoGameSection">
-						<input type="text" placeholder="Selecciona el juego" value={name} onChange={changeNameHandler}/>
+						<input type="text" placeholder="Selecciona el juego" value={nameEditing} onChange={changeNameHandler}/>
 						<ul>
 							{this.props.suggestions.map(element => {return <SuggestionItem id={element.id} key={element.id} text={element.name} page={'profile'} onClickHandler={onClickOnSuggestion} />;})}
 						</ul>
 					</div>
-					<div><input type="text" placeholder="precio (en caso de venta)" value={pricePs} onChange={changePriceHandler}/></div>
+					<div><input type="text" placeholder="precio (en caso de venta)" value={priceEditing} onChange={changePriceHandler}/></div>
 					<span>¿Nuevo o Usado?</span>
 					<div>
-						<input type="radio" id={"new" + temp_id} name={"new" + temp_id} value={!used} checked={!used} onClick={changeNewHandler}></input>
+						<input type="radio" id={"new" + temp_id} name={"new" + temp_id} value={!usedEditing} checked={!usedEditing} onClick={changeNewHandler}></input>
 						<label htmlFor={"new" + temp_id}>Nuevo</label>
-						<input type="radio" id={"old" + temp_id} name={"new" + temp_id} value={used} checked={used} onClick={changeUsedHandler}></input>
+						<input type="radio" id={"old" + temp_id} name={"new" + temp_id} value={usedEditing} checked={usedEditing} onClick={changeUsedHandler}></input>
 						<label htmlFor={"old" + temp_id}>Usado</label>
 					</div>
 					<span>¿Trueque?</span>
 					<div className="exchange">
-						<input type="radio" id={"exchange" + temp_id} name={"exchange" + temp_id} checked={exchange} onClick={changeExchangeHandler}></input>
+						<input type="radio" id={"exchange" + temp_id} name={"exchange" + temp_id} checked={exchangeEditing} onClick={changeExchangeHandler}></input>
 						<label htmlFor={"exchange" + temp_id}>Sí</label>
-						<input type="radio" id={"noExchange" + temp_id} name={"exchange" + temp_id} checked={!exchange} onClick={changeNoExchangeHandler}></input>
+						<input type="radio" id={"noExchange" + temp_id} name={"exchange" + temp_id} checked={!exchangeEditing} onClick={changeNoExchangeHandler}></input>
 						<label htmlFor={"noExchange" + temp_id}>No</label>
 					</div>
 					<span>Selecciona la consola</span>
 					<div className="console">
-						<input type="radio" id={"ps" + temp_id} className="ps" name={"psOrxbox" + temp_id} checked={psChecked} onClick={changeConsolePsHandler}></input>
+						<input type="radio" id={"ps" + temp_id} className="ps" name={"psOrxbox" + temp_id} checked={psCheckedEditing} onClick={changeConsolePsHandler}></input>
 						<label htmlFor={"ps" + temp_id}></label>
-						<input type="radio" id={"xbox" + temp_id} className="xbox" name={"psOrxbox" + temp_id} checked={!psChecked} onClick={changeConsoleXboxHandler}></input>
+						<input type="radio" id={"xbox" + temp_id} className="xbox" name={"psOrxbox" + temp_id} checked={!psCheckedEditing} onClick={changeConsoleXboxHandler}></input>
 						<label htmlFor={"xbox" + temp_id}></label>
 					</div>
 					<span className="stateButtonsLabel">Estado de la publicación</span>

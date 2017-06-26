@@ -26924,6 +26924,7 @@ const DetailsList = React.createClass({
 							isNew: false,
 							name: name,
 							key: element.pk,
+							id: null,
 							temp_id: element.temp_id,
 							suggestions: element.suggestions,
 							onPublishGameFn: self.props.onPublishGameFn,
@@ -26940,6 +26941,7 @@ const DetailsList = React.createClass({
 							price: element.price,
 							comment: element.comment,
 							isNew: false,
+							id: element.pk,
 							key: element.pk,
 							temp_id: element.temp_id,
 							suggestions: element.suggestions,
@@ -26968,6 +26970,7 @@ const DetailsList = React.createClass({
 						xboxUsed: element.xboxUsed,
 						comment: element.comment,
 						goToProfileFn: self.props.goToProfileFn,
+						id: element.pk,
 						key: element.pk
 					});
 				}
@@ -27324,6 +27327,7 @@ const GameItem = React.createClass({
 
 	propTypes: {
 		key: React.PropTypes.number.isRequired,
+		id: React.PropTypes.number, //in order to know if update or if create a dvd
 		isProfile: React.PropTypes.bool.isRequired, //in order to know if we are in the profile page
 		name: React.PropTypes.string.isRequired,
 		cover: React.PropTypes.string.isRequired,
@@ -27372,7 +27376,8 @@ const GameItem = React.createClass({
 					used: this.props.used,
 					comment: this.props.comment,
 					ps: this.props.console === null ? null : this.props.console === Constants.consoles.ps ? true : false,
-					idOfGame: null
+					idOfGame: null,
+					id: this.props.id
 				}
 			});
 		}
@@ -27380,6 +27385,8 @@ const GameItem = React.createClass({
 
 	getInitialState: function () {
 		var name = this.props.name !== 'undefined' ? this.props.name : "";
+		var id = this.props.id;
+		if (id === 'undefined') id = null;
 		return {
 			isHover: false,
 			isComponentHover: false,
@@ -27392,7 +27399,8 @@ const GameItem = React.createClass({
 				ps: true,
 				exchange: true,
 				comment: null,
-				idOfGame: null
+				idOfGame: null,
+				id: id
 			}
 		};
 	},
@@ -27480,7 +27488,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: newValue,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id
 			}
 		});
 	},
@@ -27495,7 +27504,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id
 			}
 		});
 		this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps, newValue);
@@ -27511,7 +27521,8 @@ const GameItem = React.createClass({
 				exchange: newValue,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id
 			}
 		});
 	},
@@ -27526,7 +27537,8 @@ const GameItem = React.createClass({
 				exchange: newValue,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id
 			}
 		});
 	},
@@ -27541,7 +27553,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id
 			}
 		});
 	},
@@ -27556,7 +27569,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id
 			}
 		});
 	},
@@ -27571,7 +27585,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: newValue,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id
 			}
 		});
 	},
@@ -27586,7 +27601,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: newValue,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id
 			}
 		});
 	},
@@ -27601,7 +27617,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame
+				idOfGame: this.state.editing.idOfGame,
+				id: this.state.editing.id
 			}
 		});
 	},
@@ -27615,7 +27632,8 @@ const GameItem = React.createClass({
 				exchange: this.state.editing.exchange,
 				ps: this.state.editing.ps,
 				comment: this.state.editing.comment,
-				idOfGame: id
+				idOfGame: id,
+				id: this.state.editing.id
 			}
 		});
 	},
@@ -27653,6 +27671,11 @@ const GameItem = React.createClass({
 		var used = false;
 		var exchange = false;
 		var comment = null;
+		var nameEditing = null;
+		var priceEditing = null;
+		var usedEditing = null;
+		var exchangeEditing = null;
+		var psCheckedEditing = null;
 
 		var consoleVar = this.props.console;
 		if (this.props.both && this.state.isHover && consoleVar !== null) {
@@ -27714,7 +27737,8 @@ const GameItem = React.createClass({
 
 			onClickComponent = this._goToPage;
 			cover = this.props.cover;
-			name = this.state.editing.name; //in order to change the name when a suggestion is clicked when modifying
+			name = this.props.name; //in order to change the name when a suggestion is clicked when modifying
+			nameEditing = this.state.editing.name; //in order to change the name when a suggestion is clicked when modifying
 			onMouseOverComponent = this._isNew() ? null : this._onMouseOverComponent;
 			onMouseOutComponent = this._isNew() ? null : this._onMouseOutComponent;
 			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
@@ -27734,11 +27758,17 @@ const GameItem = React.createClass({
 			changeExchangeHandler = this._changeExchangeHandler;
 			changeNoExchangeHandler = this._changeNoExchangeHandler;
 			changeCommentHandler = this._changeCommentHandler;
-			pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
-			priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
-			psChecked = this.state.editing.ps;
-			used = this.state.editing.used;
-			exchange = this.state.editing.exchange;
+			//pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+			pricePs = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
+			//priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+			priceXbox = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
+			priceEditing = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
+			psChecked = this.props.ps;
+			psCheckedEditing = this.state.editing.ps;
+			used = this.props.used;
+			usedEditing = this.state.editing.used;
+			exchange = this.props.exchange;
+			exchangeEditing = this.state.editing.exchange;
 			comment = this.state.editing.comment;
 
 			if (this._isNew()) {
@@ -27893,7 +27923,7 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'videoGameSection' },
-					React.createElement('input', { type: 'text', placeholder: 'Selecciona el juego', value: name, onChange: changeNameHandler }),
+					React.createElement('input', { type: 'text', placeholder: 'Selecciona el juego', value: nameEditing, onChange: changeNameHandler }),
 					React.createElement(
 						'ul',
 						null,
@@ -27905,7 +27935,7 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'text', placeholder: 'precio (en caso de venta)', value: pricePs, onChange: changePriceHandler })
+					React.createElement('input', { type: 'text', placeholder: 'precio (en caso de venta)', value: priceEditing, onChange: changePriceHandler })
 				),
 				React.createElement(
 					'span',
@@ -27915,13 +27945,13 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'radio', id: "new" + temp_id, name: "new" + temp_id, value: !used, checked: !used, onClick: changeNewHandler }),
+					React.createElement('input', { type: 'radio', id: "new" + temp_id, name: "new" + temp_id, value: !usedEditing, checked: !usedEditing, onClick: changeNewHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: "new" + temp_id },
 						'Nuevo'
 					),
-					React.createElement('input', { type: 'radio', id: "old" + temp_id, name: "new" + temp_id, value: used, checked: used, onClick: changeUsedHandler }),
+					React.createElement('input', { type: 'radio', id: "old" + temp_id, name: "new" + temp_id, value: usedEditing, checked: usedEditing, onClick: changeUsedHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: "old" + temp_id },
@@ -27936,13 +27966,13 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'exchange' },
-					React.createElement('input', { type: 'radio', id: "exchange" + temp_id, name: "exchange" + temp_id, checked: exchange, onClick: changeExchangeHandler }),
+					React.createElement('input', { type: 'radio', id: "exchange" + temp_id, name: "exchange" + temp_id, checked: exchangeEditing, onClick: changeExchangeHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: "exchange" + temp_id },
 						'Sí'
 					),
-					React.createElement('input', { type: 'radio', id: "noExchange" + temp_id, name: "exchange" + temp_id, checked: !exchange, onClick: changeNoExchangeHandler }),
+					React.createElement('input', { type: 'radio', id: "noExchange" + temp_id, name: "exchange" + temp_id, checked: !exchangeEditing, onClick: changeNoExchangeHandler }),
 					React.createElement(
 						'label',
 						{ htmlFor: "noExchange" + temp_id },
@@ -27957,9 +27987,9 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'console' },
-					React.createElement('input', { type: 'radio', id: "ps" + temp_id, className: 'ps', name: "psOrxbox" + temp_id, checked: psChecked, onClick: changeConsolePsHandler }),
+					React.createElement('input', { type: 'radio', id: "ps" + temp_id, className: 'ps', name: "psOrxbox" + temp_id, checked: psCheckedEditing, onClick: changeConsolePsHandler }),
 					React.createElement('label', { htmlFor: "ps" + temp_id }),
-					React.createElement('input', { type: 'radio', id: "xbox" + temp_id, className: 'xbox', name: "psOrxbox" + temp_id, checked: !psChecked, onClick: changeConsoleXboxHandler }),
+					React.createElement('input', { type: 'radio', id: "xbox" + temp_id, className: 'xbox', name: "psOrxbox" + temp_id, checked: !psCheckedEditing, onClick: changeConsoleXboxHandler }),
 					React.createElement('label', { htmlFor: "xbox" + temp_id })
 				),
 				React.createElement(
@@ -28455,22 +28485,33 @@ const Profile = React.createClass({
 		var url = Constants.routes.api.publishDvd;
 		var req = new Request(url, init);
 		Functions.fetchAdvanced(req).then(function (res) {
-			this._newGameCreated(res);
+			this._newGameCreatedOrUpdated(res);
 		}.bind(this));
 	},
 
-	_newGameCreated: function (res) {
-		if (res.ok && res.status === 201) {
-			res.json().then(function (json) {
-				//if profile.user is the same as the logged in then add it to the list at the end
-				if (this.state.user.logged !== 'undefined' && this.state.user.logged === true && this.state.profile.profile.id === this.state.user.id) {
+	_newGameCreatedOrUpdated: function (res) {
+		if (this.state.user.logged !== 'undefined' && this.state.user.logged === true && this.state.profile.profile.id === this.state.user.id) {
+			if (res.ok && res.status === 201) {
+				res.json().then(function (json) {
+					//if profile.user is the same as the logged in then add it to the list at the end
 					//add json to the list
 					json['temp_id'] = this.state.profile.list.length;
 					state = this.state;
 					state.profile.list.splice(this.state.profile.list.length - 1, 0, json);
 					this.setState(state);
-				}
-			}.bind(this));
+				}.bind(this));
+			} else if (res.ok && res.status === 202) {
+				res.json().then(function (json) {
+					//update element	
+					state = this.state;
+					item = state.profile.list.filter(element => element.pk === json['pk']);
+					if (item.length > 0) {
+						item = item[0];
+						state.profile.list[state.profile.list.indexOf(item)] = json;
+						this.setState(state);
+					}
+				}.bind(this));
+			}
 		}
 	},
 

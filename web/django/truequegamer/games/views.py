@@ -8,8 +8,9 @@ from django.conf import settings
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import urllib2,json
 from django.core.exceptions import ObjectDoesNotExist
+
+import urllib2,json,re
 
 from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer, UserProfileSerializer, SingleDvdSerializer
 from games.models import Game, Dvd
@@ -74,18 +75,15 @@ def GetListOfGames(request,console,string):
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT','POST'])
+@api_view(['PUT'])
 def DvdApi(request):
-    #Update
-    if request.method == 'POST':
-        pass
-    
     #Add
-    elif request.method == 'PUT':
+    if request.method == 'PUT':
         data = request.data
         newData = dict((key.encode('utf-8'), value) for key,value in data.items())
-        #data.update(newData)
-        data = newData
+        newData2 = dict((key, re.sub(r'\s+','',str(value)) if value != None else None) for key,value in newData.items())
+        newData2['comment'] = re.sub(r'(^\s+)|(\s+$)', '', newData['comment'])
+        data = newData2
         
         data['console'] = constants.CONSOLES['xbox']
         if 'ps' in data:
@@ -105,11 +103,39 @@ def DvdApi(request):
                         #Get the game with the id field
                         #Get the game from IGDB
                         
-                        if 'idOfGame' in data and data['idOfGame'] != None :
-                            game = None
+                        dvdToSave = None
+                        game = None
+
+                        print data
+                        if 'id' in data and data['id'] != None:
+                            #Get dvd
+                            print "has id"
+                            dvdToSave = Dvd.objects.get(pk=int(data['id']))
+                            if dvdToSave.owner.pk != request.user.pk:
+                                dvdToSave = None
+
+                        #Create variables for the next if
+                        idOfGameDifferent = nameOfGameDifferent = consoleOfGameDifferent = False
+                        idOfGameExists = 'idOfGame' in data and data['idOfGame'] != None 
+
+                        if(dvdToSave != None and idOfGameExists):
+                            if (dvdToSave.game.pk != data['idOfGame']):
+                                idOfGameDifferent = True
+                            if ('name' in data and data['name'] != None and data['name'].replace(' ', '') != "" and data['name'] != dvdToSave.game.name):
+                                nameOfGameDifferent = True
+                            if ('console' in data and data['console'] and data['console'] != dvdToSave):
+                                consoleOfGameDifferent = True
+                        somethingIsDifferent = idOfGameDifferent or nameOfGameDifferent or consoleOfGameDifferent
+                            
+                        if dvdToSave == None or somethingIsDifferent:
+                            #get game
                             try:
-                                game = Game.objects.get(id_igdb=data['idOfGame'])
+                                if 'idOfGame' in data and data['idOfGame'] != None:
+                                    game = Game.objects.get(id_igdb=data['idOfGame'])
                             except ObjectDoesNotExist:
+                                pass
+
+                            if game == None and idOfGameExists:
                                 resp = utils.get_list_from_IGDB(console=data['console'], string="", id_of_game= data['idOfGame'])
                     
                                 if resp.getcode() >= 200 and resp.getcode() <300:
@@ -130,22 +156,50 @@ def DvdApi(request):
                                         )
                                     game.save()
 
+                        #if game is to create
+                        print "to get into save process"
+                        print "dvdToSave"
+                        print dvdToSave
+                        if dvdToSave is None and game is not None:
+                            print "is new"
+                            data['new'] = not data['used']
+                            dvdToSave = Dvd(
+                                    price = data['price'],
+                                    exchange = data['exchange'],
+                                    new = data['new'],
+                                    owner = request.user,
+                                    game = game,
+                                    console = data['console'],
+                                    comment = data['comment'],
+                                    )
+                            #Save it
+                            dvdToSave.save()
+                            serializer = SingleDvdSerializer(dvdToSave)
+                            return Response(serializer.data, status=status.HTTP_201_CREATED)
+                        elif dvdToSave is not None:
+                            print "is not new"
+                            #update dvd
+                            changed = False
                             if game is not None:
-                                data['new'] = not data['used']
-                                dvdToSave = Dvd(
-                                        price = data['price'],
-                                        exchange = data['exchange'],
-                                        new = data['new'],
-                                        owner = request.user,
-                                        game = game,
-                                        console = data['console'],
-                                        comment = data['comment'],
-                                        )
-                                #Save it
-                                dvdToSave.save()
-                                serializer = SingleDvdSerializer(dvdToSave)
-                                return Response(serializer.data, status=status.HTTP_201_CREATED)
-                        
+                                dvdToSave.game = game
+                                changed = True
+                            if data['price'] != dvdToSave.price:
+                                dvdToSave.price = data['price']
+                                changed = True
+                            if data['exchange'] != dvdToSave.exchange:
+                                dvdToSave.exchange = data['exchange']
+                                changed = True
+                            if data['console'] != dvdToSave.console:
+                                dvdToSave.console = data['console']
+                                changed = True
+                            if data['comment'] != dvdToSave.comment:
+                                dvdToSave.comment = data['comment']
+                                changed = True
+                            
+                            if changed: dvdToSave.save()
+                            serializer = SingleDvdSerializer(dvdToSave)
+                            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+                    
 
             else:
                 return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)

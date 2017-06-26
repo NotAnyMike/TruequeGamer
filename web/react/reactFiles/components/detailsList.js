@@ -44,6 +44,7 @@ const DetailsList = React.createClass({
 									isNew={false}
 									name={name}
 									key={element.pk}
+									id={null}
 									temp_id={element.temp_id}
 									suggestions={element.suggestions}
 									onPublishGameFn={self.props.onPublishGameFn}
@@ -62,6 +63,7 @@ const DetailsList = React.createClass({
 									price={element.price}
 									comment={element.comment}
 									isNew={false}
+									id={element.pk}
 									key={element.pk}
 									temp_id={element.temp_id}
 									suggestions={element.suggestions}
@@ -92,6 +94,7 @@ const DetailsList = React.createClass({
 								xboxUsed={element.xboxUsed}	
 								comment={element.comment}
 								goToProfileFn={self.props.goToProfileFn}
+								id={element.pk}
 								key={element.pk}
 							/>
 						);

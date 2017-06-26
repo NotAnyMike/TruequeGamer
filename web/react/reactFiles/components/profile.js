@@ -76,22 +76,34 @@ const Profile = React.createClass({
 		};
 		var url = Constants.routes.api.publishDvd;
 		var req = new Request(url, init)
-		Functions.fetchAdvanced(req).then(function(res){this._newGameCreated(res)}.bind(this))
+		Functions.fetchAdvanced(req).then(function(res){this._newGameCreatedOrUpdated(res)}.bind(this))
 	},
 
-	_newGameCreated: function(res){
-		if(res.ok && res.status === 201){
-			res.json().then(function(json){
+	_newGameCreatedOrUpdated: function(res){
+		if(this.state.user.logged !== 'undefined' && this.state.user.logged === true && this.state.profile.profile.id === this.state.user.id){
+			if(res.ok && res.status === 201){
+				res.json().then(function(json){
 				//if profile.user is the same as the logged in then add it to the list at the end
-				if(this.state.user.logged !== 'undefined' && this.state.user.logged === true && this.state.profile.profile.id === this.state.user.id){
 					//add json to the list
 					json['temp_id']=this.state.profile.list.length;
 					state = this.state;
 					state.profile.list.splice(this.state.profile.list.length-1, 0, json);
 					this.setState(state);
 					
-				}
-			}.bind(this));
+				}.bind(this));
+			}else if(res.ok && res.status === 202){
+				res.json().then(function(json){
+					//update element	
+					state = this.state;
+					item = state.profile.list.filter(element => element.pk === json['pk']);
+					if(item.length > 0){
+						item = item[0];
+						state.profile.list[state.profile.list.indexOf(item)] = json;
+						this.setState(state);
+					}
+					
+				}.bind(this))	
+			}
 		}
 	},
 

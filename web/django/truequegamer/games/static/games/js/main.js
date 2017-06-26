@@ -28465,10 +28465,9 @@ const Profile = React.createClass({
 				//if profile.user is the same as the logged in then add it to the list at the end
 				if (this.state.user.logged !== 'undefined' && this.state.user.logged === true && this.state.profile.profile.id === this.state.user.id) {
 					//add json to the list
+					json['temp_id'] = this.state.profile.list.length;
 					state = this.state;
-					console.log(json);
 					state.profile.list.splice(this.state.profile.list.length - 1, 0, json);
-					console.log(state);
 					this.setState(state);
 				}
 			}.bind(this));

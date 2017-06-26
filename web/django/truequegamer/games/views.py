@@ -117,10 +117,13 @@ def DvdApi(request):
                                     resp_str = resp.read()
                                     json_resp = json.loads(resp_str)
                                     json_resp = dict((key.encode('utf-8'), value) for key, value in json_resp[0].items())
-                                    print json_resp
+                                    cover = str(json_resp['cover']['url'])
+                                    cover = cover.replace('//','https://')
+                                    cover = cover.replace(constants.IGDB_API['cover']['default'], constants.IGDB_API['cover']['big'])
+
                                     game = Game(
                                         name= json_resp['name'],
-                                        cover = json_resp['cover']['url'].replace('//','https://'),
+                                        cover = cover,
                                         score = json_resp['popularity'],
                                         id_igdb = json_resp['id'],
                                         slug = json_resp['slug']

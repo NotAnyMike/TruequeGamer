@@ -22,4 +22,9 @@ IGDB_API = {
             "xbox": '49',
             "ps": '48',
             },
+        "cover": {
+                "default": "thumb",
+                "small": "cover_small",
+                "big": "cover_big",
+            },
         }

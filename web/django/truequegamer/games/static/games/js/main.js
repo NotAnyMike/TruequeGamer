@@ -27579,16 +27579,17 @@ const GameItem = React.createClass({
 		var newValue = !e.target.checked;
 		this.setState({
 			editing: {
-				name: this.state.editing.name,
+				name: null,
 				price: this.state.editing.price,
 				used: this.state.editing.used,
 				exchange: this.state.editing.exchange,
 				ps: newValue,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
+				idOfGame: null,
 				id: this.state.editing.id
 			}
 		});
+		this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name);
 	},
 
 	_changeConsolePsHandler: function (e) {
@@ -27921,9 +27922,22 @@ const GameItem = React.createClass({
 					React.createElement('span', { onClick: onInfoClick })
 				),
 				React.createElement(
+					'span',
+					null,
+					'1. Selecciona la consola'
+				),
+				React.createElement(
+					'div',
+					{ className: 'console' },
+					React.createElement('input', { type: 'radio', id: "ps" + temp_id, className: 'ps', name: "psOrxbox" + temp_id, checked: psCheckedEditing, onClick: changeConsolePsHandler }),
+					React.createElement('label', { htmlFor: "ps" + temp_id }),
+					React.createElement('input', { type: 'radio', id: "xbox" + temp_id, className: 'xbox', name: "psOrxbox" + temp_id, checked: !psCheckedEditing, onClick: changeConsoleXboxHandler }),
+					React.createElement('label', { htmlFor: "xbox" + temp_id })
+				),
+				React.createElement(
 					'div',
 					{ className: 'videoGameSection' },
-					React.createElement('input', { type: 'text', placeholder: 'Selecciona el juego', value: nameEditing, onChange: changeNameHandler }),
+					React.createElement('input', { type: 'text', placeholder: '2. Selecciona el juego', value: nameEditing, onChange: changeNameHandler }),
 					React.createElement(
 						'ul',
 						null,
@@ -27935,12 +27949,12 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'text', placeholder: 'precio (en caso de venta)', value: priceEditing, onChange: changePriceHandler })
+					React.createElement('input', { type: 'text', placeholder: '3. precio (en caso de venta)', value: priceEditing, onChange: changePriceHandler })
 				),
 				React.createElement(
 					'span',
 					null,
-					'¿Nuevo o Usado?'
+					'4. ¿Nuevo o Usado?'
 				),
 				React.createElement(
 					'div',
@@ -27961,7 +27975,7 @@ const GameItem = React.createClass({
 				React.createElement(
 					'span',
 					null,
-					'¿Trueque?'
+					'5. ¿Trueque?'
 				),
 				React.createElement(
 					'div',
@@ -27978,19 +27992,6 @@ const GameItem = React.createClass({
 						{ htmlFor: "noExchange" + temp_id },
 						'No'
 					)
-				),
-				React.createElement(
-					'span',
-					null,
-					'Selecciona la consola'
-				),
-				React.createElement(
-					'div',
-					{ className: 'console' },
-					React.createElement('input', { type: 'radio', id: "ps" + temp_id, className: 'ps', name: "psOrxbox" + temp_id, checked: psCheckedEditing, onClick: changeConsolePsHandler }),
-					React.createElement('label', { htmlFor: "ps" + temp_id }),
-					React.createElement('input', { type: 'radio', id: "xbox" + temp_id, className: 'xbox', name: "psOrxbox" + temp_id, checked: !psCheckedEditing, onClick: changeConsoleXboxHandler }),
-					React.createElement('label', { htmlFor: "xbox" + temp_id })
 				),
 				React.createElement(
 					'span',
@@ -28019,7 +28020,7 @@ const GameItem = React.createClass({
 				React.createElement(
 					'button',
 					{ type: 'button', className: 'secondButton', onClick: onSecondButtonClick },
-					'Escribir comentario'
+					'6. Escribir comentario'
 				),
 				React.createElement('button', { type: 'button', className: 'publishButton', onClick: onPublishButtonClick })
 			),

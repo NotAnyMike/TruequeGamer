@@ -262,16 +262,17 @@ const GameItem = React.createClass({
 		var newValue = !e.target.checked;
 		this.setState({
 			editing: {
-				name: this.state.editing.name,
+				name: null,
 				price: this.state.editing.price,
 				used: this.state.editing.used,
 				exchange: this.state.editing.exchange,
 				ps: newValue,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
+				idOfGame: null,
 				id: this.state.editing.id,
 			}
 		});
+		this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name)
 	},
 	
 	_changeConsolePsHandler: function(e){
@@ -559,33 +560,33 @@ const GameItem = React.createClass({
 					<div className="info">
 						<span onClick={onInfoClick}></span>
 					</div>
+					<span>1. Selecciona la consola</span>
+					<div className="console">
+						<input type="radio" id={"ps" + temp_id} className="ps" name={"psOrxbox" + temp_id} checked={psCheckedEditing} onClick={changeConsolePsHandler}></input>
+						<label htmlFor={"ps" + temp_id}></label>
+						<input type="radio" id={"xbox" + temp_id} className="xbox" name={"psOrxbox" + temp_id} checked={!psCheckedEditing} onClick={changeConsoleXboxHandler}></input>
+						<label htmlFor={"xbox" + temp_id}></label>
+					</div>
 					<div className="videoGameSection">
-						<input type="text" placeholder="Selecciona el juego" value={nameEditing} onChange={changeNameHandler}/>
+						<input type="text" placeholder="2. Selecciona el juego" value={nameEditing} onChange={changeNameHandler}/>
 						<ul>
 							{this.props.suggestions.map(element => {return <SuggestionItem id={element.id} key={element.id} text={element.name} page={'profile'} onClickHandler={onClickOnSuggestion} />;})}
 						</ul>
 					</div>
-					<div><input type="text" placeholder="precio (en caso de venta)" value={priceEditing} onChange={changePriceHandler}/></div>
-					<span>¿Nuevo o Usado?</span>
+					<div><input type="text" placeholder="3. precio (en caso de venta)" value={priceEditing} onChange={changePriceHandler}/></div>
+					<span>4. ¿Nuevo o Usado?</span>
 					<div>
 						<input type="radio" id={"new" + temp_id} name={"new" + temp_id} value={!usedEditing} checked={!usedEditing} onClick={changeNewHandler}></input>
 						<label htmlFor={"new" + temp_id}>Nuevo</label>
 						<input type="radio" id={"old" + temp_id} name={"new" + temp_id} value={usedEditing} checked={usedEditing} onClick={changeUsedHandler}></input>
 						<label htmlFor={"old" + temp_id}>Usado</label>
 					</div>
-					<span>¿Trueque?</span>
+					<span>5. ¿Trueque?</span>
 					<div className="exchange">
 						<input type="radio" id={"exchange" + temp_id} name={"exchange" + temp_id} checked={exchangeEditing} onClick={changeExchangeHandler}></input>
 						<label htmlFor={"exchange" + temp_id}>Sí</label>
 						<input type="radio" id={"noExchange" + temp_id} name={"exchange" + temp_id} checked={!exchangeEditing} onClick={changeNoExchangeHandler}></input>
 						<label htmlFor={"noExchange" + temp_id}>No</label>
-					</div>
-					<span>Selecciona la consola</span>
-					<div className="console">
-						<input type="radio" id={"ps" + temp_id} className="ps" name={"psOrxbox" + temp_id} checked={psCheckedEditing} onClick={changeConsolePsHandler}></input>
-						<label htmlFor={"ps" + temp_id}></label>
-						<input type="radio" id={"xbox" + temp_id} className="xbox" name={"psOrxbox" + temp_id} checked={!psCheckedEditing} onClick={changeConsoleXboxHandler}></input>
-						<label htmlFor={"xbox" + temp_id}></label>
 					</div>
 					<span className="stateButtonsLabel">Estado de la publicación</span>
 					<div className="stateButtons">
@@ -593,7 +594,7 @@ const GameItem = React.createClass({
 						<button type="button" className="exchanged">Cambiado</button>
 						<button type="button" className="sold">Vendido</button>
 					</div>
-					<button type="button" className="secondButton" onClick={onSecondButtonClick}>Escribir comentario</button>
+					<button type="button" className="secondButton" onClick={onSecondButtonClick}>6. Escribir comentario</button>
 					<button type="button" className="publishButton" onClick={onPublishButtonClick}></button>
 				</form>
 				<div className="commentContainer">

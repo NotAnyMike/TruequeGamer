@@ -4743,6 +4743,9 @@ ul.gameList li.editing form .info span:before {
   content: 'x';
   color: #98ceb7;
 }
+ul.gameList li.editing form .info + span {
+  padding-top: 13px !important;
+}
 ul.gameList li.editing form span {
   text-align: center;
   padding: 5px;
@@ -4757,6 +4760,7 @@ ul.gameList li.editing form div:nth-child(3) {
 }
 ul.gameList li.editing form div.videoGameSection {
   position: relative;
+  padding: 10px 0;
 }
 ul.gameList li.editing form div.videoGameSection input[type="text"]:focus + ul {
   display: inline-block;

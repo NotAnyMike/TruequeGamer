@@ -154,7 +154,8 @@ ul
 								color: $green
 
 						& + span
-							padding-top: 13px !important
+							padding-top: 8px !important
+							padding-bottom: 0px
 
 					span
 						text-align: center
@@ -167,11 +168,13 @@ ul
 							padding-top: 20px
 						
 						&:nth-child(3)
-							padding-top: 10px
+							padding-top: 2px
 
 						&.videoGameSection
 							position: relative
-							padding: 10px 0
+							padding: 0
+							padding-top: 7px
+							padding-bottom: 2px
 
 							input[type="text"]:focus + ul
 								display: inline-block
@@ -209,6 +212,7 @@ ul
 						&.stateButtons
 							justify-content: space-between
 							display: none
+							padding-bottom: 54px
 							
 							button
 								/*width: 54px*/
@@ -350,6 +354,14 @@ ul
 
 				form
 					display: flex
+					justify-content: space-between
+
+				&.new
+					form
+						justify-content: center
+
+						.exchange
+							padding-bottom: 54px
 					
 				&.onlyExchange
 					form

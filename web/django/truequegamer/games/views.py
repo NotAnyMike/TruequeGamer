@@ -82,7 +82,7 @@ def DvdApi(request):
         data = request.data
         newData = dict((key.encode('utf-8'), value) for key,value in data.items())
         newData2 = dict((key, re.sub(r'\s+','',str(value)) if value != None else None) for key,value in newData.items())
-        newData2['comment'] = re.sub(r'(^\s+)|(\s+$)', '', newData['comment'])
+        newData2['comment'] = re.sub(r'(^\s+)|(\s+$)', '', str(newData['comment']))
         data = newData2
         
         data['console'] = constants.CONSOLES['xbox']

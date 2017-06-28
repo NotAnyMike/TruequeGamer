@@ -101,4 +101,5 @@ def updatingGames(sender, instance, **kwargs):
                 modified = True
     
     if modified :
+        if instance.comment == None: instance.comment == ""
         instance.game.save()

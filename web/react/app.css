@@ -2739,7 +2739,7 @@ ul.gameList li figure {
   -webkit-justify-content: center;
   justify-content: center;
   margin: auto;
-  padding: 8px 0;
+  padding: 4px 0;
   -webkit-transition: border 300ms;
   -moz-transition: border 300ms;
   -o-transition: border 300ms;
@@ -2751,8 +2751,12 @@ ul.gameList li figure .info {
   display: none;
 }
 ul.gameList li figure img {
-  height: 180px;
-  width: 142px;
+/*height: 180px
+				width: 142px*/
+  height: 156px;
+  width: 156px;
+  object-fit: cover;
+  object-position: 50% 58%;
 }
 ul.gameList li figure .img {
   display: none;
@@ -4744,7 +4748,8 @@ ul.gameList li.editing form .info span:before {
   color: #98ceb7;
 }
 ul.gameList li.editing form .info + span {
-  padding-top: 13px !important;
+  padding-top: 8px !important;
+  padding-bottom: 0px;
 }
 ul.gameList li.editing form span {
   text-align: center;
@@ -4756,11 +4761,13 @@ ul.gameList li.editing form div:nth-child(2) {
   padding-top: 20px;
 }
 ul.gameList li.editing form div:nth-child(3) {
-  padding-top: 10px;
+  padding-top: 2px;
 }
 ul.gameList li.editing form div.videoGameSection {
   position: relative;
-  padding: 10px 0;
+  padding: 0;
+  padding-top: 7px;
+  padding-bottom: 2px;
 }
 ul.gameList li.editing form div.videoGameSection input[type="text"]:focus + ul {
   display: inline-block;
@@ -4810,6 +4817,7 @@ ul.gameList li.editing form div.stateButtons {
   -webkit-justify-content: space-between;
   justify-content: space-between;
   display: none;
+  padding-bottom: 54px;
 }
 ul.gameList li.editing form div.stateButtons button {
 /*width: 54px*/
@@ -4995,6 +5003,23 @@ ul.gameList li.editing form {
   display: -ms-flexbox;
   display: box;
   display: flex;
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -o-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+ul.gameList li.editing.new form {
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+ul.gameList li.editing.new form .exchange {
+  padding-bottom: 54px;
 }
 ul.gameList li.editing.onlyExchange form .stateButtons .sold {
   display: none;

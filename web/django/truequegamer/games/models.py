@@ -43,6 +43,7 @@ class Dvd(models.Model):
     game = models.ForeignKey('Game', null=False, blank=False, default=False)
     console = models.CharField(null=False, blank=False, default=constants.CONSOLES_TUPLE[0][1], choices=constants.CONSOLES_TUPLE, max_length=30)
     comment = models.TextField(null=False, blank=True, default="", max_length=500)
+    state = models.CharField(null=False, blank=False, default=constants.STATE['available'], choices = constants.STATE_TUPLE, max_length=30)
 
     def __str__(self):
         return "%s, console: %s" % (self.game.name, self.console)

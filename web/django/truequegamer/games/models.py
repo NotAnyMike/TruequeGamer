@@ -42,7 +42,7 @@ class Dvd(models.Model):
     owner = models.ForeignKey(User, null=False, blank=False, default=False)
     game = models.ForeignKey('Game', null=False, blank=False, default=False)
     console = models.CharField(null=False, blank=False, default=constants.CONSOLES_TUPLE[0][1], choices=constants.CONSOLES_TUPLE, max_length=30)
-    comment = models.TextField(null=True, blank=False, default=None, max_length=500)
+    comment = models.TextField(null=False, blank=True, default="", max_length=500)
 
     def __str__(self):
         return "%s, console: %s" % (self.game.name, self.console)

@@ -75,6 +75,19 @@ def GetListOfGames(request,console,string):
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['DELETE'])
+def DeleteDvd(request, id_of_game):
+    if request.method == 'DELETE':
+        if request.user.is_authenticated():
+            dvd = Dvd.objects.get(pk=id_of_game)
+            if request.user.pk == dvd.owner.pk:
+                dvd.state = constants.STATE['deleted']
+                dvd.save()
+                return Response(status=status.HTTP_200_OK)
+    
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['PUT'])
 def DvdApi(request):
     #Add

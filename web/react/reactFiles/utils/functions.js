@@ -46,6 +46,28 @@ const Functions = {
 					    }
 		    return "";
 	},
+	getCustomHeader: function(type='get', url, userData=null, withCredentials=false){
+		//data.append( "json", JSON.stringify( editing ) );
+		var init = {}
+		if(withCredentials){
+			var myCookie = Functions.getCookie("csrftoken");
+			init = {
+				credentials: "same-origin",
+				headers: {
+					"X-CSRFToken": myCookie,
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+			};
+		}
+		if(userData != null){
+			var data = JSON.stringify( userData );
+			init.body = data;
+		}
+		init.method = type;
+		var req = new Request(url, init)
+		return req;
+	}
 };
 
 module.exports = Functions;

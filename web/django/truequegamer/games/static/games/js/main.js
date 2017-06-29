@@ -27655,7 +27655,7 @@ const GameItem = React.createClass({
 	},
 
 	_clickDeleteButtonHandler: function () {
-		this.props.onDeleteButtonClickFn();
+		this.props.onDeleteButtonClickFn(this.props.id);
 	},
 
 	_clickExchangeButtonHandler: function () {
@@ -28507,8 +28507,13 @@ const Profile = React.createClass({
 		}
 	},
 
-	onDeleteButtonClick: function () {
+	onDeleteButtonClick: function (id_of_game) {
 		console.log("delete");
+		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
+		var req = Functions.getCustomHeader('delete', url, null, true);
+		Functions.fetchAdvanced(req).then(function (res) {
+			this._gameDeleted(id_of_game, res);
+		}.bind(this));
 	},
 
 	onExchangedButtonClick: function () {
@@ -28520,22 +28525,8 @@ const Profile = React.createClass({
 	},
 
 	onPublishGame: function (editing) {
-		var myCookie = Functions.getCookie("csrftoken");
-		var data = new FormData();
-		//data.append( "json", JSON.stringify( editing ) );
-		data = JSON.stringify(editing);
-		var init = {
-			method: 'put',
-			credentials: "same-origin",
-			headers: {
-				"X-CSRFToken": myCookie,
-				"Accept": "application/json",
-				"Content-Type": "application/json"
-			},
-			body: data
-		};
 		var url = Constants.routes.api.publishDvd;
-		var req = new Request(url, init);
+		var req = Functions.getCustomHeader('put', url, editing, true);
 		Functions.fetchAdvanced(req).then(function (res) {
 			this._newGameCreatedOrUpdated(res);
 		}.bind(this));
@@ -28567,6 +28558,20 @@ const Profile = React.createClass({
 		}
 	},
 
+	_gameDeleted: function (id_of_game, res) {
+		if (this.state.user.logged !== 'undefined' && this.state.user.logged === true && this.state.profile.profile.id == this.state.user.id) {
+			if (res.ok && res.status === 200) {
+				//get the element with this id and remove it
+				var state = this.state;
+				var item = state.profile.list.filter(element => element.pk === id_of_game);
+				if (item.length > 0) {
+					item = item[0];
+					state.profile.list.splice(state.profile.list.indexOf(item), 1);
+					this.setState(state);
+				}
+			}
+		}
+	},
 	changeHandlerForSearchInput: function (id, isPs, string) {
 		//id del gameItem que está siendo cambiado
 		//console
@@ -30090,7 +30095,8 @@ const Constants = {
 		api: {
 			games: '/api/games/[console]/[used]/[exchange]/[name]/',
 			publishDvd: '/api/game/',
-			suggestions_igdb: '/api/game/suggestions/[console]/[string]/'
+			suggestions_igdb: '/api/game/suggestions/[console]/[string]/',
+			delete_dvd: '/api/game/delete/[id_of_game]/'
 		}
 	}
 };
@@ -30148,6 +30154,28 @@ const Functions = {
 			}
 		}
 		return "";
+	},
+	getCustomHeader: function (type = 'get', url, userData = null, withCredentials = false) {
+		//data.append( "json", JSON.stringify( editing ) );
+		var init = {};
+		if (withCredentials) {
+			var myCookie = Functions.getCookie("csrftoken");
+			init = {
+				credentials: "same-origin",
+				headers: {
+					"X-CSRFToken": myCookie,
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				}
+			};
+		}
+		if (userData != null) {
+			var data = JSON.stringify(userData);
+			init.body = data;
+		}
+		init.method = type;
+		var req = new Request(url, init);
+		return req;
 	}
 };
 

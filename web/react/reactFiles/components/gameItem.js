@@ -324,7 +324,7 @@ const GameItem = React.createClass({
 	},
 
 	_clickDeleteButtonHandler: function(){
-		this.props.onDeleteButtonClickFn();
+		this.props.onDeleteButtonClickFn(this.props.id);
 	},
 
 	_clickExchangeButtonHandler: function(){

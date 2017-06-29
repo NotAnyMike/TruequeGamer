@@ -12,8 +12,8 @@ IGDB_ACCESS_TOKEN = "bTMJ0oS2atmshMYWLcFGLs6VgsoNp1NhDEijsn9rm93XJSPeFg"
 CONSOLES = {'xbox':'xbox','ps':'ps', 'both':'ps-xbox'}
 CONSOLES_TUPLE = ((CONSOLES['xbox'],'xbox one'),(CONSOLES['ps'],'ps4'))
 
-STATE = {'available': 'available', 'sold': 'sold', 'exchanged':'exchanged'}
-STATE_TUPLE = ((STATE['available'], 'available'), (STATE['sold'], 'sold'), (STATE['exchanged'], 'exchanged'))
+STATE = {'available': 'available', 'sold': 'sold', 'exchanged':'exchanged', 'deleted':'deleted'}
+STATE_TUPLE = ((STATE['available'], 'available'), (STATE['sold'], 'sold'), (STATE['exchanged'], 'exchanged'), (STATE['deleted'], 'deleted'))
 
 IGDB_API = {
         "base_url": "https://igdbcom-internet-game-database-v1.p.mashape.com",

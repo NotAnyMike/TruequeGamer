@@ -12,6 +12,9 @@ const DetailsList = React.createClass({
 		goToProfileFn: React.PropTypes.func,
 		onPublishNameFn: React.PropTypes.func,
 		changeHandlerForSearchInputFn: React.PropTypes.func,
+		onDeleteButtonClickFn: React.PropTypes.func,
+		onExchangedButtonClickFn: React.PropTypes.func,
+		onSoldButtonClickFn: React.PropTypes.func,
 	},
 
 	render: function(){
@@ -69,6 +72,9 @@ const DetailsList = React.createClass({
 									suggestions={element.suggestions}
 									onPublishGameFn={self.props.onPublishGameFn}
 									changeHandlerForSearchInputFn={self.props.changeHandlerForSearchInputFn}
+									onDeleteButtonClickFn={self.props.onDeleteButtonClickFn}
+									onExchangedButtonClickFn={self.props.onExchangedButtonClickFn}
+									onSoldButtonClickFn={self.props.onSoldButtonClickFn}
 								/>
 							);
 						}

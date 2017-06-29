@@ -26892,7 +26892,10 @@ const DetailsList = React.createClass({
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func,
 		onPublishNameFn: React.PropTypes.func,
-		changeHandlerForSearchInputFn: React.PropTypes.func
+		changeHandlerForSearchInputFn: React.PropTypes.func,
+		onDeleteButtonClickFn: React.PropTypes.func,
+		onExchangedButtonClickFn: React.PropTypes.func,
+		onSoldButtonClickFn: React.PropTypes.func
 	},
 
 	render: function () {
@@ -26947,7 +26950,10 @@ const DetailsList = React.createClass({
 							temp_id: element.temp_id,
 							suggestions: element.suggestions,
 							onPublishGameFn: self.props.onPublishGameFn,
-							changeHandlerForSearchInputFn: self.props.changeHandlerForSearchInputFn
+							changeHandlerForSearchInputFn: self.props.changeHandlerForSearchInputFn,
+							onDeleteButtonClickFn: self.props.onDeleteButtonClickFn,
+							onExchangedButtonClickFn: self.props.onExchangedButtonClickFn,
+							onSoldButtonClickFn: self.props.onSoldButtonClickFn
 						});
 					}
 				} else {
@@ -27006,7 +27012,10 @@ const DetailsMainContainer = React.createClass({
 		city: React.PropTypes.string,
 		numberOfGames: React.PropTypes.number,
 		onPublishGameFn: React.PropTypes.func,
-		changeHandlerForSearchInputFn: React.PropTypes.func
+		changeHandlerForSearchInputFn: React.PropTypes.func,
+		onDeleteButtonClickFn: React.PropTypes.func,
+		onExchangedButtonClickFn: React.PropTypes.func,
+		onSoldButtonClickFn: React.PropTypes.func
 	},
 
 	render: function () {
@@ -27094,7 +27103,10 @@ const DetailsMainContainer = React.createClass({
 					list: this.props.list,
 					goToProfileFn: this.props.goToProfileFn,
 					onPublishGameFn: this.props.onPublishGameFn,
-					changeHandlerForSearchInputFn: this.props.changeHandlerForSearchInputFn
+					changeHandlerForSearchInputFn: this.props.changeHandlerForSearchInputFn,
+					onDeleteButtonClickFn: this.props.onDeleteButtonClickFn,
+					onExchangedButtonClickFn: this.props.onExchangedButtonClickFn,
+					onSoldButtonClickFn: this.props.onSoldButtonClickFn
 				})
 			)
 		);
@@ -27642,6 +27654,18 @@ const GameItem = React.createClass({
 		});
 	},
 
+	_clickDeleteButtonHandler: function () {
+		this.props.onDeleteButtonClickFn();
+	},
+
+	_clickExchangeButtonHandler: function () {
+		this.props.onExchangedButtonClickFn();
+	},
+
+	_clickSoldButtonHandler: function () {
+		this.props.onSoldButtonClickFn();
+	},
+
 	render: function () {
 
 		var temp_id = 0; //Only to controll the readio buttons on  the new from in profile page
@@ -27658,6 +27682,9 @@ const GameItem = React.createClass({
 		var onPublishButtonClick = null;
 		var onSecondButtonClick = null;
 		var onClickOnSuggestion = null;
+		var onDeleteButtonClick = null;
+		var onExchangedButtonClick = null;
+		var onSoldButtonClick = null;
 		var changeNameHandler = null;
 		var changePriceHandler = null;
 		var changeUsedHandler = null;
@@ -27724,7 +27751,13 @@ const GameItem = React.createClass({
 					}
 				}
 
-				if (this.props.isProfile) className += " showInfo";
+				if (this.props.isProfile) {
+					if (this.props.isOwnerOfProfile === true) {
+						className += " showInfo";
+					} else if (this.props.comment.replace(' ', '') !== "") {
+						className += " showInfo";
+					}
+				}
 			}
 
 			if (this.state.isEditing) {
@@ -27753,6 +27786,9 @@ const GameItem = React.createClass({
 			onSecondButtonClick = this._onEditCommentClicked;
 			onPublishButtonClick = this._onPublishButtonClicked;
 			onClickOnSuggestion = this._clickSuggestionHandler;
+			onDeleteButtonClick = this._clickDeleteButtonHandler;
+			onExchangedButtonClick = this._clickExchangeButtonHandler;
+			onSoldButtonClick = this._clickSoldButtonHandler;
 			changeNameHandler = this._changeNameHandler;
 			changePriceHandler = this._changePriceHandler;
 			changeUsedHandler = this._changeUsedHandler;
@@ -28006,17 +28042,17 @@ const GameItem = React.createClass({
 					{ className: 'stateButtons' },
 					React.createElement(
 						'button',
-						{ type: 'button', className: 'delete' },
+						{ type: 'button', className: 'delete', onClick: onDeleteButtonClick },
 						'Eliminar'
 					),
 					React.createElement(
 						'button',
-						{ type: 'button', className: 'exchanged' },
+						{ type: 'button', className: 'exchanged', onClick: onExchangedButtonClick },
 						'Cambiado'
 					),
 					React.createElement(
 						'button',
-						{ type: 'button', className: 'sold' },
+						{ type: 'button', className: 'sold', onClick: onSoldButtonClick },
 						'Vendido'
 					)
 				),
@@ -28471,6 +28507,18 @@ const Profile = React.createClass({
 		}
 	},
 
+	onDeleteButtonClick: function () {
+		console.log("delete");
+	},
+
+	onExchangedButtonClick: function () {
+		console.log("exchange");
+	},
+
+	onSoldButtonClick: function () {
+		console.log("sold");
+	},
+
 	onPublishGame: function (editing) {
 		var myCookie = Functions.getCookie("csrftoken");
 		var data = new FormData();
@@ -28562,7 +28610,10 @@ const Profile = React.createClass({
 				city: city,
 				numberOfGames: this.state.profile.profile.numberOfGames,
 				onPublishGameFn: this.onPublishGame,
-				changeHandlerForSearchInputFn: this.changeHandlerForSearchInput
+				changeHandlerForSearchInputFn: this.changeHandlerForSearchInput,
+				onDeleteButtonClickFn: this.onDeleteButtonClick,
+				onExchangedButtonClickFn: this.onExchangedButtonClick,
+				onSoldButtonClickFn: this.onSoldButtonClick
 			}),
 			React.createElement(Footer, { version: footerVersion }),
 			chat

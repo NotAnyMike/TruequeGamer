@@ -322,6 +322,18 @@ const GameItem = React.createClass({
 			}
 		});
 	},
+
+	_clickDeleteButtonHandler: function(){
+		this.props.onDeleteButtonClickFn();
+	},
+
+	_clickExchangeButtonHandler: function(){
+		this.props.onExchangedButtonClickFn();
+	},
+
+	_clickSoldButtonHandler: function(){
+		this.props.onSoldButtonClickFn();
+	},
 	
 	render: function(){
 
@@ -339,6 +351,9 @@ const GameItem = React.createClass({
 		var onPublishButtonClick = null;
 		var onSecondButtonClick = null;
 		var onClickOnSuggestion = null;
+		var onDeleteButtonClick = null;
+		var onExchangedButtonClick = null;
+		var onSoldButtonClick = null;
 		var changeNameHandler = null;
 		var changePriceHandler = null;
 		var changeUsedHandler = null;
@@ -410,7 +425,13 @@ const GameItem = React.createClass({
 					}
 				}
 				
-				if(this.props.isProfile) className += " showInfo";
+				if(this.props.isProfile) {
+					if(this.props.isOwnerOfProfile === true){
+						className += " showInfo";
+					}else if(this.props.comment.replace(' ', '') !== ""){
+						className += " showInfo";
+					}
+				}
 				
 			}
 
@@ -441,6 +462,9 @@ const GameItem = React.createClass({
 			onSecondButtonClick = this._onEditCommentClicked;
 			onPublishButtonClick = this._onPublishButtonClicked;
 			onClickOnSuggestion = this._clickSuggestionHandler;
+			onDeleteButtonClick = this._clickDeleteButtonHandler;
+			onExchangedButtonClick = this._clickExchangeButtonHandler;
+			onSoldButtonClick = this._clickSoldButtonHandler;
 			changeNameHandler = this._changeNameHandler;
 			changePriceHandler = this._changePriceHandler;
 			changeUsedHandler = this._changeUsedHandler;
@@ -591,9 +615,9 @@ const GameItem = React.createClass({
 					</div>
 					<span className="stateButtonsLabel">Estado de la publicación</span>
 					<div className="stateButtons">
-						<button type="button" className="delete">Eliminar</button>
-						<button type="button" className="exchanged">Cambiado</button>
-						<button type="button" className="sold">Vendido</button>
+						<button type="button" className="delete" onClick={onDeleteButtonClick}>Eliminar</button>
+						<button type="button" className="exchanged" onClick={onExchangedButtonClick}>Cambiado</button>
+						<button type="button" className="sold" onClick={onSoldButtonClick}>Vendido</button>
 					</div>
 					<button type="button" className="secondButton" onClick={onSecondButtonClick}>6. Escribir comentario</button>
 					<button type="button" className="publishButton" onClick={onPublishButtonClick}></button>

@@ -17,6 +17,9 @@ const DetailsMainContainer = React.createClass({
 		numberOfGames: React.PropTypes.number,
 		onPublishGameFn: React.PropTypes.func,
 		changeHandlerForSearchInputFn: React.PropTypes.func,
+		onDeleteButtonClickFn: React.PropTypes.func,
+		onExchangedButtonClickFn: React.PropTypes.func,
+		onSoldButtonClickFn: React.PropTypes.func,
 	},
 
 	render: function(){
@@ -76,6 +79,9 @@ const DetailsMainContainer = React.createClass({
 						goToProfileFn={this.props.goToProfileFn}
 						onPublishGameFn={this.props.onPublishGameFn}
 						changeHandlerForSearchInputFn={this.props.changeHandlerForSearchInputFn}
+						onDeleteButtonClickFn={this.props.onDeleteButtonClickFn}
+						onExchangedButtonClickFn={this.props.onExchangedButtonClickFn}
+						onSoldButtonClickFn={this.props.onSoldButtonClickFn}
 					/>
 				</div>
 			</section>

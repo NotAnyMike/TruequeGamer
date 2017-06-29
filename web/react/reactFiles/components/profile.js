@@ -59,6 +59,18 @@ const Profile = React.createClass({
 		
 	},
 
+	onDeleteButtonClick: function(){
+		console.log("delete");
+	},
+
+	onExchangedButtonClick: function(){
+		console.log("exchange");
+	},
+
+	onSoldButtonClick: function(){
+		console.log("sold");
+	},
+
 	onPublishGame : function(editing){
 		var myCookie = Functions.getCookie("csrftoken");
 		var data = new FormData();
@@ -148,6 +160,9 @@ const Profile = React.createClass({
 					numberOfGames={this.state.profile.profile.numberOfGames}
 					onPublishGameFn={this.onPublishGame}
 					changeHandlerForSearchInputFn={this.changeHandlerForSearchInput}
+					onDeleteButtonClickFn={this.onDeleteButtonClick}
+					onExchangedButtonClickFn={this.onExchangedButtonClick}
+					onSoldButtonClickFn={this.onSoldButtonClick}
 				/>
 				<Footer version={footerVersion} />
 				{chat}

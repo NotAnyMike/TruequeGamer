@@ -55,9 +55,10 @@ var Actions = {
 		});
 	},
 
-	goToProfile: function(){
+	goToProfile: function(username){
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.goToProfile,
+			value: username,
 		});
 	},
 

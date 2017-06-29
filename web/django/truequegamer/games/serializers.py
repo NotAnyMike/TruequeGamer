@@ -86,6 +86,17 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')
 
+class GameSerializerWithOwner(GameSerializer):
+    username = serializers.SerializerMethodField()
+
+    def get_username(self, game):
+        return game.owner.username
+
+    class Meta:
+        model = Game
+        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice', 'username')
+
+
 class GameDetailsSerializer(serializers.ModelSerializer):
     higher_prices = serializers.SerializerMethodField()
     min_price = serializers.SerializerMethodField()

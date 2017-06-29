@@ -96,6 +96,7 @@ const DetailsList = React.createClass({
 								goToProfileFn={self.props.goToProfileFn}
 								id={element.pk}
 								key={element.pk}
+								username={element.username}
 							/>
 						);
 					}

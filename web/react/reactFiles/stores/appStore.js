@@ -200,8 +200,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.goToProfile, callback);
 	},
 
-	goToProfilePage: function(){
-		this.emit(Constants.eventType.goToProfile);
+	goToProfilePage: function(username){
+		this.emit(Constants.eventType.goToProfile, username);
 	},
 
 	addOnGoToDetailsListener: function(callback){
@@ -441,7 +441,7 @@ AppDispatcher.register(function(payload){
 			AppStore.goToDetailsPage(payload.gameName);
 			break;
 		case Constants.actionType.goToProfile:
-			AppStore.goToProfilePage();
+			AppStore.goToProfilePage(payload.value);
 			break;
 	};
 

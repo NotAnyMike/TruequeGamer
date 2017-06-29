@@ -31,6 +31,7 @@ const GameItem = React.createClass({
 		xboxUsed: React.PropTypes.bool,
 		psNew: React.PropTypes.bool, //in order to know if all of the grouped games are new
 		psXbox: React.PropTypes.bool,
+		username: React.PropTypes.string,
 		
 		/**** this extra values is to show the gameItem in the profile page ****/
 		//Console
@@ -157,7 +158,7 @@ const GameItem = React.createClass({
 	},
 
 	_goToPage: function(){
-		if(typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();
+		if(typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn(this.props.username);
 		else if(typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
 	},
 

@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 import urllib2,json,re
 
-from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer, UserProfileSerializer, SingleDvdSerializer
+from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer, UserProfileSerializer, SingleDvdSerializer, GameSerializerWithOwner
 from games.models import Game, Dvd
 import constants, utils
 
@@ -327,6 +327,7 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
                         gameFromDvds.psOnlyPrice = True
                         gameFromDvds.availableOnXbox = False
                         gameFromDvds.availableOnPs = False
+                        gameFromDvds.owner = dvd.owner
 
                         #Adding the game created to a list
                         gamesList.append(gameFromDvds)
@@ -359,7 +360,7 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
                         if dvd.new == False : gameFromDvds.psUsed = False
 
 
-                gamesSerializer = GameSerializer(gamesList, many = True)
+                gamesSerializer = GameSerializerWithOwner(gamesList, many = True)
 
 
                 return Response({

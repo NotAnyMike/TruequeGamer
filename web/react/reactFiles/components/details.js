@@ -12,8 +12,9 @@ const Details = React.createClass({
 
 	propTypes: { },
 
-	goToProfile: function(){
-		Actions.goToProfile();	
+	goToProfile: function(username){
+		console.log(username)
+		Actions.goToProfile(username);	
 	},
 
 	getInitialState: function(){
@@ -37,9 +38,9 @@ const Details = React.createClass({
 		this.setState(store);
 	},
 
-	loadProfilePage: function(){
+	loadProfilePage: function(username){
 		//TODO: change this
-		var route = "/profile/test";
+		var route = "/profile/" + username;
 		browserHistory.push(route);
 	},
 

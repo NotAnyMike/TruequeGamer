@@ -26681,8 +26681,9 @@ const Details = React.createClass({
 
 	propTypes: {},
 
-	goToProfile: function () {
-		Actions.goToProfile();
+	goToProfile: function (username) {
+		console.log(username);
+		Actions.goToProfile(username);
 	},
 
 	getInitialState: function () {
@@ -26706,9 +26707,9 @@ const Details = React.createClass({
 		this.setState(store);
 	},
 
-	loadProfilePage: function () {
+	loadProfilePage: function (username) {
 		//TODO: change this
-		var route = "/profile/test";
+		var route = "/profile/" + username;
 		browserHistory.push(route);
 	},
 
@@ -26971,7 +26972,8 @@ const DetailsList = React.createClass({
 						comment: element.comment,
 						goToProfileFn: self.props.goToProfileFn,
 						id: element.pk,
-						key: element.pk
+						key: element.pk,
+						username: element.username
 					});
 				}
 				return gameItem;
@@ -27350,6 +27352,7 @@ const GameItem = React.createClass({
 		xboxUsed: React.PropTypes.bool,
 		psNew: React.PropTypes.bool, //in order to know if all of the grouped games are new
 		psXbox: React.PropTypes.bool,
+		username: React.PropTypes.string,
 
 		/**** this extra values is to show the gameItem in the profile page ****/
 		//Console
@@ -27475,7 +27478,7 @@ const GameItem = React.createClass({
 	},
 
 	_goToPage: function () {
-		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn();else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
+		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn(this.props.username);else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
 	},
 
 	_changeCommentHandler: function (e) {
@@ -29389,8 +29392,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		this.removeListener(Constants.eventType.goToProfile, callback);
 	},
 
-	goToProfilePage: function () {
-		this.emit(Constants.eventType.goToProfile);
+	goToProfilePage: function (username) {
+		this.emit(Constants.eventType.goToProfile, username);
 	},
 
 	addOnGoToDetailsListener: function (callback) {
@@ -29615,7 +29618,7 @@ AppDispatcher.register(function (payload) {
 			AppStore.goToDetailsPage(payload.gameName);
 			break;
 		case Constants.actionType.goToProfile:
-			AppStore.goToProfilePage();
+			AppStore.goToProfilePage(payload.value);
 			break;
 	};
 
@@ -29948,9 +29951,10 @@ var Actions = {
 		});
 	},
 
-	goToProfile: function () {
+	goToProfile: function (username) {
 		AppDispatcher.dispatch({
-			actionType: Constants.actionType.goToProfile
+			actionType: Constants.actionType.goToProfile,
+			value: username
 		});
 	}
 

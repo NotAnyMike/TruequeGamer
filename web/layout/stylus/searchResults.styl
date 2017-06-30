@@ -260,7 +260,7 @@ ul.gameList
 			display: none
 			z-index: 2
 				
-		&.only
+		&.exclusive
 			.availableConsoles
 				&:before,&:after
 					background-image: url(img/onlyConsoleDecorator.png)
@@ -313,7 +313,7 @@ ul.gameList
 					&:nth-child(2)
 						opacity: 0
 
-			&.only
+			&.exclusive, &.only
 				.availableConsoles
 					.container
 						span:nth-child(2)
@@ -343,7 +343,7 @@ ul.gameList
 					&:nth-child(2)
 						opacity: 1
 
-			&.only
+			&.exclusive, &.only
 				.availableConsoles
 					.container
 						span:first-child
@@ -606,7 +606,7 @@ ul.ps.gameList
 							content: 'también disponible en xbox one'
 							color: white
 
-		&.only
+		&.exclusive
 			.contentContainer
 				.alsoAvailableOn
 					span
@@ -784,7 +784,7 @@ ul.xbox.gameList
 							content: 'también disponible en ps4'
 							color: $dark_green
 
-		&.only
+		&.exclusive
 			.contentContainer
 				.alsoAvailableOn
 					span
@@ -877,7 +877,7 @@ ul.xbox.gameList
 							color: white
 							opacity: .5
 
-			&.only
+			&.exclusive
 				.contentContainer
 					.alsoAvailableOn
 						span

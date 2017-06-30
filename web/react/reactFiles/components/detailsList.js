@@ -18,12 +18,11 @@ const DetailsList = React.createClass({
 	},
 
 	render: function(){
-
 		var consoleVar = this.props.console;
 		var self = this;
 
 		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "");
-
+		
 		return (
 			<ul className={className}>
 				{this.props.list.map(function(element){
@@ -87,7 +86,7 @@ const DetailsList = React.createClass({
 								psNoExchange={!element.psExchange} 
 								xboxNoExchange={!element.xboxExchange} 
 								notOnly={consoleVar === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs} 
-								only={consoleVar === Constants.consoles.ps ? element.psOnly : element.xboxOnly}
+								exclusive={consoleVar === Constants.consoles.ps ? element.psExclusive : element.xboxExclusive}
 								psPrice={element.psPrice} 
 								psOnlyPrice={element.psOnlyPrice}
 								xboxPrice={element.xboxPrice} 

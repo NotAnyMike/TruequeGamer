@@ -3103,8 +3103,8 @@ ul.gameList li form {
   display: none;
   z-index: 2;
 }
-ul.gameList li.only .availableConsoles:before,
-ul.gameList li.only .availableConsoles:after {
+ul.gameList li.exclusive .availableConsoles:before,
+ul.gameList li.exclusive .availableConsoles:after {
   background-image: url("img/onlyConsoleDecorator.png");
   background-position: center right;
   background-repeat: no-repeat;
@@ -3119,7 +3119,7 @@ ul.gameList li.only .availableConsoles:after {
   position: absolute;
   width: 15px;
 }
-ul.gameList li.only .availableConsoles:after {
+ul.gameList li.exclusive .availableConsoles:after {
   filter: FlipH;
   left: auto;
   right: 0;
@@ -3130,11 +3130,11 @@ ul.gameList li.only .availableConsoles:after {
   transform: scaleX(-1);
   top: 0;
 }
-ul.gameList li.only .alsoAvailableOn {
+ul.gameList li.exclusive .alsoAvailableOn {
   background-color: #e6334c;
   border: 0px;
 }
-ul.gameList li.only .alsoAvailableOn span {
+ul.gameList li.exclusive .alsoAvailableOn span {
   border: 0px;
 }
 ul.gameList li.ps .availableConsoles .container span:first-child:before {
@@ -3169,6 +3169,7 @@ ul.gameList li.ps .exchange span:nth-child(2) {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
+ul.gameList li.ps.exclusive .availableConsoles .container span:nth-child(2),
 ul.gameList li.ps.only .availableConsoles .container span:nth-child(2) {
   display: none;
 }
@@ -3204,6 +3205,7 @@ ul.gameList li.xbox .exchange span:nth-child(2) {
   -ms-filter: none;
   filter: none;
 }
+ul.gameList li.xbox.exclusive .availableConsoles .container span:first-child,
 ul.gameList li.xbox.only .availableConsoles .container span:first-child {
   display: none;
 }
@@ -3469,10 +3471,10 @@ ul.ps.gameList li.notOnly .contentContainer .alsoAvailableOn span:before {
   content: 'también disponible en xbox one';
   color: #fff;
 }
-ul.ps.gameList li.only .contentContainer .alsoAvailableOn span {
+ul.ps.gameList li.exclusive .contentContainer .alsoAvailableOn span {
   border: 0;
 }
-ul.ps.gameList li.only .contentContainer .alsoAvailableOn span:before {
+ul.ps.gameList li.exclusive .contentContainer .alsoAvailableOn span:before {
   content: 'unicamente en play station 4';
   color: #fff;
 }
@@ -3672,10 +3674,10 @@ ul.xbox.gameList li.notOnly .contentContainer .alsoAvailableOn span:before {
   content: 'también disponible en ps4';
   color: #009992;
 }
-ul.xbox.gameList li.only .contentContainer .alsoAvailableOn span {
+ul.xbox.gameList li.exclusive .contentContainer .alsoAvailableOn span {
   border: 0;
 }
-ul.xbox.gameList li.only .contentContainer .alsoAvailableOn span:before {
+ul.xbox.gameList li.exclusive .contentContainer .alsoAvailableOn span:before {
   content: 'unicamente en x-box one';
   color: #fff;
 }
@@ -3758,7 +3760,7 @@ ul.xbox.gameList li:hover.xboxNoExchange .contentContainer .exchange:after {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
-ul.xbox.gameList li:hover.only .contentContainer .alsoAvailableOn span {
+ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
   border: 0;
 }
 .xboxNoExchange.ps .contentContainer .exchange span:nth-child(2):before {

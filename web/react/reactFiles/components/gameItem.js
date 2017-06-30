@@ -17,8 +17,8 @@ const GameItem = React.createClass({
 		xboxNoSell: React.PropTypes.bool,
 		psNoExchange: React.PropTypes.bool,
 		xboxNoExchange: React.PropTypes.bool,
-		only: React.PropTypes.bool,
-		notOnly: React.PropTypes.bool,
+		exclusive: React.PropTypes.bool,
+		notOnly: React.PropTypes.bool, //true if it is notOnly for the console
 		console: React.PropTypes.oneOf([Constants.consoles.xbox, Constants.consoles.ps, Constants.consoles.both]),
 		psPrice: React.PropTypes.number,
 		psOnlyPrice: React.PropTypes.bool,
@@ -94,7 +94,7 @@ const GameItem = React.createClass({
 			xboxNoSell: false,
 			psNoExchange: false, 
 			xboxNoExchange: false, 
-			only: false,
+			exclusive: false,
 			notOnly: false,
 			console: null,
 			psUsed: false,
@@ -399,7 +399,7 @@ const GameItem = React.createClass({
 
 			}else{
 
-				className = this.props.console + " only"
+				className = this.props.console + " exclusive"
 				if(this.props.console === Constants.consoles.xbox){
 					className += (this.props.exchange ? " xboxNoExchange" : "") +
 						(typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
@@ -497,9 +497,11 @@ const GameItem = React.createClass({
 		
 		}else{
 
+			console.log(this.props.notOnly)
+
 			className = consoleVar +
-					(this.props.only ? " only" : "") +
-					(this.props.notOnly ? " notOnly" : "");
+					(this.props.exclusive ? " exclusive" : "") +
+					(this.props.notOnly ? " notOnly" : " only");
 			if(this.props.both || this.props.console === Constants.consoles.xbox){
 				className += (this.props.xboxNoExchange ? " xboxNoExchange" : " xboxExchange") + //adding some stuff here, if ater a while it is still working then remove this comment
 					(this.props.xboxNoSell ? " xboxNoSell" : "");

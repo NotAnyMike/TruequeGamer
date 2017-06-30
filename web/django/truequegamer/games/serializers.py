@@ -84,7 +84,7 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
-        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')
+        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psExclusive', 'xboxExclusive', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')
 
 class GameSerializerWithOwner(GameSerializer):
     username = serializers.SerializerMethodField()
@@ -94,7 +94,7 @@ class GameSerializerWithOwner(GameSerializer):
 
     class Meta:
         model = Game
-        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice', 'username')
+        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psExclusive', 'xboxExclusive', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice', 'username')
 
 
 class GameDetailsSerializer(serializers.ModelSerializer):
@@ -102,9 +102,11 @@ class GameDetailsSerializer(serializers.ModelSerializer):
     min_price = serializers.SerializerMethodField()
 
     def get_min_price(self, instance):
+        #TODO change this
         return 13000
 
     def get_higher_prices(self, instance):
+        #TODO change this
         return True
 
     class Meta:
@@ -125,7 +127,7 @@ class DvdSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Dvd
-        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psOnly', 'xboxOnly', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')
+        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psExclusive', 'xboxExclusive', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice')
 
 class SingleDvdSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
@@ -144,4 +146,3 @@ class SingleDvdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dvd
         fields = ('pk', 'name', 'cover', 'price', 'exchange', 'used', 'console', 'comment')
-        #validators = [] 

@@ -202,11 +202,14 @@ def DvdApi(request):
                             if data['price'] != dvdToSave.price:
                                 dvdToSave.price = data['price']
                                 changed = True
-                            if data['exchange'] != dvdToSave.exchange:
-                                dvdToSave.exchange = data['exchange']
-                                changed = True
                             if data['console'] != dvdToSave.console:
                                 dvdToSave.console = data['console']
+                                changed = True
+                            if data['exchange'] != str(dvdToSave.exchange):
+                                dvdToSave.exchange = not dvdToSave.exchange
+                                changed = True
+                            if data['used'] == str(dvdToSave.new):
+                                dvdToSave.new = not dvdToSave.new
                                 changed = True
                             if data['comment'] != dvdToSave.comment:
                                 dvdToSave.comment = data['comment']
@@ -337,8 +340,8 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
 
                         gameFromDvds.name = "%s %s" % (dvd.owner.first_name, dvd.owner.last_name)
                         gameFromDvds.cover = utils.get_user_large_profile_pic(dvd.owner)
-                        gameFromDvds.xboxOnly = game.xboxOnly
-                        gameFromDvds.psOnly = game.psOnly 
+                        gameFromDvds.xboxExclusive = game.xboxExclusive
+                        gameFromDvds.psExclusive = game.psExclusive 
                         gameFromDvds.xboxOnlyPrice = True
                         gameFromDvds.psOnlyPrice = True
                         gameFromDvds.availableOnXbox = False

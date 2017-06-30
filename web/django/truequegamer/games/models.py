@@ -7,18 +7,14 @@ from django.dispatch import receiver
 
 import constants
 
-#constants.CONSOLES = {'xbox':'xbox','ps':'ps'}
-#constants.CONSOLES_TUPLE = ((constants.CONSOLES['xbox'],'xbox one'),(constants.CONSOLES['ps'],'ps4'))
-
-
 class Game(models.Model):
     name = models.CharField(max_length=300, null=False, blank=False, unique=True)
     cover = models.URLField(max_length=300, null=False, blank=False, unique=True) 
     score = models.IntegerField(null=True, blank=True, default=None)
     id_igdb = models.BigIntegerField(null=False, blank=False, default=None, unique=True)
     slug = models.CharField(max_length=300, null=False, blank=False, default=None,unique=True)
-    psOnly = models.BooleanField(null=False, blank=False, default=False)
-    xboxOnly = models.BooleanField(null=False, blank=False, default=False)
+    psExclusive = models.BooleanField(null=False, blank=False, default=False)
+    xboxExclusive = models.BooleanField(null=False, blank=False, default=False)
     psPrice= models.IntegerField(null=True, blank=True, default=None)
     xboxPrice= models.IntegerField(null=True, blank=True, default=None)
     psExchange= models.BooleanField(null=False, blank=False, default=False)

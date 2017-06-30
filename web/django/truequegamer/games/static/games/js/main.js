@@ -26945,6 +26945,7 @@ const DetailsList = React.createClass({
 							price: element.price,
 							comment: element.comment,
 							isNew: false,
+							used: element.used,
 							id: element.pk,
 							key: element.pk,
 							temp_id: element.temp_id,

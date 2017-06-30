@@ -49,7 +49,7 @@ def SomeUser(request, username):
             user = user[0]
 
             #Get her dvds
-            dvds = Dvd.objects.filter(owner=user)
+            dvds = Dvd.objects.filter(owner=user).filter(state=constants.STATE['available'])
             #TODO: remove the repeated games
 
             dvdsSerializer = SingleDvdSerializer(dvds, many=True)
@@ -178,11 +178,7 @@ def DvdApi(request):
                                     game.save()
 
                         #if game is to create
-                        print "to get into save process"
-                        print "dvdToSave"
-                        print dvdToSave
                         if dvdToSave is None and game is not None:
-                            print "is new"
                             data['new'] = not data['used']
                             dvdToSave = Dvd(
                                     price = data['price'],
@@ -198,7 +194,6 @@ def DvdApi(request):
                             serializer = SingleDvdSerializer(dvdToSave)
                             return Response(serializer.data, status=status.HTTP_201_CREATED)
                         elif dvdToSave is not None:
-                            print "is not new"
                             #update dvd
                             changed = False
                             if game is not None:
@@ -329,7 +324,7 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
             if game != None:
                 game = game[0]
 
-                dvds = Dvd.objects.order_by('owner__pk').filter(game=game) #Needed in order to make the for work as expected
+                dvds = Dvd.objects.order_by('owner__pk').filter(state=constants.STATE['available']).filter(game=game) #Needed in order to make the for work as expected
                 gameSerializer = GameDetailsSerializer(game, many = False)
 
                 #Create a list of 'games' with the Dvds

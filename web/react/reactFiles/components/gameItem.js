@@ -328,11 +328,11 @@ const GameItem = React.createClass({
 	},
 
 	_clickExchangeButtonHandler: function(){
-		this.props.onExchangedButtonClickFn();
+		this.props.onExchangedButtonClickFn(this.props.id);
 	},
 
 	_clickSoldButtonHandler: function(){
-		this.props.onSoldButtonClickFn();
+		this.props.onSoldButtonClickFn(this.props.id);
 	},
 	
 	render: function(){

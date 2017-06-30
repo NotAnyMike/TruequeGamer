@@ -27659,11 +27659,11 @@ const GameItem = React.createClass({
 	},
 
 	_clickExchangeButtonHandler: function () {
-		this.props.onExchangedButtonClickFn();
+		this.props.onExchangedButtonClickFn(this.props.id);
 	},
 
 	_clickSoldButtonHandler: function () {
-		this.props.onSoldButtonClickFn();
+		this.props.onSoldButtonClickFn(this.props.id);
 	},
 
 	render: function () {
@@ -28508,7 +28508,6 @@ const Profile = React.createClass({
 	},
 
 	onDeleteButtonClick: function (id_of_game) {
-		console.log("delete");
 		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
 		var req = Functions.getCustomHeader('delete', url, null, true);
 		Functions.fetchAdvanced(req).then(function (res) {
@@ -28516,12 +28515,20 @@ const Profile = React.createClass({
 		}.bind(this));
 	},
 
-	onExchangedButtonClick: function () {
-		console.log("exchange");
+	onExchangedButtonClick: function (id_of_game) {
+		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
+		var req = Functions.getCustomHeader('patch', url, { type: 'exchanged' }, true);
+		Functions.fetchAdvanced(req).then(function (res) {
+			this._gameDeleted(id_of_game, res);
+		}.bind(this));
 	},
 
-	onSoldButtonClick: function () {
-		console.log("sold");
+	onSoldButtonClick: function (id_of_game) {
+		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
+		var req = Functions.getCustomHeader('patch', url, { type: 'sold' }, true);
+		Functions.fetchAdvanced(req).then(function (res) {
+			this._gameDeleted(id_of_game, res);
+		}.bind(this));
 	},
 
 	onPublishGame: function (editing) {

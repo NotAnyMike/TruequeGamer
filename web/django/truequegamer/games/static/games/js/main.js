@@ -26708,7 +26708,6 @@ const Details = React.createClass({
 	},
 
 	loadProfilePage: function (username) {
-		//TODO: change this
 		var route = "/profile/" + username;
 		browserHistory.push(route);
 	},
@@ -26902,7 +26901,7 @@ const DetailsList = React.createClass({
 		var consoleVar = this.props.console;
 		var self = this;
 
-		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "");
+		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "") + (this.props.isProfile ? "" : " details");
 
 		return React.createElement(
 			'ul',
@@ -26912,7 +26911,22 @@ const DetailsList = React.createClass({
 				var consoleProp = Constants.consoles.ps;
 				if (consoleVar !== Constants.consoles.both) {
 					consoleProp = consoleVar;
-				} else if (element.xboxPrice && (!element.psPrice || element.xboxPrice < element.psPrice)) {
+				} else if (element.availableOnPs && element.availableOnXbox) {
+					//Is available in both consoles, then check price if not check exchange
+					if (element.xboxPrice && element.psPrice) {
+						if (element.xboxPrice < element.psPrice) consoleProp = Constants.consoles.xbox;else consoleProp = Constants.consoles.ps;
+					} else {
+						//Only both dont have price
+						if (element.xboxPrice) consoleProp = Constants.consoles.xbox;else if (element.psPrice) consoleProp = Constants.consoles.ps;else {
+							//check the exchange
+							if (element.psExchange === true) consoleProp = Constants.consoles.ps;else if (element.xboxExchange === true) consoleProp = Constants.consoles.xbox;
+						}
+					}
+				} else if (element.availableOnPs) {
+					//Is only available on ps
+					consoleProp = Constants.consoles.ps;
+				} else if (element.availableOnXbox) {
+					//Is only available on xbox
 					consoleProp = Constants.consoles.xbox;
 				}
 
@@ -26962,8 +26976,8 @@ const DetailsList = React.createClass({
 						console: consoleProp,
 						psNoExchange: !element.psExchange,
 						xboxNoExchange: !element.xboxExchange,
-						notOnly: consoleVar === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs,
-						exclusive: consoleVar === Constants.consoles.ps ? element.psExclusive : element.xboxExclusive,
+						notOnly: consoleProp === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs,
+						exclusive: consoleProp === Constants.consoles.ps ? element.psExclusive : element.xboxExclusive,
 						psPrice: element.psPrice,
 						psOnlyPrice: element.psOnlyPrice,
 						xboxPrice: element.xboxPrice,
@@ -27010,6 +27024,7 @@ const DetailsMainContainer = React.createClass({
 		goToProfileFn: React.PropTypes.func,
 		name: React.PropTypes.string,
 		city: React.PropTypes.string,
+		picture: React.PropTypes.string,
 		numberOfGames: React.PropTypes.number,
 		onPublishGameFn: React.PropTypes.func,
 		changeHandlerForSearchInputFn: React.PropTypes.func,
@@ -27026,7 +27041,7 @@ const DetailsMainContainer = React.createClass({
 				isOwnerOfProfile: this.props.isOwnerOfProfile,
 				console: Constants.consoles.both,
 				name: this.props.name,
-				cover: "/img/details_profile.png",
+				cover: this.props.picture,
 				city: this.props.city,
 				numberOfGames: this.props.numberOfGames
 			});
@@ -27821,8 +27836,6 @@ const GameItem = React.createClass({
 				}
 			}
 		} else {
-
-			console.log(this.props.notOnly);
 
 			className = consoleVar + (this.props.exclusive ? " exclusive" : "") + (this.props.notOnly ? " notOnly" : " only");
 			if (this.props.both || this.props.console === Constants.consoles.xbox) {
@@ -28627,6 +28640,7 @@ const Profile = React.createClass({
 				list: this.state.profile.list,
 				name: this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name,
 				city: city,
+				picture: this.state.profile.profile.picture,
 				numberOfGames: this.state.profile.profile.numberOfGames,
 				onPublishGameFn: this.onPublishGame,
 				changeHandlerForSearchInputFn: this.changeHandlerForSearchInput,
@@ -28841,10 +28855,10 @@ const SearchResults = React.createClass({
 				if (this.state.search.ps) {
 					consoleVar = Constants.routes.details.both;
 				} else {
-					consoleVar = Constants.routes.details.ps;
+					consoleVar = Constants.routes.details.xbox;
 				}
 			} else {
-				consoleVar = Constants.routes.details.xbox;
+				consoleVar = Constants.routes.details.ps;
 			}
 			route = "/".concat(name, consoleVar);
 		} else {
@@ -28939,8 +28953,6 @@ const SearchResultsList = React.createClass({
 					consoleProp = Constants.consoles.xbox;
 				}
 
-				console.log(consoleVar);
-				console.log(element.availableOnXbox);
 				return React.createElement(GameItem, {
 					isProfile: self.props.isProfile,
 					console: consoleProp,

@@ -164,6 +164,7 @@ const Profile = React.createClass({
 					list={this.state.profile.list}
 					name={this.state.profile.profile.first_name + " " + this.state.profile.profile.last_name}
 					city={city}
+					picture={this.state.profile.profile.picture}
 					numberOfGames={this.state.profile.profile.numberOfGames}
 					onPublishGameFn={this.onPublishGame}
 					changeHandlerForSearchInputFn={this.changeHandlerForSearchInput}

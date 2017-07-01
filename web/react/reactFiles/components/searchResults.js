@@ -45,10 +45,10 @@ const SearchResults = React.createClass({
 				if(this.state.search.ps){
 					consoleVar = Constants.routes.details.both;
 				}else{
-					consoleVar = Constants.routes.details.ps;
+					consoleVar = Constants.routes.details.xbox;
 				}
 			}else{
-				consoleVar = Constants.routes.details.xbox;	
+				consoleVar = Constants.routes.details.ps;
 			}
 			route = "/".concat(name, consoleVar)
 		}else{

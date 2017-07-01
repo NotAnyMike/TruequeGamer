@@ -21,7 +21,7 @@ const DetailsList = React.createClass({
 		var consoleVar = this.props.console;
 		var self = this;
 
-		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "");
+		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "") + (this.props.isProfile ? "" : " details");
 		
 		return (
 			<ul className={className}>
@@ -30,7 +30,27 @@ const DetailsList = React.createClass({
 					var consoleProp = Constants.consoles.ps;
 					if(consoleVar !== Constants.consoles.both){
 						consoleProp = consoleVar;
-					} else if (element.xboxPrice && (!element.psPrice || element.xboxPrice < element.psPrice)){
+					} else if (element.availableOnPs && element.availableOnXbox){
+						//Is available in both consoles, then check price if not check exchange
+						if (element.xboxPrice && element.psPrice){
+							if(element.xboxPrice < element.psPrice) consoleProp = Constants.consoles.xbox;
+							else consoleProp = Constants.consoles.ps;
+						}else{
+							//Only both dont have price
+							if(element.xboxPrice) consoleProp = Constants.consoles.xbox;
+							else if(element.psPrice) consoleProp = Constants.consoles.ps;
+							else{
+								//check the exchange
+								if(element.psExchange === true) consoleProp = Constants.consoles.ps;
+								else if(element.xboxExchange === true) consoleProp = Constants.consoles.xbox;
+							}
+
+						}
+					} else if (element.availableOnPs){
+						//Is only available on ps
+						consoleProp = Constants.consoles.ps;
+					} else if (element.availableOnXbox) {
+						//Is only available on xbox
 						consoleProp = Constants.consoles.xbox;
 					}
 						
@@ -85,8 +105,8 @@ const DetailsList = React.createClass({
 								console={consoleProp}
 								psNoExchange={!element.psExchange} 
 								xboxNoExchange={!element.xboxExchange} 
-								notOnly={consoleVar === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs} 
-								exclusive={consoleVar === Constants.consoles.ps ? element.psExclusive : element.xboxExclusive}
+								notOnly={consoleProp === Constants.consoles.ps ? element.availableOnXbox : element.availableOnPs} 
+								exclusive={consoleProp === Constants.consoles.ps ? element.psExclusive : element.xboxExclusive}
 								psPrice={element.psPrice} 
 								psOnlyPrice={element.psOnlyPrice}
 								xboxPrice={element.xboxPrice} 

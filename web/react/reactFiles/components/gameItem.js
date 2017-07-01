@@ -501,8 +501,6 @@ const GameItem = React.createClass({
 		
 		}else{
 
-			console.log(this.props.notOnly)
-
 			className = consoleVar +
 					(this.props.exclusive ? " exclusive" : "") +
 					(this.props.notOnly ? " notOnly" : " only");

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 FB_PROFILE_PIC_PART1 = "https://graph.facebook.com/"
 FB_PROFILE_PIC_PART2 = "/picture?type=large"
+FB_PROFILE_PIC_PART2_SMALL = "/picture?type=small"
 
 LARGE_PROFILE_PIC_URL = "/img/details_profile.png"
 DEFAULT_LOCATION = "Bogotá, Colombia"
@@ -19,7 +20,7 @@ IGDB_API = {
         "base_url": "https://igdbcom-internet-game-database-v1.p.mashape.com",
         "games_url": "/games/",
         "fields_simple": "name,slug",
-        "fields_extended": "name,slug,popularity,cover.url,cover.cloudinary_id",
+        "fields_extended": "name,slug,popularity,cover.url,cover.cloudinary_id,release_dates.platform",
         "normal_query": "[id]?fields=[fields]&limit=5&offset=0&search={search}&filter[release_dates.platform][eq]={platform}&filter[release_dates.date][lte]={time_in_epoch}&filter[category][any]=0,3,4",
         "consoles": {
             "xbox": '49',

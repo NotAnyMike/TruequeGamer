@@ -780,6 +780,9 @@ figure.negative .isotype.negative {
   border-radius: 23px;
   overflow: hidden;
 }
+.profileContainer figure img {
+  object-fit: cover;
+}
 .profileContainer span {
   color: #f29224;
   font-size: 20px;
@@ -2707,7 +2710,7 @@ ul.gameList li {
   box-flex: 0;
   -webkit-flex-grow: 0;
   flex-grow: 0;
-  min-height: 340px;
+  min-height: 310px;
   margin-bottom: 34px;
   margin-right: 15px;
   overflow: hidden;
@@ -3791,6 +3794,9 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList {
   padding-top: 20px;
 }
+.detailsMainContainer .container .gameList.details li {
+  min-height: 290px;
+}
 .detailsMainContainer .container .gameList li {
   height: auto;
   min-height: 310px;
@@ -4402,14 +4408,16 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  height: 200px;
+  height: 170px;
   margin: 0;
-  width: 167px;
+  width: 170px;
 }
 .gameDetails figure img,
 .profileDetails figure img {
-  height: 180px;
-  width: 142px;
+  height: 160px;
+  width: 160px;
+  object-fit: cover;
+  object-position: 50% 58%;
 }
 .gameDetails .gameDetailsContainer,
 .profileDetails .gameDetailsContainer,
@@ -4604,16 +4612,16 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
 .profile .container .profileDetails .profileDetailsContainer span:nth-child(4) {
   font-size: 20px;
   font-weight: normal;
-  padding-top: 20px;
+  padding-top: 9px;
 }
 .profile .container .profileDetails .profileDetailsContainer span:nth-child(4) {
   color: #98ceb7;
-  padding-top: 10px;
+  padding-top: 2px;
 }
 .profile .container .profileDetails .profileDetailsContainer .openChatProfileButton {
   display: inline-block;
   width: 172px;
-  margin-top: 20px;
+  margin-top: 10px;
   height: 30px;
   background-color: #e6334c;
   text-transform: uppercase;

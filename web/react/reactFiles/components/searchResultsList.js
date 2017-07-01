@@ -47,8 +47,6 @@ const SearchResultsList = React.createClass({
 						consoleProp = Constants.consoles.xbox;
 					}
 					
-					console.log(consoleVar)
-					console.log(element.availableOnXbox)
 					return (
 						<GameItem 
 							isProfile={self.props.isProfile}

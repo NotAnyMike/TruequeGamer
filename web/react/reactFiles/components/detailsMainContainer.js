@@ -14,6 +14,7 @@ const DetailsMainContainer = React.createClass({
 		goToProfileFn: React.PropTypes.func,
 		name: React.PropTypes.string,
 		city: React.PropTypes.string,
+		picture: React.PropTypes.string,
 		numberOfGames: React.PropTypes.number,
 		onPublishGameFn: React.PropTypes.func,
 		changeHandlerForSearchInputFn: React.PropTypes.func,
@@ -31,7 +32,7 @@ const DetailsMainContainer = React.createClass({
 					isOwnerOfProfile={this.props.isOwnerOfProfile}
 					console={Constants.consoles.both}
 					name={this.props.name}
-					cover={"/img/details_profile.png"}
+					cover={this.props.picture}
 					city={this.props.city}
 					numberOfGames={this.props.numberOfGames}
 				/>

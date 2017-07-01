@@ -20,6 +20,10 @@
 		.gameList
 			padding-top: 20px
 
+			&.details
+				li
+					min-height: 290px
+
 			li
 				height: auto
 				min-height: 310px
@@ -337,7 +341,7 @@
 								&:before
 									content: 'X'
 
-			//Thre wont be a .xbox at this same level because the default styles are from xbox	
+			//There wont be a .xbox at this same level because the default styles are from xbox	
 			&.both, $.profile
 				li	
 					figure
@@ -594,13 +598,15 @@
 		flex-grow: 0
 		flex-shrink: 0
 		justify-content: center
-		height: 200px
+		height: 170px
 		margin: 0
-		width: 167px
+		width: 170px
 
 		img
-			height: 180px
-			width: 142px
+			height: 160px
+			width: 160px
+			object-fit: cover
+			object-position: 50% 58%
 	
 	.gameDetailsContainer, .profileDetailsContainer
 		display: flex

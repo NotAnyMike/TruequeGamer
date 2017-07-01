@@ -12,20 +12,15 @@ import constants,utils
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("games.serializers")
 
-url = "https://graph.facebook.com/me?fields=id,name,first_name,last_name,picture,location&access_token=%s" % constants.FB_ACCESS_TOKEN
-
-response = urllib.urlopen(url)
-data = json.load(response)
-
 class UserSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
     
     def get_picture(self, user):
-        return data['picture']['data']['url']
+        return utils.get_user_large_profile_pic(user)
 
     def get_location(self, user):
-        return data['location']['name']
+        return utils.get_user_location(user)
 
     class Meta:
         model = User
@@ -59,10 +54,10 @@ class CurrentUserSerializer(serializers.ModelSerializer):
     chat_token = serializers.SerializerMethodField()
     
     def get_picture(self, user):
-        return data['picture']['data']['url']
+        return utils.get_user_small_profile_pic(user)
 
     def get_location(self, user):
-        return data['location']['name']
+        return utils.get_user_location(user)
 
     def get_chat_token(self, instance):
         tokenToReturn = ""

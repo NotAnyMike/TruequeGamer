@@ -39,6 +39,7 @@ const Profile = React.createClass({
 	doneTypingFn: function(id,isPs,string){
 		var url = Constants.routes.api.suggestions_igdb;
 		var consoles = isPs ? Constants.consoles.ps : Constants.consoles.xbox;
+		if(!string) string=""
 		url = url.replace('[console]', consoles.toString()).replace('[string]', string.toString());
 		var self = this;
 		var req = url;

@@ -19,7 +19,7 @@ const SearchResultsList = React.createClass({
 		return (
 			<ul className={"gameList " + this.props.console}>
 				{this.props.list.map(function(element){
-					debugger;	
+					
 					var consoleProp = Constants.consoles.ps;
 					if(consoleVar !== Constants.consoles.both){
 						consoleProp = consoleVar;

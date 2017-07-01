@@ -152,8 +152,12 @@ const GameItem = React.createClass({
 			this.setState({isShowingComment: false, isEditing: true});
 		}else{
 			//else publish
-			this.setState({isEditing: false});
-			this.props.onPublishGameFn(this.state.editing)
+			if(this.state.editing.name && this.state.editing.exchange === false && (!this.state.editing.price || this.state.editing.price === "" || this.state.editing.price === 0)){
+				//TODO: show error because the gameitem is empty
+			}else{
+				this.setState({isEditing: false});
+				this.props.onPublishGameFn(this.state.editing)
+			}
 		}
 	},
 
@@ -263,7 +267,7 @@ const GameItem = React.createClass({
 		var newValue = !e.target.checked;
 		this.setState({
 			editing: {
-				name: null,
+				name: "",
 				price: this.state.editing.price,
 				used: this.state.editing.used,
 				exchange: this.state.editing.exchange,
@@ -280,13 +284,13 @@ const GameItem = React.createClass({
 		var newValue = e.target.checked;
 		this.setState({
 			editing: {
-				name: this.state.editing.name,
+				name: "",
 				price: this.state.editing.price,
 				used: this.state.editing.used,
 				exchange: this.state.editing.exchange,
 				ps: newValue,
 				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
+				idOfGame: null,
 				id: this.state.editing.id,
 			}
 		});
@@ -401,11 +405,11 @@ const GameItem = React.createClass({
 
 				className = this.props.console + " exclusive"
 				if(this.props.console === Constants.consoles.xbox){
-					className += (this.props.exchange ? " xboxNoExchange" : "") +
+					className += (!this.props.exchange ? " xboxNoExchange" : " xboxExchange") +
 						(typeof this.props.price === 'undefined' || this.props.price === null ? " xboxNoSell" : "");
 				}
 				if(this.props.console === Constants.consoles.ps){
-					className += (this.props.exchange ? " psNoExchange" : "") +
+					className += (!this.props.exchange ? " psNoExchange" : " psExchange") +
 						(typeof this.props.price === 'undefined' || this.props.price === null ? " psNoSell" : "");
 				}
 				if(this.props.used){

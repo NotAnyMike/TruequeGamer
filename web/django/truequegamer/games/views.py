@@ -104,15 +104,17 @@ def DvdApi(request):
         newData = dict((key.encode('utf-8'), value) for key,value in data.items())
         newData2 = dict((key, re.sub(r'\s+','',str(value)) if value != None else None) for key,value in newData.items())
         newData2['comment'] = re.sub(r'(^\s+)|(\s+$)', '', str(newData['comment']))
+        newData2['price'] = None if newData2['price'] == "" else newData2['price']
         data = newData2
         
         data['console'] = constants.CONSOLES['xbox']
         if 'ps' in data:
-            if data['ps']:
+            if data['ps'].lower() == 'true':
                 data['console'] = constants.CONSOLES['ps']
 
         serializer = SingleDvdSerializer(data=data, partial=True)
         #return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
+        print data
         if serializer.is_valid():
             #Check if the user is logged in
             if request.user.is_authenticated():
@@ -127,7 +129,6 @@ def DvdApi(request):
                         dvdToSave = None
                         game = None
 
-                        print data
                         if 'id' in data and data['id'] != None:
                             #Get dvd
                             print "has id"

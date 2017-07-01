@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 import constants
@@ -44,91 +44,119 @@ class Dvd(models.Model):
     def __str__(self):
         return "%s, console: %s" % (self.game.name, self.console)
 
+@receiver(pre_save, sender=Dvd)
+def preSaveDvd(sender, instance, **kwargs):
+    if (instance.price == None or instance.price == 0) and instance.exchange == False:
+        raise Exception("Dvd is not being sold no exchanged")
+
+@receiver(pre_save, sender=Game)
+def preSaveGame(sender, instance, **kwargs):
+    if instance.psExclusive:
+        instance.xboxPrice = None
+        instance.xboxExchange = False
+        instance.xboxNew = False
+        instance.xboxUsed = False
+        instance.xboxOnlyPrice = False
+        instance.availableOnXbox = False
+    elif instance.xboxExclusive:
+        instance.psPrice = None
+        instance.psExchange = False
+        instance.psNew = False
+        instance.psUsed = False
+        instance.psOnlyPrice = False
+        instance.availableOnPs = False
+    else:
+        if instance.psPrice > 0 or instance.psExchange == True:
+            instance.availableOnPs = True
+        else:
+            instance.availableOnPs = False
+
+        if instance.xboxPrice > 0 or instance.xboxExchange == True:
+            instance.availableOnXbox = True
+        else:
+            instance.availableOnXbox = False
+
+
 @receiver(post_save, sender=Dvd)
 def updatingGames(sender, instance, **kwargs):
 
-    modified = False
-    if instance.console == constants.CONSOLES['ps']:
-        #Get all Dvds for this game which are for ps
-        dvds = Dvd.objects.filter(game=instance.game, console=constants.CONSOLES['ps'], state=constants.STATE['available'])
+    modifiedPs = False
+    modifiedXbox = False
+    #Get all Dvds for this game which are for ps
+    dvds = Dvd.objects.filter(game=instance.game, state=constants.STATE['available'])
 
-        if instance.game.psPrice != 0 or \
-            instance.game.psExchange != False or \
-            instance.game.psNew != False or \
-            instance.game.psUsed != False or \
-            instance.game.availableOnPs != False or \
-            instance.game.psOnlyPrice != True: 
-                modified= True
+    if instance.game.psPrice != 0 or \
+        instance.game.psExchange != False or \
+        instance.game.psNew != False or \
+        instance.game.psUsed != False or \
+        instance.game.availableOnPs != False or \
+        instance.game.psOnlyPrice != True:
+            modifiedPs = True
+    if instance.game.xboxPrice != 0 or \
+        instance.game.xboxExchange != False or \
+        instance.game.xboxNew != False or \
+        instance.game.xboxUsed != False or \
+        instance.game.availableOnXbox != False or \
+        instance.game.xboxOnlyPrice != True: 
+            modifiedXbox = True
 
-        instance.game.psPrice = 0
-        instance.game.psExchange = False
-        instance.game.psNew = False
-        instance.game.psUsed = False
-        instance.game.availableOnPs = False
-        instance.game.psOnlyPrice = True
+    instance.game.xboxPrice = 0
+    instance.game.xboxExchange = False
+    instance.game.xboxNew = False
+    instance.game.xboxUsed = False
+    instance.game.availableOnXbox = False
+    instance.game.xboxOnlyPrice = True
+    instance.game.psPrice = 0
+    instance.game.psExchange = False
+    instance.game.psNew = False
+    instance.game.psUsed = False
+    instance.game.availableOnPs = False
+    instance.game.psOnlyPrice = True
 
-        for dvd in dvds: 
-            #Are at least two prices different
+    for dvd in dvds: 
+        #Are at least two prices different
+        if dvd.console == constants.CONSOLES['ps']:
             if dvd.price != None and instance.game.psPrice < dvd.price:  
                 if instance.game.psPrice != 0:
                     instance.game.psOnlyPrice = False
                 instance.game.psPrice = dvd.price
-                modified = True
+                modifiedPs = True
 
             if dvd.exchange == True:
                 instance.game.psExchange = True
-                modified = True
+                modifiedPs = True
 
             if dvd.new == True:
                 instance.game.psNew = True
-                modified = True
+                modifiedPs = True
             else:
                 instance.game.psUsed = True
-                modified = True
+                modifiedPs = True
         
-        if instance.game.psPrice == 0: instance.game.psPrice = None
-        if modified: instance.game.availableOnPs = True
-
-    else:
-        dvds = Dvd.objects.filter(game=instance.game, console=constants.CONSOLES['xbox'], state=constants.STATE['available'])
-
-        if instance.game.xboxPrice != 0 or \
-            instance.game.xboxExchange != False or \
-            instance.game.xboxNew != False or \
-            instance.game.xboxUsed != False or \
-            instance.game.availableOnXbox != False or \
-            instance.game.xboxOnlyPrice != True: 
-                modified= True
-
-        instance.game.xboxPrice = 0
-        instance.game.xboxExchange = False
-        instance.game.xboxNew = False
-        instance.game.xboxUsed = False
-        instance.game.availableOnXbox = False
-        instance.game.xboxOnlyPrice = True
-
-        for dvd in dvds: 
-            #Are at least two prices different
+        if dvd.console == constants.CONSOLES['xbox']:
             if dvd.price != None and instance.game.xboxPrice < dvd.price:  
                 if instance.game.xboxPrice != 0:
                     instance.game.xboxOnlyPrice = False
                 instance.game.xboxPrice = dvd.price
-                modified = True
+                modifiedXbox = True
 
             if dvd.exchange == True:
                 instance.game.xboxExchange = True
-                modified = True
+                modifiedXbox = True
 
             if dvd.new == True:
                 instance.game.xboxNew = True
-                modified = True
+                modifiedXbox = True
             else:
                 instance.game.xboxUsed = True
-                modified = True
+                modifiedXbox = True
 
-        if instance.game.xboxPrice == 0: instance.game.xboxPrice = None
-        if modified: instance.game.availableOnXbox = True
+    if instance.game.xboxPrice == 0: instance.game.xboxPrice = None
+    if modifiedXbox: instance.game.availableOnXbox = True
+            
+    if instance.game.psPrice == 0: instance.game.psPrice = None
+    if modifiedPs: instance.game.availableOnPs = True
     
-    if modified :
+    if modifiedPs or modifiedXbox :
         if instance.comment == None: instance.comment = ""
         instance.game.save()

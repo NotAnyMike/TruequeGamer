@@ -1,0 +1,90 @@
+.aboutUs
+	display: flex
+	flex-direction: column
+	background-color: transparent
+
+	.container
+		margin: auto
+		padding: 40px
+		max-width: 1028px
+
+		.title
+			width: 100%
+			padding: 0
+			margin: 0
+			border: 0
+			display: flex
+			flex-direction: row
+			align-items: flex-end
+			height: 15px
+
+			&::before, &::after
+				content: ''
+				display: none
+
+			span
+				display: inline-block
+				width: auto
+				height: 50%
+				flex-grow: 1
+				border-top: 1px $red solid
+
+				&:first-child
+					border-left: 1px $red solid
+
+				&:last-child
+					border-right: 1px $red solid
+
+				&.text
+					flex-grow: 0
+					height: 100%
+					border: 0
+					color: $red
+					padding: 0 22px
+					font-weight: bold
+
+		.content
+			border: 1px solid red
+			border-top: 0px
+			padding: 40px 90px 35px 90px
+
+			span
+				display: inherit
+				text-align: center
+
+			.contactInfoContainer
+				display: flex
+				flex-direction: row
+				padding-top: 30px
+				align-items: center
+				justify-content: space-between
+
+				.mike, .luis
+					display: flex
+					flex-direction: row
+
+					img
+						width: 14px
+						height: 18px
+						object-fit: contain
+						object-position: 50% 50%
+						padding: 0 10px
+
+				.imgMike, .imgLuis
+					img
+						width: 82px
+						height: 80px
+						object-fit: contain
+						object-position: 50% 50%
+
+				.decoratorRight, .decoratorLeft
+					display: inline-block
+					height: 34px
+					width: 12px
+					background-image: url('img/decorator2.png')
+					background-position: center center
+					background-repeat: no-repeat
+					background-size: contain
+
+				.decoratorLeft
+					transform: rotate(180deg)

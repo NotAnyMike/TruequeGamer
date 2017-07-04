@@ -1,6 +1,6 @@
 'use strict';
 
-var React = Require('react'),
+var React = require('react'),
 		AppStore = require('../stores/appStore.js'),
 		Header = require('./header.js'),
 		Footer = require('./footer.js'),
@@ -19,7 +19,7 @@ module.exports = React.createClass({
 			chat = <Chat user={this.state.user}/>;
 		}
 
-		body = (
+		var body = (
 			<section className="genericMainContainer aboutUs">
 				<div className="container">
 					<div className="title">
@@ -33,7 +33,7 @@ module.exports = React.createClass({
 						</span>
 						<div className="contactInfoContainer">
 							<div className="mike">
-								<img src="img/mike_small.png" alt="">
+								<img src="img/mike_small.png" alt=""/>
 								<span>Mike Woodcock: 312-553-8143</span>
 							</div>
 							<div className="decoratorLeft"></div>
@@ -41,7 +41,7 @@ module.exports = React.createClass({
 							<div className="imgLuis"><a href="https://www.facebook.com/luis.k.rodriguez.16" target="_blank"></a></div>
 							<div className="decoratorRight"></div>
 							<div className="luis">
-								<img src="img/luis_small.png" alt="">
+								<img src="img/luis_small.png" alt=""/>
 								<span>Luis Rodriguez: 312-489-2318</span>
 							</div>
 						</div>

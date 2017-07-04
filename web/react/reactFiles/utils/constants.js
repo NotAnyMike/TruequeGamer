@@ -71,6 +71,7 @@ const Constants = {
 			xbox: '/xbox/',
 			both: '/ps-xbox/',
 		},
+		aboutUs: '/aboutus',
 		api: {
 			games: '/api/games/[console]/[used]/[exchange]/[name]/',
 			publishDvd: '/api/game/',

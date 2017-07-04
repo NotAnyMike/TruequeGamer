@@ -2,7 +2,8 @@
 
 var React = require('react'),
 		SocialLink = require('./socialLink.js'),
-		Constants = require('../utils/constants.js');
+		Constants = require('../utils/constants.js'),
+		browserHistory = require('react-router').browserHistory;
 
 module.exports = React.createClass({
 
@@ -14,13 +15,20 @@ module.exports = React.createClass({
 		return ({version: Constants.footer.versions.normal});
 	},
 
+	_onAboutUsClickHandler: function(){
+		browserHistory.push(Constants.routes.aboutUs);
+	},
+
 	render: function(){
 		return (
 			<footer className={this.props.version}>
 				<div className="footerContainer">
 					<section className="moreLinks">
-						<a href="#">Sobre nosotros</a>
-						<a href="#">Contáctanos</a>
+						<a onClick={this._onAboutUsClickHandler}>
+							<div class="smiling"></div>
+							<p>Sobre nosotros</p>
+							<p>(contáctanos)</p>
+						</a>
 					</section>
 					<div className="footerDecorator"></div>
 					<section className="socialLinks">

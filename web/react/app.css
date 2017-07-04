@@ -2225,9 +2225,49 @@ footer .footerContainer .bugLinksContainer {
 }
 footer .footerContainer .moreLinks a,
 footer .footerContainer .bugLinksContainer a {
-  min-width: 170px;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   margin: 15px 0;
+  min-width: 170px;
   text-align: center;
+}
+footer .footerContainer .moreLinks a div,
+footer .footerContainer .bugLinksContainer a div {
+  display: inline-block;
+  height: 21px;
+  width: 21px;
+  background-image: url("img/smiling.png");
+  background-repeat: no-repeat;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  background-size: contain;
+  background-position: center center;
+}
+footer .footerContainer .moreLinks a p,
+footer .footerContainer .bugLinksContainer a p {
+  margin: 10px;
+}
+footer .footerContainer .moreLinks a p:last-child,
+footer .footerContainer .bugLinksContainer a p:last-child {
+  margin: 3px;
+  font-size: 13px;
 }
 footer .footerContainer .moreLinks a:hover,
 footer .footerContainer .bugLinksContainer a:hover {

@@ -913,9 +913,29 @@ footer
 			flex-grow: 1 
 		
 			a
-				min-width: 170px
+				align-items: center
+				cursor: pointer
+				display: flex
+				flex-direction: column
 				margin: 15px 0
+				min-width: 170px
 				text-align: center 
+
+				div
+					display: inline-block
+					height: 21px
+					width: 21px
+					background-image: url("img/smiling.png")
+					background-repeat: no-repeat
+					background-size: contain
+					background-position: center center
+
+				p
+					margin: 10px
+
+					&:last-child
+						margin: 3px
+						font-size: 13px
 			
 				&:hover
 					color: $red

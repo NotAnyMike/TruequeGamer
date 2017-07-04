@@ -5310,7 +5310,8 @@ ul.gameList li.showInfo figure .info {
     filter: none;
   }
 }
-.aboutUs {
+.aboutUs,
+.inform {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -5325,12 +5326,14 @@ ul.gameList li.showInfo figure .info {
   flex-direction: column;
   background-color: transparent;
 }
-.aboutUs .container {
+.aboutUs .container,
+.inform .container {
   margin: auto;
   padding: 40px;
   max-width: 1028px;
 }
-.aboutUs .container .title {
+.aboutUs .container .title,
+.inform .container .title {
   width: 100%;
   padding: 0;
   margin: 0;
@@ -5356,11 +5359,14 @@ ul.gameList li.showInfo figure .info {
   height: 24px;
 }
 .aboutUs .container .title::before,
-.aboutUs .container .title::after {
+.inform .container .title::before,
+.aboutUs .container .title::after,
+.inform .container .title::after {
   content: '';
   display: none;
 }
-.aboutUs .container .title span {
+.aboutUs .container .title span,
+.inform .container .title span {
   display: inline-block;
   width: auto;
   height: 50%;
@@ -5373,13 +5379,16 @@ ul.gameList li.showInfo figure .info {
   flex-grow: 1;
   border-top: 1px #e6334c solid;
 }
-.aboutUs .container .title span:first-child {
+.aboutUs .container .title span:first-child,
+.inform .container .title span:first-child {
   border-left: 1px #e6334c solid;
 }
-.aboutUs .container .title span:last-child {
+.aboutUs .container .title span:last-child,
+.inform .container .title span:last-child {
   border-right: 1px #e6334c solid;
 }
-.aboutUs .container .title span.text {
+.aboutUs .container .title span.text,
+.inform .container .title span.text {
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
   -o-box-flex: 0;
@@ -5393,16 +5402,19 @@ ul.gameList li.showInfo figure .info {
   padding: 0 22px;
   font-weight: bold;
 }
-.aboutUs .container .content {
+.aboutUs .container .content,
+.inform .container .content {
   border: 1px solid #f00;
   border-top: 0px;
   padding: 40px 90px 35px 90px;
 }
-.aboutUs .container .content span {
+.aboutUs .container .content span,
+.inform .container .content span {
   display: inherit;
   text-align: center;
 }
-.aboutUs .container .content .contactInfoContainer {
+.aboutUs .container .content .contactInfoContainer,
+.inform .container .content .contactInfoContainer {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -5430,7 +5442,9 @@ ul.gameList li.showInfo figure .info {
   justify-content: space-between;
 }
 .aboutUs .container .content .contactInfoContainer .mike,
-.aboutUs .container .content .contactInfoContainer .luis {
+.inform .container .content .contactInfoContainer .mike,
+.aboutUs .container .content .contactInfoContainer .luis,
+.inform .container .content .contactInfoContainer .luis {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -5445,7 +5459,9 @@ ul.gameList li.showInfo figure .info {
   flex-direction: row;
 }
 .aboutUs .container .content .contactInfoContainer .mike img,
-.aboutUs .container .content .contactInfoContainer .luis img {
+.inform .container .content .contactInfoContainer .mike img,
+.aboutUs .container .content .contactInfoContainer .luis img,
+.inform .container .content .contactInfoContainer .luis img {
   width: 14px;
   height: 18px;
   object-fit: contain;
@@ -5453,7 +5469,9 @@ ul.gameList li.showInfo figure .info {
   padding: 0 10px;
 }
 .aboutUs .container .content .contactInfoContainer .imgMike a,
-.aboutUs .container .content .contactInfoContainer .imgLuis a {
+.inform .container .content .contactInfoContainer .imgMike a,
+.aboutUs .container .content .contactInfoContainer .imgLuis a,
+.inform .container .content .contactInfoContainer .imgLuis a {
   border: 0;
   margin: 0;
   display: inline-block;
@@ -5467,20 +5485,26 @@ ul.gameList li.showInfo figure .info {
   background-size: contain;
   background-position: center center;
 }
-.aboutUs .container .content .contactInfoContainer .imgMike a {
+.aboutUs .container .content .contactInfoContainer .imgMike a,
+.inform .container .content .contactInfoContainer .imgMike a {
   background-image: url("img/mike_big.png");
 }
-.aboutUs .container .content .contactInfoContainer .imgMike:hover a {
+.aboutUs .container .content .contactInfoContainer .imgMike:hover a,
+.inform .container .content .contactInfoContainer .imgMike:hover a {
   background-image: url("img/mike_big-hover.png");
 }
-.aboutUs .container .content .contactInfoContainer .imgLuis a {
+.aboutUs .container .content .contactInfoContainer .imgLuis a,
+.inform .container .content .contactInfoContainer .imgLuis a {
   background-image: url("img/luis_big.png");
 }
-.aboutUs .container .content .contactInfoContainer .imgLuis:hover a {
+.aboutUs .container .content .contactInfoContainer .imgLuis:hover a,
+.inform .container .content .contactInfoContainer .imgLuis:hover a {
   background-image: url("img/luis_big-hover.png");
 }
 .aboutUs .container .content .contactInfoContainer .decoratorRight,
-.aboutUs .container .content .contactInfoContainer .decoratorLeft {
+.inform .container .content .contactInfoContainer .decoratorRight,
+.aboutUs .container .content .contactInfoContainer .decoratorLeft,
+.inform .container .content .contactInfoContainer .decoratorLeft {
   display: inline-block;
   height: 34px;
   width: 12px;
@@ -5491,10 +5515,37 @@ ul.gameList li.showInfo figure .info {
   -moz-background-size: contain;
   background-size: contain;
 }
-.aboutUs .container .content .contactInfoContainer .decoratorLeft {
+.aboutUs .container .content .contactInfoContainer .decoratorLeft,
+.inform .container .content .contactInfoContainer .decoratorLeft {
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
+}
+.inform .container .content {
+  padding: 0px;
+}
+.inform .container .content span {
+  padding: 20px;
+}
+.inform .container .content textarea {
+  width: 100%;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  border: 0px;
+  background-color: #98ceb7;
+  padding: 20px;
+  height: 130px;
+}
+.inform .container .content textarea::placeholder {
+  color: #f00;
+}
+.inform .container .content div {
+  width: 100%;
+  height: 40px;
+  background-color: #98ceb7;
+}
+.inform .container .content div button {
+  font-weight: bold;
 }

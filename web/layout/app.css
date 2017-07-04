@@ -5313,7 +5313,7 @@ ul.gameList li.showInfo figure .info {
   -ms-flex-align: end;
   -webkit-align-items: flex-end;
   align-items: flex-end;
-  height: 15px;
+  height: 24px;
 }
 .aboutUs .container .title::before,
 .aboutUs .container .title::after {
@@ -5412,12 +5412,32 @@ ul.gameList li.showInfo figure .info {
   object-position: 50% 50%;
   padding: 0 10px;
 }
-.aboutUs .container .content .contactInfoContainer .imgMike img,
-.aboutUs .container .content .contactInfoContainer .imgLuis img {
+.aboutUs .container .content .contactInfoContainer .imgMike a,
+.aboutUs .container .content .contactInfoContainer .imgLuis a {
+  border: 0;
+  margin: 0;
+  display: inline-block;
   width: 82px;
   height: 80px;
   object-fit: contain;
   object-position: 50% 50%;
+  background-repeat: no-repeat;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  background-size: contain;
+  background-position: center center;
+}
+.aboutUs .container .content .contactInfoContainer .imgMike a {
+  background-image: url("img/mike_big.png");
+}
+.aboutUs .container .content .contactInfoContainer .imgMike:hover a {
+  background-image: url("img/mike_big-hover.png");
+}
+.aboutUs .container .content .contactInfoContainer .imgLuis a {
+  background-image: url("img/luis_big.png");
+}
+.aboutUs .container .content .contactInfoContainer .imgLuis:hover a {
+  background-image: url("img/luis_big-hover.png");
 }
 .aboutUs .container .content .contactInfoContainer .decoratorRight,
 .aboutUs .container .content .contactInfoContainer .decoratorLeft {

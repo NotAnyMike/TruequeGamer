@@ -13,6 +13,7 @@ var Index = require('./components/index.js'),
 		SearchResults = require('./components/searchResults.js'),
 		Details = require('./components/details.js'),
 		Profile = require('./components/profile.js'),
+		AboutUs = require('./components/aboutus.js'),
 		Testing = require('./components/searchResults.js'),
 		Constants = require('./utils/constants.js');
 
@@ -28,6 +29,7 @@ ReactDOM.render(
 			<Route path="/(:gameName)/ps" console={Constants.consoles.ps} component={Details} />
 			<Route path="/(:gameName)/xbox" console={Constants.consoles.xbox} component={Details} />
 			<Route path="/profile/(:username)" component={Profile} />
+			<Route path="/aboutUs" component={AboutUs} />
 			<Route path="/test/" component={Index}/>
 			<Route path="/test/search/ps-xbox/(:search)" console={Constants.consoles.both} component={SearchResults} />
 			<Route path="/test/search/ps/(:search)" console={Constants.consoles.ps} component={SearchResults} />

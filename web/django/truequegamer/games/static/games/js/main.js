@@ -26319,7 +26319,7 @@ module.exports = React.createClass({
 		if (this.state.informBug.comment !== "") {
 			var url = Constants.routes.api.addBug;
 			var data = {
-				user_id: this.state.user.logged ? null : this.state.user.pk,
+				user_id: this.state.user.logged ? this.state.user.id : null,
 				comment: this.state.informBug.comment
 			};
 			Functions.fetchAdvanced(Functions.getCustomHeader('put', url, data, true)).then(function (resp) {
@@ -26327,7 +26327,7 @@ module.exports = React.createClass({
 				if (resp.ok && resp.status === 201) {
 					this.setState({
 						informBug: {
-							coment: this.state.informBug.comment,
+							comment: this.state.informBug.comment,
 							send: true
 						}
 					});

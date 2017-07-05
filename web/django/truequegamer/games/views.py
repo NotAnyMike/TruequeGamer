@@ -35,11 +35,13 @@ def AddBug(request):
         data = request.data
         newData = dict((key.encode('utf-8'), value) for key, value in data.items())
         data = newData
+        print data
+
         if('comment' in data.keys() and data['comment'] != "" and data['comment'] != None):
 
             user = None
             if('user_id' in data and data['user_id'] != None): 
-                user = User.objects.get(pk=data['used_id'])
+                user = User.objects.get(pk=data['user_id'])
 
             bug = Bug(user=user, comment=data['comment'])
             bug.save()

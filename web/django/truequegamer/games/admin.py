@@ -20,4 +20,7 @@ class BugAdmin(admin.ModelAdmin):
     list_display = ('pk', 'get_username', 'comment', 'date')
 
     def get_username(self, obj):
-        return obj.user.username
+        if obj.user != None:
+            return obj.user.username
+        else:
+            return ""

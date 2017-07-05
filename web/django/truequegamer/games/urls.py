@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^api/game/$', views.DvdApi, name='add_dvd'),
     url(r'^api/game/suggestions/(?P<console>.+)/(?P<string>.+)/$', views.GetListOfGames, name='get_list_of_games'),
     url(r'^api/game/delete/(?P<id_of_game>\d+)/$', views.DeleteDvd, name='change-state-of-dvd'),
+    url(r'api/bug/', views.AddBug, name="add_bug"),
     url(r'^api/', include(router.urls)),
     url(r'^$', views.index, name='index'),
     url(r'^img/', views.img, name='img'),

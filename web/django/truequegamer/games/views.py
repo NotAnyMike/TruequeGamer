@@ -13,7 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import urllib2,json,re
 
 from games.serializers import UserSerializer, SuggestionSerializer, GameSerializer, CurrentUserSerializer, DvdSerializer, GameDetailsSerializer, UserProfileSerializer, SingleDvdSerializer, GameSerializerWithOwner
-from games.models import Game, Dvd
+from games.models import Game, Dvd, Bug
 import constants, utils
 
 def index(req):
@@ -24,9 +24,29 @@ def index(req):
 
 def img(req):
     return redirect('/static/games' + req.path)
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+@api_view(['PUT'])
+def AddBug(request):
+    if request.method == 'PUT':
+        data = request.data
+        newData = dict((key.encode('utf-8'), value) for key, value in data.items())
+        data = newData
+        if('comment' in data.keys() and data['comment'] != "" and data['comment'] != None):
+
+            user = None
+            if('user_id' in data and data['user_id'] != None): 
+                user = User.objects.get(pk=data['used_id'])
+
+            bug = Bug(user=user, comment=data['comment'])
+            bug.save()
+
+            return Response(status=status.HTTP_201_CREATED)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def CurrentUser(request):

@@ -2,6 +2,8 @@
 
 var React = require('react'),
 		AppStore = require('../stores/appStore.js'),
+		Constants = require('../utils/constants.js'),
+		Functions = require('../utils/functions.js'),
 		Header = require('./header.js'),
 		Footer = require('./footer.js'),
 		Chat = require('./chat.js');
@@ -16,13 +18,23 @@ module.exports = React.createClass({
 	_onSendBugClickHandler: function(){
 		//send change
 		if(this.state.informBug.comment !== ""){
-			this.setState({
-				informBug: {
-					coment: this.state.informBug.comment,
-					send: true,	
+			var url = Constants.routes.api.addBug;
+			var data = {
+				user_id: this.state.user.logged ? null : this.state.user.pk,
+				comment: this.state.informBug.comment,
+			}
+			Functions.fetchAdvanced(Functions.getCustomHeader('put', url, data, true)).then(function(resp){
+
+				if (resp.ok && resp.status === 201){
+					this.setState({
+						informBug: {
+							coment: this.state.informBug.comment,
+							send: true,	
+						}
+					});
 				}
-			});
-			console.log("done");
+			
+			}.bind(this));
 		}
 	},
 

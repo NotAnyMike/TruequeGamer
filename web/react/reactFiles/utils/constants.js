@@ -78,6 +78,7 @@ const Constants = {
 			publishDvd: '/api/game/',
 			suggestions_igdb: '/api/game/suggestions/[console]/[string]/',
 			delete_dvd: '/api/game/delete/[id_of_game]/',
+			addBug: 'api/bug/',
 		},
 	}
 };

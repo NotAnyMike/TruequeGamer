@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Game, Dvd
+from .models import Game, Dvd, Bug
 
 # Register your models here.
 
@@ -14,3 +14,10 @@ class GameAdmin(admin.ModelAdmin):
 
     def get_game_name(self, obj):
         return obj.game.name
+
+@admin.register(Bug)
+class BugAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'get_username', 'comment', 'date')
+
+    def get_username(self, obj):
+        return obj.user.username

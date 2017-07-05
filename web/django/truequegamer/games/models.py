@@ -7,6 +7,11 @@ from django.dispatch import receiver
 
 import constants
 
+class Bug(models.Model):
+    user = models.ForeignKey(User, null=True, blank=False, default=None)
+    comment = models.CharField(max_length=1000, null=False, blank=False, default=None)
+    date = models.DateTimeField(auto_now=False, auto_now_add=True)
+
 class Game(models.Model):
     name = models.CharField(max_length=300, null=False, blank=False, unique=True)
     cover = models.URLField(max_length=300, null=False, blank=False, unique=True) 

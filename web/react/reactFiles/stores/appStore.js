@@ -50,6 +50,10 @@ var _store =  {
 		},
 		list: [],
 	},
+	informBug: {
+		comment: '',
+		send: false,
+	},
 };
 
 if(self.fetch){

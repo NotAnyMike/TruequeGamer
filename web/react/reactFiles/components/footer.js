@@ -19,6 +19,10 @@ module.exports = React.createClass({
 		browserHistory.push(Constants.routes.aboutUs);
 	},
 
+	_onInformBugClickHandler: function(){
+		browserHistory.push(Constants.routes.informBug);
+	},
+
 	render: function(){
 		return (
 			<footer className={this.props.version}>
@@ -40,10 +44,10 @@ module.exports = React.createClass({
 						<span>www.truequegamer.com. ©2016 Derechos reservados. Bogotá D.C., Colombia.</span>
 					</section>
 					<div className="footerDecorator x-reflexion"></div>
-					<section className="bugLinksContainer">
+					<section className="bugLinksContainer" onClick={this._onInformBugClickHandler}>
 						<figure><img src="/img/bug.png" alt=""/></figure>
 						<span>Chan, chan, chan, chaaan</span>
-						<a href="">Informar bug!</a>
+						<a>Informar bug!</a>
 					</section>
 				</div>
 				<div className={"decoration" + (this.props.version === Constants.footer.versions.whiteBackground || this.props.version === Constants.footer.versions.normal ? " normal" : " white")}></div>

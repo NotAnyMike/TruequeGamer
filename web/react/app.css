@@ -5523,11 +5523,59 @@ ul.gameList li.showInfo figure .info {
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+.inform .container .title .text.sent {
+  display: none;
+}
 .inform .container .content {
   padding: 0px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 .inform .container .content span {
   padding: 20px;
+}
+.inform .container .content span.sent {
+  display: none;
+  font-size: 18px;
+  width: 80%;
+  height: 40px;
+  padding-bottom: 80px;
+  padding-top: 40px;
+  position: relative;
+}
+.inform .container .content span.sent:after {
+  content: '\e907';
+  font-family: 'TruequeGamer';
+  font-size: 40px;
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-left: -20px;
 }
 .inform .container .content div {
   width: 100%;
@@ -5568,4 +5616,22 @@ ul.gameList li.showInfo figure .info {
 }
 .inform .container .content div button:hover {
   color: #e6334c;
+}
+.inform.sent .container .title .text {
+  display: none;
+}
+.inform.sent .container .title .text.sent {
+  display: inline-block;
+}
+.inform.sent .container .content {
+  height: 200px;
+}
+.inform.sent .container .content span {
+  display: none;
+}
+.inform.sent .container .content span.sent {
+  display: inline-block;
+}
+.inform.sent .container .content div {
+  display: none;
 }

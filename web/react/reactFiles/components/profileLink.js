@@ -16,14 +16,21 @@ module.exports = React.createClass({
 		browserHistory.push(ownProfileLink)
 	},
 	
+	_logout: function(){
+		window.location.assign(Constants.routes.logout);
+	},
+	
 	render: function(){
 		var loginUrl = "/login/facebook/?next=".concat(window.location.pathname)
 		var toReturn = <a className={"login arrow-decorator dot-decorator " + this.props.version} href={loginUrl}>Ingresa con Facebook</a>;
 		if(this.props.user.logged){
 			toReturn = (
-					<a onClick={this._goToMyProfile} className={"profileContainer " + this.props.version}>
-						<span>{this.props.user.first_name + " " + this.props.user.last_name}</span>
-						<figure>
+					<a className={"profileContainer " + this.props.version}>
+						<span>
+							<span onClick={this._goToMyProfile}>{this.props.user.first_name + " " + this.props.user.last_name}</span>
+							<span onClick={this._logout} className="dot-decorator">Cerrar sesión</span>
+						</span>
+						<figure onClick={this._goToMyProfile}>
 							<img src={this.props.user.picture} alt=""/>
 						</figure>
 					</a>

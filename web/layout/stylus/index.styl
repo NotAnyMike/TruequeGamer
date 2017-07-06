@@ -111,6 +111,7 @@ figure
 		height: 43px
 		border-radius: 23px
 		overflow: hidden
+		cursor: pointer
 		
 		img
 			object-fit: cover
@@ -118,10 +119,36 @@ figure
 	span
 		color: #F29224
 		font-size: 20px
-		border-bottom: 1px solid $dark_green
-		margin: 20px
 		overflow: hidden
 		white-space: nowrap
+		display: flex
+		flex-direction: column
+		border: 0
+		margin: 0
+		text-align: center
+		align-items: center
+
+		span
+			&:first-child
+				margin: 20px
+				margin-bottom: 10px
+				border-bottom: 1px
+				border-bottom: 1px solid $dark_green
+				cursor: pointer
+
+			&:nth-child(2)
+				font-size: 15px
+				padding: 0
+				margin: 0
+				border: 0
+				position: relative
+				padding-left: 10px
+				cursor: pointer
+
+				&:before
+					position: absolute
+					left: 0px
+					padding-bottom: 2px
 
 	&.negative
 		span

@@ -28988,6 +28988,10 @@ module.exports = React.createClass({
 		browserHistory.push(ownProfileLink);
 	},
 
+	_logout: function () {
+		window.location.assign(Constants.routes.logout);
+	},
+
 	render: function () {
 		var loginUrl = "/login/facebook/?next=".concat(window.location.pathname);
 		var toReturn = React.createElement(
@@ -28998,15 +29002,24 @@ module.exports = React.createClass({
 		if (this.props.user.logged) {
 			toReturn = React.createElement(
 				'a',
-				{ onClick: this._goToMyProfile, className: "profileContainer " + this.props.version },
+				{ className: "profileContainer " + this.props.version },
 				React.createElement(
 					'span',
 					null,
-					this.props.user.first_name + " " + this.props.user.last_name
+					React.createElement(
+						'span',
+						{ onClick: this._goToMyProfile },
+						this.props.user.first_name + " " + this.props.user.last_name
+					),
+					React.createElement(
+						'span',
+						{ onClick: this._logout, className: 'dot-decorator' },
+						'Cerrar sesión'
+					)
 				),
 				React.createElement(
 					'figure',
-					null,
+					{ onClick: this._goToMyProfile },
 					React.createElement('img', { src: this.props.user.picture, alt: '' })
 				)
 			);
@@ -30500,6 +30513,7 @@ const Constants = {
 		aboutUs: '/aboutus',
 		informBug: '/informBug',
 		facebook: '/login/facebook',
+		logout: '/logout',
 		api: {
 			games: '/api/games/[console]/[used]/[exchange]/[name]/',
 			publishDvd: '/api/game/',

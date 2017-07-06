@@ -8,7 +8,8 @@ var React = require('react'),
 module.exports = React.createClass({
 
 	propTypes: {
-		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
+		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative]),
+		onIsotypeClickFn: React.PropTypes.func.isRequired,
 	},
 
 	getDefaultProps: function(){
@@ -18,7 +19,7 @@ module.exports = React.createClass({
 	render: function(){
 		return (
 				<div className="isotypeContainer">
-					<Isotype version={this.props.version}/>
+					<Isotype version={this.props.version} onClickFn={this.props.onIsotypeClickFn}/>
 					<Slogan version={this.props.version}/>
 				</div>
 			);

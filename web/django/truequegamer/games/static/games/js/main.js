@@ -28397,6 +28397,7 @@ var React = require('react'),
     IsotypeContainer = require('./isotypeContainer.js'),
     ProfileLink = require('./profileLink.js'),
     SearchButtonHeader = require('./searchButtonHeader.js'),
+    browserHistory = require('react-router').browserHistory,
     Constants = require('../utils/constants');
 
 module.exports = React.createClass({
@@ -28411,19 +28412,23 @@ module.exports = React.createClass({
 		return { version: Constants.header.versions.normal };
 	},
 
+	goToIndex: function () {
+		browserHistory.push(Constants.routes.index);
+	},
+
 	render: function () {
 		return React.createElement(
 			'header',
 			{ className: this.props.version },
 			React.createElement(SearchButtonHeader, null),
-			React.createElement(IsotypeContainer, { version: this.props.version }),
+			React.createElement(IsotypeContainer, { version: this.props.version, onIsotypeClickFn: this.goToIndex }),
 			React.createElement(ProfileLink, { user: this.props.user, version: this.props.version })
 		);
 	}
 
 });
 
-},{"../utils/constants":285,"./isotypeContainer.js":263,"./profileLink.js":267,"./searchButtonHeader.js":269,"react":239}],260:[function(require,module,exports){
+},{"../utils/constants":285,"./isotypeContainer.js":263,"./profileLink.js":267,"./searchButtonHeader.js":269,"react":239,"react-router":37}],260:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -28594,17 +28599,22 @@ module.exports = React.createClass({
 
 
 	propTypes: {
-		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
+		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative]),
+		onClickFn: React.PropTypes.func.isRequired
 	},
 
 	getDefaultProps: function () {
 		return { version: Constants.header.versions.normal };
 	},
 
+	_onClickHandler: function () {
+		this.props.onClickFn();
+	},
+
 	render: function () {
 		return React.createElement(
 			'figure',
-			{ className: this.props.version },
+			{ className: this.props.version, onClick: this._onClickHandler },
 			React.createElement('img', { className: 'isotype normal', src: '/img/isotype.png' }),
 			React.createElement('img', { className: 'isotype negative', src: '/img/isotype_positive.png' })
 		);
@@ -28625,7 +28635,8 @@ module.exports = React.createClass({
 
 
 	propTypes: {
-		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
+		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative]),
+		onIsotypeClickFn: React.PropTypes.func.isRequired
 	},
 
 	getDefaultProps: function () {
@@ -28636,7 +28647,7 @@ module.exports = React.createClass({
 		return React.createElement(
 			'div',
 			{ className: 'isotypeContainer' },
-			React.createElement(Isotype, { version: this.props.version }),
+			React.createElement(Isotype, { version: this.props.version, onClickFn: this.props.onIsotypeClickFn }),
 			React.createElement(Slogan, { version: this.props.version })
 		);
 	}

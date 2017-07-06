@@ -698,6 +698,9 @@ figure {
   font-size: 17px;
   margin: 0 0 15px 0;
 }
+figure .isotype {
+  cursor: pointer;
+}
 figure .isotype.normal {
   display: inline-block;
 }

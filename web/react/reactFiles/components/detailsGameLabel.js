@@ -15,6 +15,11 @@ const DetailsGameLabel = React.createClass({
 		availableOnXbox: React.PropTypes.bool,
 		numberOfGames: React.PropTypes.number,
 		city: React.PropTypes.string,
+		openChatFn: React.PropTypes.func,
+	},
+	
+	_onClickOpenChatHandler: function(){
+		this.props.openChatFn();	
 	},
 
 	render: function(){
@@ -50,7 +55,7 @@ const DetailsGameLabel = React.createClass({
 					<span>{nameVar}</span>
 					<span>{this.props.city}</span>
 					<span>{this.props.numberOfGames + " videojuegos"}</span>
-					<button className="openChatProfileButton">abrir chat</button>
+					<button onClick={this._onClickOpenChatHandler} className="openChatProfileButton">abrir chat</button>
 				</div>
 			);
 		}else{

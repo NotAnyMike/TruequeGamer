@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'TruequeGamer';
-  src:  url('fonts/TruequeGamer.eot?567eci');
-  src:  url('fonts/TruequeGamer.eot?567eci#iefix') format('embedded-opentype'),
-    url('fonts/TruequeGamer.ttf?567eci') format('truetype'),
-    url('fonts/TruequeGamer.woff?567eci') format('woff'),
-    url('fonts/TruequeGamer.svg?567eci#TruequeGamer') format('svg');
+  src:  url('fonts/TruequeGamer.eot?wv3db8');
+  src:  url('fonts/TruequeGamer.eot?wv3db8#iefix') format('embedded-opentype'),
+    url('fonts/TruequeGamer.ttf?wv3db8') format('truetype'),
+    url('fonts/TruequeGamer.woff?wv3db8') format('woff'),
+    url('fonts/TruequeGamer.svg?wv3db8#TruequeGamer') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-x:before {
+  content: "\e90c";
+  color: #98cdb7;
+}
 .icon-extraDecorator:before {
   content: "\e90b";
 }
@@ -35,24 +39,31 @@
 }
 .icon-searchIcon:before {
   content: "\e908";
+  color: #04615c;
 }
 .icon-face:before {
   content: "\e907";
+  color: #079992;
 }
 .icon-checkbox:before {
   content: "\e902";
+  color: #fff;
 }
 .icon-dot:before {
   content: "\e900";
+  color: #f29325;
 }
 .icon-arrow:before {
   content: "\e901";
+  color: #f29325;
 }
 .icon-ps:before {
   content: "\e905";
+  color: #fff;
 }
 .icon-xbox:before {
   content: "\e906";
+  color: #fff;
 }
 .icon-youtube-play:before {
   content: "\e904";
@@ -69,4 +80,3 @@
 .icon-twitter:before {
   content: "\ea96";
 }
-

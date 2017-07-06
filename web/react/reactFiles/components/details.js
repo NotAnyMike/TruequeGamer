@@ -6,6 +6,7 @@ const React = require('react'),
 	Header = require('./header.js'),
 	Footer = require('./footer.js'),
 	DetailsMainContainer = require('./detailsMainContainer.js'),
+	Warning = require('./warning.js'),
 	browserHistory = require('react-router').browserHistory;
 
 const Details = React.createClass({
@@ -20,6 +21,7 @@ const Details = React.createClass({
 	getInitialState: function(){
 		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
 		var store = AppStore.getStore();
+		store['showWarning'] = null;
 		return store;
 	},
 
@@ -41,6 +43,22 @@ const Details = React.createClass({
 	loadProfilePage: function(username){
 		var route = "/profile/" + username;
 		browserHistory.push(route);
+	},
+	
+	onClickActionButtonWarning: function(){
+		window.location.assign(Constants.routes.facebook);
+	},
+	
+	onCloseWarning: function(){
+		this.setState({showWarning: false});
+	},
+
+	openChatClick: function(username){
+		if(this.state.user.logged === false){
+			this.setState({showWarning: true});
+		}else{
+			//TODO open chat
+		}
 	},
 
 	render: function(){
@@ -68,7 +86,7 @@ const Details = React.createClass({
 		if(typeof this.state.user.id !== 'undefined' && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			isOwnerOfProfile = true;
 		}
-
+		
 		return (
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user} />
@@ -79,7 +97,9 @@ const Details = React.createClass({
 					console={this.props.route.console} 
 					list={this.state.gameDetails.list}
 					goToProfileFn={this.goToProfile}
+					openChatFn={this.openChatClick}
 				/>
+				<Warning display={this.state.showWarning} actionFn={this.onClickActionButtonWarning} closeFn={this.onCloseWarning} />
 				<Footer version={footerVersion} />
 				{chat}
 			</div>

@@ -7,8 +7,7 @@
 		.profileDetails
 			.profileDetailsContainer
 				span
-					display: inline-block
-
+					display: inline-block 
 				span
 					&:nth-child(3), &:nth-child(4)
 						font-size: 20px
@@ -486,6 +485,102 @@ ul
 							opacity: 1
 							display: inline-block
 							animation: commentContainerOut $time ease forwards
+
+.warning
+	position: fixed
+	top: 50%
+	left: 50%
+	width: 690px
+	height: 230px
+	margin-top: -115px
+	margin-left: -345px
+	opacity: .9
+	background-color: $dark_green
+	display: flex
+	flex-direction: column
+	justify-content: center
+	align-items: center
+	display: none
+	z-index: 4
+
+	div
+		color: white
+		text-transform: uppercase
+		font-size: 25px
+		text-align: center
+		font-weight: bold
+
+	button
+		margin: 0
+
+		&.login
+			width: 355px
+			height: 60px
+			border: 1px solid white
+			font-size: 28px
+			background-color: transparent
+			color: white
+			margin: 20px
+			margin-bottom: 10px
+			transition: font-weight $time
+
+			&:before, &:after
+				color: white
+
+			&:hover
+				font-weight: bold
+
+		&.close
+			position: absolute
+			top: 0
+			right: 0
+			background-color: transparent
+			border: 0
+			padding: 10px
+
+			&:before
+				content: '\e90c'
+				color: $green
+				font-family: 'TruequeGamer'
+				transition: color $time
+
+			&:hover
+				&:before
+					color: white
+
+	&.in
+		opacity: 0
+		display: flex
+		animation: warningIn $time ease forwards
+
+	&.out
+		opacity: 1
+		display: flex
+		animation: warningOut $time ease forwards
+
+@keyframes warningOut{
+	0%{
+		opacity: 0.9
+		visiblity: visible
+	}
+	100%{
+		opacity: 0
+		visibility: hidden
+	}
+}
+
+@keyframes warningIn{
+	0%{
+		display: inline-block
+		visiblity: visible
+		opacity: 0
+	}
+	100%{
+		display: inline-block
+		visiblity: visible
+		opacity: 0.9
+	}
+}
 
 @keyframes commentContainerOut{
 	0%{

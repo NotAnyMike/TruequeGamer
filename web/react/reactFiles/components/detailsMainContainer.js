@@ -21,6 +21,7 @@ const DetailsMainContainer = React.createClass({
 		onDeleteButtonClickFn: React.PropTypes.func,
 		onExchangedButtonClickFn: React.PropTypes.func,
 		onSoldButtonClickFn: React.PropTypes.func,
+		openChatFn: React.PropTypes.func,
 	},
 
 	render: function(){
@@ -35,6 +36,7 @@ const DetailsMainContainer = React.createClass({
 					cover={this.props.picture}
 					city={this.props.city}
 					numberOfGames={this.props.numberOfGames}
+					openChatFn={this.props.openChatFn}
 				/>
 			);
 		}else{
@@ -83,6 +85,7 @@ const DetailsMainContainer = React.createClass({
 						onDeleteButtonClickFn={this.props.onDeleteButtonClickFn}
 						onExchangedButtonClickFn={this.props.onExchangedButtonClickFn}
 						onSoldButtonClickFn={this.props.onSoldButtonClickFn}
+						openChatFn={this.props.openChatFn}
 					/>
 				</div>
 			</section>

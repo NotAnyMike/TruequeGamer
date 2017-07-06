@@ -52,7 +52,7 @@ var _store =  {
 	},
 	informBug: {
 		comment: '',
-		send: false,
+		send: null,
 	},
 };
 

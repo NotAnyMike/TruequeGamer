@@ -5,6 +5,7 @@ const React = require('react'),
 			Header = require('./header.js'),
 			Footer = require('./footer.js'),
 			DetailsMainContainer = require('./detailsMainContainer.js'),
+			Warning = require('./warning.js'),
 			Functions = require('../utils/functions.js');
 
 const Profile = React.createClass({
@@ -16,6 +17,7 @@ const Profile = React.createClass({
 	getInitialState: function(){
 		AppStore.getProfile(this.props.params.username);
 		var store = AppStore.getStore();
+		store['showWarning'] = null;
 		return store;
 	},
 
@@ -55,7 +57,6 @@ const Profile = React.createClass({
 
 			element.suggestions = json;
 			this.setState(this.store);
-			console.log(this.state.profile.list)
 		}
 		
 	},
@@ -126,6 +127,7 @@ const Profile = React.createClass({
 			}
 		}
 	},
+
 	changeHandlerForSearchInput: function(id,isPs,string){
 		//id del gameItem que está siendo cambiado
 		//console
@@ -134,6 +136,22 @@ const Profile = React.createClass({
 		
 		clearTimeout(this.typingTimer);
 		this.typingTimer = setTimeout(function(){this.doneTypingFn(id,isPs,string)}.bind(this), this.doneTypingInterval);
+	},
+
+	closeWarning: function(){
+		this.setState({showWarning: false})	
+	},
+
+	actionButtonWarning: function(){
+		window.location.assign(Constants.routes.facebook);
+	},
+
+	openChat: function(){
+		if(this.state.user.logged === false ){
+			this.setState({showWarning: true})	
+		}else{
+			//TODO: open chat
+		}
 	},
 
 	render: function(){
@@ -171,9 +189,11 @@ const Profile = React.createClass({
 					onDeleteButtonClickFn={this.onDeleteButtonClick}
 					onExchangedButtonClickFn={this.onExchangedButtonClick}
 					onSoldButtonClickFn={this.onSoldButtonClick}
+					openChatFn={this.openChat}
 				/>
 				<Footer version={footerVersion} />
 				{chat}
+				<Warning display={this.state.showWarning} actionFn={this.actionButtonWarning} closeFn={this.closeWarning} />
 			</div>
 		)
 	},

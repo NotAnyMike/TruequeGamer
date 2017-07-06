@@ -32,6 +32,7 @@ const GameItem = React.createClass({
 		psNew: React.PropTypes.bool, //in order to know if all of the grouped games are new
 		psXbox: React.PropTypes.bool,
 		username: React.PropTypes.string,
+		openChatFn: React.PropTypes.func,
 		
 		/**** this extra values is to show the gameItem in the profile page ****/
 		//Console
@@ -338,6 +339,11 @@ const GameItem = React.createClass({
 	_clickSoldButtonHandler: function(){
 		this.props.onSoldButtonClickFn(this.props.id);
 	},
+
+	_openChatClickHandler: function(e){
+		e.stopPropagation();
+		this.props.openChatFn(this.props.username);
+	},
 	
 	render: function(){
 
@@ -358,6 +364,7 @@ const GameItem = React.createClass({
 		var onDeleteButtonClick = null;
 		var onExchangedButtonClick = null;
 		var onSoldButtonClick = null;
+		var openChatFn = null;
 		var changeNameHandler = null;
 		var changePriceHandler = null;
 		var changeUsedHandler = null;
@@ -520,6 +527,7 @@ const GameItem = React.createClass({
 			}
 
 			onClickComponent = this._goToPage;
+			openChatFn = this._openChatClickHandler;
 			cover = this.props.cover;
 			name = this.props.name;
 			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver  : null;
@@ -581,7 +589,7 @@ const GameItem = React.createClass({
 						</span>
 					</div>
 					<div className="alsoAvailableOn"><span></span></div>
-					<button className="chatButton">
+					<button className="chatButton" onClick={openChatFn}>
 						<span></span>
 					</button>
 				</div>

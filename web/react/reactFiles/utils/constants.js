@@ -73,6 +73,7 @@ const Constants = {
 		},
 		aboutUs: '/aboutus',
 		informBug: '/informBug',
+		facebook: '/login/facebook',
 		api: {
 			games: '/api/games/[console]/[used]/[exchange]/[name]/',
 			publishDvd: '/api/game/',

@@ -380,6 +380,7 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
                         gameFromDvds.availableOnXbox = False
                         gameFromDvds.availableOnPs = False
                         gameFromDvds.owner = dvd.owner
+                        gameFromDvds.pk = owner
 
                         #Adding the game created to a list
                         gamesList.append(gameFromDvds)

@@ -33,6 +33,7 @@ const GameItem = React.createClass({
 		psXbox: React.PropTypes.bool,
 		username: React.PropTypes.string,
 		openChatFn: React.PropTypes.func,
+		isOwnerOfDvd: React.PropTypes.func,
 		
 		/**** this extra values is to show the gameItem in the profile page ****/
 		//Console
@@ -509,6 +510,7 @@ const GameItem = React.createClass({
 		}else{
 
 			className = consoleVar +
+					(this.props.isOwnerOfDvd ? " own" : "") +
 					(this.props.exclusive ? " exclusive" : "") +
 					(this.props.notOnly ? " notOnly" : " only");
 			if(this.props.both || this.props.console === Constants.consoles.xbox){

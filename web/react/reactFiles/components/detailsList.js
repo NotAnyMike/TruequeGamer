@@ -7,6 +7,7 @@ const DetailsList = React.createClass({
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
 		isOwnerOfProfile: React.PropTypes.bool,
+		idUserLogged: React.PropTypes.number, //in order to know if the dvd belongs to the user in details
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func,
@@ -22,7 +23,7 @@ const DetailsList = React.createClass({
 		var consoleVar = this.props.console;
 		var self = this;
 
-		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "") + (this.props.isProfile ? "" : " details");
+		var className = "gameList " + this.props.console + (this.props.isProfile && this.props.isOwnerOfProfile ? " own" : "") + (this.props.isProfile ? "" : " details");
 		
 		return (
 			<ul className={className}>
@@ -103,6 +104,7 @@ const DetailsList = React.createClass({
 						gameItem = (
 							<GameItem 
 								isProfile={self.props.isProfile}
+								isOwnerOfDvd={self.props.idUserLogged === element.pk}
 								console={consoleProp}
 								psNoExchange={!element.psExchange} 
 								xboxNoExchange={!element.xboxExchange} 

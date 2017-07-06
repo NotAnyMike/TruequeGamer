@@ -11,10 +11,9 @@ const React = require('react'),
 
 const Details = React.createClass({
 
-	propTypes: { },
+	propTypes: {},
 
 	goToProfile: function(username){
-		console.log(username)
 		Actions.goToProfile(username);	
 	},
 
@@ -81,18 +80,13 @@ const Details = React.createClass({
 		if(this.state.user.logged){
 			chat = <Chat user={this.state.user} />;
 		}
-
-		var isOwnerOfProfile = false;
-		if(typeof this.state.user.id !== 'undefined' && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
-			isOwnerOfProfile = true;
-		}
-		
+	
 		return (
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user} />
 				<DetailsMainContainer 
 					isProfile={false}
-					isOwnerOfProfile={isOwnerOfProfile}
+					idUserLogged={this.state.user.logged ? this.state.user.id : null}
 					game={this.state.gameDetails.game} 
 					console={this.props.route.console} 
 					list={this.state.gameDetails.list}

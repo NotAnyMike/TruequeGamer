@@ -26910,7 +26910,6 @@ const Details = React.createClass({
 	propTypes: {},
 
 	goToProfile: function (username) {
-		console.log(username);
 		Actions.goToProfile(username);
 	},
 
@@ -26978,18 +26977,13 @@ const Details = React.createClass({
 			chat = React.createElement(Chat, { user: this.state.user });
 		}
 
-		var isOwnerOfProfile = false;
-		if (typeof this.state.user.id !== 'undefined' && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
-			isOwnerOfProfile = true;
-		}
-
 		return React.createElement(
 			'div',
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
 			React.createElement(DetailsMainContainer, {
 				isProfile: false,
-				isOwnerOfProfile: isOwnerOfProfile,
+				idUserLogged: this.state.user.logged ? this.state.user.id : null,
 				game: this.state.gameDetails.game,
 				console: this.props.route.console,
 				list: this.state.gameDetails.list,
@@ -27139,6 +27133,7 @@ const DetailsList = React.createClass({
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
 		isOwnerOfProfile: React.PropTypes.bool,
+		idUserLogged: React.PropTypes.number, //in order to know if the dvd belongs to the user in details
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func,
@@ -27154,7 +27149,7 @@ const DetailsList = React.createClass({
 		var consoleVar = this.props.console;
 		var self = this;
 
-		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "") + (this.props.isProfile ? "" : " details");
+		var className = "gameList " + this.props.console + (this.props.isProfile && this.props.isOwnerOfProfile ? " own" : "") + (this.props.isProfile ? "" : " details");
 
 		return React.createElement(
 			'ul',
@@ -27226,6 +27221,7 @@ const DetailsList = React.createClass({
 				} else {
 					gameItem = React.createElement(GameItem, {
 						isProfile: self.props.isProfile,
+						isOwnerOfDvd: self.props.idUserLogged === element.pk,
 						console: consoleProp,
 						psNoExchange: !element.psExchange,
 						xboxNoExchange: !element.xboxExchange,
@@ -27272,6 +27268,7 @@ const DetailsMainContainer = React.createClass({
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
 		isOwnerOfProfile: React.PropTypes.bool,
+		idUserLogged: React.PropTypes.number,
 		game: React.PropTypes.object,
 		console: React.PropTypes.string.isRequired,
 		list: React.PropTypes.array.isRequired,
@@ -27371,6 +27368,7 @@ const DetailsMainContainer = React.createClass({
 					console: this.props.console,
 					isProfile: this.props.isProfile,
 					isOwnerOfProfile: this.props.isOwnerOfProfile,
+					idUserLogged: this.props.idUserLogged,
 					list: this.props.list,
 					goToProfileFn: this.props.goToProfileFn,
 					onPublishGameFn: this.props.onPublishGameFn,
@@ -27652,6 +27650,7 @@ const GameItem = React.createClass({
 		psXbox: React.PropTypes.bool,
 		username: React.PropTypes.string,
 		openChatFn: React.PropTypes.func,
+		isOwnerOfDvd: React.PropTypes.func,
 
 		/**** this extra values is to show the gameItem in the profile page ****/
 		//Console
@@ -28115,7 +28114,7 @@ const GameItem = React.createClass({
 			}
 		} else {
 
-			className = consoleVar + (this.props.exclusive ? " exclusive" : "") + (this.props.notOnly ? " notOnly" : " only");
+			className = consoleVar + (this.props.isOwnerOfDvd ? " own" : "") + (this.props.exclusive ? " exclusive" : "") + (this.props.notOnly ? " notOnly" : " only");
 			if (this.props.both || this.props.console === Constants.consoles.xbox) {
 				className += (this.props.xboxNoExchange ? " xboxNoExchange" : " xboxExchange") + ( //adding some stuff here, if ater a while it is still working then remove this comment
 				this.props.xboxNoSell ? " xboxNoSell" : "");
@@ -28768,10 +28767,13 @@ const Profile = React.createClass({
 	typingTimer: null,
 
 	getInitialState: function () {
-		AppStore.getProfile(this.props.params.username);
-		var store = AppStore.getStore();
-		store['showWarning'] = null;
-		return store;
+		return this._getStore(this.props.params.username);
+	},
+
+	componentWillReceiveProps: function (nextProps) {
+		if (this.props.params.username !== nextProps.params.username) {
+			this.setState(this._getStore(nextProps.params.username));
+		}
 	},
 
 	componentDidMount: function () {
@@ -28780,6 +28782,13 @@ const Profile = React.createClass({
 
 	componentWillUnmount: function () {
 		AppStore.removeOnProfileUpdatesListener(this.onProfileUpdates);
+	},
+
+	_getStore: function (username) {
+		AppStore.getProfile(username);
+		var store = AppStore.getStore();
+		store['showWarning'] = null;
+		return store;
 	},
 
 	onProfileUpdates: function () {
@@ -29954,7 +29963,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 			var url = "";
 			if ("production" === "production") {
-				//TODO: CHANGE URL
 				url = '/api/game/'.concat(consoles, '/', newVariable, '/', sell, '/', stringValue, '/');
 			} else {
 				url = '/api/game_details/thewitcher.json';

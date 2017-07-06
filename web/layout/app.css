@@ -5222,6 +5222,9 @@ ul.gameList li.showInfo figure .info {
   display: box;
   display: flex;
 }
+.detailsMainContainer .container ul.gameList.both li.own .contentContainer .chatButton {
+  display: none;
+}
 .detailsMainContainer.profile .container ul.gameList.both li.commentContainerIn .commentContainer {
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";

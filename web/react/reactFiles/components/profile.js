@@ -15,10 +15,13 @@ const Profile = React.createClass({
 	typingTimer: null,
 
 	getInitialState: function(){
-		AppStore.getProfile(this.props.params.username);
-		var store = AppStore.getStore();
-		store['showWarning'] = null;
-		return store;
+		return this._getStore(this.props.params.username);
+	},
+
+	componentWillReceiveProps: function(nextProps){
+		if(this.props.params.username !== nextProps.params.username){
+			this.setState(this._getStore(nextProps.params.username));
+		}
 	},
 
 	componentDidMount: function(){
@@ -27,6 +30,13 @@ const Profile = React.createClass({
 
 	componentWillUnmount: function(){	
 		AppStore.removeOnProfileUpdatesListener(this.onProfileUpdates);
+	},
+	
+	_getStore: function(username){
+		AppStore.getProfile(username);
+		var store = AppStore.getStore();
+		store['showWarning'] = null;
+		return store;
 	},
 
 	onProfileUpdates: function(){

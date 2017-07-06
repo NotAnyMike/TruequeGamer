@@ -71,7 +71,7 @@ def SomeUser(request, username):
             user = user[0]
 
             #Get her dvds
-            dvds = Dvd.objects.filter(owner=user).filter(state=constants.STATE['available'])
+            dvds = Dvd.objects.filter(owner=user).filter(state=constants.STATE['available']).order_by('-game__score', 'game__name')
             #TODO: remove the repeated games
 
             dvdsSerializer = SingleDvdSerializer(dvds, many=True)
@@ -267,7 +267,7 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
     if request.method == 'GET':
         
         if serializerType != 'game':
-            games = Game.objects.filter(name__icontains=string)
+            games = Game.objects.filter(name__icontains=string).order_by('-score', 'name')
             
             #Checking console
             if console == "ps-xbox":
@@ -360,15 +360,15 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
             if game != None:
                 game = game[0]
 
-                dvds = Dvd.objects.order_by('owner__pk').filter(state=constants.STATE['available']).filter(game=game) #Needed in order to make the for work as expected
+                dvds = Dvd.objects.order_by('owner__pk').filter(state=constants.STATE['available']).filter(game=game).order_by('-game__score','game__name') #Needed in order to make the for work as expected
                 gameSerializer = GameDetailsSerializer(game, many = False)
 
                 #Create a list of 'games' with the Dvds
-                owner = None
+                ownerPk = None
                 gamesList = []
                 for dvd in dvds:
-                    if owner == None or owner != dvd.owner:
-                        owner = dvd.owner.pk
+                    if ownerPk == None or ownerPk != dvd.owner.pk:
+                        ownerPk = dvd.owner.pk
                         gameFromDvds = Game()
 
                         gameFromDvds.name = "%s %s" % (dvd.owner.first_name, dvd.owner.last_name)
@@ -380,7 +380,7 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
                         gameFromDvds.availableOnXbox = False
                         gameFromDvds.availableOnPs = False
                         gameFromDvds.owner = dvd.owner
-                        gameFromDvds.pk = owner
+                        gameFromDvds.pk = ownerPk
 
                         #Adding the game created to a list
                         gamesList.append(gameFromDvds)
@@ -390,27 +390,27 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
                         
                         gameFromDvds.availableOnXbox = True
                         
-                        if dvd.price > gameFromDvds.xboxPrice: 
+                        if dvd.price < gameFromDvds.xboxPrice or (dvd.price != None and gameFromDvds.xboxPrice == None):
                             if gameFromDvds.xboxPrice != None: #This if must be before the xboxprice = dvd.price
-                                gamefromDvds.xboxonlyprice = false
+                                gameFromDvds.xboxOnlyPrice = False
                             gameFromDvds.xboxPrice = dvd.price
 
                         if dvd.exchange: gameFromDvds.xboxExchange = True
                         if dvd.new : gameFromDvds.xboxNew = True
-                        if dvd.new == False : gameFromDvds.xboxUsed = False
+                        if dvd.new == False : gameFromDvds.xboxUsed = True
                         
                     else:
                         
                         gameFromDvds.availableOnPs = True
                         
-                        if dvd.price > gameFromDvds.psPrice: 
+                        if dvd.price < gameFromDvds.psPrice or (dvd.price != None and gameFromDvds.psPrice == None):
                             if gameFromDvds.psPrice != None: #This if must be before the psprice = dvd.price
-                                gamefromDvds.psonlyprice = false
+                                gameFromDvds.psOnlyPrice = False
                             gameFromDvds.psPrice = dvd.price
 
                         if dvd.exchange: gameFromDvds.psExchange = True
                         if dvd.new : gameFromDvds.psNew = True
-                        if dvd.new == False : gameFromDvds.psUsed = False
+                        if dvd.new == False : gameFromDvds.psUsed = True
 
 
                 gamesSerializer = GameSerializerWithOwner(gamesList, many = True)

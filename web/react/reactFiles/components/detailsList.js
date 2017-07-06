@@ -119,6 +119,8 @@ const DetailsList = React.createClass({
 								cover={element.cover} 
 								name={element.name} 
 								both={consoleVar === Constants.consoles.both ? true : false}
+								psNew={element.psNew}
+								xboxNew={element.xboxNew}
 								psUsed={element.psUsed}
 								xboxUsed={element.xboxUsed}	
 								comment={element.comment}

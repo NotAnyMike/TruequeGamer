@@ -89,7 +89,7 @@ class GameSerializerWithOwner(GameSerializer):
 
     class Meta:
         model = Game
-        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psExchange', 'xboxExchange', 'psExclusive', 'xboxExclusive', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice', 'username')
+        fields = ('pk', 'name', 'cover', 'psPrice', 'xboxPrice', 'psNew', 'xboxNew', 'psUsed', 'xboxUsed', 'psExchange', 'xboxExchange', 'psExclusive', 'xboxExclusive', 'availableOnPs', 'availableOnXbox', 'psOnlyPrice', 'xboxOnlyPrice', 'username')
 
 
 class GameDetailsSerializer(serializers.ModelSerializer):
@@ -97,8 +97,14 @@ class GameDetailsSerializer(serializers.ModelSerializer):
     min_price = serializers.SerializerMethodField()
 
     def get_min_price(self, instance):
-        #TODO change this
-        return 13000
+        if instance.psPrice != None and instance.xboxPrice != None:
+            if instance.psPrice > instance.xboxPrice:
+                return instance.xboxPrice
+            else:
+                return instance.psPrice
+        elif instance.psPrice != None: return instance.psPrice
+        elif instance.xboxPrice != None: return instance.xboxPrice
+        return None
 
     def get_higher_prices(self, instance):
         #TODO change this

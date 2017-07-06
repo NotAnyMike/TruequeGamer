@@ -521,11 +521,21 @@ const GameItem = React.createClass({
 				className += (this.props.psNoExchange ? " psNoExchange" : " psExchange") + //adding some stuff here, if ater a while it is still working then remove this comment
 					(this.props.psNoSell ? " psNoSell" : "");
 			}
-			if((this.props.both && this.props.console === Constants.consoles.ps) && this.props.psUsed){
-				className += " psUsed";
+			if(this.props.both || this.props.console === Constants.consoles.ps){
+				if(this.props.psUsed){
+					className += " psUsed";
+				}
+				if(this.props.psNew){
+					className += " psNew";
+				}
 			}
-			if((this.props.both || this.props.console === Constants.consoles.xbox) && this.props.xboxUsed){
-				className += " xboxUsed";
+			if(this.props.both || this.props.console === Constants.consoles.xbox){
+				if(this.props.xboxUsed){
+					className += " xboxUsed";
+				}
+				if(this.props.xboxNew){
+					className += " xboxNew";
+				}
 			}
 
 			onClickComponent = this._goToPage;

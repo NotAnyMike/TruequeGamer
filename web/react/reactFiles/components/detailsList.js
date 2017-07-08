@@ -17,6 +17,7 @@ const DetailsList = React.createClass({
 		onExchangedButtonClickFn: React.PropTypes.func,
 		onSoldButtonClickFn: React.PropTypes.func,
 		openChatFn: React.PropTypes.func,
+		goToDetailsFn: React.PropTypes.func,
 	},
 
 	render: function(){
@@ -97,6 +98,8 @@ const DetailsList = React.createClass({
 									onDeleteButtonClickFn={self.props.onDeleteButtonClickFn}
 									onExchangedButtonClickFn={self.props.onExchangedButtonClickFn}
 									onSoldButtonClickFn={self.props.onSoldButtonClickFn}
+									goToDetailsFn={self.props.goToDetailsFn}
+									openChatFn={self.props.openChatFn}
 								/>
 							);
 						}

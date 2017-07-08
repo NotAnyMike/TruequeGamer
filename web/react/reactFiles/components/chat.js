@@ -25,12 +25,16 @@ var Chat = React.createClass({
 	},
 
 	componentDidMount: function(){
+		ChatStore.addOnOpenNewChatListener(this.openNewChat);
+		ChatStore.addOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
 		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
 	componentWillUnmount: function(){
+		ChatStore.removeOnOpenNewChatListener(this.openNewChat);
+		ChatStore.removeOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
 		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
@@ -48,7 +52,6 @@ var Chat = React.createClass({
 	},
 
 	onUnreadMessageCountUpdated: function(){
-		console.log("unread msg: " + this.state.store.unread);
 		this.forceUpdate();
 	},
 	
@@ -80,7 +83,11 @@ var Chat = React.createClass({
 		});
 	},
 
-	openCertainChatFn: function(id){
+	openNewChat: function(){
+		cosole.log("openNEwChat");
+	},
+
+	openExistingChat: function(id){
 		//get the position of the chat with id id
 		if(this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null){
 			this.setState({
@@ -89,6 +96,12 @@ var Chat = React.createClass({
 				singleChatVisible: true,
 				textToSend: '',
 			});
+		}
+	},
+
+	openCertainChatFn: function(id){
+		//get the position of the chat with id id
+		if(this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null){
 			Actions.chatOpen(id);
 		}
 	},
@@ -132,7 +145,6 @@ var Chat = React.createClass({
 			var filteredChats = this.state.store.chats.filter((chat) => {return !!chat.members.find(member => (
 				member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id
 			))});
-			console.log(filteredChats);
 			this.setState({
 				searchingChat: true,
 				filteredChats: filteredChats,

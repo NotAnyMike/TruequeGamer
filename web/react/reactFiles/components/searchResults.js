@@ -37,7 +37,6 @@ const SearchResults = React.createClass({
 
 	loadDetailsPage: function(name){
 		var route = ""
-		//TODO: Change this hardcoded stuff
 		if(process.env.NODE_ENV === 'production'){
 			//Get console from store search
 			var consoleVar = ""

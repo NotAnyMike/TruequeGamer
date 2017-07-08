@@ -62,6 +62,13 @@ var Actions = {
 		});
 	},
 
+	openCertainChatWithUserId: function(user_id){
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.openCertainChatWithUserId,
+			value: user_id,
+		});
+	},
+
 };
 
 module.exports = Actions;

@@ -35,7 +35,6 @@ def AddBug(request):
         data = request.data
         newData = dict((key.encode('utf-8'), value) for key, value in data.items())
         data = newData
-        print data
 
         if('comment' in data.keys() and data['comment'] != "" and data['comment'] != None):
 
@@ -150,7 +149,6 @@ def DvdApi(request):
 
                     if 'id' in data and data['id'] != None:
                         #Get dvd
-                        print "has id"
                         dvdToSave = Dvd.objects.get(pk=int(data['id']))
                         if dvdToSave.owner.pk != request.user.pk:
                             dvdToSave = None
@@ -276,7 +274,6 @@ def LocalSuggestions(request, serializerType, console, new, sell, string):
                 #Checking new
                 if new == 'both':
                     games = games.filter(Q(xboxNew=True) | Q(psNew=True) | Q(psUsed=True) | Q(xboxUsed=True))
-                    print "count: %i" % games.count()
                 elif new == 'new':
                     games = games.filter(Q(xboxNew=True) | Q(psNew=True)) 
                 elif new == 'used':

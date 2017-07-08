@@ -19,6 +19,7 @@ const Constants = {
 		changeSearchChatValue: 'change_search_chat_value',
 		goToDetails: 'go_to_details_page',
 		goToProfile: 'go_to_profile_page',
+		openCertainChatWithUserId: 'open_certain_chat_user_id',
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -34,6 +35,8 @@ const Constants = {
 		gamesAvailableUpdated: 'games_available_for_a_game_updated',
 		availableGamesUpadate: 'available_games_update',
 		profileUpdated: 'profile_updated',
+		openExistingChat: 'open_existing_chat',
+		openNewChat: 'open_new_chat',
 	},
 	filter: {
 		not_used: 'not_used',

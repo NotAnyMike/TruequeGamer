@@ -6,7 +6,9 @@ const React = require('react'),
 			Footer = require('./footer.js'),
 			DetailsMainContainer = require('./detailsMainContainer.js'),
 			Warning = require('./warning.js'),
-			Functions = require('../utils/functions.js');
+			Functions = require('../utils/functions.js'),
+			Actions = require('../utils/actions.js'),
+			browserHistory = require('react-router').browserHistory;
 
 const Profile = React.createClass({
 
@@ -37,6 +39,27 @@ const Profile = React.createClass({
 		var store = AppStore.getStore();
 		store['showWarning'] = null;
 		return store;
+	},
+
+	goToDetails: function(name){
+		var route = ""
+		if(process.env.NODE_ENV === 'production'){
+			//Get console from store search
+			var consoleVar = Constants.routes.details.both;
+			/*if(this.state.search.xbox){
+				if(this.state.search.ps){
+					consoleVar = Constants.routes.details.both;
+				}else{
+					consoleVar = Constants.routes.details.xbox;
+				}
+			}else{
+				consoleVar = Constants.routes.details.ps;
+			}*/
+			route = "/".concat(name, consoleVar)
+		}else{
+			route = "/until dawn/ps-xbox";
+		}
+		browserHistory.push(route);
 	},
 
 	onProfileUpdates: function(){
@@ -156,11 +179,12 @@ const Profile = React.createClass({
 		window.location.assign(Constants.routes.facebook);
 	},
 
-	openChat: function(){
+	openChat: function(username_id){
 		if(this.state.user.logged === false ){
 			this.setState({showWarning: true})	
 		}else{
 			//TODO: open chat
+			Actions.openCertainChatWithUserId(username_id);
 		}
 	},
 
@@ -200,6 +224,7 @@ const Profile = React.createClass({
 					onExchangedButtonClickFn={this.onExchangedButtonClick}
 					onSoldButtonClickFn={this.onSoldButtonClick}
 					openChatFn={this.openChat}
+					goToDetailsFn={this.goToDetails}
 				/>
 				<Footer version={footerVersion} />
 				{chat}

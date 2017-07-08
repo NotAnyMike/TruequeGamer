@@ -122,10 +122,11 @@ def updatingGames(sender, instance, **kwargs):
         #Are at least two prices different
         if dvd.console == constants.CONSOLES['ps']:
             if(dvd.price != None and instance.game.psPrice > dvd.price) or (dvd.price != None and instance.game.psPrice == None):
-                if instance.game.psPrice != 0 and instance.game.psPrice != None:
-                    instance.game.psOnlyPrice = False
                 instance.game.psPrice = dvd.price
                 modifiedPs = True
+
+            if(dvd.price != None and instance.game.psPrice != None and dvd.price != instance.game.psPrice):
+                instance.game.psOnlyPrice = False
 
             if dvd.exchange == True:
                 instance.game.psExchange = True
@@ -140,10 +141,11 @@ def updatingGames(sender, instance, **kwargs):
         
         if dvd.console == constants.CONSOLES['xbox']:
             if (dvd.price != None and instance.game.xboxPrice > dvd.price) or (dvd.price != None and instance.game.xboxPrice == None):
-                if instance.game.xboxPrice != 0 and instance.game.xboxPrice != None:
-                    instance.game.xboxOnlyPrice = False
                 instance.game.xboxPrice = dvd.price
                 modifiedXbox = True
+
+            if(dvd.price != None and instance.game.xboxPrice != None and dvd.price != instance.game.xboxPrice):
+                instance.game.xboxOnlyPrice = False
 
             if dvd.exchange == True:
                 instance.game.xboxExchange = True

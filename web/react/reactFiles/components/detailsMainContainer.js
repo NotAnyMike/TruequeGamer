@@ -23,6 +23,7 @@ const DetailsMainContainer = React.createClass({
 		onExchangedButtonClickFn: React.PropTypes.func,
 		onSoldButtonClickFn: React.PropTypes.func,
 		openChatFn: React.PropTypes.func,
+		goToDetailsFn: React.PropTypes.func, //When we are in profile and click a game
 	},
 
 	render: function(){
@@ -88,6 +89,7 @@ const DetailsMainContainer = React.createClass({
 						onExchangedButtonClickFn={this.props.onExchangedButtonClickFn}
 						onSoldButtonClickFn={this.props.onSoldButtonClickFn}
 						openChatFn={this.props.openChatFn}
+						goToDetailsFn={this.props.goToDetailsFn}
 					/>
 				</div>
 			</section>

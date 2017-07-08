@@ -61,14 +61,31 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			case Constants.actionType.changeSearchChatValue:
 				_setSearchChatValue(payload.value);
 				break;
+			case Constants.actionType.openCertainChatWithUserId:
+				ChatStore.chatOpenWithUserId(payload.value);
+				break;
 		}
 	},
+
+	chatOpenWithUserId: function(user_id){
+		user_id = "2" //TODO change
+		var chat = _store.chats.find(element => element.members[0].userId === user_id || element.members[1].userId === user_id);
+		if(chat != null){
+			//send event to open existing chat
+			this.emit(Constants.eventType.openExistingChat, chat.id)
+		}else{
+			//create and open chat
+			//And send event to open new chat 
+			this.emit(Constants.eventType.openNewChat)
+		}
+	},	
 
 	chatOpen: function(id){
 		//get chat
 		var chat = _store.chats.find(element => element.id === id);
 		if(chat != null){
 			//has more than 1 message?
+			this.emit(Constants.eventType.openExistingChat, id);
 			if(chat.messages.length <= 1 || true){ //to change
 				//is it full
 				if(chat.full === false){
@@ -210,7 +227,6 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 							});
 							_store.chats = channelList;
 							self.getUnreadMessageCount();
-							console.log(channelList);
 					});
 			}
 		});
@@ -243,6 +259,22 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	removeOnUnreadMessageCountUpdatedListener: function(callback){
 		this.removeListener(Constants.eventType.unreadMessageCountUpdate, callback);
+	},
+	
+	addOnOpenNewChatListener: function(callback){
+		this.on(Constants.eventType.openNewChat, callback);
+	},
+
+	removeOnOpenNewChatListener: function(callback){
+		this.removeListener(Constants.eventType.openNewChat, callback);
+	},
+	
+	addOnOpenExistingChatListener: function(callback){
+		this.on(Constants.eventType.openExistingChat, callback);
+	},
+
+	removeOnOpenExistingChatListener: function(callback){
+		this.removeListener(Constants.eventType.openExistingChat, callback);
 	},
 
 	getChats: function(){

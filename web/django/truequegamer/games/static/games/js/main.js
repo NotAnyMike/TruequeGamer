@@ -26450,12 +26450,16 @@ var Chat = React.createClass({
 	},
 
 	componentDidMount: function () {
+		ChatStore.addOnOpenNewChatListener(this.openNewChat);
+		ChatStore.addOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
 		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
 	componentWillUnmount: function () {
+		ChatStore.removeOnOpenNewChatListener(this.openNewChat);
+		ChatStore.removeOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
 		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
@@ -26473,7 +26477,6 @@ var Chat = React.createClass({
 	},
 
 	onUnreadMessageCountUpdated: function () {
-		console.log("unread msg: " + this.state.store.unread);
 		this.forceUpdate();
 	},
 
@@ -26505,7 +26508,11 @@ var Chat = React.createClass({
 		});
 	},
 
-	openCertainChatFn: function (id) {
+	openNewChat: function () {
+		cosole.log("openNEwChat");
+	},
+
+	openExistingChat: function (id) {
 		//get the position of the chat with id id
 		if (this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null) {
 			this.setState({
@@ -26514,6 +26521,12 @@ var Chat = React.createClass({
 				singleChatVisible: true,
 				textToSend: ''
 			});
+		}
+	},
+
+	openCertainChatFn: function (id) {
+		//get the position of the chat with id id
+		if (this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null) {
 			Actions.chatOpen(id);
 		}
 	},
@@ -26557,7 +26570,6 @@ var Chat = React.createClass({
 			var filteredChats = this.state.store.chats.filter(chat => {
 				return !!chat.members.find(member => member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id);
 			});
-			console.log(filteredChats);
 			this.setState({
 				searchingChat: true,
 				filteredChats: filteredChats
@@ -27142,7 +27154,8 @@ const DetailsList = React.createClass({
 		onDeleteButtonClickFn: React.PropTypes.func,
 		onExchangedButtonClickFn: React.PropTypes.func,
 		onSoldButtonClickFn: React.PropTypes.func,
-		openChatFn: React.PropTypes.func
+		openChatFn: React.PropTypes.func,
+		goToDetailsFn: React.PropTypes.func
 	},
 
 	render: function () {
@@ -27215,7 +27228,9 @@ const DetailsList = React.createClass({
 							changeHandlerForSearchInputFn: self.props.changeHandlerForSearchInputFn,
 							onDeleteButtonClickFn: self.props.onDeleteButtonClickFn,
 							onExchangedButtonClickFn: self.props.onExchangedButtonClickFn,
-							onSoldButtonClickFn: self.props.onSoldButtonClickFn
+							onSoldButtonClickFn: self.props.onSoldButtonClickFn,
+							goToDetailsFn: self.props.goToDetailsFn,
+							openChatFn: self.props.openChatFn
 						});
 					}
 				} else {
@@ -27284,8 +27299,8 @@ const DetailsMainContainer = React.createClass({
 		onDeleteButtonClickFn: React.PropTypes.func,
 		onExchangedButtonClickFn: React.PropTypes.func,
 		onSoldButtonClickFn: React.PropTypes.func,
-		openChatFn: React.PropTypes.func
-	},
+		openChatFn: React.PropTypes.func,
+		goToDetailsFn: React.PropTypes.func },
 
 	render: function () {
 		var detailsGameLabelVar;
@@ -27378,7 +27393,8 @@ const DetailsMainContainer = React.createClass({
 					onDeleteButtonClickFn: this.props.onDeleteButtonClickFn,
 					onExchangedButtonClickFn: this.props.onExchangedButtonClickFn,
 					onSoldButtonClickFn: this.props.onSoldButtonClickFn,
-					openChatFn: this.props.openChatFn
+					openChatFn: this.props.openChatFn,
+					goToDetailsFn: this.props.goToDetailsFn
 				})
 			)
 		);
@@ -27667,7 +27683,9 @@ const GameItem = React.createClass({
 		suggestions: React.PropTypes.array, //the list of all suggestions
 		onPublishGameFn: React.PropTypes.func, //in order to fetch a put or post request
 		changeHandlerForSearchInputFn: React.PropTypes.func, //in order to show suggestions in the form
-		updatingNameOfGameItemFn: React.PropTypes.func },
+		updatingNameOfGameItemFn: React.PropTypes.func, //needed when the user choses a suggestion
+		goToDetailsFn: React.PropTypes.func
+	},
 
 	componentDidMount: function () {
 		if (this._isNew() === false) {
@@ -27960,7 +27978,7 @@ const GameItem = React.createClass({
 
 	_openChatClickHandler: function (e) {
 		e.stopPropagation();
-		this.props.openChatFn(this.props.username);
+		this.props.openChatFn(this.props.id);
 	},
 
 	render: function () {
@@ -28096,6 +28114,7 @@ const GameItem = React.createClass({
 			changeExchangeHandler = this._changeExchangeHandler;
 			changeNoExchangeHandler = this._changeNoExchangeHandler;
 			changeCommentHandler = this._changeCommentHandler;
+			openChatFn = this._openChatClickHandler;
 			//pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
 			pricePs = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
 			//priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
@@ -28768,7 +28787,9 @@ const React = require('react'),
       Footer = require('./footer.js'),
       DetailsMainContainer = require('./detailsMainContainer.js'),
       Warning = require('./warning.js'),
-      Functions = require('../utils/functions.js');
+      Functions = require('../utils/functions.js'),
+      Actions = require('../utils/actions.js'),
+      browserHistory = require('react-router').browserHistory;
 
 const Profile = React.createClass({
 	displayName: 'Profile',
@@ -28801,6 +28822,27 @@ const Profile = React.createClass({
 		var store = AppStore.getStore();
 		store['showWarning'] = null;
 		return store;
+	},
+
+	goToDetails: function (name) {
+		var route = "";
+		if ("production" === 'production') {
+			//Get console from store search
+			var consoleVar = Constants.routes.details.both;
+			/*if(this.state.search.xbox){
+   	if(this.state.search.ps){
+   		consoleVar = Constants.routes.details.both;
+   	}else{
+   		consoleVar = Constants.routes.details.xbox;
+   	}
+   }else{
+   	consoleVar = Constants.routes.details.ps;
+   }*/
+			route = "/".concat(name, consoleVar);
+		} else {
+			route = "/until dawn/ps-xbox";
+		}
+		browserHistory.push(route);
 	},
 
 	onProfileUpdates: function () {
@@ -28932,11 +28974,12 @@ const Profile = React.createClass({
 		window.location.assign(Constants.routes.facebook);
 	},
 
-	openChat: function () {
+	openChat: function (username_id) {
 		if (this.state.user.logged === false) {
 			this.setState({ showWarning: true });
 		} else {
 			//TODO: open chat
+			Actions.openCertainChatWithUserId(username_id);
 		}
 	},
 
@@ -28976,7 +29019,8 @@ const Profile = React.createClass({
 				onDeleteButtonClickFn: this.onDeleteButtonClick,
 				onExchangedButtonClickFn: this.onExchangedButtonClick,
 				onSoldButtonClickFn: this.onSoldButtonClick,
-				openChatFn: this.openChat
+				openChatFn: this.openChat,
+				goToDetailsFn: this.goToDetails
 			}),
 			React.createElement(Footer, { version: footerVersion }),
 			chat,
@@ -28988,7 +29032,7 @@ const Profile = React.createClass({
 
 module.exports = Profile;
 
-},{"../stores/appStore.js":282,"../utils/constants.js":285,"../utils/functions.js":286,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"./warning.js":279,"react":239}],267:[function(require,module,exports){
+},{"../stores/appStore.js":282,"../utils/actions.js":284,"../utils/constants.js":285,"../utils/functions.js":286,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"./warning.js":279,"react":239,"react-router":37}],267:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -29191,7 +29235,6 @@ const SearchResults = React.createClass({
 
 	loadDetailsPage: function (name) {
 		var route = "";
-		//TODO: Change this hardcoded stuff
 		if ("production" === 'production') {
 			//Get console from store search
 			var consoleVar = "";
@@ -30185,6 +30228,22 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			case Constants.actionType.changeSearchChatValue:
 				_setSearchChatValue(payload.value);
 				break;
+			case Constants.actionType.openCertainChatWithUserId:
+				ChatStore.chatOpenWithUserId(payload.value);
+				break;
+		}
+	},
+
+	chatOpenWithUserId: function (user_id) {
+		user_id = "2"; //TODO change
+		var chat = _store.chats.find(element => element.members[0].userId === user_id || element.members[1].userId === user_id);
+		if (chat != null) {
+			//send event to open existing chat
+			this.emit(Constants.eventType.openExistingChat, chat.id);
+		} else {
+			//create and open chat
+			//And send event to open new chat 
+			this.emit(Constants.eventType.openNewChat);
 		}
 	},
 
@@ -30193,6 +30252,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		var chat = _store.chats.find(element => element.id === id);
 		if (chat != null) {
 			//has more than 1 message?
+			this.emit(Constants.eventType.openExistingChat, id);
 			if (chat.messages.length <= 1 || true) {
 				//to change
 				//is it full
@@ -30336,7 +30396,6 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 					});
 					_store.chats = channelList;
 					self.getUnreadMessageCount();
-					console.log(channelList);
 				});
 			}
 		});
@@ -30368,6 +30427,22 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	removeOnUnreadMessageCountUpdatedListener: function (callback) {
 		this.removeListener(Constants.eventType.unreadMessageCountUpdate, callback);
+	},
+
+	addOnOpenNewChatListener: function (callback) {
+		this.on(Constants.eventType.openNewChat, callback);
+	},
+
+	removeOnOpenNewChatListener: function (callback) {
+		this.removeListener(Constants.eventType.openNewChat, callback);
+	},
+
+	addOnOpenExistingChatListener: function (callback) {
+		this.on(Constants.eventType.openExistingChat, callback);
+	},
+
+	removeOnOpenExistingChatListener: function (callback) {
+		this.removeListener(Constants.eventType.openExistingChat, callback);
 	},
 
 	getChats: function () {
@@ -30450,6 +30525,13 @@ var Actions = {
 			actionType: Constants.actionType.goToProfile,
 			value: username
 		});
+	},
+
+	openCertainChatWithUserId: function (user_id) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.openCertainChatWithUserId,
+			value: user_id
+		});
 	}
 
 };
@@ -30477,7 +30559,8 @@ const Constants = {
 		chatOpen: 'chat_open',
 		changeSearchChatValue: 'change_search_chat_value',
 		goToDetails: 'go_to_details_page',
-		goToProfile: 'go_to_profile_page'
+		goToProfile: 'go_to_profile_page',
+		openCertainChatWithUserId: 'open_certain_chat_user_id'
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -30492,7 +30575,9 @@ const Constants = {
 		goToProfile: 'go_to_profile',
 		gamesAvailableUpdated: 'games_available_for_a_game_updated',
 		availableGamesUpadate: 'available_games_update',
-		profileUpdated: 'profile_updated'
+		profileUpdated: 'profile_updated',
+		openExistingChat: 'open_existing_chat',
+		openNewChat: 'open_new_chat'
 	},
 	filter: {
 		not_used: 'not_used',

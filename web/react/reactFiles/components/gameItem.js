@@ -49,6 +49,7 @@ const GameItem = React.createClass({
 		onPublishGameFn: React.PropTypes.func, //in order to fetch a put or post request
 		changeHandlerForSearchInputFn: React.PropTypes.func, //in order to show suggestions in the form
 		updatingNameOfGameItemFn: React.PropTypes.func,//needed when the user choses a suggestion
+		goToDetailsFn: React.PropTypes.func,
 	},
 
 	componentDidMount: function(){
@@ -343,7 +344,7 @@ const GameItem = React.createClass({
 
 	_openChatClickHandler: function(e){
 		e.stopPropagation();
-		this.props.openChatFn(this.props.username);
+		this.props.openChatFn(this.props.id);
 	},
 	
 	render: function(){
@@ -486,6 +487,7 @@ const GameItem = React.createClass({
 			changeExchangeHandler = this._changeExchangeHandler;
 			changeNoExchangeHandler = this._changeNoExchangeHandler;
 			changeCommentHandler = this._changeCommentHandler;
+			openChatFn = this._openChatClickHandler;
 			//pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
 			pricePs = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
 			//priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);

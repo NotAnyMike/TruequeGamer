@@ -21,6 +21,7 @@ var Chat = React.createClass({
 			searchingUser: false,
 			filteredChats: null,
 			searchingChat: false,
+			emptyChat: false,
 		});
 	},
 
@@ -29,6 +30,8 @@ var Chat = React.createClass({
 		ChatStore.addOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.addChatNotCreatedListener(this.onChatNotCreated);
+		ChatStore.addChatsUpdateAndOpenListener(this.onChatsUpdateAndOpen);
 		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
@@ -37,12 +40,26 @@ var Chat = React.createClass({
 		ChatStore.removeOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.removeChatNotCreatedListener(this.onChatNotCreated);
+		ChatStore.removeChatsUpdateAndOpenListener(this.onChatsUpdateAndOpen);
 		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
+	},
+
+	onChatNotCreated: function(){
+		//Show a message saying that chat couldnt be created
+		//TODO
+		console.log("chat could not be created");
 	},
 
 	onChatsUpdated: function(){
 		chats = ChatStore.getChats();
 		this.setState({chats: chats});
+	},
+
+	onChatsUpdateAndOpen: function(store, chat_id){
+		chats = store;
+		this.setState({chats:chats});
+		this.openExistingChat(chat_id)
 	},
 	
 	onMessageAdded: function(){
@@ -84,7 +101,14 @@ var Chat = React.createClass({
 	},
 
 	openNewChat: function(){
-		cosole.log("openNEwChat");
+		console.log("openNEwChat");
+		this.setState({
+			activeChat: null,
+			visible: true,
+			singleChatVisible: true,
+			textToSend: '',
+			emptyChat: true,
+		});
 	},
 
 	openExistingChat: function(id){
@@ -95,6 +119,7 @@ var Chat = React.createClass({
 				visible: true,
 				singleChatVisible: true,
 				textToSend: '',
+				emptyChat: false,
 			});
 		}
 	},
@@ -167,12 +192,15 @@ var Chat = React.createClass({
 		var chats = (this.state.searchingChat ? this.state.filteredChats : this.state.store.chats);
 		var searchChatValue = ChatStore.getSearchChatValue();
 
+		console.log(this.state.store.chats)
+
 		return (
 			<div>
 				<ChatBubble unread={this.state.store.unread} showChatFn={this.showChatFn}/>
 				<ChatContainer 
 					visible={this.state.visible} 
 					singleChatVisible={this.state.singleChatVisible} 
+					emptyChat={this.state.emptyChat}
 					chats={chats} 
 					searchingChat={this.state.searchingChat}
 					activeChat={activeChat} 

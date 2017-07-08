@@ -26,6 +26,8 @@ const Constants = {
 		suggestionsRefresh: 'suggestions_refresh',
 		search: 'search',
 		chatsUpdated: 'chats_updated',
+		chatsUpdatedAndOpen: 'chats_updated_and_open',
+		chatNotCreated: 'chat_not_created',
 		messageAdded: 'message_added',
 		userUpdated: 'user_update',
 		resultsUpdated: 'results_updated',

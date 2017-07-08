@@ -9,6 +9,7 @@ var ChatContainer = React.createClass({
 		activeChat: React.PropTypes.number,
 		visible: React.PropTypes.bool,
 		singleChatVisible: React.PropTypes.bool,
+		emptyChat: React.PropTypes.bool.isRequired,
 		searchingChat: React.PropTypes.bool.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
@@ -31,13 +32,22 @@ var ChatContainer = React.createClass({
 		else
 			visible = "";
 
+		var chat;
+		if(this.props.emptyChat === false){
+			chat = this.props.chats[this.props.activeChat];
+		}else{
+			//create emptyChat
+			chat = {}
+		}
+
 		singleChat = null;
-		if(this.props.activeChat !== null && this.props.activeChat !== "" && this.props.activeChat >= 0){
+		if((this.props.activeChat !== null && this.props.activeChat !== "" && this.props.activeChat >= 0) || this.props.emptyChat){
 			singleChat = (
 				<SingleChat 
 					value={this.props.value} 
 					visible={this.props.singleChatVisible} 
-					chat={this.props.chats[this.props.activeChat]} 
+					emptyChat={this.props.emptyChat}
+					chat={chat} 
 					closeSingleChatFn={this.props.closeSingleChatFn} 
 					onChangeInputChatFn={this.props.onChangeInputChatFn} 
 					sendFn={this.props.sendFn} 

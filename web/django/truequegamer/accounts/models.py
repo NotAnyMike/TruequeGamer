@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.signals import user_logged_in
+from social.apps.django_app.default.models import UserSocialAuth
 
 import urllib, json, logging
 
@@ -23,23 +24,29 @@ def createUserProfile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
 
 def saveUserProfile(sender, user, **kwargs): 
+    
+    if UserSocialAuth.objects.filter(user=user).exists():
+        userAuth = UserSocialAuth.objects.get(user=user)
+        fbToken = userAuth.extra_data[u'access_token'];
 
-    url = "https://graph.facebook.com/me?fields=id,name,email,first_name,last_name,picture,location,about&access_token=%s" % Constants.FB_ACCESS_TOKEN
+        url = "https://graph.facebook.com/me?fields=id,name,email,first_name,last_name,picture,location,about&access_token=%s" % fbToken
 
-    response = urllib.urlopen(url)
-    data = json.load(response)
+        response = urllib.urlopen(url)
+        data = json.load(response)
+        print data
 
-    user.first_name = data['first_name']
-    user.last_name = data['last_name']
-    user.email = data['email']
+        user.first_name = data['first_name']
+        user.last_name = data['last_name']
+        user.email = data['email']
 
-    user.profile.facebook_id = data['id']
-    if 'location' in data: 
-        user.profile.facebook_location = data['location']['id']
-        user.profile.facebook_location_id = data['location']['name']
-    if 'about' in data: user.profile.facebook_about = data['about']
+        user.profile.facebook_id = data['id']
+        if 'location' in data: 
+            user.profile.facebook_location = data['location']['id']
+            user.profile.facebook_location_id = data['location']['name']
+        if 'about' in data: user.profile.facebook_about = data['about']
 
-    user.profile.save()
-    user.save()
+        print user.profile.facebook_id
+        user.profile.save()
+        user.save()
 
 user_logged_in.connect(saveUserProfile)

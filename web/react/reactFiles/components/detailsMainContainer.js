@@ -7,6 +7,7 @@ const DetailsMainContainer = React.createClass({
 
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		user_id: React.PropTypes.number,
 		isOwnerOfProfile: React.PropTypes.bool,
 		idUserLogged: React.PropTypes.number,
 		game: React.PropTypes.object,
@@ -79,6 +80,7 @@ const DetailsMainContainer = React.createClass({
 					<DetailsList 
 						console={this.props.console}
 						isProfile={this.props.isProfile}
+						user_id={this.props.user_id}
 						isOwnerOfProfile={this.props.isOwnerOfProfile}
 						idUserLogged={this.props.idUserLogged}
 						list={this.props.list}

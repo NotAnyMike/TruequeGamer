@@ -18,8 +18,10 @@ var ItemChat = React.createClass({
 	},	
 	
 	render: function(){
-		var img = this.props.user.pic;
-		if(!img){
+		var img;
+		if(this.props.user && this.props.user.pic){
+			img = this.props.user.pic;
+		}else{
 			img = Constants.genericProfile;
 		}
 		return (

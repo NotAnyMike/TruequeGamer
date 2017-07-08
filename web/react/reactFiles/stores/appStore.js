@@ -35,7 +35,7 @@ var _store =  {
 		game:{
 			name: 'cargando...',
 			min_price: 0,
-			cover: 'img/cover.png',
+			cover: Constants.genericCover,
 			higher_prices: false,
 			city: null,
 		},

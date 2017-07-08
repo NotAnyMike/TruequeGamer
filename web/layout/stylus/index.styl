@@ -758,6 +758,23 @@ button.closeButton
 	z-index: 1
 	visiblity: hidden
 
+	.chatLoading
+		position: absolute
+		width: 100%
+		height: 100%
+		background-color: rgba(white, 0.8)
+		z-index: 3
+		text-align: center
+		vertical-align: middle
+		display: none
+		justify-content: center
+		align-items: center
+		font-size: 30px
+	
+	&.showLoadingChat
+		.chatLoading
+			display: flex
+
 	&.out
 		animation: singleChatOut 300ms ease 1 forwards
 		

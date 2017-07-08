@@ -26445,7 +26445,8 @@ var Chat = React.createClass({
 			textToSend: '',
 			searchingUser: false,
 			filteredChats: null,
-			searchingChat: false
+			searchingChat: false,
+			emptyChat: false
 		};
 	},
 
@@ -26454,6 +26455,8 @@ var Chat = React.createClass({
 		ChatStore.addOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.addChatNotCreatedListener(this.onChatNotCreated);
+		ChatStore.addChatsUpdateAndOpenListener(this.onChatsUpdateAndOpen);
 		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
@@ -26462,12 +26465,26 @@ var Chat = React.createClass({
 		ChatStore.removeOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
+		ChatStore.removeChatNotCreatedListener(this.onChatNotCreated);
+		ChatStore.removeChatsUpdateAndOpenListener(this.onChatsUpdateAndOpen);
 		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
+	},
+
+	onChatNotCreated: function () {
+		//Show a message saying that chat couldnt be created
+		//TODO
+		console.log("chat could not be created");
 	},
 
 	onChatsUpdated: function () {
 		chats = ChatStore.getChats();
 		this.setState({ chats: chats });
+	},
+
+	onChatsUpdateAndOpen: function (store, chat_id) {
+		chats = store;
+		this.setState({ chats: chats });
+		this.openExistingChat(chat_id);
 	},
 
 	onMessageAdded: function () {
@@ -26509,7 +26526,14 @@ var Chat = React.createClass({
 	},
 
 	openNewChat: function () {
-		cosole.log("openNEwChat");
+		console.log("openNEwChat");
+		this.setState({
+			activeChat: null,
+			visible: true,
+			singleChatVisible: true,
+			textToSend: '',
+			emptyChat: true
+		});
 	},
 
 	openExistingChat: function (id) {
@@ -26519,7 +26543,8 @@ var Chat = React.createClass({
 				activeChat: id,
 				visible: true,
 				singleChatVisible: true,
-				textToSend: ''
+				textToSend: '',
+				emptyChat: false
 			});
 		}
 	},
@@ -26592,6 +26617,8 @@ var Chat = React.createClass({
 		var chats = this.state.searchingChat ? this.state.filteredChats : this.state.store.chats;
 		var searchChatValue = ChatStore.getSearchChatValue();
 
+		console.log(this.state.store.chats);
+
 		return React.createElement(
 			'div',
 			null,
@@ -26599,6 +26626,7 @@ var Chat = React.createClass({
 			React.createElement(ChatContainer, {
 				visible: this.state.visible,
 				singleChatVisible: this.state.singleChatVisible,
+				emptyChat: this.state.emptyChat,
 				chats: chats,
 				searchingChat: this.state.searchingChat,
 				activeChat: activeChat,
@@ -26669,6 +26697,7 @@ var ChatContainer = React.createClass({
 		activeChat: React.PropTypes.number,
 		visible: React.PropTypes.bool,
 		singleChatVisible: React.PropTypes.bool,
+		emptyChat: React.PropTypes.bool.isRequired,
 		searchingChat: React.PropTypes.bool.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
@@ -26686,12 +26715,21 @@ var ChatContainer = React.createClass({
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 
+		var chat;
+		if (this.props.emptyChat === false) {
+			chat = this.props.chats[this.props.activeChat];
+		} else {
+			//create emptyChat
+			chat = {};
+		}
+
 		singleChat = null;
-		if (this.props.activeChat !== null && this.props.activeChat !== "" && this.props.activeChat >= 0) {
+		if (this.props.activeChat !== null && this.props.activeChat !== "" && this.props.activeChat >= 0 || this.props.emptyChat) {
 			singleChat = React.createElement(SingleChat, {
 				value: this.props.value,
 				visible: this.props.singleChatVisible,
-				chat: this.props.chats[this.props.activeChat],
+				emptyChat: this.props.emptyChat,
+				chat: chat,
 				closeSingleChatFn: this.props.closeSingleChatFn,
 				onChangeInputChatFn: this.props.onChangeInputChatFn,
 				sendFn: this.props.sendFn,
@@ -27144,6 +27182,7 @@ const DetailsList = React.createClass({
 
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		user_id: React.PropTypes.number,
 		isOwnerOfProfile: React.PropTypes.bool,
 		idUserLogged: React.PropTypes.number, //in order to know if the dvd belongs to the user in details
 		list: React.PropTypes.array,
@@ -27210,6 +27249,7 @@ const DetailsList = React.createClass({
 						});
 					} else {
 						gameItem = React.createElement(GameItem, {
+							user_id: self.props.user_id,
 							isOwnerOfProfile: self.props.isOwnerOfProfile,
 							isProfile: self.props.isProfile,
 							console: element.console,
@@ -27284,6 +27324,7 @@ const DetailsMainContainer = React.createClass({
 
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		user_id: React.PropTypes.number,
 		isOwnerOfProfile: React.PropTypes.bool,
 		idUserLogged: React.PropTypes.number,
 		game: React.PropTypes.object,
@@ -27384,6 +27425,7 @@ const DetailsMainContainer = React.createClass({
 				React.createElement(DetailsList, {
 					console: this.props.console,
 					isProfile: this.props.isProfile,
+					user_id: this.props.user_id,
 					isOwnerOfProfile: this.props.isOwnerOfProfile,
 					idUserLogged: this.props.idUserLogged,
 					list: this.props.list,
@@ -27645,6 +27687,7 @@ const GameItem = React.createClass({
 		key: React.PropTypes.number.isRequired,
 		id: React.PropTypes.number, //in order to know if update or if create a dvd
 		isProfile: React.PropTypes.bool.isRequired, //in order to know if we are in the profile page
+		user_id: React.PropTypes.number, //in order to know if update or if create a dvd
 		name: React.PropTypes.string.isRequired,
 		cover: React.PropTypes.string.isRequired,
 		both: React.PropTypes.bool,
@@ -27978,7 +28021,7 @@ const GameItem = React.createClass({
 
 	_openChatClickHandler: function (e) {
 		e.stopPropagation();
-		this.props.openChatFn(this.props.id);
+		this.props.openChatFn(this.props.user_id);
 	},
 
 	render: function () {
@@ -28706,8 +28749,10 @@ var ItemChat = React.createClass({
 	},
 
 	render: function () {
-		var img = this.props.user.pic;
-		if (!img) {
+		var img;
+		if (this.props.user && this.props.user.pic) {
+			img = this.props.user.pic;
+		} else {
 			img = Constants.genericProfile;
 		}
 		return React.createElement(
@@ -29000,13 +29045,13 @@ const Profile = React.createClass({
 		if (typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			isOwnerOfProfile = true;
 		}
-
 		return React.createElement(
 			'div',
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
 			React.createElement(DetailsMainContainer, {
 				isProfile: true,
+				user_id: this.state.profile.profile.id,
 				isOwnerOfProfile: isOwnerOfProfile,
 				console: Constants.consoles.both,
 				list: this.state.profile.list,
@@ -29412,6 +29457,7 @@ var SingleChat = React.createClass({
 	propTypes: {
 		value: React.PropTypes.string,
 		visible: React.PropTypes.bool,
+		emptyChat: React.PropTypes.bool.isRequired,
 		chat: React.PropTypes.object.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
@@ -29435,16 +29481,22 @@ var SingleChat = React.createClass({
 				messages.push(React.createElement(SingleMessage, { key: element.messageId, message: element.message, time: time, user: this.props.chat.user, mine: element.mine }));
 			}.bind(this));
 		}
+
 		return React.createElement(
 			'div',
-			{ id: 'singleChat', className: "singleChat " + visible },
+			{ id: 'singleChat', className: "singleChat " + visible + (this.props.emptyChat ? " showLoadingChat" : "") },
+			React.createElement(
+				'div',
+				{ className: 'chatLoading' },
+				'Loading...'
+			),
 			React.createElement(
 				'div',
 				{ className: 'titleContainer' },
 				React.createElement(
 					'span',
 					null,
-					this.props.chat.user.nickname
+					this.props.emptyChat ? "" : this.props.chat.user.nickname
 				),
 				React.createElement('button', { className: 'closeButton', onClick: this.props.closeSingleChatFn })
 			),
@@ -29762,7 +29814,7 @@ var _store = {
 		game: {
 			name: 'cargando...',
 			min_price: 0,
-			cover: 'img/cover.png',
+			cover: Constants.genericCover,
 			higher_prices: false,
 			city: null
 		},
@@ -30213,6 +30265,8 @@ var _retrieveMessages = function (chat) {
 
 var ChatStore = assign({}, EventEmitter.prototype, {
 
+	sb: null,
+
 	getStore: function () {
 		return _store;
 	},
@@ -30235,15 +30289,32 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 	},
 
 	chatOpenWithUserId: function (user_id) {
-		user_id = "2"; //TODO change
-		var chat = _store.chats.find(element => element.members[0].userId === user_id || element.members[1].userId === user_id);
+		var chat = _store.chats.find(element => element.members[0].userId === user_id.toString() || element.members[1].userId === user_id.toString());
 		if (chat != null) {
 			//send event to open existing chat
-			this.emit(Constants.eventType.openExistingChat, chat.id);
+			this.chatOpen(chat.id);
 		} else {
-			//create and open chat
 			//And send event to open new chat 
 			this.emit(Constants.eventType.openNewChat);
+
+			//create new chat
+			//Creating new chat with truequeGamer fb account
+			var userIds = [user_id.toString()];
+			console.log(_store);
+			console.log(userIds);
+			this.sb.GroupChannel.createChannelWithUserIds(userIds, true, function (channel, error) {
+				if (error) {
+					this.emit(Constants.eventType.chatNotCreated);
+					console.log(error);
+					return;
+				}
+				console.log(channel);
+				_store.chats.push(channel);
+				_store.chats = this._addAttributesToChannelList(_store.chats);
+
+				//emmit event with new chat
+				this.emit(Constants.eventType.chatsUpdatedAndOpen, _store.chats, channel.id);
+			}.bind(this));
 		}
 	},
 
@@ -30343,27 +30414,15 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	run: function () {
 		//Connect to the sendbird api and get the list for chats
-		var sb = new SendBird({
+		this.sb = new SendBird({
 
 			appId: "4094F42A-A4A3-4AB1-B71A-FCF72D92A0E3"
 		});
 
-		sb.connect(_store.user.id, _store.user.chat_token, function (user, error) {
-
-			//Creating new chat with truequeGamer fb account
-			//console.log("user id",_store.user.id);
-			//var userIds = [41,2];
-			//sb.GroupChannel.createChannelWithUserIds(userIds, true, function(channel, error){
-			//	if(error){
-			//		console.log(error);
-			//		return;
-			//	}
-			//	console.log(channel);
-			//	
-			//});
+		this.sb.connect(_store.user.id, _store.user.chat_token, function (user, error) {
 
 			//Getting the list of group channels
-			var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
+			var channelListQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
 			channelListQuery.includeEmpty = false; //must be false
 
 			if (channelListQuery.hasNext) {
@@ -30372,37 +30431,16 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 						console.error(error);
 						return;
 					}
-					channelList.map(function (chat) {
-						//get unread chats
-
-						chat.id = chat.url.replace("sendbird_group_channel_", "");
-						chat.messages = [];
-						if (chat.lastMessage) {
-							if (parseInt(chat.lastMessage.sender.userId, 10) === _store.user.id) {
-								chat.lastMessage.mine = true;
-							} else {
-								chat.lastMessage.mine = false;
-							}
-							chat.messages.push(chat.lastMessage);
-						};
-						let otherUser = chat.members[0];
-						if (otherUser.userId === user.userId) {
-							otherUser = chat.members[1];
-						}
-						chat.updating = false;
-						chat.full = false;
-						chat.user = otherUser;
-						return chat;
-					});
+					channelList = this._addAttributesToChannelList(channelList);
 					_store.chats = channelList;
 					self.getUnreadMessageCount();
-				});
+				}.bind(this));
 			}
-		});
+		}.bind(this));
 
 		//Receiving messages		
 		var UNIQUE_CHANNEL_HANDLER = "12";
-		var ChannelHandler = new sb.ChannelHandler();
+		var ChannelHandler = new this.sb.ChannelHandler();
 		let self = this;
 		ChannelHandler.onMessageReceived = function (channel, message) {
 			let chat = _store.chats.find(element => element.id === channel.id);
@@ -30410,7 +30448,35 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			self.emit(Constants.eventType.messageAdded);
 			self.getUnreadMessageCount();
 		};
-		sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
+		this.sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
+	},
+
+	_addAttributesToChannelList: function (channelList) {
+
+		channelList.map(function (chat) {
+			//get unread chats
+
+			chat.id = chat.url.replace("sendbird_group_channel_", "");
+			chat.messages = [];
+			if (chat.lastMessage) {
+				if (parseInt(chat.lastMessage.sender.userId, 10) === _store.user.id) {
+					chat.lastMessage.mine = true;
+				} else {
+					chat.lastMessage.mine = false;
+				}
+				chat.messages.push(chat.lastMessage);
+			};
+			let otherUser = chat.members[0];
+			if (otherUser.userId === _store.user.id) {
+				otherUser = chat.members[1];
+			}
+			chat.updating = false;
+			chat.full = false;
+			chat.user = otherUser;
+			return chat;
+		});
+
+		return channelList;
 	},
 
 	addOnMessageAddedListener: function (callback) {
@@ -30443,6 +30509,22 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	removeOnOpenExistingChatListener: function (callback) {
 		this.removeListener(Constants.eventType.openExistingChat, callback);
+	},
+
+	addChatsUpdateAndOpenListener: function (callback) {
+		this.on(Constants.eventType.chatsUpdatedAndOpen, callback);
+	},
+
+	removeChatsUpdateAndOpenListener: function (callback) {
+		this.removeListener(Constants.eventType.chatsUpdatedAndOpen, callback);
+	},
+
+	addChatNotCreatedListener: function (callback) {
+		this.on(Constants.eventType.chatNotCreated, callback);
+	},
+
+	removeChatNotCreatedListener: function (callback) {
+		this.removeListener(Constants.eventType.chatNotCreated, callback);
 	},
 
 	getChats: function () {
@@ -30567,6 +30649,8 @@ const Constants = {
 		suggestionsRefresh: 'suggestions_refresh',
 		search: 'search',
 		chatsUpdated: 'chats_updated',
+		chatsUpdatedAndOpen: 'chats_updated_and_open',
+		chatNotCreated: 'chat_not_created',
 		messageAdded: 'message_added',
 		userUpdated: 'user_update',
 		resultsUpdated: 'results_updated',

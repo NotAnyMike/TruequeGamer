@@ -26639,17 +26639,23 @@ var Chat = React.createClass({
 			textToSend: '',
 			searchingUser: false,
 			filteredChats: null,
-			searchingChat: false
+			searchingChat: false,
+			loadingChat: false,
+			emptyChat: false
 		};
 	},
 
 	componentDidMount: function () {
+		ChatStore.addOnOpenNewChatListener(this.openNewChat);
+		ChatStore.addOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.addOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.addChatsUpdatedListener(this.onChatsUpdated);
 		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
 	},
 
 	componentWillUnmount: function () {
+		ChatStore.removeOnOpenNewChatListener(this.openNewChat);
+		ChatStore.removeOnOpenExistingChatListener(this.openExistingChat);
 		ChatStore.removeOnMessageAddedListener(this.onMessageAdded);
 		ChatStore.removeChatsUpdatedListener(this.onChatsUpdated);
 		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
@@ -26667,7 +26673,6 @@ var Chat = React.createClass({
 	},
 
 	onUnreadMessageCountUpdated: function () {
-		console.log("unread msg: " + this.state.store.unread);
 		this.forceUpdate();
 	},
 
@@ -26699,7 +26704,11 @@ var Chat = React.createClass({
 		});
 	},
 
-	openCertainChatFn: function (id) {
+	openNewChat: function () {
+		cosole.log("openNEwChat");
+	},
+
+	openExistingChat: function (id) {
 		//get the position of the chat with id id
 		if (this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null) {
 			this.setState({
@@ -26708,6 +26717,12 @@ var Chat = React.createClass({
 				singleChatVisible: true,
 				textToSend: ''
 			});
+		}
+	},
+
+	openCertainChatFn: function (id) {
+		//get the position of the chat with id id
+		if (this.state.activeChat !== id || this.state.singleChatVisible === false || this.state.singleChatVisible === null) {
 			Actions.chatOpen(id);
 		}
 	},
@@ -26751,7 +26766,6 @@ var Chat = React.createClass({
 			var filteredChats = this.state.store.chats.filter(chat => {
 				return !!chat.members.find(member => member.nickname.toLowerCase().indexOf(valueToSearch.toLowerCase()) >= 0 && member.userId !== "" + this.state.store.user.id);
 			});
-			console.log(filteredChats);
 			this.setState({
 				searchingChat: true,
 				filteredChats: filteredChats
@@ -26781,6 +26795,8 @@ var Chat = React.createClass({
 			React.createElement(ChatContainer, {
 				visible: this.state.visible,
 				singleChatVisible: this.state.singleChatVisible,
+				loadingChat: this.state.loadingChat,
+				emptyChat: this.state.emptyChat,
 				chats: chats,
 				searchingChat: this.state.searchingChat,
 				activeChat: activeChat,
@@ -26851,6 +26867,8 @@ var ChatContainer = React.createClass({
 		activeChat: React.PropTypes.number,
 		visible: React.PropTypes.bool,
 		singleChatVisible: React.PropTypes.bool,
+		loadingChat: React.PropTypes.bool.isRequired,
+		emptyChat: React.PropTypes.bool.isRequired,
 		searchingChat: React.PropTypes.bool.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		closeChatFn: React.PropTypes.func.isRequired,
@@ -26868,12 +26886,22 @@ var ChatContainer = React.createClass({
 		var visible;
 		if (this.props.visible === false) visible = "out";else if (this.props.visible === true) visible = "in";else visible = "";
 
+		var chat;
+		if (this.props.emptyChat === false) {
+			chat = this.props.chats[this.props.activeChat];
+			console.log(chat);
+		} else {
+			//create emptyChat
+			chat = {};
+		}
+
 		singleChat = null;
 		if (this.props.activeChat !== null && this.props.activeChat !== "" && this.props.activeChat >= 0) {
 			singleChat = React.createElement(SingleChat, {
 				value: this.props.value,
 				visible: this.props.singleChatVisible,
-				chat: this.props.chats[this.props.activeChat],
+				loadingChat: this.props.loadingChat,
+				chat: chat,
 				closeSingleChatFn: this.props.closeSingleChatFn,
 				onChangeInputChatFn: this.props.onChangeInputChatFn,
 				sendFn: this.props.sendFn,
@@ -27094,6 +27122,7 @@ const React = require('react'),
       Header = require('./header.js'),
       Footer = require('./footer.js'),
       DetailsMainContainer = require('./detailsMainContainer.js'),
+      Warning = require('./warning.js'),
       browserHistory = require('react-router').browserHistory;
 
 const Details = React.createClass({
@@ -27103,13 +27132,13 @@ const Details = React.createClass({
 	propTypes: {},
 
 	goToProfile: function (username) {
-		console.log(username);
 		Actions.goToProfile(username);
 	},
 
 	getInitialState: function () {
 		AppStore.getGamesAvailable(this.props.route.console, this.props.params.gameName);
 		var store = AppStore.getStore();
+		store['showWarning'] = null;
 		return store;
 	},
 
@@ -27133,6 +27162,22 @@ const Details = React.createClass({
 		browserHistory.push(route);
 	},
 
+	onClickActionButtonWarning: function () {
+		window.location.assign(Constants.routes.facebook);
+	},
+
+	onCloseWarning: function () {
+		this.setState({ showWarning: false });
+	},
+
+	openChatClick: function (username) {
+		if (this.state.user.logged === false) {
+			this.setState({ showWarning: true });
+		} else {
+			//TODO open chat
+		}
+	},
+
 	render: function () {
 
 		var headerVersion;
@@ -27154,23 +27199,20 @@ const Details = React.createClass({
 			chat = React.createElement(Chat, { user: this.state.user });
 		}
 
-		var isOwnerOfProfile = false;
-		if (typeof this.state.user.id !== 'undefined' && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
-			isOwnerOfProfile = true;
-		}
-
 		return React.createElement(
 			'div',
 			{ id: 'semi_body', className: this.props.route.console },
 			React.createElement(Header, { version: headerVersion, user: this.state.user }),
 			React.createElement(DetailsMainContainer, {
 				isProfile: false,
-				isOwnerOfProfile: isOwnerOfProfile,
+				idUserLogged: this.state.user.logged ? this.state.user.id : null,
 				game: this.state.gameDetails.game,
 				console: this.props.route.console,
 				list: this.state.gameDetails.list,
-				goToProfileFn: this.goToProfile
+				goToProfileFn: this.goToProfile,
+				openChatFn: this.openChatClick
 			}),
+			React.createElement(Warning, { display: this.state.showWarning, actionFn: this.onClickActionButtonWarning, closeFn: this.onCloseWarning }),
 			React.createElement(Footer, { version: footerVersion }),
 			chat
 		);
@@ -27180,7 +27222,7 @@ const Details = React.createClass({
 
 module.exports = Details;
 
-},{"../stores/appStore.js":282,"../utils/actions.js":284,"../utils/constants.js":285,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"react":239,"react-router":37}],251:[function(require,module,exports){
+},{"../stores/appStore.js":282,"../utils/actions.js":284,"../utils/constants.js":285,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"./warning.js":279,"react":239,"react-router":37}],251:[function(require,module,exports){
 const React = require('react'),
       Constants = require('../utils/constants.js'),
       functions = require('../utils/functions.js');
@@ -27313,6 +27355,7 @@ const DetailsList = React.createClass({
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
 		isOwnerOfProfile: React.PropTypes.bool,
+		idUserLogged: React.PropTypes.number, //in order to know if the dvd belongs to the user in details
 		list: React.PropTypes.array,
 		console: React.PropTypes.string.isRequired,
 		goToProfileFn: React.PropTypes.func,
@@ -27320,14 +27363,16 @@ const DetailsList = React.createClass({
 		changeHandlerForSearchInputFn: React.PropTypes.func,
 		onDeleteButtonClickFn: React.PropTypes.func,
 		onExchangedButtonClickFn: React.PropTypes.func,
-		onSoldButtonClickFn: React.PropTypes.func
+		onSoldButtonClickFn: React.PropTypes.func,
+		openChatFn: React.PropTypes.func,
+		goToDetailsFn: React.PropTypes.func
 	},
 
 	render: function () {
 		var consoleVar = this.props.console;
 		var self = this;
 
-		var className = "gameList " + this.props.console + (this.props.isOwnerOfProfile ? " own" : "") + (this.props.isProfile ? "" : " details");
+		var className = "gameList " + this.props.console + (this.props.isProfile && this.props.isOwnerOfProfile ? " own" : "") + (this.props.isProfile ? "" : " details");
 
 		return React.createElement(
 			'ul',
@@ -27393,12 +27438,15 @@ const DetailsList = React.createClass({
 							changeHandlerForSearchInputFn: self.props.changeHandlerForSearchInputFn,
 							onDeleteButtonClickFn: self.props.onDeleteButtonClickFn,
 							onExchangedButtonClickFn: self.props.onExchangedButtonClickFn,
-							onSoldButtonClickFn: self.props.onSoldButtonClickFn
+							onSoldButtonClickFn: self.props.onSoldButtonClickFn,
+							goToDetailsFn: self.props.goToDetailsFn,
+							openChatFn: self.props.openChatFn
 						});
 					}
 				} else {
 					gameItem = React.createElement(GameItem, {
 						isProfile: self.props.isProfile,
+						isOwnerOfDvd: self.props.idUserLogged === element.pk,
 						console: consoleProp,
 						psNoExchange: !element.psExchange,
 						xboxNoExchange: !element.xboxExchange,
@@ -27413,13 +27461,16 @@ const DetailsList = React.createClass({
 						cover: element.cover,
 						name: element.name,
 						both: consoleVar === Constants.consoles.both ? true : false,
+						psNew: element.psNew,
+						xboxNew: element.xboxNew,
 						psUsed: element.psUsed,
 						xboxUsed: element.xboxUsed,
 						comment: element.comment,
 						goToProfileFn: self.props.goToProfileFn,
 						id: element.pk,
 						key: element.pk,
-						username: element.username
+						username: element.username,
+						openChatFn: self.props.openChatFn
 					});
 				}
 				return gameItem;
@@ -27444,6 +27495,7 @@ const DetailsMainContainer = React.createClass({
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
 		isOwnerOfProfile: React.PropTypes.bool,
+		idUserLogged: React.PropTypes.number,
 		game: React.PropTypes.object,
 		console: React.PropTypes.string.isRequired,
 		list: React.PropTypes.array.isRequired,
@@ -27457,8 +27509,8 @@ const DetailsMainContainer = React.createClass({
 		onDeleteButtonClickFn: React.PropTypes.func,
 		onExchangedButtonClickFn: React.PropTypes.func,
 		onSoldButtonClickFn: React.PropTypes.func,
-		openChatFn: React.PropTypes.func
-	},
+		openChatFn: React.PropTypes.func,
+		goToDetailsFn: React.PropTypes.func },
 
 	render: function () {
 		var detailsGameLabelVar;
@@ -27543,13 +27595,16 @@ const DetailsMainContainer = React.createClass({
 					console: this.props.console,
 					isProfile: this.props.isProfile,
 					isOwnerOfProfile: this.props.isOwnerOfProfile,
+					idUserLogged: this.props.idUserLogged,
 					list: this.props.list,
 					goToProfileFn: this.props.goToProfileFn,
 					onPublishGameFn: this.props.onPublishGameFn,
 					changeHandlerForSearchInputFn: this.props.changeHandlerForSearchInputFn,
 					onDeleteButtonClickFn: this.props.onDeleteButtonClickFn,
 					onExchangedButtonClickFn: this.props.onExchangedButtonClickFn,
-					onSoldButtonClickFn: this.props.onSoldButtonClickFn
+					onSoldButtonClickFn: this.props.onSoldButtonClickFn,
+					openChatFn: this.props.openChatFn,
+					goToDetailsFn: this.props.goToDetailsFn
 				})
 			)
 		);
@@ -27822,6 +27877,8 @@ const GameItem = React.createClass({
 		psNew: React.PropTypes.bool, //in order to know if all of the grouped games are new
 		psXbox: React.PropTypes.bool,
 		username: React.PropTypes.string,
+		openChatFn: React.PropTypes.func,
+		isOwnerOfDvd: React.PropTypes.func,
 
 		/**** this extra values is to show the gameItem in the profile page ****/
 		//Console
@@ -27836,7 +27893,9 @@ const GameItem = React.createClass({
 		suggestions: React.PropTypes.array, //the list of all suggestions
 		onPublishGameFn: React.PropTypes.func, //in order to fetch a put or post request
 		changeHandlerForSearchInputFn: React.PropTypes.func, //in order to show suggestions in the form
-		updatingNameOfGameItemFn: React.PropTypes.func },
+		updatingNameOfGameItemFn: React.PropTypes.func, //needed when the user choses a suggestion
+		goToDetailsFn: React.PropTypes.func
+	},
 
 	componentDidMount: function () {
 		if (this._isNew() === false) {
@@ -28127,6 +28186,11 @@ const GameItem = React.createClass({
 		this.props.onSoldButtonClickFn(this.props.id);
 	},
 
+	_openChatClickHandler: function (e) {
+		e.stopPropagation();
+		this.props.openChatFn(this.props.id);
+	},
+
 	render: function () {
 
 		var temp_id = 0; //Only to controll the readio buttons on  the new from in profile page
@@ -28146,6 +28210,7 @@ const GameItem = React.createClass({
 		var onDeleteButtonClick = null;
 		var onExchangedButtonClick = null;
 		var onSoldButtonClick = null;
+		var openChatFn = null;
 		var changeNameHandler = null;
 		var changePriceHandler = null;
 		var changeUsedHandler = null;
@@ -28259,6 +28324,7 @@ const GameItem = React.createClass({
 			changeExchangeHandler = this._changeExchangeHandler;
 			changeNoExchangeHandler = this._changeNoExchangeHandler;
 			changeCommentHandler = this._changeCommentHandler;
+			openChatFn = this._openChatClickHandler;
 			//pricePs = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
 			pricePs = typeof this.props.price === 'undefined' || this.props.price === null ? "" : Functions.addDecimalPoints(this.props.price);
 			//priceXbox = typeof this.state.editing.price === 'undefined' || this.state.editing.price === null ? "" : Functions.addDecimalPoints(this.state.editing.price);
@@ -28279,7 +28345,7 @@ const GameItem = React.createClass({
 			}
 		} else {
 
-			className = consoleVar + (this.props.exclusive ? " exclusive" : "") + (this.props.notOnly ? " notOnly" : " only");
+			className = consoleVar + (this.props.isOwnerOfDvd ? " own" : "") + (this.props.exclusive ? " exclusive" : "") + (this.props.notOnly ? " notOnly" : " only");
 			if (this.props.both || this.props.console === Constants.consoles.xbox) {
 				className += (this.props.xboxNoExchange ? " xboxNoExchange" : " xboxExchange") + ( //adding some stuff here, if ater a while it is still working then remove this comment
 				this.props.xboxNoSell ? " xboxNoSell" : "");
@@ -28288,14 +28354,25 @@ const GameItem = React.createClass({
 				className += (this.props.psNoExchange ? " psNoExchange" : " psExchange") + ( //adding some stuff here, if ater a while it is still working then remove this comment
 				this.props.psNoSell ? " psNoSell" : "");
 			}
-			if (this.props.both && this.props.console === Constants.consoles.ps && this.props.psUsed) {
-				className += " psUsed";
+			if (this.props.both || this.props.console === Constants.consoles.ps) {
+				if (this.props.psUsed) {
+					className += " psUsed";
+				}
+				if (this.props.psNew) {
+					className += " psNew";
+				}
 			}
-			if ((this.props.both || this.props.console === Constants.consoles.xbox) && this.props.xboxUsed) {
-				className += " xboxUsed";
+			if (this.props.both || this.props.console === Constants.consoles.xbox) {
+				if (this.props.xboxUsed) {
+					className += " xboxUsed";
+				}
+				if (this.props.xboxNew) {
+					className += " xboxNew";
+				}
 			}
 
 			onClickComponent = this._goToPage;
+			openChatFn = this._openChatClickHandler;
 			cover = this.props.cover;
 			name = this.props.name;
 			onMouseOver1 = this.props.console === Constants.consoles.xbox ? this._onMouseOver : null;
@@ -28409,7 +28486,7 @@ const GameItem = React.createClass({
 				),
 				React.createElement(
 					'button',
-					{ className: 'chatButton' },
+					{ className: 'chatButton', onClick: openChatFn },
 					React.createElement('span', null)
 				)
 			),
@@ -28560,6 +28637,7 @@ var React = require('react'),
     IsotypeContainer = require('./isotypeContainer.js'),
     ProfileLink = require('./profileLink.js'),
     SearchButtonHeader = require('./searchButtonHeader.js'),
+    browserHistory = require('react-router').browserHistory,
     Constants = require('../utils/constants');
 
 module.exports = React.createClass({
@@ -28574,19 +28652,23 @@ module.exports = React.createClass({
 		return { version: Constants.header.versions.normal };
 	},
 
+	goToIndex: function () {
+		browserHistory.push(Constants.routes.index);
+	},
+
 	render: function () {
 		return React.createElement(
 			'header',
 			{ className: this.props.version },
 			React.createElement(SearchButtonHeader, null),
-			React.createElement(IsotypeContainer, { version: this.props.version }),
+			React.createElement(IsotypeContainer, { version: this.props.version, onIsotypeClickFn: this.goToIndex }),
 			React.createElement(ProfileLink, { user: this.props.user, version: this.props.version })
 		);
 	}
 
 });
 
-},{"../utils/constants":285,"./isotypeContainer.js":263,"./profileLink.js":267,"./searchButtonHeader.js":269,"react":239}],260:[function(require,module,exports){
+},{"../utils/constants":285,"./isotypeContainer.js":263,"./profileLink.js":267,"./searchButtonHeader.js":269,"react":239,"react-router":37}],260:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -28757,17 +28839,22 @@ module.exports = React.createClass({
 
 
 	propTypes: {
-		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
+		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative]),
+		onClickFn: React.PropTypes.func.isRequired
 	},
 
 	getDefaultProps: function () {
 		return { version: Constants.header.versions.normal };
 	},
 
+	_onClickHandler: function () {
+		this.props.onClickFn();
+	},
+
 	render: function () {
 		return React.createElement(
 			'figure',
-			{ className: this.props.version },
+			{ className: this.props.version, onClick: this._onClickHandler },
 			React.createElement('img', { className: 'isotype normal', src: '/img/isotype.png' }),
 			React.createElement('img', { className: 'isotype negative', src: '/img/isotype_positive.png' })
 		);
@@ -28788,7 +28875,8 @@ module.exports = React.createClass({
 
 
 	propTypes: {
-		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
+		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative]),
+		onIsotypeClickFn: React.PropTypes.func.isRequired
 	},
 
 	getDefaultProps: function () {
@@ -28799,7 +28887,7 @@ module.exports = React.createClass({
 		return React.createElement(
 			'div',
 			{ className: 'isotypeContainer' },
-			React.createElement(Isotype, { version: this.props.version }),
+			React.createElement(Isotype, { version: this.props.version, onClickFn: this.props.onIsotypeClickFn }),
 			React.createElement(Slogan, { version: this.props.version })
 		);
 	}
@@ -28901,6 +28989,7 @@ module.exports = React.createClass({
 });
 
 },{"./filterMainContainer.js":256,"./searchButton.js":268,"./searchField.js":270,"react":239}],266:[function(require,module,exports){
+(function (process){
 const React = require('react'),
       AppStore = require('../stores/appStore.js'),
       Constants = require('../utils/constants.js'),
@@ -28909,7 +28998,9 @@ const React = require('react'),
       Footer = require('./footer.js'),
       DetailsMainContainer = require('./detailsMainContainer.js'),
       Warning = require('./warning.js'),
-      Functions = require('../utils/functions.js');
+      Functions = require('../utils/functions.js'),
+      Actions = require('../utils/actions.js'),
+      browserHistory = require('react-router').browserHistory;
 
 const Profile = React.createClass({
 	displayName: 'Profile',
@@ -28920,10 +29011,13 @@ const Profile = React.createClass({
 	typingTimer: null,
 
 	getInitialState: function () {
-		AppStore.getProfile(this.props.params.username);
-		var store = AppStore.getStore();
-		store['showWarning'] = null;
-		return store;
+		return this._getStore(this.props.params.username);
+	},
+
+	componentWillReceiveProps: function (nextProps) {
+		if (this.props.params.username !== nextProps.params.username) {
+			this.setState(this._getStore(nextProps.params.username));
+		}
 	},
 
 	componentDidMount: function () {
@@ -28932,6 +29026,34 @@ const Profile = React.createClass({
 
 	componentWillUnmount: function () {
 		AppStore.removeOnProfileUpdatesListener(this.onProfileUpdates);
+	},
+
+	_getStore: function (username) {
+		AppStore.getProfile(username);
+		var store = AppStore.getStore();
+		store['showWarning'] = null;
+		return store;
+	},
+
+	goToDetails: function (name) {
+		var route = "";
+		if (process.env.NODE_ENV === 'production') {
+			//Get console from store search
+			var consoleVar = Constants.routes.details.both;
+			/*if(this.state.search.xbox){
+   	if(this.state.search.ps){
+   		consoleVar = Constants.routes.details.both;
+   	}else{
+   		consoleVar = Constants.routes.details.xbox;
+   	}
+   }else{
+   	consoleVar = Constants.routes.details.ps;
+   }*/
+			route = "/".concat(name, consoleVar);
+		} else {
+			route = "/until dawn/ps-xbox";
+		}
+		browserHistory.push(route);
 	},
 
 	onProfileUpdates: function () {
@@ -29060,14 +29182,15 @@ const Profile = React.createClass({
 	},
 
 	actionButtonWarning: function () {
-		window.location.assign("/login/facebook");
+		window.location.assign(Constants.routes.facebook);
 	},
 
-	openChat: function () {
+	openChat: function (username_id) {
 		if (this.state.user.logged === false) {
 			this.setState({ showWarning: true });
 		} else {
 			//TODO: open chat
+			Actions.openCertainChatWithUserId(username_id);
 		}
 	},
 
@@ -29107,7 +29230,8 @@ const Profile = React.createClass({
 				onDeleteButtonClickFn: this.onDeleteButtonClick,
 				onExchangedButtonClickFn: this.onExchangedButtonClick,
 				onSoldButtonClickFn: this.onSoldButtonClick,
-				openChatFn: this.openChat
+				openChatFn: this.openChat,
+				goToDetailsFn: this.goToDetails
 			}),
 			React.createElement(Footer, { version: footerVersion }),
 			chat,
@@ -29119,7 +29243,8 @@ const Profile = React.createClass({
 
 module.exports = Profile;
 
-},{"../stores/appStore.js":282,"../utils/constants.js":285,"../utils/functions.js":286,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"./warning.js":279,"react":239}],267:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"../stores/appStore.js":282,"../utils/actions.js":284,"../utils/constants.js":285,"../utils/functions.js":286,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"./warning.js":279,"_process":2,"react":239,"react-router":37}],267:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -29140,6 +29265,10 @@ module.exports = React.createClass({
 		browserHistory.push(ownProfileLink);
 	},
 
+	_logout: function () {
+		window.location.assign(Constants.routes.logout);
+	},
+
 	render: function () {
 		var loginUrl = "/login/facebook/?next=".concat(window.location.pathname);
 		var toReturn = React.createElement(
@@ -29150,15 +29279,24 @@ module.exports = React.createClass({
 		if (this.props.user.logged) {
 			toReturn = React.createElement(
 				'a',
-				{ onClick: this._goToMyProfile, className: "profileContainer " + this.props.version },
+				{ className: "profileContainer " + this.props.version },
 				React.createElement(
 					'span',
 					null,
-					this.props.user.first_name + " " + this.props.user.last_name
+					React.createElement(
+						'span',
+						{ onClick: this._goToMyProfile },
+						this.props.user.first_name + " " + this.props.user.last_name
+					),
+					React.createElement(
+						'span',
+						{ onClick: this._logout, className: 'dot-decorator' },
+						'Cerrar sesión'
+					)
 				),
 				React.createElement(
 					'figure',
-					null,
+					{ onClick: this._goToMyProfile },
 					React.createElement('img', { src: this.props.user.picture, alt: '' })
 				)
 			);
@@ -29310,7 +29448,6 @@ const SearchResults = React.createClass({
 
 	loadDetailsPage: function (name) {
 		var route = "";
-		//TODO: Change this hardcoded stuff
 		if (process.env.NODE_ENV === 'production') {
 			//Get console from store search
 			var consoleVar = "";
@@ -29489,6 +29626,7 @@ var SingleChat = React.createClass({
 	propTypes: {
 		value: React.PropTypes.string,
 		visible: React.PropTypes.bool,
+		loadingChat: React.PropTypes.bool, isRequired,
 		chat: React.PropTypes.object.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
@@ -29514,7 +29652,12 @@ var SingleChat = React.createClass({
 		}
 		return React.createElement(
 			'div',
-			{ id: 'singleChat', className: "singleChat " + visible },
+			{ id: 'singleChat', className: "singleChat " + visible + (this.props.loadingChat ? " showLoadingChat" : "") },
+			React.createElement(
+				'div',
+				{ className: 'chatLoading' },
+				'Loading...'
+			),
 			React.createElement(
 				'div',
 				{ className: 'titleContainer' },
@@ -30096,7 +30239,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 			var url = "";
 			if (process.env.NODE_ENV === "production") {
-				//TODO: CHANGE URL
 				url = '/api/game/'.concat(consoles, '/', newVariable, '/', sell, '/', stringValue, '/');
 			} else {
 				url = '/api/game_details/thewitcher.json';
@@ -30308,6 +30450,22 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			case Constants.actionType.changeSearchChatValue:
 				_setSearchChatValue(payload.value);
 				break;
+			case Constants.actionType.openCertainChatWithUserId:
+				ChatStore.chatOpenWithUserId(payload.value);
+				break;
+		}
+	},
+
+	chatOpenWithUserId: function (user_id) {
+		user_id = "2"; //TODO change
+		var chat = _store.chats.find(element => element.members[0].userId === user_id || element.members[1].userId === user_id);
+		if (chat != null) {
+			//send event to open existing chat
+			this.chatOpen(chat.id);
+		} else {
+			//create and open chat
+			//And send event to open new chat 
+			this.emit(Constants.eventType.openNewChat);
 		}
 	},
 
@@ -30316,6 +30474,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		var chat = _store.chats.find(element => element.id === id);
 		if (chat != null) {
 			//has more than 1 message?
+			this.emit(Constants.eventType.openExistingChat, id);
 			if (chat.messages.length <= 1 || true) {
 				//to change
 				//is it full
@@ -30459,7 +30618,6 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 					});
 					_store.chats = channelList;
 					self.getUnreadMessageCount();
-					console.log(channelList);
 				});
 			}
 		});
@@ -30491,6 +30649,22 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	removeOnUnreadMessageCountUpdatedListener: function (callback) {
 		this.removeListener(Constants.eventType.unreadMessageCountUpdate, callback);
+	},
+
+	addOnOpenNewChatListener: function (callback) {
+		this.on(Constants.eventType.openNewChat, callback);
+	},
+
+	removeOnOpenNewChatListener: function (callback) {
+		this.removeListener(Constants.eventType.openNewChat, callback);
+	},
+
+	addOnOpenExistingChatListener: function (callback) {
+		this.on(Constants.eventType.openExistingChat, callback);
+	},
+
+	removeOnOpenExistingChatListener: function (callback) {
+		this.removeListener(Constants.eventType.openExistingChat, callback);
 	},
 
 	getChats: function () {
@@ -30573,6 +30747,13 @@ var Actions = {
 			actionType: Constants.actionType.goToProfile,
 			value: username
 		});
+	},
+
+	openCertainChatWithUserId: function (user_id) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.openCertainChatWithUserId,
+			value: user_id
+		});
 	}
 
 };
@@ -30600,7 +30781,8 @@ const Constants = {
 		chatOpen: 'chat_open',
 		changeSearchChatValue: 'change_search_chat_value',
 		goToDetails: 'go_to_details_page',
-		goToProfile: 'go_to_profile_page'
+		goToProfile: 'go_to_profile_page',
+		openCertainChatWithUserId: 'open_certain_chat_user_id'
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -30615,7 +30797,9 @@ const Constants = {
 		goToProfile: 'go_to_profile',
 		gamesAvailableUpdated: 'games_available_for_a_game_updated',
 		availableGamesUpadate: 'available_games_update',
-		profileUpdated: 'profile_updated'
+		profileUpdated: 'profile_updated',
+		openExistingChat: 'open_existing_chat',
+		openNewChat: 'open_new_chat'
 	},
 	filter: {
 		not_used: 'not_used',
@@ -30655,6 +30839,8 @@ const Constants = {
 		},
 		aboutUs: '/aboutus',
 		informBug: '/informBug',
+		facebook: '/login/facebook',
+		logout: '/logout',
 		api: {
 			games: '/api/games/[console]/[used]/[exchange]/[name]/',
 			publishDvd: '/api/game/',

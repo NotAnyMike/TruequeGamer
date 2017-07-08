@@ -7,6 +7,7 @@ var SingleChat = React.createClass({
 	propTypes: {
 		value: React.PropTypes.string,
 		visible: React.PropTypes.bool,
+		emptyChat: React.PropTypes.bool.isRequired,
 		chat: React.PropTypes.object.isRequired,
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
@@ -35,10 +36,12 @@ var SingleChat = React.createClass({
 				messages.push(<SingleMessage key={element.messageId} message={element.message} time={time} user={this.props.chat.user} mine={element.mine} />);
 			}.bind(this))
 		}
+
 		return(				
-			<div id="singleChat" className={"singleChat " + visible}>
+			<div id="singleChat" className={"singleChat " + visible + (this.props.emptyChat ? " showLoadingChat": "")}>
+				<div className="chatLoading">Loading...</div>
 				<div className="titleContainer">
-					<span>{this.props.chat.user.nickname}</span>
+					<span>{this.props.emptyChat ? "" : this.props.chat.user.nickname}</span>
 					<button className="closeButton" onClick={this.props.closeSingleChatFn}></button>
 				</div>
 				<ul className="chatMessages">

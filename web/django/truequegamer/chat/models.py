@@ -74,6 +74,8 @@ def get_name(instance):
     
 def create_auth_function(instance):
     errorCode = 0;
+    print "tokkkkkkkkken"
+    print token.API_TOKEN
     headers = {'Api-Token' : token.API_TOKEN}
     nickname = get_name(instance) 
     values = {

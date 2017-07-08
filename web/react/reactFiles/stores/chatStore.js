@@ -46,6 +46,8 @@ var _retrieveMessages = function(chat){
 
 var ChatStore = assign({}, EventEmitter.prototype, {
 
+	sb: null,
+
 	getStore: function(){
 		return _store;
 	},
@@ -68,15 +70,32 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 	},
 
 	chatOpenWithUserId: function(user_id){
-		user_id = "2" //TODO change
-		var chat = _store.chats.find(element => element.members[0].userId === user_id || element.members[1].userId === user_id);
+		var chat = _store.chats.find(element => element.members[0].userId === user_id.toString() || element.members[1].userId === user_id.toString());
 		if(chat != null){
 			//send event to open existing chat
-			this.emit(Constants.eventType.openExistingChat, chat.id)
+			this.chatOpen(chat.id)
 		}else{
-			//create and open chat
 			//And send event to open new chat 
 			this.emit(Constants.eventType.openNewChat)
+
+			//create new chat
+			//Creating new chat with truequeGamer fb account
+			var userIds = [user_id.toString()]
+			console.log(_store);
+			console.log(userIds);
+			this.sb.GroupChannel.createChannelWithUserIds(userIds, true, function(channel, error){
+				if(error){
+					this.emit(Constants.eventType.chatNotCreated);
+					console.log(error);
+					return;
+				}
+				console.log(channel);
+				_store.chats.push(channel);
+				_store.chats = this._addAttributesToChannelList(_store.chats)
+				
+				//emmit event with new chat
+				this.emit(Constants.eventType.chatsUpdatedAndOpen, _store.chats, channel.id);
+			}.bind(this));
 		}
 	},	
 
@@ -176,25 +195,13 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	run: function(){
 		//Connect to the sendbird api and get the list for chats
-		var sb = new SendBird({ 
+		this.sb = new SendBird({ 
 			    appId: "4094F42A-A4A3-4AB1-B71A-FCF72D92A0E3"
 		}); 
-		sb.connect(_store.user.id, _store.user.chat_token, function(user, error) {	
-
-			//Creating new chat with truequeGamer fb account
-			//console.log("user id",_store.user.id);
-			//var userIds = [41,2];
-			//sb.GroupChannel.createChannelWithUserIds(userIds, true, function(channel, error){
-			//	if(error){
-			//		console.log(error);
-			//		return;
-			//	}
-			//	console.log(channel);
-			//	
-			//});
-			
+		this.sb.connect(_store.user.id, _store.user.chat_token, function(user, error) {	
+	
 			//Getting the list of group channels
-			var channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
+			var channelListQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
 			channelListQuery.includeEmpty = false; //must be false
 
 			if (channelListQuery.hasNext) {
@@ -203,37 +210,16 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 									console.error(error);
 									return;
 							}
-							channelList.map(function(chat){
-								//get unread chats
-
-								chat.id = chat.url.replace("sendbird_group_channel_","");
-								chat.messages = [];
-								if(chat.lastMessage){
-									if(parseInt(chat.lastMessage.sender.userId,10) === _store.user.id){
-										chat.lastMessage.mine = true;
-									}else{
-										chat.lastMessage.mine = false;
-									}
-									chat.messages.push(chat.lastMessage);
-								};
-								let otherUser = chat.members[0];
-								if(otherUser.userId === user.userId){
-									otherUser = chat.members[1];
-								}
-								chat.updating = false;
-								chat.full = false;
-								chat.user = otherUser;
-								return chat;
-							});
+							channelList = this._addAttributesToChannelList(channelList);
 							_store.chats = channelList;
 							self.getUnreadMessageCount();
-					});
+					}.bind(this));
 			}
-		});
+		}.bind(this));
 		
 		//Receiving messages		
 		var UNIQUE_CHANNEL_HANDLER = "12";
-		var ChannelHandler = new sb.ChannelHandler();
+		var ChannelHandler = new this.sb.ChannelHandler();
 		let self = this;
 		ChannelHandler.onMessageReceived = function(channel, message){	
 			let chat = _store.chats.find(element => element.id === channel.id);
@@ -241,7 +227,36 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			self.emit(Constants.eventType.messageAdded);
 			self.getUnreadMessageCount();	
 		}
-		sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
+		this.sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
+
+	},
+
+	_addAttributesToChannelList: function(channelList){
+
+		channelList.map(function(chat){
+			//get unread chats
+
+			chat.id = chat.url.replace("sendbird_group_channel_","");
+			chat.messages = [];
+			if(chat.lastMessage){
+				if(parseInt(chat.lastMessage.sender.userId,10) === _store.user.id){
+					chat.lastMessage.mine = true;
+				}else{
+					chat.lastMessage.mine = false;
+				}
+				chat.messages.push(chat.lastMessage);
+			};
+			let otherUser = chat.members[0];
+			if(otherUser.userId === _store.user.id){
+				otherUser = chat.members[1];
+			}
+			chat.updating = false;
+			chat.full = false;
+			chat.user = otherUser;
+			return chat;
+		});
+
+		return channelList;
 
 	},
 
@@ -275,6 +290,22 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	removeOnOpenExistingChatListener: function(callback){
 		this.removeListener(Constants.eventType.openExistingChat, callback);
+	},
+
+	addChatsUpdateAndOpenListener: function(callback){
+		this.on(Constants.eventType.chatsUpdatedAndOpen, callback);
+	},
+
+	removeChatsUpdateAndOpenListener: function(callback){
+		this.removeListener(Constants.eventType.chatsUpdatedAndOpen, callback);
+	},
+
+	addChatNotCreatedListener: function(callback){
+		this.on(Constants.eventType.chatNotCreated, callback);
+	},
+
+	removeChatNotCreatedListener: function(callback){
+		this.removeListener(Constants.eventType.chatNotCreated, callback);
 	},
 
 	getChats: function(){

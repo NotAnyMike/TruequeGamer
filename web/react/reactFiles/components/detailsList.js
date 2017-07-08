@@ -6,6 +6,7 @@ const DetailsList = React.createClass({
 	
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		user_id: React.PropTypes.number,
 		isOwnerOfProfile: React.PropTypes.bool,
 		idUserLogged: React.PropTypes.number, //in order to know if the dvd belongs to the user in details
 		list: React.PropTypes.array,
@@ -79,6 +80,7 @@ const DetailsList = React.createClass({
 						}else{
 							gameItem = (
 								<GameItem 
+									user_id={self.props.user_id}
 									isOwnerOfProfile={self.props.isOwnerOfProfile}
 									isProfile={self.props.isProfile}
 									console={element.console}

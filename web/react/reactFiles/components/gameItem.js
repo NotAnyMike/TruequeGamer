@@ -10,6 +10,7 @@ const GameItem = React.createClass({
 		key: React.PropTypes.number.isRequired,
 		id: React.PropTypes.number, //in order to know if update or if create a dvd
 		isProfile: React.PropTypes.bool.isRequired, //in order to know if we are in the profile page
+		user_id: React.PropTypes.number, //in order to know if update or if create a dvd
 		name: React.PropTypes.string.isRequired,
 		cover: React.PropTypes.string.isRequired,
 		both: React.PropTypes.bool,
@@ -344,7 +345,7 @@ const GameItem = React.createClass({
 
 	_openChatClickHandler: function(e){
 		e.stopPropagation();
-		this.props.openChatFn(this.props.id);
+		this.props.openChatFn(this.props.user_id);
 	},
 	
 	render: function(){

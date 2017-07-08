@@ -205,12 +205,12 @@ const Profile = React.createClass({
 		if(typeof this.state.user.logged !== false && typeof this.state.profile.profile.id !== 'undefined' && this.state.user.id === this.state.profile.profile.id) {
 			isOwnerOfProfile = true;
 		}
-
 		return (
 			<div id="semi_body" className={this.props.route.console}>
 				<Header version={headerVersion} user={this.state.user} />
 				<DetailsMainContainer 
 					isProfile={true}
+					user_id={this.state.profile.profile.id}
 					isOwnerOfProfile={isOwnerOfProfile}
 					console={Constants.consoles.both} 
 					list={this.state.profile.list}

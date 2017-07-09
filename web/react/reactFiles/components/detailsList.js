@@ -110,6 +110,7 @@ const DetailsList = React.createClass({
 							<GameItem 
 								isProfile={self.props.isProfile}
 								isOwnerOfDvd={self.props.idUserLogged === element.pk}
+								user_id={element.pk}
 								console={consoleProp}
 								psNoExchange={!element.psExchange} 
 								xboxNoExchange={!element.xboxExchange} 

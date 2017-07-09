@@ -21,6 +21,7 @@ var ChatContainer = React.createClass({
 		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
 		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
 		searchChatValue: React.PropTypes.string,
+		chatsReceived: React.PropTypes.bool,
 	},
 
 	render: function(){
@@ -66,6 +67,7 @@ var ChatContainer = React.createClass({
 					searchingChat={this.props.searchingChat}
 					searchChatValue={this.props.searchChatValue}
 					onCloseButtonSearchChatFn={this.props.onCloseButtonSearchChatFn}
+					chatsReceived={this.props.chatsReceived}
 				/>
 				{singleChat}
 			</section>

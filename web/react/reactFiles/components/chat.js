@@ -22,6 +22,7 @@ var Chat = React.createClass({
 			filteredChats: null,
 			searchingChat: false,
 			emptyChat: false,
+			chatsReceived: false,
 		});
 	},
 
@@ -69,6 +70,7 @@ var Chat = React.createClass({
 	},
 
 	onUnreadMessageCountUpdated: function(){
+		this.setState({chatsReceived: true});
 		this.forceUpdate();
 	},
 	
@@ -201,6 +203,7 @@ var Chat = React.createClass({
 					visible={this.state.visible} 
 					singleChatVisible={this.state.singleChatVisible} 
 					emptyChat={this.state.emptyChat}
+					chatsReceived={this.state.chatsReceived}
 					chats={chats} 
 					searchingChat={this.state.searchingChat}
 					activeChat={activeChat} 

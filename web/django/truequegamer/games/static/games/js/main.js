@@ -26446,7 +26446,8 @@ var Chat = React.createClass({
 			searchingUser: false,
 			filteredChats: null,
 			searchingChat: false,
-			emptyChat: false
+			emptyChat: false,
+			chatsReceived: false
 		};
 	},
 
@@ -26494,6 +26495,7 @@ var Chat = React.createClass({
 	},
 
 	onUnreadMessageCountUpdated: function () {
+		this.setState({ chatsReceived: true });
 		this.forceUpdate();
 	},
 
@@ -26627,6 +26629,7 @@ var Chat = React.createClass({
 				visible: this.state.visible,
 				singleChatVisible: this.state.singleChatVisible,
 				emptyChat: this.state.emptyChat,
+				chatsReceived: this.state.chatsReceived,
 				chats: chats,
 				searchingChat: this.state.searchingChat,
 				activeChat: activeChat,
@@ -26708,7 +26711,8 @@ var ChatContainer = React.createClass({
 		onSearchChatFn: React.PropTypes.func.isRequired,
 		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
 		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
-		searchChatValue: React.PropTypes.string
+		searchChatValue: React.PropTypes.string,
+		chatsReceived: React.PropTypes.bool
 	},
 
 	render: function () {
@@ -26747,7 +26751,8 @@ var ChatContainer = React.createClass({
 				onSearchChatValueChangeFn: this.props.onSearchChatValueChangeFn,
 				searchingChat: this.props.searchingChat,
 				searchChatValue: this.props.searchChatValue,
-				onCloseButtonSearchChatFn: this.props.onCloseButtonSearchChatFn
+				onCloseButtonSearchChatFn: this.props.onCloseButtonSearchChatFn,
+				chatsReceived: this.props.chatsReceived
 			}),
 			singleChat
 		);
@@ -26772,7 +26777,8 @@ var ChatList = React.createClass({
 		onSearchChatFn: React.PropTypes.func.isRequired,
 		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
 		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
-		searchChatValue: React.PropTypes.string
+		searchChatValue: React.PropTypes.string,
+		chatsReceived: React.PropTypes.bool
 	},
 
 	onSearchChatChangeFn: function (e) {
@@ -26803,6 +26809,12 @@ var ChatList = React.createClass({
 					'li',
 					null,
 					'No hay nadie con ese nombre en tus chats :('
+				);
+			} else if (this.props.chatsReceived === false) {
+				chats = React.createElement(
+					'li',
+					null,
+					'Cargando ...'
 				);
 			} else {
 				chats = React.createElement(
@@ -27002,7 +27014,7 @@ const Details = React.createClass({
 		if (this.state.user.logged === false) {
 			this.setState({ showWarning: true });
 		} else {
-			//TODO open chat
+			Actions.openCertainChatWithUserId(username);
 		}
 	},
 
@@ -27278,6 +27290,7 @@ const DetailsList = React.createClass({
 					gameItem = React.createElement(GameItem, {
 						isProfile: self.props.isProfile,
 						isOwnerOfDvd: self.props.idUserLogged === element.pk,
+						user_id: element.pk,
 						console: consoleProp,
 						psNoExchange: !element.psExchange,
 						xboxNoExchange: !element.xboxExchange,
@@ -27807,7 +27820,7 @@ const GameItem = React.createClass({
 		if (this.props.isOwnerOfProfile === true) this.setState({ isComponentHover: true });
 	},
 
-	_onInfoClicked: function () {
+	_onInfoClicked: function (e) {
 		//if own show editing
 		if (typeof this.props.isOwnerOfProfile !== 'undefined' && this.props.isOwnerOfProfile) {
 			if (this.state.isShowingComment) {
@@ -27823,6 +27836,7 @@ const GameItem = React.createClass({
 			//else show comment
 			this.setState({ isShowingComment: !this.state.isShowingComment });
 		}
+		e.stopPropagation();
 	},
 
 	_onEditCommentClicked: function () {
@@ -28752,8 +28766,8 @@ var ItemChat = React.createClass({
 
 	render: function () {
 		var img;
-		if (this.props.user && this.props.user.pic) {
-			img = this.props.user.pic;
+		if (this.props.user && this.props.user.profileUrl) {
+			img = this.props.user.profileUrl;
 		} else {
 			img = Constants.genericProfile;
 		}
@@ -28763,7 +28777,7 @@ var ItemChat = React.createClass({
 			React.createElement(
 				'figure',
 				null,
-				React.createElement('img', { src: "/img/" + img + ".png", alt: '' })
+				React.createElement('img', { src: img, alt: '' })
 			),
 			React.createElement(
 				'div',
@@ -29025,7 +29039,6 @@ const Profile = React.createClass({
 		if (this.state.user.logged === false) {
 			this.setState({ showWarning: true });
 		} else {
-			//TODO: open chat
 			Actions.openCertainChatWithUserId(username_id);
 		}
 	},
@@ -30291,7 +30304,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 	},
 
 	chatOpenWithUserId: function (user_id) {
-		var chat = _store.chats.find(element => element.members[0].userId === user_id.toString() || element.members[1].userId === user_id.toString());
+		var chat = _store.chats.find(element => element.user.userId === user_id.toString());
 		if (chat != null) {
 			//send event to open existing chat
 			this.chatOpen(chat.id);
@@ -30484,7 +30497,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			chat.messages.push(chat.lastMessage);
 		};
 		let otherUser = chat.members[0];
-		if (otherUser.userId === _store.user.id) {
+		if (otherUser.userId.toString() === _store.user.id.toString()) {
 			otherUser = chat.members[1];
 		}
 		chat.updating = false;
@@ -30643,7 +30656,7 @@ const consoles = {
 
 const Constants = {
 	bogota: 'bogota',
-	genericProfile: 'profile',
+	genericProfile: '/img/default_pic.png',
 	genericCover: '/img/default_pic.png',
 	consoles: consoles,
 	messageNumber: 20,

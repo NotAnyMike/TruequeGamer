@@ -7,6 +7,7 @@ from django.db import models
 
 import json, requests, logging, datetime, pytz
 
+from games import utils
 import constants, token
 
 logging.basicConfig(level=logging.INFO)
@@ -74,14 +75,13 @@ def get_name(instance):
     
 def create_auth_function(instance):
     errorCode = 0;
-    print "tokkkkkkkkken"
-    print token.API_TOKEN
     headers = {'Api-Token' : token.API_TOKEN}
     nickname = get_name(instance) 
+    pic = utils.get_user_small_profile_pic(instance)
     values = {
         "user_id" : instance.pk,
         "nickname" : nickname,
-        "profile_url" : "",
+        "profile_url" : pic,
         "issue_access_token" : True
     }
     data = json.dumps(values)

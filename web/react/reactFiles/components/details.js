@@ -56,7 +56,7 @@ const Details = React.createClass({
 		if(this.state.user.logged === false){
 			this.setState({showWarning: true});
 		}else{
-			//TODO open chat
+			Actions.openCertainChatWithUserId(username);
 		}
 	},
 

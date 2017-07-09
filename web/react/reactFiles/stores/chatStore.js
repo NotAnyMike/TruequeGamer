@@ -70,7 +70,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 	},
 
 	chatOpenWithUserId: function(user_id){
-		var chat = _store.chats.find(element => element.members[0].userId === user_id.toString() || element.members[1].userId === user_id.toString());
+		var chat = _store.chats.find(element => element.user.userId === user_id.toString());
 		if(chat != null){
 			//send event to open existing chat
 			this.chatOpen(chat.id)
@@ -263,7 +263,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			chat.messages.push(chat.lastMessage);
 		};
 		let otherUser = chat.members[0];
-		if(otherUser.userId === _store.user.id){
+		if(otherUser.userId.toString() === _store.user.id.toString()){
 			otherUser = chat.members[1];
 		}
 		chat.updating = false;

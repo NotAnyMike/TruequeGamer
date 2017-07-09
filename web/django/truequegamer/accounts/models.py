@@ -15,6 +15,7 @@ class Profile(models.Model):
     facebook_location = models.CharField(max_length=30, blank=True)
     facebook_location_id = models.CharField(max_length=20, blank=True, null=True, default=None)
     facebook_about = models.TextField(max_length=500, blank=True, unique=False, null=True, default=None)
+    facebook_has_pic = models.BooleanField(blank=False, null=False, default=False)
 
 
 @receiver(post_save, sender=User)
@@ -40,12 +41,12 @@ def saveUserProfile(sender, user, **kwargs):
         user.email = data['email']
 
         user.profile.facebook_id = data['id']
+        user.profile.facebook_has_pic = not data['picture']['data']['is_silhouette']
         if 'location' in data: 
             user.profile.facebook_location = data['location']['id']
             user.profile.facebook_location_id = data['location']['name']
         if 'about' in data: user.profile.facebook_about = data['about']
 
-        print user.profile.facebook_id
         user.profile.save()
         user.save()
 

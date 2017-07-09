@@ -12,6 +12,7 @@ var ChatList = React.createClass({
 		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
 		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
 		searchChatValue: React.PropTypes.string,
+		chatsReceived: React.PropTypes.bool,
 	},
 
 	onSearchChatChangeFn: function(e){
@@ -40,6 +41,8 @@ var ChatList = React.createClass({
 		}else{
 			if(this.props.searchingChat){
 				chats = <li>No hay nadie con ese nombre en tus chats :(</li>;
+			}else if(this.props.chatsReceived === false){
+				chats = <li>Cargando ...</li>;
 			}else{
 				chats = <li>No tienes chats</li>;
 			}

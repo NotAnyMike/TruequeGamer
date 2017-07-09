@@ -128,7 +128,7 @@ const GameItem = React.createClass({
 		if(this.props.isOwnerOfProfile === true) this.setState({isComponentHover: true});
 	},
 
-	_onInfoClicked: function(){
+	_onInfoClicked: function(e){
 		//if own show editing
 		if(typeof this.props.isOwnerOfProfile !== 'undefined' && this.props.isOwnerOfProfile){
 			if(this.state.isShowingComment){
@@ -144,6 +144,7 @@ const GameItem = React.createClass({
 			//else show comment
 			this.setState({isShowingComment: !this.state.isShowingComment});
 		}
+		e.stopPropagation();
 	},
 
 	_onEditCommentClicked: function(){

@@ -796,6 +796,7 @@ figure.negative .isotype.negative {
 }
 .profileContainer figure img {
   object-fit: cover;
+  width: 43px;
 }
 .profileContainer span {
   color: #f29224;
@@ -1710,6 +1711,12 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.chatList ul li figure img,
+.chatList .chatMessages li figure img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
 }
 .chatList ul li .content,
 .chatList .chatMessages li .content {

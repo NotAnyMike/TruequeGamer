@@ -27061,6 +27061,7 @@ const DetailsGameLabel = React.createClass({
 
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		user_id: React.PropTypes.number,
 		isOwnerOfProfile: React.PropTypes.bool,
 		name: React.PropTypes.string.isRequired,
 		priceMin: React.PropTypes.number,
@@ -27074,7 +27075,7 @@ const DetailsGameLabel = React.createClass({
 	},
 
 	_onClickOpenChatHandler: function () {
-		this.props.openChatFn();
+		this.props.openChatFn(this.props.user_id);
 	},
 
 	render: function () {
@@ -27348,6 +27349,7 @@ const DetailsMainContainer = React.createClass({
 		if (this.props.isProfile) {
 			detailsGameLabelVar = React.createElement(DetailsGameLabel, {
 				isProfile: this.props.isProfile,
+				user_id: this.props.user_id,
 				isOwnerOfProfile: this.props.isOwnerOfProfile,
 				console: Constants.consoles.both,
 				name: this.props.name,
@@ -30308,7 +30310,6 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 					console.log(error);
 					return;
 				}
-				console.log(channel);
 				_store.chats.push(channel);
 				_store.chats = this._addAttributesToChannelList(_store.chats);
 
@@ -30397,6 +30398,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		this.emit(Constants.eventType.messageAdded);
 
 		//Sending the message
+		console.log(_store);
 		_store.chats[index].sendUserMessage(value, null, function (message, error) {
 			if (error) {
 				console.error(error);
@@ -30421,6 +30423,10 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 		this.sb.connect(_store.user.id, _store.user.chat_token, function (user, error) {
 
+			if (error) {
+				console.error(error);
+				return;
+			}
 			//Getting the list of group channels
 			var channelListQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
 			channelListQuery.includeEmpty = false; //must be false
@@ -30444,39 +30450,47 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		let self = this;
 		ChannelHandler.onMessageReceived = function (channel, message) {
 			let chat = _store.chats.find(element => element.id === channel.id);
+			if (!chat) {
+				chat = this._addAttributesToChannel(channel);
+				_store.chats.push(chat);
+			}
 			chat.messages.unshift(message);
 			self.emit(Constants.eventType.messageAdded);
 			self.getUnreadMessageCount();
-		};
+		}.bind(this);
 		this.sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
 	},
 
 	_addAttributesToChannelList: function (channelList) {
 
 		channelList.map(function (chat) {
-			//get unread chats
-
-			chat.id = chat.url.replace("sendbird_group_channel_", "");
-			chat.messages = [];
-			if (chat.lastMessage) {
-				if (parseInt(chat.lastMessage.sender.userId, 10) === _store.user.id) {
-					chat.lastMessage.mine = true;
-				} else {
-					chat.lastMessage.mine = false;
-				}
-				chat.messages.push(chat.lastMessage);
-			};
-			let otherUser = chat.members[0];
-			if (otherUser.userId === _store.user.id) {
-				otherUser = chat.members[1];
-			}
-			chat.updating = false;
-			chat.full = false;
-			chat.user = otherUser;
-			return chat;
-		});
+			return this._addAttributesToChannel(chat);
+		}.bind(this));
 
 		return channelList;
+	},
+
+	_addAttributesToChannel: function (chat) {
+
+		//get unread chats
+		chat.id = chat.url.replace("sendbird_group_channel_", "");
+		chat.messages = [];
+		if (chat.lastMessage) {
+			if (parseInt(chat.lastMessage.sender.userId, 10) === _store.user.id) {
+				chat.lastMessage.mine = true;
+			} else {
+				chat.lastMessage.mine = false;
+			}
+			chat.messages.push(chat.lastMessage);
+		};
+		let otherUser = chat.members[0];
+		if (otherUser.userId === _store.user.id) {
+			otherUser = chat.members[1];
+		}
+		chat.updating = false;
+		chat.full = false;
+		chat.user = otherUser;
+		return chat;
 	},
 
 	addOnMessageAddedListener: function (callback) {
@@ -30630,6 +30644,7 @@ const consoles = {
 const Constants = {
 	bogota: 'bogota',
 	genericProfile: 'profile',
+	genericCover: '/img/default_pic.png',
 	consoles: consoles,
 	messageNumber: 20,
 	actionType: {

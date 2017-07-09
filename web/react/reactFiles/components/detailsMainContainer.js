@@ -33,6 +33,7 @@ const DetailsMainContainer = React.createClass({
 			detailsGameLabelVar = (
 				<DetailsGameLabel
 					isProfile={this.props.isProfile}
+					user_id={this.props.user_id}
 					isOwnerOfProfile={this.props.isOwnerOfProfile}
 					console={Constants.consoles.both}
 					name={this.props.name}

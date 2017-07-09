@@ -6,6 +6,7 @@ const DetailsGameLabel = React.createClass({
 	
 	propTypes: {
 		isProfile: React.PropTypes.bool.isRequired,
+		user_id: React.PropTypes.number,
 		isOwnerOfProfile: React.PropTypes.bool,
 		name: React.PropTypes.string.isRequired,
 		priceMin: React.PropTypes.number,
@@ -19,7 +20,7 @@ const DetailsGameLabel = React.createClass({
 	},
 	
 	_onClickOpenChatHandler: function(){
-		this.props.openChatFn();	
+		this.props.openChatFn(this.props.user_id);
 	},
 
 	render: function(){

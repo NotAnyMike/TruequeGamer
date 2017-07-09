@@ -7,6 +7,7 @@ const consoles = {
 const Constants = {
 	bogota: 'bogota',
 	genericProfile: 'profile',
+	genericCover: '/img/default_pic.png',
 	consoles: consoles,
 	messageNumber: 20,
 	actionType: {

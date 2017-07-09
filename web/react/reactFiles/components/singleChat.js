@@ -1,6 +1,8 @@
 var React = require('react'),
 		SingleMessage = require('./singleMessage.js'),
-		InputChat = require('./inputChat.js');
+		InputChat = require('./inputChat.js'),
+		Constants = require('../utils/constants.js'),
+		Functions = require('../utils/functions.js');
 
 var SingleChat = React.createClass({
 	
@@ -32,8 +34,8 @@ var SingleChat = React.createClass({
 		var messages = [];
 		if(this.props.chat.messages && this.props.chat.messages.length > 0){
 			this.props.chat.messages.map(function(element){
-				time = "Ahora mismo";
-				messages.push(<SingleMessage key={element.messageId} message={element.message} time={time} user={this.props.chat.user} mine={element.mine} />);
+				var timeString = Functions.getTimeString(parseInt(element.createdAt));
+				messages.push(<SingleMessage key={element.messageId} message={element.message} time={timeString} user={this.props.chat.user} mine={element.mine} />);
 			}.bind(this))
 		}
 

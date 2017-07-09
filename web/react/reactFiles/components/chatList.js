@@ -1,5 +1,6 @@
 var React = require('react'),
-		ItemChat = require('./itemChat.js');
+		ItemChat = require('./itemChat.js'),
+		Functions = require('../utils/functions.js');
 
 var ChatList = React.createClass({
 	
@@ -34,9 +35,10 @@ var ChatList = React.createClass({
 						if(element.lastMessage) {
 							lastMessage = element.lastMessage.message;
 						}
+						var timeString = Functions.getTimeString(parseInt(element.lastMessage.createdAt));
 						read = true;
 						if(element.unreadMessageCount > 0) read = false;
-						chats.push(<ItemChat id={element.id} key={element.id} user={element.user} message={lastMessage} time={"Ya"} read={read} openCertainChatFn={this.props.openCertainChatFn}/>);
+						chats.push(<ItemChat id={element.id} key={element.id} user={element.user} message={lastMessage} time={timeString} read={read} openCertainChatFn={this.props.openCertainChatFn}/>);
 				}.bind(this))
 		}else{
 			if(this.props.searchingChat){

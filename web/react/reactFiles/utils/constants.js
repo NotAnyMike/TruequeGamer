@@ -10,6 +10,9 @@ const Constants = {
 	genericCover: '/img/default_pic.png',
 	consoles: consoles,
 	messageNumber: 20,
+	months: [
+		'ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'
+	],
 	actionType: {
 		changeFilterState: 'change_filter_status',
 		changeSearchInput: 'change_search_input',

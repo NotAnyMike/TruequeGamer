@@ -2121,6 +2121,12 @@ button.closeButton {
   -webkit-border-radius: 20px;
   border-radius: 20px;
 }
+.singleChat ul.chatMessages li figure img,
+.singleChat ul.chatMessages li:hover figure img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
 .singleChat ul.chatMessages li .message,
 .singleChat ul.chatMessages li:hover .message {
   background-color: #fff;
@@ -2166,6 +2172,7 @@ button.closeButton {
   font-size: 10px;
   text-align: right;
   margin: 5px 0px;
+  text-align: left;
 }
 .singleChat ul.chatMessages li.own,
 .singleChat ul.chatMessages li:hover.own {
@@ -2192,6 +2199,10 @@ button.closeButton {
   right: -10px;
   border-left: 10px solid #009992;
   border-right: 0px;
+}
+.singleChat ul.chatMessages li.own .time,
+.singleChat ul.chatMessages li:hover.own .time {
+  text-align: right;
 }
 footer {
   width: 100%;

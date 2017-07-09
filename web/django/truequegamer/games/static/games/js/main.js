@@ -26763,7 +26763,8 @@ module.exports = ChatContainer;
 
 },{"./chatList.js":246,"./singleChat.js":274,"react":239}],246:[function(require,module,exports){
 var React = require('react'),
-    ItemChat = require('./itemChat.js');
+    ItemChat = require('./itemChat.js'),
+    Functions = require('../utils/functions.js');
 
 var ChatList = React.createClass({
 	displayName: 'ChatList',
@@ -26799,9 +26800,10 @@ var ChatList = React.createClass({
 				if (element.lastMessage) {
 					lastMessage = element.lastMessage.message;
 				}
+				var timeString = Functions.getTimeString(parseInt(element.lastMessage.createdAt));
 				read = true;
 				if (element.unreadMessageCount > 0) read = false;
-				chats.push(React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: lastMessage, time: "Ya", read: read, openCertainChatFn: this.props.openCertainChatFn }));
+				chats.push(React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: lastMessage, time: timeString, read: read, openCertainChatFn: this.props.openCertainChatFn }));
 			}.bind(this));
 		} else {
 			if (this.props.searchingChat) {
@@ -26862,7 +26864,7 @@ var ChatList = React.createClass({
 
 module.exports = ChatList;
 
-},{"./itemChat.js":264,"react":239}],247:[function(require,module,exports){
+},{"../utils/functions.js":286,"./itemChat.js":264,"react":239}],247:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js'),
     Actions = require('../utils/actions.js');
@@ -29463,7 +29465,9 @@ module.exports = SearchResultsMainContainer;
 },{"../utils/constants.js":285,"./searchResultsList.js":272,"react":239}],274:[function(require,module,exports){
 var React = require('react'),
     SingleMessage = require('./singleMessage.js'),
-    InputChat = require('./inputChat.js');
+    InputChat = require('./inputChat.js'),
+    Constants = require('../utils/constants.js'),
+    Functions = require('../utils/functions.js');
 
 var SingleChat = React.createClass({
 	displayName: 'SingleChat',
@@ -29492,8 +29496,8 @@ var SingleChat = React.createClass({
 		var messages = [];
 		if (this.props.chat.messages && this.props.chat.messages.length > 0) {
 			this.props.chat.messages.map(function (element) {
-				time = "Ahora mismo";
-				messages.push(React.createElement(SingleMessage, { key: element.messageId, message: element.message, time: time, user: this.props.chat.user, mine: element.mine }));
+				var timeString = Functions.getTimeString(parseInt(element.createdAt));
+				messages.push(React.createElement(SingleMessage, { key: element.messageId, message: element.message, time: timeString, user: this.props.chat.user, mine: element.mine }));
 			}.bind(this));
 		}
 
@@ -29546,7 +29550,7 @@ var SingleChat = React.createClass({
 
 module.exports = SingleChat;
 
-},{"./inputChat.js":261,"./singleMessage.js":275,"react":239}],275:[function(require,module,exports){
+},{"../utils/constants.js":285,"../utils/functions.js":286,"./inputChat.js":261,"./singleMessage.js":275,"react":239}],275:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js');
 
@@ -29572,7 +29576,7 @@ var SingleMessage = React.createClass({
 			React.createElement(
 				'figure',
 				null,
-				React.createElement('img', { src: "/img/min-" + img + ".png", alt: '' })
+				React.createElement('img', { src: img, alt: '' })
 			),
 			React.createElement(
 				'span',
@@ -30403,6 +30407,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			messageId: id,
 			message: value,
 			time: 'ahora mismo',
+			createdAt: Date.now(),
 			mine: true,
 			recived: false
 		});
@@ -30660,6 +30665,7 @@ const Constants = {
 	genericCover: '/img/default_pic.png',
 	consoles: consoles,
 	messageNumber: 20,
+	months: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
 	actionType: {
 		changeFilterState: 'change_filter_status',
 		changeSearchInput: 'change_search_input',
@@ -30816,6 +30822,25 @@ const Functions = {
 		init.method = type;
 		var req = new Request(url, init);
 		return req;
+	},
+
+	getTimeString: function (timestampNow) {
+		var timeString = "Ahora mismo";
+		var time = new Date(timestampNow);
+		var now = new Date();
+		var minutes = "0" + time.getMinutes();
+		var day = "0" + time.getDate();
+		if (time.getDate() === now.getDate() && time.getMonth() === now.getMonth() && time.getYear() === now.getYear()) {
+			//same day
+			timeString = "hoy a las " + time.getHours() + ":" + minutes.substr(-2);
+		} else if (time.getYear() === now.getYear()) {
+			//same year
+			timeString = "" + Constants.months[time.getMonth()] + " " + day.substr(-2) + " " + time.getHours() + ":" + minutes.substr(-2);
+		} else {
+			//else
+			timeString = "" + Constants.months[time.getMonth()] + " " + day.substr(-2) + " del " + time.getFullYear();
+		}
+		return timeString;
 	}
 };
 

@@ -67,7 +67,26 @@ const Functions = {
 		init.method = type;
 		var req = new Request(url, init)
 		return req;
-	}
+	},
+
+	getTimeString: function(timestampNow){
+		var timeString = "Ahora mismo";
+		var time = new Date(timestampNow);
+		var now = new Date();
+		var minutes = "0" + time.getMinutes();
+		var day = "0" + time.getDate();
+		if(time.getDate() === now.getDate() && time.getMonth() === now.getMonth() && time.getYear() === now.getYear()){
+			//same day
+			timeString = "hoy a las " + time.getHours() + ":" + minutes.substr(-2)
+		}else if(time.getYear() === now.getYear()){
+			//same year
+			timeString = "" + Constants.months[time.getMonth()] + " " + day.substr(-2) + " " + time.getHours() + ":" + minutes.substr(-2);
+		}else{
+			//else
+			timeString = "" + Constants.months[time.getMonth()] + " " + day.substr(-2) + " del " + time.getFullYear();
+		}
+		return timeString;
+	},
 };
 
 module.exports = Functions;

@@ -17,7 +17,7 @@ var SingleMessage = React.createClass({
 		}
 		return (	
 			<li className={this.props.mine ? "own" : ""}>
-				<figure><img src={"/img/min-" + img + ".png"} alt="" /></figure>
+				<figure><img src={img} alt="" /></figure>
 				<span className="message">{this.props.message}</span>
 				<span className="time">{this.props.time}</span>
 			</li>

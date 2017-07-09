@@ -169,6 +169,7 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			messageId: id,
 			message: value,
 			time: 'ahora mismo',
+			createdAt: Date.now(),
 			mine: true,
 			recived: false
 		});

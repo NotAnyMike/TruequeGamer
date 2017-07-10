@@ -17,5 +17,5 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^$', views.index, name='index'),
     url(r'^img/', views.img, name='img'),
-    #url(r'.*', views.index, name='index_general'),
+    url(r'.*', views.index, name='index_general'),
 ]

@@ -7,6 +7,7 @@ var React = require('react'),
 module.exports = React.createClass({
 
 	propTypes: {
+		value: React.PropTypes.string,
 		emptyResults: React.PropTypes.bool,
 	},
 

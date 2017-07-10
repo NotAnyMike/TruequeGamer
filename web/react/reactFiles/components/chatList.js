@@ -1,3 +1,5 @@
+'use strict';
+
 var React = require('react'),
 		ItemChat = require('./itemChat.js'),
 		Functions = require('../utils/functions.js');
@@ -27,16 +29,17 @@ var ChatList = React.createClass({
 	},
 
 	render: function(){
-		chats = [];
+		var chats = [];
 		if(this.props.chats && this.props.chats.length != null && this.props.chats.length > 0){
 			this.props.chats.map(
 					function(element){
 						var lastMessage = "";
+						var timeString = "";
 						if(element.lastMessage) {
 							lastMessage = element.lastMessage.message;
+							timeString = Functions.getTimeString(parseInt(element.lastMessage.createdAt));
 						}
-						var timeString = Functions.getTimeString(parseInt(element.lastMessage.createdAt));
-						read = true;
+						var read = true;
 						if(element.unreadMessageCount > 0) read = false;
 						chats.push(<ItemChat id={element.id} key={element.id} user={element.user} message={lastMessage} time={timeString} read={read} openCertainChatFn={this.props.openCertainChatFn}/>);
 				}.bind(this))

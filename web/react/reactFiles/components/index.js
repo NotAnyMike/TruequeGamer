@@ -35,6 +35,7 @@ module.exports = React.createClass({
 		AppStore.removeOnUserUpdateListener(this.onUserUpdated);
 		AppStore.removeSuggestionsRefreshListener(this.onSuggestionRefresh);
 		AppStore.removeOnReloadIndexListener(this.reload);
+		this.reload();
 	},
 
 	reload: function(){
@@ -76,7 +77,6 @@ module.exports = React.createClass({
 	},
 
 	changeHandlerForSearchInputFn: function(new_value){
-		//this.setState({value: new_value});
 		Actions.changeSearchInput(new_value);
 
 		var suggestionsVar = this.state.suggestions.list;
@@ -109,11 +109,12 @@ module.exports = React.createClass({
 		}else{
 			route = Constants.routes.search.xbox;
 		}
-		browserHistory.push(route + store.search.text);
+		browserHistory.push(route + this.state.search.text.trim());
 	},
 
 	render: function(){
 		var chat;
+		var textStringValue = this.state.suggestions.value || this.state.search.text;
 		if(this.state.user.logged) {
 			chat = <Chat user={this.state.user}/>;
 		}
@@ -128,7 +129,7 @@ module.exports = React.createClass({
 						onKeyDownHandlerForSearchInputFn={this.onKeyDownHandlerForSearchInput}
 						suggestions={this.state.suggestions.list}
 						emptyResults={this.state.suggestions.emptyResults}
-						value={this.state.suggestions.value}
+						value={textStringValue}
 					/>
 					<Footer />
 					{chat}

@@ -26762,6 +26762,8 @@ var ChatContainer = React.createClass({
 module.exports = ChatContainer;
 
 },{"./chatList.js":246,"./singleChat.js":274,"react":239}],246:[function(require,module,exports){
+'use strict';
+
 var React = require('react'),
     ItemChat = require('./itemChat.js'),
     Functions = require('../utils/functions.js');
@@ -26793,15 +26795,16 @@ var ChatList = React.createClass({
 	},
 
 	render: function () {
-		chats = [];
+		var chats = [];
 		if (this.props.chats && this.props.chats.length != null && this.props.chats.length > 0) {
 			this.props.chats.map(function (element) {
 				var lastMessage = "";
+				var timeString = "";
 				if (element.lastMessage) {
 					lastMessage = element.lastMessage.message;
+					timeString = Functions.getTimeString(parseInt(element.lastMessage.createdAt));
 				}
-				var timeString = Functions.getTimeString(parseInt(element.lastMessage.createdAt));
-				read = true;
+				var read = true;
 				if (element.unreadMessageCount > 0) read = false;
 				chats.push(React.createElement(ItemChat, { id: element.id, key: element.id, user: element.user, message: lastMessage, time: timeString, read: read, openCertainChatFn: this.props.openCertainChatFn }));
 			}.bind(this));
@@ -28573,6 +28576,7 @@ module.exports = React.createClass({
 		AppStore.removeOnUserUpdateListener(this.onUserUpdated);
 		AppStore.removeSuggestionsRefreshListener(this.onSuggestionRefresh);
 		AppStore.removeOnReloadIndexListener(this.reload);
+		this.reload();
 	},
 
 	reload: function () {
@@ -28614,7 +28618,6 @@ module.exports = React.createClass({
 	},
 
 	changeHandlerForSearchInputFn: function (new_value) {
-		//this.setState({value: new_value});
 		Actions.changeSearchInput(new_value);
 
 		var suggestionsVar = this.state.suggestions.list;
@@ -28647,11 +28650,12 @@ module.exports = React.createClass({
 		} else {
 			route = Constants.routes.search.xbox;
 		}
-		browserHistory.push(route + store.search.text);
+		browserHistory.push(route + this.state.search.text.trim());
 	},
 
 	render: function () {
 		var chat;
+		var textStringValue = this.state.suggestions.value || this.state.search.text;
 		if (this.state.user.logged) {
 			chat = React.createElement(Chat, { user: this.state.user });
 		}
@@ -28667,7 +28671,7 @@ module.exports = React.createClass({
 				onKeyDownHandlerForSearchInputFn: this.onKeyDownHandlerForSearchInput,
 				suggestions: this.state.suggestions.list,
 				emptyResults: this.state.suggestions.emptyResults,
-				value: this.state.suggestions.value
+				value: textStringValue
 			}),
 			React.createElement(Footer, null),
 			chat
@@ -29269,6 +29273,7 @@ module.exports = React.createClass({
 
 
 	propTypes: {
+		value: React.PropTypes.string,
 		emptyResults: React.PropTypes.bool
 	},
 

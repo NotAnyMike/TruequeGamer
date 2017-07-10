@@ -1768,6 +1768,7 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   -webkit-flex-grow: 1;
   flex-grow: 1;
   margin: 0 0 10px 0;
+  max-width: 197px;
 }
 .chatList ul li .content .time,
 .chatList .chatMessages li .content .time {

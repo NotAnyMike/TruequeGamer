@@ -5,6 +5,7 @@ var React = require('react'),
 		ProfileLink = require('./profileLink.js'),
 		SearchButtonHeader = require('./searchButtonHeader.js'),
 		browserHistory = require('react-router').browserHistory,
+		Actions = require('../utils/actions.js'),
 		Constants = require('../utils/constants');
 
 module.exports = React.createClass({
@@ -18,6 +19,7 @@ module.exports = React.createClass({
 	},
 
 	goToIndex: function(){
+		Actions.indexReload();
 		browserHistory.push(Constants.routes.index);
 	},
 

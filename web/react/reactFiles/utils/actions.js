@@ -69,6 +69,12 @@ var Actions = {
 		});
 	},
 
+	indexReload: function(){
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.reloadIndex,
+		});
+	},
+
 };
 
 module.exports = Actions;

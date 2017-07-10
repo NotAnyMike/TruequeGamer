@@ -28491,6 +28491,7 @@ var React = require('react'),
     ProfileLink = require('./profileLink.js'),
     SearchButtonHeader = require('./searchButtonHeader.js'),
     browserHistory = require('react-router').browserHistory,
+    Actions = require('../utils/actions.js'),
     Constants = require('../utils/constants');
 
 module.exports = React.createClass({
@@ -28506,6 +28507,7 @@ module.exports = React.createClass({
 	},
 
 	goToIndex: function () {
+		Actions.indexReload();
 		browserHistory.push(Constants.routes.index);
 	},
 
@@ -28521,7 +28523,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants":285,"./isotypeContainer.js":263,"./profileLink.js":267,"./searchButtonHeader.js":269,"react":239,"react-router":37}],260:[function(require,module,exports){
+},{"../utils/actions.js":284,"../utils/constants":285,"./isotypeContainer.js":263,"./profileLink.js":267,"./searchButtonHeader.js":269,"react":239,"react-router":37}],260:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -28551,6 +28553,7 @@ module.exports = React.createClass({
 		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.addOnUserUpdateListener(this.onUserUpdated);
 		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
+		AppStore.addOnReloadIndexListener(this.reload);
 		Functions.startAnalytics();
 	},
 
@@ -28558,7 +28561,28 @@ module.exports = React.createClass({
 		AppStore.removeSearchButtonClickedListener(this.onSearch);
 		AppStore.removeOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.removeOnUserUpdateListener(this.onUserUpdated);
-		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
+		AppStore.removeSuggestionsRefreshListener(this.onSuggestionRefresh);
+		AppStore.removeOnReloadIndexListener(this.reload);
+	},
+
+	reload: function () {
+		this.setState({
+			suggestions: {
+				value: '',
+				xbox: true,
+				ps: true,
+				list: []
+			},
+			search: {
+				text: '',
+				xbox: true,
+				ps: true,
+				not_used: true,
+				used: true,
+				exchange: true,
+				to_sell: true,
+				city: Constants.bogota
+			} });
 	},
 
 	onUserUpdated: function () {
@@ -30167,18 +30191,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 						AppStore.onSuggestionsRefresh();
 					});
 				});
-			} else {}
-			//do something with xml stuff
-
-			/*
-   _store.suggestions.list =  [
-   	text + ' 1',
-   	text + ' 2',
-   	text + ' GO'
-   ];
-   */
-			//show the list by calling the event
+			} else {
+				//do something with xml stuff
+			}
 		}
+	},
+
+	reloadIndex: function () {
+		this.emit(Constants.eventType.reloadIndex);
 	},
 
 	onSuggestionsRefresh: function () {
@@ -30199,6 +30219,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 	removeOnResultsUpdatedListener: function (callback) {
 		this.removeListener(Constants.eventType.resultsUpdated, callback);
+	},
+
+	addOnReloadIndexListener: function (callback) {
+		this.on(Constants.eventType.reloadIndex, callback);
+	},
+
+	removeOnReloadIndexListener: function (callback) {
+		this.removeListener(Constants.eventType.realoadIndex, callback);
 	},
 
 	getSuggestionsList: function () {
@@ -30229,6 +30257,9 @@ AppDispatcher.register(function (payload) {
 			break;
 		case Constants.actionType.goToProfile:
 			AppStore.goToProfilePage(payload.value);
+			break;
+		case Constants.actionType.reloadIndex:
+			AppStore.reloadIndex();
 			break;
 	};
 
@@ -30648,6 +30679,12 @@ var Actions = {
 			actionType: Constants.actionType.openCertainChatWithUserId,
 			value: user_id
 		});
+	},
+
+	indexReload: function () {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.reloadIndex
+		});
 	}
 
 };
@@ -30678,7 +30715,8 @@ const Constants = {
 		changeSearchChatValue: 'change_search_chat_value',
 		goToDetails: 'go_to_details_page',
 		goToProfile: 'go_to_profile_page',
-		openCertainChatWithUserId: 'open_certain_chat_user_id'
+		openCertainChatWithUserId: 'open_certain_chat_user_id',
+		reloadIndex: 'reaload_index'
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -30697,7 +30735,8 @@ const Constants = {
 		availableGamesUpadate: 'available_games_update',
 		profileUpdated: 'profile_updated',
 		openExistingChat: 'open_existing_chat',
-		openNewChat: 'open_new_chat'
+		openNewChat: 'open_new_chat',
+		reloadIndex: 'reaload_index'
 	},
 	filter: {
 		not_used: 'not_used',

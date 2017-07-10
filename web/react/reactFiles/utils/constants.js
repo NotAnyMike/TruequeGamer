@@ -24,6 +24,7 @@ const Constants = {
 		goToDetails: 'go_to_details_page',
 		goToProfile: 'go_to_profile_page',
 		openCertainChatWithUserId: 'open_certain_chat_user_id',
+		reloadIndex: 'reaload_index',
 	},
 	eventType: {
 		filterRefresh: 'filter_refresh',
@@ -43,6 +44,7 @@ const Constants = {
 		profileUpdated: 'profile_updated',
 		openExistingChat: 'open_existing_chat',
 		openNewChat: 'open_new_chat',
+		reloadIndex: 'reaload_index',
 	},
 	filter: {
 		not_used: 'not_used',

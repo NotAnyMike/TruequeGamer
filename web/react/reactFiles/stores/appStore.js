@@ -386,15 +386,11 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			}else{
 				//do something with xml stuff
 			}
-			/*
-			_store.suggestions.list =  [
-				text + ' 1',
-				text + ' 2',
-				text + ' GO'
-			];
-			*/
-			//show the list by calling the event
 		}
+	},
+
+	reloadIndex: function(){
+		this.emit(Constants.eventType.reloadIndex);
 	},
 
 	onSuggestionsRefresh: function(){
@@ -415,6 +411,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 	removeOnResultsUpdatedListener: function(callback){
 		this.removeListener(Constants.eventType.resultsUpdated, callback);
+	},
+
+	addOnReloadIndexListener: function(callback){
+		this.on(Constants.eventType.reloadIndex, callback);
+	},
+
+	removeOnReloadIndexListener: function(callback){
+		this.removeListener(Constants.eventType.realoadIndex, callback);
 	},
 
 	getSuggestionsList: function(){
@@ -445,6 +449,9 @@ AppDispatcher.register(function(payload){
 			break;
 		case Constants.actionType.goToProfile:
 			AppStore.goToProfilePage(payload.value);
+			break;
+		case Constants.actionType.reloadIndex:
+			AppStore.reloadIndex();
 			break;
 	};
 

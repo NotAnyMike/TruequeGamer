@@ -25,6 +25,7 @@ module.exports = React.createClass({
 		AppStore.addOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.addOnUserUpdateListener(this.onUserUpdated);
 		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
+		AppStore.addOnReloadIndexListener(this.reload);
 		Functions.startAnalytics();
 	},
 
@@ -32,7 +33,28 @@ module.exports = React.createClass({
 		AppStore.removeSearchButtonClickedListener(this.onSearch);
 		AppStore.removeOnFilterRefreshListener(this.onFilterRefresh);
 		AppStore.removeOnUserUpdateListener(this.onUserUpdated);
-		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
+		AppStore.removeSuggestionsRefreshListener(this.onSuggestionRefresh);
+		AppStore.removeOnReloadIndexListener(this.reload);
+	},
+
+	reload: function(){
+		this.setState({
+			suggestions: {
+				value: '',
+				xbox: true,
+				ps:true,
+				list:[],
+			},
+			search: {
+				text: '',
+				xbox: true,
+				ps: true,
+				not_used: true,
+				used: true,
+				exchange: true,
+				to_sell: true,
+				city: Constants.bogota,
+		}});	
 	},
 	
 	onUserUpdated: function(){

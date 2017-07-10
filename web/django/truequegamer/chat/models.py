@@ -98,7 +98,7 @@ def create_auth_function(instance):
             #User exists then update it
             values = {
                 "nickname" : get_name(instance),
-                "profile_url" : "",
+                "profile_url" : pic,
                 "issue_access_token" : True
             }
             data = json.dumps(values)

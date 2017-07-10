@@ -4256,12 +4256,26 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
   padding-top: 20px;
   text-transform: uppercase;
   overflow-y: scroll;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  height: 100%;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 .detailsMainContainer .container .gameList li .commentContainer .commentTextContainer .commentTitle {
   display: block;
   font-size: 15px;
   text-align: center;
   margin-bottom: 10px;
+  width: 134px;
 }
 .detailsMainContainer .container .gameList li .commentContainer .commentTextContainer .textArea {
   display: none;
@@ -4273,13 +4287,20 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
   color: #fff;
   outline: none;
   resize: none;
-  position: absolute;
+/*position: absolute*/
   top: 44px;
   bottom: 20px;
   height: auto;
   padding: 5px;
   font-size: 12px;
   text-transform: none;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
 }
 .detailsMainContainer .container .gameList li.showComment .commentContainer {
   opacity: 1;

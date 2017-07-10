@@ -27861,7 +27861,9 @@ const GameItem = React.createClass({
 	},
 
 	_goToPage: function () {
-		if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn(this.props.username);else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
+		if (this.state.isEditing === false) {
+			if (typeof this.props.goToProfileFn !== 'undefined' && this.props.goToProfileFn !== null) this.props.goToProfileFn(this.props.username);else if (typeof this.props.goToDetailsFn === 'function') this.props.goToDetailsFn(this.props.name);
+		}
 	},
 
 	_changeCommentHandler: function (e) {
@@ -28462,7 +28464,7 @@ const GameItem = React.createClass({
 					React.createElement(
 						'span',
 						{ className: 'commentTitle' },
-						'The Witcher'
+						nameEditing
 					),
 					React.createElement(
 						'span',

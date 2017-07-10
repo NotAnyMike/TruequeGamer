@@ -27094,7 +27094,11 @@ const DetailsGameLabel = React.createClass({
 
 	render: function () {
 		var minPriceVar = "-";
-		if (typeof this.props.hasHigherPrices !== 'undefined' && typeof this.props.priceMin !== 'undefined') minPriceVar = "Desde " + functions.addDecimalPoints(this.props.priceMin);
+		if (this.props.priceMin && this.props.priceMin > 0) {
+			minPriceVar = "";
+			if (this.props.hasHigherPrices) minPriceVar = "Desde ";
+			minPriceVar = minPriceVar + functions.addDecimalPoints(this.props.priceMin);
+		}
 
 		var nameVar = 'cargando...';
 		if (typeof this.props.name !== 'undefined') nameVar = this.props.name;
@@ -28604,7 +28608,9 @@ module.exports = React.createClass({
 
 	onSuggestionRefresh: function () {
 		var suggestions = AppStore.getSuggestions();
-		this.setState({ suggestions: { value: suggestions.value, list: suggestions.list, clicked: false } });
+		var emptyResults = false;
+		if (suggestions.list.length === 0) emptyResults = true;
+		this.setState({ suggestions: { value: suggestions.value, list: suggestions.list, clicked: false, emptyResults: emptyResults } });
 	},
 
 	changeHandlerForSearchInputFn: function (new_value) {
@@ -28660,6 +28666,7 @@ module.exports = React.createClass({
 				changeHandlerForSearchInputFn: this.changeHandlerForSearchInputFn,
 				onKeyDownHandlerForSearchInputFn: this.onKeyDownHandlerForSearchInput,
 				suggestions: this.state.suggestions.list,
+				emptyResults: this.state.suggestions.emptyResults,
 				value: this.state.suggestions.value
 			}),
 			React.createElement(Footer, null),
@@ -28855,7 +28862,8 @@ module.exports = React.createClass({
 
 	propTypes: {
 		searchValues: React.PropTypes.object.isRequired,
-		suggestionsClicked: React.PropTypes.bool.isRequired
+		suggestionsClicked: React.PropTypes.bool.isRequired,
+		emptyResults: React.PropTypes.bool
 	},
 
 	render: function () {
@@ -28868,7 +28876,8 @@ module.exports = React.createClass({
 				onKeyDownHandlerForSearchInputFn: this.props.onKeyDownHandlerForSearchInputFn,
 				suggestions: this.props.suggestions,
 				value: this.props.value,
-				suggestionsClicked: this.props.suggestionsClicked
+				suggestionsClicked: this.props.suggestionsClicked,
+				emptyResults: this.props.emptyResults
 			}),
 			React.createElement(FilterMainContainer, { searchValues: this.props.searchValues }),
 			React.createElement(SearchButton, null)
@@ -29259,6 +29268,10 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 
+	propTypes: {
+		emptyResults: React.PropTypes.bool
+	},
+
 	_changeHandler: function (e) {
 		this.props.changeHandlerForSearchInputFn(e.target.value);
 	},
@@ -29276,7 +29289,7 @@ module.exports = React.createClass({
 
 	render: function () {
 		var clickHandler = this.props.suggestionSelectedHandlerFn;
-		var suggestions = React.createElement(Suggestions, { suggestions: this.props.suggestions, onSuggestionClickFn: clickHandler, suggestionsClicked: this.props.suggestionsClicked });
+		var suggestions = React.createElement(Suggestions, { emptyResults: this.props.emptyResults, suggestions: this.props.suggestions, onSuggestionClickFn: clickHandler, suggestionsClicked: this.props.suggestionsClicked });
 		return React.createElement(
 			'div',
 			{ className: 'searchFieldContainer' },
@@ -29307,7 +29320,9 @@ const SearchResults = React.createClass({
 	},
 
 	getInitialState: function () {
-		AppStore.search(this.props.route.console, this.props.params.search);var store = AppStore.getStore();
+		AppStore.search(this.props.route.console, this.props.params.search || '');
+		var store = AppStore.getStore();
+		//check name in store
 		return store;
 	},
 
@@ -29747,14 +29762,23 @@ module.exports = React.createClass({
 		suggestions: React.PropTypes.array.isRequired,
 		onSuggestionClickFn: React.PropTypes.func,
 		suggestionsClicked: React.PropTypes.bool.isRequired,
-		page: React.PropTypes.oneOf()
+		page: React.PropTypes.oneOf(),
+		emptyResults: React.PropTypes.bool
 	},
 
 	render: function () {
 		var suggestions = [];
-		this.props.suggestions.map(function (element) {
-			suggestions.push(React.createElement(SuggestionItem, { page: this.props.page, key: element.name, text: element.name, onClickHandler: this.props.onSuggestionClickFn }));
-		}.bind(this));
+		if (this.props.emptyResults === true) {
+			suggestions.push(React.createElement(
+				'li',
+				null,
+				'No se encontraron resultados'
+			));
+		} else {
+			this.props.suggestions.map(function (element) {
+				suggestions.push(React.createElement(SuggestionItem, { page: this.props.page, key: element.name, text: element.name, onClickHandler: this.props.onSuggestionClickFn }));
+			}.bind(this));
+		}
 		var listOfSuggestions = null;
 		if (this.props.suggestionsClicked == false) {
 			listOfSuggestions = React.createElement(
@@ -29877,7 +29901,9 @@ var _store = {
 		xbox: true,
 		ps: true,
 		list: [],
-		clicked: false },
+		clicked: false, //in order to hide suggestions
+		emptyResults: false
+	},
 	search: {
 		text: '',
 		xbox: true,
@@ -29923,7 +29949,7 @@ if (self.fetch) {
 	//do something with fetch
 	var url = '/api/user.json';
 	if ("production" === 'production') {
-		url = 'api/user/';
+		url = '/api/user/';
 	}
 	fetch(url, { credentials: 'same-origin' }).then(function (response) {
 		return response.json();
@@ -30175,10 +30201,13 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		//get results
 		if (self.fetch) {
 			//use fetch
-			var stringValue = _store.search.text;
+			//var stringValue = _store.search.text;
+			var stringValue = game;
 
 			var consoles = 'ps-xbox';
-			if (_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';else if (_store.search.ps) consoles = 'ps';else consoles = 'xbox';
+			//if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
+			//else if (_store.search.ps) consoles = 'ps';
+			if (gameConsole === Constants.consoles.both) consoles = 'ps-xbox';else if (gameConsole === Constants.consoles.ps) consoles = 'ps';else consoles = 'xbox';
 
 			var sell = 'both';
 			if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
@@ -30220,7 +30249,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 				var newVariable = 'both';
 				if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
 
-				url = '/api/suggestions/' + consoles + '/' + newVariable + '/' + sell + '/' + text + '/';
+				url = '/api/suggestions/' + consoles + '/' + newVariable + '/' + sell + '/' + text.trim() + '/';
 			}
 			if (self.fetch) {
 				fetch(url).then(function (response) {
@@ -30317,7 +30346,8 @@ var _store = {
 	unread: 0,
 	user: "",
 	chats: [],
-	searchChatValue: ""
+	searchChatValue: "",
+	loaded: false
 };
 
 var _setSearchChatValue = function (value) {
@@ -30358,6 +30388,8 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	sb: null,
 
+	listOfFunctionsToRun: [],
+
 	getStore: function () {
 		return _store;
 	},
@@ -30380,31 +30412,35 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 	},
 
 	chatOpenWithUserId: function (user_id) {
-		var chat = _store.chats.find(element => element.user.userId === user_id.toString());
-		if (chat != null) {
-			//send event to open existing chat
-			this.chatOpen(chat.id);
+		if (_store.loaded === false) {
+			this.listOfFunctionsToRun.push(Functions.wrapFunction(this.chatOpenWithUserId, this, [user_id]));
 		} else {
-			//And send event to open new chat 
-			this.emit(Constants.eventType.openNewChat);
+			var chat = _store.chats.find(element => element.user.userId === user_id.toString());
+			if (chat != null) {
+				//send event to open existing chat
+				this.chatOpen(chat.id);
+			} else {
+				//And send event to open new chat 
+				this.emit(Constants.eventType.openNewChat);
 
-			//create new chat
-			//Creating new chat with truequeGamer fb account
-			var userIds = [user_id.toString()];
-			console.log(_store);
-			console.log(userIds);
-			this.sb.GroupChannel.createChannelWithUserIds(userIds, true, function (channel, error) {
-				if (error) {
-					this.emit(Constants.eventType.chatNotCreated);
-					console.log(error);
-					return;
-				}
-				_store.chats.push(channel);
-				_store.chats = this._addAttributesToChannelList(_store.chats);
+				//create new chat
+				//Creating new chat with truequeGamer fb account
+				var userIds = [user_id.toString()];
+				console.log(_store);
+				console.log(userIds);
+				this.sb.GroupChannel.createChannelWithUserIds(userIds, true, function (channel, error) {
+					if (error) {
+						this.emit(Constants.eventType.chatNotCreated);
+						console.log(error);
+						return;
+					}
+					_store.chats.push(channel);
+					_store.chats = this._addAttributesToChannelList(_store.chats);
 
-				//emmit event with new chat
-				this.emit(Constants.eventType.chatsUpdatedAndOpen, _store.chats, channel.id);
-			}.bind(this));
+					//emmit event with new chat
+					this.emit(Constants.eventType.chatsUpdatedAndOpen, _store.chats, channel.id);
+				}.bind(this));
+			}
 		}
 	},
 
@@ -30532,6 +30568,8 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 					self.getUnreadMessageCount();
 				}.bind(this));
 			}
+			_store.loaded = true;
+			this.runFunctionsStored();
 		}.bind(this));
 
 		//Receiving messages		
@@ -30549,6 +30587,14 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			self.getUnreadMessageCount();
 		}.bind(this);
 		this.sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
+	},
+
+	runFunctionsStored: function () {
+		while (this.listOfFunctionsToRun.length > 0) {
+			this.listOfFunctionsToRun.shift()();
+			console.log("runing functions");
+		}
+		//this.listOfFunctionsToRun.map(element => element());
 	},
 
 	_addAttributesToChannelList: function (channelList) {
@@ -30923,6 +30969,12 @@ const Functions = {
 			timeString = "" + Constants.months[time.getMonth()] + " " + day.substr(-2) + " del " + time.getFullYear();
 		}
 		return timeString;
+	},
+
+	wrapFunction: function (fn, context, params) {
+		return function () {
+			fn.apply(context, params);
+		};
 	}
 };
 

@@ -10,13 +10,18 @@ module.exports = React.createClass({
 		onSuggestionClickFn: React.PropTypes.func,
 		suggestionsClicked: React.PropTypes.bool.isRequired,
 		page: React.PropTypes.oneOf(),
+		emptyResults: React.PropTypes.bool,
 	},
 
 	render: function(){
 		var suggestions = []
-		this.props.suggestions.map(function(element){
-			suggestions.push(<SuggestionItem page={this.props.page} key={element.name} text={element.name} onClickHandler={this.props.onSuggestionClickFn} />);
-		}.bind(this));
+		if(this.props.emptyResults === true){
+			suggestions.push(<li>No se encontraron resultados</li>);
+		}else{
+			this.props.suggestions.map(function(element){
+				suggestions.push(<SuggestionItem page={this.props.page} key={element.name} text={element.name} onClickHandler={this.props.onSuggestionClickFn} />);
+			}.bind(this));
+		}
 		var listOfSuggestions = null;
 		if(this.props.suggestionsClicked == false){
 			listOfSuggestions = (

@@ -25,7 +25,11 @@ const DetailsGameLabel = React.createClass({
 
 	render: function(){
 		var minPriceVar = "-";
-		if(typeof this.props.hasHigherPrices !== 'undefined' && typeof this.props.priceMin !== 'undefined') minPriceVar = "Desde " + functions.addDecimalPoints(this.props.priceMin);
+		if(this.props.priceMin && this.props.priceMin > 0){
+			minPriceVar = "";
+			if(this.props.hasHigherPrices) minPriceVar = "Desde ";
+			minPriceVar = minPriceVar + functions.addDecimalPoints(this.props.priceMin);
+		}
 
 		var nameVar = 'cargando...';
 		if(typeof this.props.name !== 'undefined') nameVar = this.props.name;

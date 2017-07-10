@@ -70,7 +70,9 @@ module.exports = React.createClass({
 
 	onSuggestionRefresh: function(){
 		var suggestions = AppStore.getSuggestions();
-		this.setState({ suggestions: {value: suggestions.value, list: suggestions.list, clicked: false }});
+		var emptyResults = false;
+		if(suggestions.list.length === 0) emptyResults = true;
+		this.setState({ suggestions: {value: suggestions.value, list: suggestions.list, clicked: false, emptyResults: emptyResults}});
 	},
 
 	changeHandlerForSearchInputFn: function(new_value){
@@ -125,6 +127,7 @@ module.exports = React.createClass({
 						changeHandlerForSearchInputFn={this.changeHandlerForSearchInputFn}
 						onKeyDownHandlerForSearchInputFn={this.onKeyDownHandlerForSearchInput}
 						suggestions={this.state.suggestions.list}
+						emptyResults={this.state.suggestions.emptyResults}
 						value={this.state.suggestions.value}
 					/>
 					<Footer />

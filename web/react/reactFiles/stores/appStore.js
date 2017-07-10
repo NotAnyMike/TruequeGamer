@@ -14,6 +14,7 @@ var _store =  {
 		ps: true,
 		list: [],
 		clicked: false, //in order to hide suggestions
+		emptyResults: false,
 	},
 	search: {
 		text: '',
@@ -60,7 +61,7 @@ if(self.fetch){
 	//do something with fetch
 	var url = '/api/user.json';
 	if(process.env.NODE_ENV === 'production'){
-		url = 'api/user/';
+		url = '/api/user/';
 	}
 	fetch(url, { credentials: 'same-origin' }).then(
 		function(response){return response.json()}).then(
@@ -319,11 +320,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		//get results
 		if(self.fetch){
 			//use fetch
-			var stringValue = _store.search.text;
+			//var stringValue = _store.search.text;
+			var stringValue = game; 
 
 			var consoles = 'ps-xbox';
-			if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
-			else if (_store.search.ps) consoles = 'ps';
+			//if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
+			//else if (_store.search.ps) consoles = 'ps';
+			if(gameConsole === Constants.consoles.both) consoles = 'ps-xbox';
+			else if (gameConsole === Constants.consoles.ps) consoles = 'ps';
 			else consoles = 'xbox';
 
 			var sell = 'both';
@@ -373,7 +377,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 				if(_store.search.not_used && !_store.search.used) newVariable = 'new';
 				else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
 				
-				url = '/api/suggestions/' + consoles + '/' +  newVariable + '/' + sell +'/' + text + '/';
+				url = '/api/suggestions/' + consoles + '/' +  newVariable + '/' + sell +'/' + text.trim() + '/';
 			}
 			if(self.fetch){
 				fetch(url).then(function(response){

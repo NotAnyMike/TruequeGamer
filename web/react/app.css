@@ -847,8 +847,10 @@ figure.negative .isotype.negative {
   padding-bottom: 2px;
 }
 .profileContainer.negative span {
-  border-bottom: 1px solid #fff;
   color: #fff;
+}
+.profileContainer.negative span:first-child span:first-child {
+  border-bottom: 1px solid #fff;
 }
 .searchHeaderButtonContainer {
   width: 215px;

@@ -16,7 +16,9 @@ const SearchResults = React.createClass({
 	},
 
 	getInitialState: function(){
-		AppStore.search(this.props.route.console,this.props.params.search); var store = AppStore.getStore();
+		AppStore.search(this.props.route.console,this.props.params.search || ''); 
+		var store = AppStore.getStore();
+		//check name in store
 		return store;
 	},
 

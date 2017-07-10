@@ -6,6 +6,10 @@ var React = require('react'),
 
 module.exports = React.createClass({
 
+	propTypes: {
+		emptyResults: React.PropTypes.bool,
+	},
+
 	_changeHandler: function(e){
 		this.props.changeHandlerForSearchInputFn(e.target.value);
 	},
@@ -23,7 +27,7 @@ module.exports = React.createClass({
 
 	render: function(){
 		var clickHandler = this.props.suggestionSelectedHandlerFn;
-		var suggestions = <Suggestions suggestions={this.props.suggestions} onSuggestionClickFn={clickHandler} suggestionsClicked={this.props.suggestionsClicked} />;
+		var suggestions = <Suggestions emptyResults={this.props.emptyResults} suggestions={this.props.suggestions} onSuggestionClickFn={clickHandler} suggestionsClicked={this.props.suggestionsClicked} />;
 		return (
 			<div className="searchFieldContainer">
 				<input type="text" placeholder="Nombre del juego a buscar" onChange={this._changeHandler} value={this.props.value} onKeyDown={this._onKeyDownHandler}/>

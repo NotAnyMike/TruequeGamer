@@ -107,8 +107,15 @@ class GameDetailsSerializer(serializers.ModelSerializer):
         return None
 
     def get_higher_prices(self, instance):
-        #TODO change this
-        return True
+        toReturn = False
+        if instance.psPrice > 0 and instance.psOnlyPrice == False:
+            toReturn = True
+        elif instance.xboxPrice > 0 and instance.xboxOnlyPrice == False:
+            toReturn = True
+        elif instance.xboxPrice > 0 and instance.psPrice > 0 and instance.xboxPrice != instance.psPrice:
+            toReturn = True
+
+        return toReturn
 
     class Meta:
         model = Game

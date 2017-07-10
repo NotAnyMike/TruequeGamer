@@ -8,6 +8,7 @@ var _store = {
 	user: "",
 	chats: [],
 	searchChatValue: "",
+	loaded: false,
 };
 
 var _setSearchChatValue = function(value){
@@ -48,6 +49,8 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	sb: null,
 
+	listOfFunctionsToRun: [],
+
 	getStore: function(){
 		return _store;
 	},
@@ -70,31 +73,35 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 	},
 
 	chatOpenWithUserId: function(user_id){
-		var chat = _store.chats.find(element => element.user.userId === user_id.toString());
-		if(chat != null){
-			//send event to open existing chat
-			this.chatOpen(chat.id)
+		if(_store.loaded === false){
+			this.listOfFunctionsToRun.push(Functions.wrapFunction(this.chatOpenWithUserId, this, [user_id]));
 		}else{
-			//And send event to open new chat 
-			this.emit(Constants.eventType.openNewChat)
+			var chat = _store.chats.find(element => element.user.userId === user_id.toString());
+			if(chat != null){
+				//send event to open existing chat
+				this.chatOpen(chat.id)
+			}else{
+				//And send event to open new chat 
+				this.emit(Constants.eventType.openNewChat)
 
-			//create new chat
-			//Creating new chat with truequeGamer fb account
-			var userIds = [user_id.toString()]
-			console.log(_store);
-			console.log(userIds);
-			this.sb.GroupChannel.createChannelWithUserIds(userIds, true, function(channel, error){
-				if(error){
-					this.emit(Constants.eventType.chatNotCreated);
-					console.log(error);
-					return;
-				}
-				_store.chats.push(channel);
-				_store.chats = this._addAttributesToChannelList(_store.chats)
-				
-				//emmit event with new chat
-				this.emit(Constants.eventType.chatsUpdatedAndOpen, _store.chats, channel.id);
-			}.bind(this));
+				//create new chat
+				//Creating new chat with truequeGamer fb account
+				var userIds = [user_id.toString()]
+				console.log(_store);
+				console.log(userIds);
+				this.sb.GroupChannel.createChannelWithUserIds(userIds, true, function(channel, error){
+					if(error){
+						this.emit(Constants.eventType.chatNotCreated);
+						console.log(error);
+						return;
+					}
+					_store.chats.push(channel);
+					_store.chats = this._addAttributesToChannelList(_store.chats)
+					
+					//emmit event with new chat
+					this.emit(Constants.eventType.chatsUpdatedAndOpen, _store.chats, channel.id);
+				}.bind(this));
+			}
 		}
 	},	
 
@@ -220,6 +227,8 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 							self.getUnreadMessageCount();
 					}.bind(this));
 			}
+			_store.loaded = true;
+			this.runFunctionsStored();
 		}.bind(this));
 		
 		//Receiving messages		
@@ -238,6 +247,14 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		}.bind(this);
 		this.sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
 
+	},
+
+	runFunctionsStored: function(){
+		while(this.listOfFunctionsToRun.length > 0) {
+			(this.listOfFunctionsToRun.shift())();
+			console.log("runing functions")
+		}
+		//this.listOfFunctionsToRun.map(element => element());
 	},
 
 	_addAttributesToChannelList: function(channelList){

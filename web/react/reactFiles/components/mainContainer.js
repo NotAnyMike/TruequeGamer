@@ -10,6 +10,7 @@ module.exports = React.createClass({
 	propTypes: {
 		searchValues: React.PropTypes.object.isRequired,
 		suggestionsClicked: React.PropTypes.bool.isRequired,
+		emptyResults: React.PropTypes.bool,
 	},
 
 	render: function(){
@@ -22,6 +23,7 @@ module.exports = React.createClass({
 						suggestions={this.props.suggestions}
 						value={this.props.value}
 						suggestionsClicked={this.props.suggestionsClicked}
+						emptyResults={this.props.emptyResults}
 					/>
 					<FilterMainContainer searchValues={this.props.searchValues}/>
 					<SearchButton />

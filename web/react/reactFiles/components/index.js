@@ -44,6 +44,7 @@ module.exports = React.createClass({
 				xbox: true,
 				ps:true,
 				list:[],
+				clicked: false,
 			},
 			search: {
 				text: '',
@@ -69,7 +70,7 @@ module.exports = React.createClass({
 
 	onSuggestionRefresh: function(){
 		var suggestions = AppStore.getSuggestions();
-		this.setState({ suggestions: {value: suggestions.value, list: suggestions.list }});
+		this.setState({ suggestions: {value: suggestions.value, list: suggestions.list, clicked: false }});
 	},
 
 	changeHandlerForSearchInputFn: function(new_value){
@@ -80,12 +81,12 @@ module.exports = React.createClass({
 		if(new_value.length <= 3){
 			suggestionsVar = [];
 		};
-		this.setState({suggestions: {value: new_value, list: suggestionsVar}});
+		this.setState({suggestions: {value: new_value, list: suggestionsVar, clicked: false, }});
 	},
 	
 	suggestionSelectedHandlerFn: function(value){
 		var suggestionsList = this.state.suggestions.list;
-		this.setState({suggestions: {value: value, list: suggestionsList}});
+		this.setState({suggestions: {value: value, list: suggestionsList, clicked: true}});
 		Actions.changeSearchInput(value);
 	},
 	
@@ -120,6 +121,7 @@ module.exports = React.createClass({
 					<MainContainer 
 						searchValues={this.state.search}
 						suggestionSelectedHandlerFn={this.suggestionSelectedHandlerFn}
+						suggestionsClicked={this.state.suggestions.clicked}
 						changeHandlerForSearchInputFn={this.changeHandlerForSearchInputFn}
 						onKeyDownHandlerForSearchInputFn={this.onKeyDownHandlerForSearchInput}
 						suggestions={this.state.suggestions.list}

@@ -1,7 +1,7 @@
 const React = require('react'),
-			SuggestionItem = require('./suggestionItem.js'),
 			AvailableConsoles = require('./availableConsoles.js'),
 			Constants = require('../utils/constants.js'),
+			Suggestions = require('./suggestions.js');
 			Functions = require('../utils/functions.js');
 
 const GameItem = React.createClass({
@@ -65,6 +65,7 @@ const GameItem = React.createClass({
 					ps: (this.props.console === null ? null : (this.props.console === Constants.consoles.ps ? true : false)),
 					idOfGame: null,
 					id: this.props.id,
+					suggestionsClicked: false,
 				}
 			});
 		}
@@ -88,6 +89,7 @@ const GameItem = React.createClass({
 				comment: null,
 				idOfGame: null,
 				id: id,
+				suggestionsClicked: false,
 			},
 		});
 	},
@@ -185,6 +187,7 @@ const GameItem = React.createClass({
 				comment: newValue,
 				idOfGame: this.state.editing.idOfGame,
 				id: this.state.editing.id,
+				suggestionsClicked: false,
 			}
 		});
 	},
@@ -201,6 +204,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 				idOfGame: this.state.editing.idOfGame,
 				id: this.state.editing.id,
+				suggestionsClicked: false,
 			}
 		});
 		this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps,newValue)
@@ -218,6 +222,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 				idOfGame: this.state.editing.idOfGame,
 				id: this.state.editing.id,
+				suggestionsClicked: false,
 			}
 		});
 	},
@@ -234,6 +239,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 				idOfGame: this.state.editing.idOfGame,
 				id: this.state.editing.id,
+				suggestionsClicked: false,
 			}
 		});
 	},
@@ -250,6 +256,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 				idOfGame: this.state.editing.idOfGame,
 				id: this.state.editing.id,
+				suggestionsClicked: false,
 			}
 		});
 	},
@@ -266,6 +273,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 				idOfGame: this.state.editing.idOfGame,
 				id: this.state.editing.id,
+				suggestionsClicked: false,
 			}
 		});
 	},
@@ -282,6 +290,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 				idOfGame: null,
 				id: this.state.editing.id,
+				suggestionsClicked: false,
 			}
 		});
 		this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name)
@@ -299,6 +308,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 				idOfGame: null,
 				id: this.state.editing.id,
+				suggestionsClicked: false,
 			}
 		});
 	},
@@ -315,6 +325,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 				idOfGame: this.state.editing.idOfGame,
 				id: this.state.editing.id,
+				suggestionsClicked: false,
 			}
 		});
 	},
@@ -330,6 +341,7 @@ const GameItem = React.createClass({
 				comment: this.state.editing.comment,
 				idOfGame: id,
 				id: this.state.editing.id,
+				suggestionsClicked: true,
 			}
 		});
 	},
@@ -624,9 +636,7 @@ const GameItem = React.createClass({
 					</div>
 					<div className="videoGameSection">
 						<input type="text" placeholder="2. Selecciona el juego" value={nameEditing} onChange={changeNameHandler}/>
-						<ul>
-							{this.props.suggestions.map(element => {return <SuggestionItem id={element.id} key={element.id} text={element.name} page={'profile'} onClickHandler={onClickOnSuggestion} />;})}
-						</ul>
+						<Suggestions suggestions={this.props.suggestions} onSuggestionClickFn={onClickOnSuggestion} page={'profile'} suggestionsClicked={this.state.editing.suggestionsClicked} />
 					</div>
 					<div><input type="text" placeholder="3. precio (en caso de venta)" value={priceEditing} onChange={changePriceHandler}/></div>
 					<span>4. ¿Nuevo o Usado?</span>

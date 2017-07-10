@@ -12,8 +12,8 @@ var _store =  {
 		value: '',
 		xbox: true,
 		ps: true,
-		list: [
-		]
+		list: [],
+		clicked: false, //in order to hide suggestions
 	},
 	search: {
 		text: '',

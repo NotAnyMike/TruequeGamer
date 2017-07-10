@@ -8,7 +8,8 @@ var React = require('react'),
 module.exports = React.createClass({
 
 	propTypes: {
-		searchValues: React.PropTypes.object.isRequired
+		searchValues: React.PropTypes.object.isRequired,
+		suggestionsClicked: React.PropTypes.bool.isRequired,
 	},
 
 	render: function(){
@@ -20,6 +21,7 @@ module.exports = React.createClass({
 						onKeyDownHandlerForSearchInputFn={this.props.onKeyDownHandlerForSearchInputFn}
 						suggestions={this.props.suggestions}
 						value={this.props.value}
+						suggestionsClicked={this.props.suggestionsClicked}
 					/>
 					<FilterMainContainer searchValues={this.props.searchValues}/>
 					<SearchButton />

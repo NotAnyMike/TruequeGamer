@@ -153,6 +153,9 @@
 						&.xboxExchange.xboxUsed
 							.contentContainer
 								.threeAttributes
+									div
+										color: white
+
 									.used3
 										&:before
 											color: white
@@ -171,7 +174,7 @@
 								.exchange3
 									opacity: 1
 									font-weight: bold				
-									color: $red
+									color: $dark_green
 
 									&:before
 										color: $dark_green
@@ -185,10 +188,10 @@
 								.used3
 									opacity: 1
 									font-weight: bold				
-									color: $red
+									color: $dark_green
 
 									&:before
-										color: $green
+										color: $dark_green
 
 									&:after
 										opacity: 0
@@ -199,6 +202,7 @@
 								.new3
 									opacity: 1
 									font-weight: bold				
+									color: $dark_green
 
 									&:after
 										opacity: 0
@@ -424,8 +428,9 @@
 							div
 								color: white
 
-								&:before, &:after
-									color: white
+								&.used3, &.exchange3, &.new3
+									&:before, &:after
+										color: white
 
 						&.xboxUsed
 							.contentContainer
@@ -433,17 +438,26 @@
 									.used3
 										color: white
 
+										&:before
+											color: white
+
 						&.xboxNew
 							.contentContainer
 								.threeAttributes
 									.new3
 										color: white
 
+										&:before
+											color: white
+
 						&.xboxExchange
 							.contentContainer
 								.threeAttributes
 									.exchange3
 										color: white
+
+										&:before
+											color: white
 
 					&.ps
 						span:first-child

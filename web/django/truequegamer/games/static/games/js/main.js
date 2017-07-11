@@ -26995,6 +26995,7 @@ const Details = React.createClass({
 	componentWillUnmount: function () {
 		AppStore.removeOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
 		AppStore.removeOnGoToProfileListener(this.loadProfilePage);
+		this.state.showWarning = false;
 	},
 
 	onGamesAvailableUpdated: function () {
@@ -27008,7 +27009,7 @@ const Details = React.createClass({
 	},
 
 	onClickActionButtonWarning: function () {
-		window.location.assign(Constants.routes.facebook);
+		window.location.assign(Constants.routes.facebookNext.concat(window.location.pathname));
 	},
 
 	onCloseWarning: function () {
@@ -28927,6 +28928,7 @@ const Profile = React.createClass({
 
 	componentWillUnmount: function () {
 		AppStore.removeOnProfileUpdatesListener(this.onProfileUpdates);
+		this.state.showWarning = false;
 	},
 
 	_getStore: function (username) {
@@ -29083,7 +29085,7 @@ const Profile = React.createClass({
 	},
 
 	actionButtonWarning: function () {
-		window.location.assign(Constants.routes.facebook);
+		window.location.assign(Constants.routes.facebookNext.concat(window.location.pathname));
 	},
 
 	openChat: function (username_id) {
@@ -29169,7 +29171,7 @@ module.exports = React.createClass({
 	},
 
 	render: function () {
-		var loginUrl = "/login/facebook/?next=".concat(window.location.pathname);
+		var loginUrl = Constants.routes.facebookNext.concat(window.location.pathname);
 		var toReturn = React.createElement(
 			'a',
 			{ className: "login arrow-decorator dot-decorator " + this.props.version, href: loginUrl },
@@ -30791,6 +30793,7 @@ const consoles = {
 const Constants = {
 	bogota: 'bogota',
 	genericProfile: '/img/default_pic.png',
+	genericProfileSmall: 'img/profile_pic.png',
 	genericCover: '/img/default_pic.png',
 	consoles: consoles,
 	messageNumber: 20,
@@ -30866,7 +30869,8 @@ const Constants = {
 		},
 		aboutUs: '/aboutus',
 		informBug: '/informBug',
-		facebook: '/login/facebook',
+		facebook: '/login/facebook/',
+		facebookNext: '/login/facebook/?next=',
 		logout: '/logout',
 		api: {
 			games: '/api/games/[console]/[used]/[exchange]/[name]/',

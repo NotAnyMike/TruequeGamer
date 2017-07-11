@@ -130,6 +130,8 @@ figure
 		align-items: center
 
 		span
+			transition: $time color, $time font-weight
+
 			&:first-child
 				margin: 20px
 				margin-bottom: 10px
@@ -151,12 +153,19 @@ figure
 					left: 0px
 					padding-bottom: 2px
 
+			&:hover
+				color: $red
+
 	&.negative
 		span
 			color: white
 
 			&:first-child
 				span
+					&:hover
+						font-weight: bold
+						color: white
+
 					&:first-child
 						border-bottom: 1px solid white
 
@@ -267,7 +276,7 @@ figure
 button.consoleCheckbox
 	align-items: center
 	border: 0px
-	background-color: #00605B
+	background-color: $dark_green
 	display: flex
 	flex-direction: row
 	height: 85px	
@@ -276,6 +285,7 @@ button.consoleCheckbox
 	position: relative
 	transition: background-color $time, opacity $time
 	width: 250px
+	opacity: .5
 
 	&:before
 		bottom: 0
@@ -294,7 +304,7 @@ button.consoleCheckbox
 
 	&:after
 		bottom: 0
-		color: $green
+		color: $dark_green
 		content: '\e90b'
 		display: inline-block
 		font-family: TruequeGamer
@@ -325,7 +335,7 @@ button.consoleCheckbox
 
 		&:before
 			text-transform: uppercase
-			color: $dark_green
+			color: white
 			font-size: 15px
 			transition: all $time
 
@@ -335,6 +345,7 @@ button.consoleCheckbox
 
 		.isotype:before
 			content: '\e905'
+			color: white
 
 		.consoleNameTitle:before
 			content: 'play station 4'
@@ -345,6 +356,7 @@ button.consoleCheckbox
 			
 		.isotype:before
 			content: '\e906'
+			color: white
 
 		.consoleNameTitle:before
 			content: 'x-box one'
@@ -361,18 +373,17 @@ button.consoleCheckbox
 		&:before
 			font-family: TruequeGamer
 			font-size: 33px
-			color: $dark_green
+			color: white
 			transition: all 300ms
 
 	&.checked
-		background-color: $red
+		opacity: 1
 
 		&:before
 			opacity: 1
 
 		&:after
 			bottom: 30px
-			color: $red
 
 		.isotype:before, span:before
 			color: white
@@ -433,7 +444,7 @@ button.consoleCheckbox
 button.extraFilterButton
 	align-items: center
 	height: 40px
-	background-color: #00605B
+	background-color: $dark_green
 	border: 0px
 	display: flex
 	font-size: 15px
@@ -443,9 +454,10 @@ button.extraFilterButton
 	padding: 0 13px
 	transition: all 300ms
 	width: 150px
+	opacity: .5
 
 	span
-		color: $dark_green
+		color: white
 		font-size: 15px
 		margin-left: 13px
 		transition: all 300ms
@@ -503,13 +515,13 @@ button.extraFilterButton
 			color: white
 
 	&.checked
-		background-color: $red
+		opacity: 1
 		
 		span
 			color: white
 
 		input[type="checkbox"] + label
-			background-color: $red
+			background-color: $darker_green
 
 			&:before
 				top: 0px
@@ -521,8 +533,8 @@ button.extraFilterButton
 .chatBubble
 	position: fixed
 	display: flex
-	width: 84px
-	height: 84px
+	width: 70px
+	height: 70px
 	border-radius: 42px
 	background-color: $dark_green
 	bottom: 0
@@ -531,11 +543,13 @@ button.extraFilterButton
 	box-sizing: border-box
 	cursor: pointer
 	z-index: 1
+	transition: $time background-color
 
 	img	
 		width: 42px
 		height: 38px
 		margin: auto
+		margin-top: 20px
 
 	.messagesNumber
 		position: absolute
@@ -544,21 +558,21 @@ button.extraFilterButton
 		border-radius: 20px
 		background-color: $red
 		color: white
-
-	.messagesNumber
-		position: absolute
-		width: 40px
-		height: 40px
-		border-radius: 20px
-		background-color: $red
-		top: -20px
-		left: 20px
+		transition: $time background-color
+		top: -15px
+		left: 40px
 		display:flex
 		justify-content: center
 		align-items: center
 
 		span
 			color: white
+
+	&:hover
+		background-color: $red
+
+		.messagesNumber
+			background-color: $red
 
 .chatList
 	position: fixed

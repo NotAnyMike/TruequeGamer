@@ -5,6 +5,7 @@ FB_PROFILE_PIC_PART2 = "/picture?type=large"
 FB_PROFILE_PIC_PART2_SMALL = "/picture?type=small"
 
 LARGE_PROFILE_PIC_URL = "/img/default_pic.png"
+SMALL_PROFILE_PIC_URL = "/img/profile_pic.png"
 DEFAULT_LOCATION = "Bogotá, Colombia"
 
 IGDB_ACCESS_TOKEN = "bTMJ0oS2atmshMYWLcFGLs6VgsoNp1NhDEijsn9rm93XJSPeFg"

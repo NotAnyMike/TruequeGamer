@@ -32,6 +32,7 @@ const Profile = React.createClass({
 
 	componentWillUnmount: function(){	
 		AppStore.removeOnProfileUpdatesListener(this.onProfileUpdates);
+		this.state.showWarning = false;
 	},
 	
 	_getStore: function(username){
@@ -176,7 +177,7 @@ const Profile = React.createClass({
 	},
 
 	actionButtonWarning: function(){
-		window.location.assign(Constants.routes.facebook);
+		window.location.assign(Constants.routes.facebookNext.concat(window.location.pathname));
 	},
 
 	openChat: function(username_id){

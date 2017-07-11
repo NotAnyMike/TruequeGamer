@@ -7,6 +7,7 @@ const consoles = {
 const Constants = {
 	bogota: 'bogota',
 	genericProfile: '/img/default_pic.png',
+	genericProfileSmall: 'img/profile_pic.png',
 	genericCover: '/img/default_pic.png',
 	consoles: consoles,
 	messageNumber: 20,
@@ -84,7 +85,8 @@ const Constants = {
 		},
 		aboutUs: '/aboutus',
 		informBug: '/informBug',
-		facebook: '/login/facebook',
+		facebook: '/login/facebook/',
+		facebookNext: '/login/facebook/?next=',
 		logout: '/logout',
 		api: {
 			games: '/api/games/[console]/[used]/[exchange]/[name]/',

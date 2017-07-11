@@ -21,7 +21,7 @@ module.exports = React.createClass({
 	},
 	
 	render: function(){
-		var loginUrl = "/login/facebook/?next=".concat(window.location.pathname)
+		var loginUrl = Constants.routes.facebookNext.concat(window.location.pathname)
 		var toReturn = <a className={"login arrow-decorator dot-decorator " + this.props.version} href={loginUrl}>Ingresa con Facebook</a>;
 		if(this.props.user.logged){
 			toReturn = (

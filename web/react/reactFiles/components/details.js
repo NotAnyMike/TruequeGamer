@@ -32,6 +32,7 @@ const Details = React.createClass({
 	componentWillUnmount: function(){
 		AppStore.removeOnGamesAvailableUpdateListener(this.onGamesAvailableUpdated);
 		AppStore.removeOnGoToProfileListener(this.loadProfilePage);
+		this.state.showWarning = false;
 	},
 
 	onGamesAvailableUpdated: function(){
@@ -45,7 +46,7 @@ const Details = React.createClass({
 	},
 	
 	onClickActionButtonWarning: function(){
-		window.location.assign(Constants.routes.facebook);
+		window.location.assign(Constants.routes.facebookNext.concat(window.location.pathname));
 	},
 	
 	onCloseWarning: function(){

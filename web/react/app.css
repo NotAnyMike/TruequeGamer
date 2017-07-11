@@ -825,6 +825,13 @@ figure.negative .isotype.negative {
   -webkit-align-items: center;
   align-items: center;
 }
+.profileContainer span span {
+  -webkit-transition: 300ms color, 300ms font-weight;
+  -moz-transition: 300ms color, 300ms font-weight;
+  -o-transition: 300ms color, 300ms font-weight;
+  -ms-transition: 300ms color, 300ms font-weight;
+  transition: 300ms color, 300ms font-weight;
+}
 .profileContainer span span:first-child {
   margin: 20px;
   margin-bottom: 10px;
@@ -846,7 +853,14 @@ figure.negative .isotype.negative {
   left: 0px;
   padding-bottom: 2px;
 }
+.profileContainer span span:hover {
+  color: #e6334c;
+}
 .profileContainer.negative span {
+  color: #fff;
+}
+.profileContainer.negative span:first-child span:hover {
+  font-weight: bold;
   color: #fff;
 }
 .profileContainer.negative span:first-child span:first-child {
@@ -1026,7 +1040,7 @@ button.consoleCheckbox {
   -webkit-align-items: center;
   align-items: center;
   border: 0px;
-  background-color: #00605b;
+  background-color: #009992;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -1054,6 +1068,9 @@ button.consoleCheckbox {
   -ms-transition: background-color 300ms, opacity 300ms;
   transition: background-color 300ms, opacity 300ms;
   width: 250px;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
 }
 button.consoleCheckbox:before {
   bottom: 0;
@@ -1078,7 +1095,7 @@ button.consoleCheckbox:before {
 }
 button.consoleCheckbox:after {
   bottom: 0;
-  color: #98ceb7;
+  color: #009992;
   content: '\e90b';
   display: inline-block;
   font-family: TruequeGamer;
@@ -1125,7 +1142,7 @@ button.consoleCheckbox .consoleNameTitle {
 }
 button.consoleCheckbox .consoleNameTitle:before {
   text-transform: uppercase;
-  color: #009992;
+  color: #fff;
   font-size: 15px;
   -webkit-transition: all 300ms;
   -moz-transition: all 300ms;
@@ -1138,6 +1155,7 @@ button.consoleCheckbox.ps4:after {
 }
 button.consoleCheckbox.ps4 .isotype:before {
   content: '\e905';
+  color: #fff;
 }
 button.consoleCheckbox.ps4 .consoleNameTitle:before {
   content: 'play station 4';
@@ -1147,6 +1165,7 @@ button.consoleCheckbox.xboxone:after {
 }
 button.consoleCheckbox.xboxone .isotype:before {
   content: '\e906';
+  color: #fff;
 }
 button.consoleCheckbox.xboxone .consoleNameTitle:before {
   content: 'x-box one';
@@ -1169,7 +1188,7 @@ button.consoleCheckbox .isotype {
 button.consoleCheckbox .isotype:before {
   font-family: TruequeGamer;
   font-size: 33px;
-  color: #009992;
+  color: #fff;
   -webkit-transition: all 300ms;
   -moz-transition: all 300ms;
   -o-transition: all 300ms;
@@ -1177,7 +1196,9 @@ button.consoleCheckbox .isotype:before {
   transition: all 300ms;
 }
 button.consoleCheckbox.checked {
-  background-color: #e6334c;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
 }
 button.consoleCheckbox.checked:before {
   opacity: 1;
@@ -1186,7 +1207,6 @@ button.consoleCheckbox.checked:before {
 }
 button.consoleCheckbox.checked:after {
   bottom: 30px;
-  color: #e6334c;
 }
 button.consoleCheckbox.checked .isotype:before,
 button.consoleCheckbox.checked span:before {
@@ -1312,7 +1332,7 @@ button.extraFilterButton {
   -webkit-align-items: center;
   align-items: center;
   height: 40px;
-  background-color: #00605b;
+  background-color: #009992;
   border: 0px;
   display: -webkit-box;
   display: -moz-box;
@@ -1341,9 +1361,12 @@ button.extraFilterButton {
   -ms-transition: all 300ms;
   transition: all 300ms;
   width: 150px;
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
 }
 button.extraFilterButton span {
-  color: #009992;
+  color: #fff;
   font-size: 15px;
   margin-left: 13px;
   -webkit-transition: all 300ms;
@@ -1417,13 +1440,15 @@ button.extraFilterButton:hover input[type="checkbox"] + label:before {
   color: #fff;
 }
 button.extraFilterButton.checked {
-  background-color: #e6334c;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
 }
 button.extraFilterButton.checked span {
   color: #fff;
 }
 button.extraFilterButton.checked input[type="checkbox"] + label {
-  background-color: #e6334c;
+  background-color: #00605b;
 }
 button.extraFilterButton.checked input[type="checkbox"] + label:before {
   top: 0px;
@@ -1442,8 +1467,8 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   display: -ms-flexbox;
   display: box;
   display: flex;
-  width: 84px;
-  height: 84px;
+  width: 70px;
+  height: 70px;
   -webkit-border-radius: 42px;
   border-radius: 42px;
   background-color: #009992;
@@ -1455,11 +1480,17 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   box-sizing: border-box;
   cursor: pointer;
   z-index: 1;
+  -webkit-transition: 300ms background-color;
+  -moz-transition: 300ms background-color;
+  -o-transition: 300ms background-color;
+  -ms-transition: 300ms background-color;
+  transition: 300ms background-color;
 }
 .chatBubble img {
   width: 42px;
   height: 38px;
   margin: auto;
+  margin-top: 20px;
 }
 .chatBubble .messagesNumber {
   position: absolute;
@@ -1469,16 +1500,13 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
   border-radius: 20px;
   background-color: #e6334c;
   color: #fff;
-}
-.chatBubble .messagesNumber {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  -webkit-border-radius: 20px;
-  border-radius: 20px;
-  background-color: #e6334c;
-  top: -20px;
-  left: 20px;
+  -webkit-transition: 300ms background-color;
+  -moz-transition: 300ms background-color;
+  -o-transition: 300ms background-color;
+  -ms-transition: 300ms background-color;
+  transition: 300ms background-color;
+  top: -15px;
+  left: 40px;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -1500,6 +1528,12 @@ button.extraFilterButton:hover.checked input[type="checkbox"] + label:before {
 }
 .chatBubble .messagesNumber span {
   color: #fff;
+}
+.chatBubble:hover {
+  background-color: #e6334c;
+}
+.chatBubble:hover .messagesNumber {
+  background-color: #e6334c;
 }
 .chatList {
   position: fixed;
@@ -4122,6 +4156,9 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList li:hover.ps.psExchange.psUsed .contentContainer .threeAttributes .used3:before {
   color: #fff;
 }
+.detailsMainContainer .container .gameList li:hover.xbox.xboxExchange.xboxUsed .contentContainer .threeAttributes div {
+  color: #fff;
+}
 .detailsMainContainer .container .gameList li:hover.xbox.xboxExchange.xboxUsed .contentContainer .threeAttributes .used3:before {
   color: #fff;
 }
@@ -4133,7 +4170,7 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
   -ms-filter: none;
   filter: none;
   font-weight: bold;
-  color: #e6334c;
+  color: #009992;
 }
 .detailsMainContainer .container .gameList li.xbox.xboxExchange .contentContainer .threeAttributes .exchange3:before {
   color: #009992;
@@ -4148,10 +4185,10 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
   -ms-filter: none;
   filter: none;
   font-weight: bold;
-  color: #e6334c;
+  color: #009992;
 }
 .detailsMainContainer .container .gameList li.xbox.xboxUsed .contentContainer .threeAttributes .used3:before {
-  color: #98ceb7;
+  color: #009992;
 }
 .detailsMainContainer .container .gameList li.xbox.xboxUsed .contentContainer .threeAttributes .used3:after {
   opacity: 0;
@@ -4163,6 +4200,7 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
   -ms-filter: none;
   filter: none;
   font-weight: bold;
+  color: #009992;
 }
 .detailsMainContainer .container .gameList li.xbox.xboxNew .contentContainer .threeAttributes .new3:after {
   opacity: 0;
@@ -4406,17 +4444,30 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
 .detailsMainContainer .container .gameList.both li.xbox .threeAttributes div {
   color: #fff;
 }
-.detailsMainContainer .container .gameList.both li.xbox .threeAttributes div:before,
-.detailsMainContainer .container .gameList.both li.xbox .threeAttributes div:after {
+.detailsMainContainer .container .gameList.both li.xbox .threeAttributes div.used3:before,
+.detailsMainContainer .container .gameList.both li.xbox .threeAttributes div.exchange3:before,
+.detailsMainContainer .container .gameList.both li.xbox .threeAttributes div.new3:before,
+.detailsMainContainer .container .gameList.both li.xbox .threeAttributes div.used3:after,
+.detailsMainContainer .container .gameList.both li.xbox .threeAttributes div.exchange3:after,
+.detailsMainContainer .container .gameList.both li.xbox .threeAttributes div.new3:after {
   color: #fff;
 }
 .detailsMainContainer .container .gameList.both li.xbox.xboxUsed .contentContainer .threeAttributes .used3 {
   color: #fff;
 }
+.detailsMainContainer .container .gameList.both li.xbox.xboxUsed .contentContainer .threeAttributes .used3:before {
+  color: #fff;
+}
 .detailsMainContainer .container .gameList.both li.xbox.xboxNew .contentContainer .threeAttributes .new3 {
   color: #fff;
 }
+.detailsMainContainer .container .gameList.both li.xbox.xboxNew .contentContainer .threeAttributes .new3:before {
+  color: #fff;
+}
 .detailsMainContainer .container .gameList.both li.xbox.xboxExchange .contentContainer .threeAttributes .exchange3 {
+  color: #fff;
+}
+.detailsMainContainer .container .gameList.both li.xbox.xboxExchange .contentContainer .threeAttributes .exchange3:before {
   color: #fff;
 }
 .detailsMainContainer .container .gameList.both li.ps span:first-child {
@@ -5321,23 +5372,18 @@ ul.gameList li.showInfo figure .info {
   animation: commentContainerOut 300ms ease forwards;
 }
 .warning {
-  position: fixed;
-  top: 50%;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  background-color: #1a4e4a;
+  display: none;
   left: 50%;
-  width: 690px;
   height: 230px;
   margin-top: -115px;
   margin-left: -345px;
-  opacity: 0.9;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-  filter: alpha(opacity=90);
-  background-color: #009992;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: box;
-  display: flex;
   -webkit-box-orient: vertical;
   -moz-box-orient: vertical;
   -o-box-orient: vertical;
@@ -5350,13 +5396,12 @@ ul.gameList li.showInfo figure .info {
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  -webkit-box-align: center;
-  -moz-box-align: center;
-  -o-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  display: none;
+  opacity: 0.9;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+  filter: alpha(opacity=90);
+  position: fixed;
+  top: 50%;
+  width: 690px;
   z-index: 4;
 }
 .warning div {

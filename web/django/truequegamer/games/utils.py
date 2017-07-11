@@ -19,7 +19,7 @@ def get_user_large_profile_pic(user):
     return toReturn
 
 def get_user_small_profile_pic(user):
-    toReturn = constants.LARGE_PROFILE_PIC_URL
+    toReturn = constants.SMALL_PROFILE_PIC_URL
     try:
         if user.profile.facebook_id != None and user.profile.facebook_has_pic:
            toReturn = get_fb_small_profile_pic(user.profile.facebook_id) 

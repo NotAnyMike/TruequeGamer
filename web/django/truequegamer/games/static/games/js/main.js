@@ -27156,7 +27156,7 @@ const DetailsGameLabel = React.createClass({
 				React.createElement(
 					'span',
 					null,
-					this.props.numberOfGames + " videojuegos"
+					this.props.numberOfGames + " videojuego" + (this.props.numberOfGames > 1 ? "s" : "")
 				),
 				React.createElement(
 					'button',

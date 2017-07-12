@@ -74,6 +74,8 @@ def SomeUser(request, username):
             #TODO: remove the repeated games
 
             dvdsSerializer = SingleDvdSerializer(dvds, many=True)
+            
+            user.numberOfGames = len(dvds)
             profileSerializer = UserProfileSerializer(user, many=False)
 
             return Response({

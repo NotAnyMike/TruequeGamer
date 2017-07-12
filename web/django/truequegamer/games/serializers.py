@@ -42,7 +42,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return "bogota" #TODO: correct this bullshit, location and city? wtf?
 
     def get_numberOfGames(self, user):
-        return "4" #TODO: return the real value
+        if hasattr(user, 'numberOfGames'):
+            return user.numberOfGames
+        return 0
 
     class Meta:
         model = User

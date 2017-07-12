@@ -59,7 +59,7 @@ const DetailsGameLabel = React.createClass({
 					<div className="arrow-decorator"></div>
 					<span>{nameVar}</span>
 					<span>{this.props.city}</span>
-					<span>{this.props.numberOfGames + " videojuegos"}</span>
+					<span>{this.props.numberOfGames + " videojuego" + (this.props.numberOfGames > 1 ? "s": "")}</span>
 					<button onClick={this._onClickOpenChatHandler} className="openChatProfileButton">abrir chat</button>
 				</div>
 			);

@@ -2534,6 +2534,11 @@ footer.white .footerContainer .footerDecorator {
   border: 0;
   margin: 20px;
   color: #fff;
+  -webkit-transition: 300ms color, 300ms background-color;
+  -moz-transition: 300ms color, 300ms background-color;
+  -o-transition: 300ms color, 300ms background-color;
+  -ms-transition: 300ms color, 300ms background-color;
+  transition: 300ms color, 300ms background-color;
 }
 .instagramLink:hover,
 .youtubeLink:hover,
@@ -3568,7 +3573,7 @@ ul.both.gameList.noResults::before {
   background: url("/img/sad.png") no-repeat center center/50px;
 }
 ul.both.gameList.noResults::after {
-  content: '(usa la sugerencias para ayudarte a encontrar más rápido lo que quieres)';
+  content: 'usa las sugerencias para ayudarte a encontrar más rápido lo que quieres';
   height: 140px;
   font-size: 13px;
   color: #009992;

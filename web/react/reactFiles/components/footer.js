@@ -38,7 +38,7 @@ module.exports = React.createClass({
 					<section className="socialLinks">
 						<SocialLink type="instagram" />
 						<SocialLink type="facebook" />
-						<SocialLink type="twitter" />
+						<SocialLink type="youtube" />
 						<SocialLink type="twitter" />
 						<SocialLink type="pinterest" />
 						<span>www.truequegamer.com. ©2016 Derechos reservados. Bogotá D.C., Colombia.</span>

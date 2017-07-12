@@ -15,9 +15,12 @@ const SearchResultsList = React.createClass({
 
 		var consoleVar = this.props.console;
 		var self = this;
+
+		var className = "gameList " + this.props.console;
+		if(this.props.isProfile === false && (!this.props.list || this.props.list.length === 0)) className += " noResults";
 		
 		return (
-			<ul className={"gameList " + this.props.console}>
+			<ul className={className}>
 				{this.props.list.map(function(element){
 					
 					var consoleProp = Constants.consoles.ps;

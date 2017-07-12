@@ -27673,7 +27673,7 @@ module.exports = React.createClass({
 					{ className: 'socialLinks' },
 					React.createElement(SocialLink, { type: 'instagram' }),
 					React.createElement(SocialLink, { type: 'facebook' }),
-					React.createElement(SocialLink, { type: 'twitter' }),
+					React.createElement(SocialLink, { type: 'youtube' }),
 					React.createElement(SocialLink, { type: 'twitter' }),
 					React.createElement(SocialLink, { type: 'pinterest' }),
 					React.createElement(
@@ -29440,9 +29440,12 @@ const SearchResultsList = React.createClass({
 		var consoleVar = this.props.console;
 		var self = this;
 
+		var className = "gameList " + this.props.console;
+		if (this.props.isProfile === false && (!this.props.list || this.props.list.length === 0)) className += " noResults";
+
 		return React.createElement(
 			'ul',
-			{ className: "gameList " + this.props.console },
+			{ className: className },
 			this.props.list.map(function (element) {
 
 				var consoleProp = Constants.consoles.ps;

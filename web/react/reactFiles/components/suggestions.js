@@ -25,7 +25,7 @@ module.exports = React.createClass({
 		var listOfSuggestions = null;
 		if(this.props.suggestionsClicked == false){
 			listOfSuggestions = (
-				<ul>
+				<ul class="suggestions">
 					{suggestions}
 				</ul>
 			);

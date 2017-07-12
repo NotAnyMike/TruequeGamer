@@ -189,6 +189,20 @@ figure
 			border-top: 1px solid $dark_green
 			height: 70px
 			width: 50px
+
+			input
+				bottom: 5px
+				display: none
+				left: 20px
+				padding-left: 30px
+				position: absolute
+				width: 200px
+
+			ul
+				position: absolute
+				top: 36px
+				width:200px
+				left: 20px
 	
 	div:nth-child(2)
 		position absolute
@@ -210,6 +224,11 @@ figure
 		border-radius: 20px
 		border: none
 		background-color: $dark_green
+		transition: background-color $time
+		z-index: 1
+
+		&:hover
+			background-color: $red
 		
 		&:before
 			content: '\e908'
@@ -232,37 +251,36 @@ figure
 
 			&:focus + ul
 				display: block
-		
-		ul
-			display: none;
-			position: absolute
-			top: 0
-			left: 0
-			margin-top: 28px
-			padding: 0
-			background: white
-			border: 1px solid $dark_green
-			border-radius: 0 0 3px 3px
-			box-sizing: border-box
-			width: 350px
-			z-index: 1
-
-			li
-				cursor: pointer
-				font-size: 15px
-				list-style-type: none
-				padding: 5px 18px
-
-				&:hover
-					background-color: $dark_green
-					color: white
-
-			&:hover
-				display: inline-block
-					
+			
 	.filterMainContainer
-		/*width: 900px*/
 		width: auto
+
+ul.suggestions
+	display: none;
+	position: absolute
+	top: 0
+	left: 0
+	margin-top: 28px
+	padding: 0
+	background: white
+	border: 1px solid $dark_green
+	border-radius: 0 0 3px 3px
+	box-sizing: border-box
+	width: 350px
+	z-index: 1
+
+	li
+		cursor: pointer
+		font-size: 15px
+		list-style-type: none
+		padding: 5px 18px
+
+		&:hover
+			background-color: $dark_green
+			color: white
+
+	&:hover
+		display: inline-block
 
 .consoleContainer
 	display: flex

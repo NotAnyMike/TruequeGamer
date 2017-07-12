@@ -902,6 +902,20 @@ figure.negative .isotype.negative {
   height: 70px;
   width: 50px;
 }
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer input {
+  bottom: 5px;
+  display: none;
+  left: 20px;
+  padding-left: 30px;
+  position: absolute;
+  width: 200px;
+}
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer ul {
+  position: absolute;
+  top: 36px;
+  width: 200px;
+  left: 20px;
+}
 .searchHeaderButtonContainer div:nth-child(2) {
   position: absolute;
   top: 100px;
@@ -926,6 +940,15 @@ figure.negative .isotype.negative {
   border-radius: 20px;
   border: none;
   background-color: #009992;
+  -webkit-transition: background-color 300ms;
+  -moz-transition: background-color 300ms;
+  -o-transition: background-color 300ms;
+  -ms-transition: background-color 300ms;
+  transition: background-color 300ms;
+  z-index: 1;
+}
+.searchHeaderButtonContainer .searchButton:hover {
+  background-color: #e6334c;
 }
 .searchHeaderButtonContainer .searchButton:before {
   content: '\e908';
@@ -969,7 +992,10 @@ figure.negative .isotype.negative {
 .mainContainer .searchFieldContainer input[type="text"]:focus + ul {
   display: block;
 }
-.mainContainer .searchFieldContainer ul {
+.mainContainer .filterMainContainer {
+  width: auto;
+}
+ul.suggestions {
   display: none;
   position: absolute;
   top: 0;
@@ -986,22 +1012,18 @@ figure.negative .isotype.negative {
   width: 350px;
   z-index: 1;
 }
-.mainContainer .searchFieldContainer ul li {
+ul.suggestions li {
   cursor: pointer;
   font-size: 15px;
   list-style-type: none;
   padding: 5px 18px;
 }
-.mainContainer .searchFieldContainer ul li:hover {
+ul.suggestions li:hover {
   background-color: #009992;
   color: #fff;
 }
-.mainContainer .searchFieldContainer ul:hover {
+ul.suggestions:hover {
   display: inline-block;
-}
-.mainContainer .filterMainContainer {
-/*width: 900px*/
-  width: auto;
 }
 .consoleContainer {
   display: -webkit-box;

@@ -2525,7 +2525,8 @@ footer.white .footerContainer .footerDecorator {
 .youtubeLink,
 .facebookLink,
 .twitterLink,
-.pinterestLink {
+.pinterestLink,
+.twitchLink {
   width: 40px;
   height: 40px;
   background-color: #009992;
@@ -2544,14 +2545,16 @@ footer.white .footerContainer .footerDecorator {
 .youtubeLink:hover,
 .facebookLink:hover,
 .twitterLink:hover,
-.pinterestLink:hover {
+.pinterestLink:hover,
+.twitchLink:hover {
   background-color: #e6334c;
 }
 .instagramLink:before,
 .youtubeLink:before,
 .facebookLink:before,
 .twitterLink:before,
-.pinterestLink:before {
+.pinterestLink:before,
+.twitchLink:before {
   font-family: TruequeGamer;
   margin: 10px;
   display: inline-block;
@@ -2573,6 +2576,10 @@ footer.white .footerContainer .footerDecorator {
 .pinterestLink:before {
   content: '\e903';
   margin-left: 13px;
+}
+.twitchLink:before {
+  content: '\ea9f';
+  margin-left: 12px;
 }
 .x-reflexion {
   -webkit-transform: scaleX(-1);

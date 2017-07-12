@@ -27675,7 +27675,7 @@ module.exports = React.createClass({
 					React.createElement(SocialLink, { type: 'facebook' }),
 					React.createElement(SocialLink, { type: 'youtube' }),
 					React.createElement(SocialLink, { type: 'twitter' }),
-					React.createElement(SocialLink, { type: 'pinterest' }),
+					React.createElement(SocialLink, { type: 'twitch' }),
 					React.createElement(
 						'span',
 						null,
@@ -29727,7 +29727,7 @@ module.exports = React.createClass({
 
 
 	propTypes: {
-		type: React.PropTypes.oneOf(['instagram', 'facebook', 'youtube', 'twitter', 'pinterest']).isRequired
+		type: React.PropTypes.oneOf(['instagram', 'facebook', 'youtube', 'twitter', 'pinterest', 'twitch']).isRequired
 	},
 
 	render: function () {

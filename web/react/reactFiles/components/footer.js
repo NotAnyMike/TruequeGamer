@@ -40,7 +40,7 @@ module.exports = React.createClass({
 						<SocialLink type="facebook" />
 						<SocialLink type="youtube" />
 						<SocialLink type="twitter" />
-						<SocialLink type="pinterest" />
+						<SocialLink type="twitch" />
 						<span>www.truequegamer.com. ©2016 Derechos reservados. Bogotá D.C., Colombia.</span>
 					</section>
 					<div className="footerDecorator x-reflexion"></div>

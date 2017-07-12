@@ -5,7 +5,7 @@ var React = require('react');
 module.exports = React.createClass({
 
 	propTypes: {
-		type: React.PropTypes.oneOf(['instagram', 'facebook', 'youtube', 'twitter', 'pinterest']).isRequired,
+		type: React.PropTypes.oneOf(['instagram', 'facebook', 'youtube', 'twitter', 'pinterest', 'twitch']).isRequired,
 	},
 
 	render: function(){

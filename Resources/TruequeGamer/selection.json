@@ -560,6 +560,35 @@
       "setIdx": 9,
       "setId": 1,
       "iconIdx": 406
+    },
+    {
+      "icon": {
+        "paths": [
+          "M96 0l-96 160v736h256v128h128l128-128h160l288-288v-608h-864zM832 544l-160 160h-160l-128 128v-128h-192v-576h640v416z",
+          "M608 256h96v256h-96v-256z",
+          "M416 256h96v256h-96v-256z"
+        ],
+        "tags": [
+          "twitch",
+          "brand",
+          "social"
+        ],
+        "defaultCode": 60063,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "twitch, brand23",
+        "name": "twitch",
+        "order": 22,
+        "id": 416,
+        "prevSize": 32,
+        "code": 60063
+      },
+      "setIdx": 9,
+      "setId": 1,
+      "iconIdx": 415
     }
   ],
   "height": 1024,

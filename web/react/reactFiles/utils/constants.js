@@ -46,6 +46,7 @@ const Constants = {
 		openExistingChat: 'open_existing_chat',
 		openNewChat: 'open_new_chat',
 		reloadIndex: 'reaload_index',
+		generalChatError: 'general_chat_error',
 	},
 	filter: {
 		not_used: 'not_used',

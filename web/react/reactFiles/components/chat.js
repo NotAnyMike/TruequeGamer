@@ -23,6 +23,7 @@ var Chat = React.createClass({
 			searchingChat: false,
 			emptyChat: false,
 			chatsReceived: false,
+			generalError: store.generalError,
 		});
 	},
 
@@ -34,6 +35,7 @@ var Chat = React.createClass({
 		ChatStore.addChatNotCreatedListener(this.onChatNotCreated);
 		ChatStore.addChatsUpdateAndOpenListener(this.onChatsUpdateAndOpen);
 		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
+		ChatStore.addGeneralChatErrorListener(this.onGeneralChatError);
 	},
 
 	componentWillUnmount: function(){
@@ -44,22 +46,28 @@ var Chat = React.createClass({
 		ChatStore.removeChatNotCreatedListener(this.onChatNotCreated);
 		ChatStore.removeChatsUpdateAndOpenListener(this.onChatsUpdateAndOpen);
 		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
+		ChatStore.removeGeneralChatErrorListener(this.onGeneralChatError);
+	},
+
+	onGeneralChatError: function(){
+		console.log("onGeneralChatError");
+		this.setState({generalError: true});
 	},
 
 	onChatNotCreated: function(){
 		//Show a message saying that chat couldnt be created
-		//TODO
+		//TODO use the class imposibleToLoad in singleChat
 		console.log("chat could not be created");
 	},
 
 	onChatsUpdated: function(){
 		chats = ChatStore.getChats();
-		this.setState({chats: chats});
+		this.setState({chats: chats, generalError: false});
 	},
 
 	onChatsUpdateAndOpen: function(store, chat_id){
 		chats = store;
-		this.setState({chats:chats});
+		this.setState({chats:chats, generalError: false});
 		this.openExistingChat(chat_id)
 	},
 	
@@ -204,6 +212,7 @@ var Chat = React.createClass({
 					singleChatVisible={this.state.singleChatVisible} 
 					emptyChat={this.state.emptyChat}
 					chatsReceived={this.state.chatsReceived}
+					generalError={this.state.generalError}
 					chats={chats} 
 					searchingChat={this.state.searchingChat}
 					activeChat={activeChat} 

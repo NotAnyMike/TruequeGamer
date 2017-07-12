@@ -22,6 +22,7 @@ var ChatContainer = React.createClass({
 		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
 		searchChatValue: React.PropTypes.string,
 		chatsReceived: React.PropTypes.bool,
+		generalError: React.PropTypes.bool,
 	},
 
 	render: function(){
@@ -68,6 +69,7 @@ var ChatContainer = React.createClass({
 					searchChatValue={this.props.searchChatValue}
 					onCloseButtonSearchChatFn={this.props.onCloseButtonSearchChatFn}
 					chatsReceived={this.props.chatsReceived}
+					error={this.props.generalError}
 				/>
 				{singleChat}
 			</section>

@@ -26447,7 +26447,8 @@ var Chat = React.createClass({
 			filteredChats: null,
 			searchingChat: false,
 			emptyChat: false,
-			chatsReceived: false
+			chatsReceived: false,
+			generalError: store.generalError
 		};
 	},
 
@@ -26459,6 +26460,7 @@ var Chat = React.createClass({
 		ChatStore.addChatNotCreatedListener(this.onChatNotCreated);
 		ChatStore.addChatsUpdateAndOpenListener(this.onChatsUpdateAndOpen);
 		ChatStore.addOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
+		ChatStore.addGeneralChatErrorListener(this.onGeneralChatError);
 	},
 
 	componentWillUnmount: function () {
@@ -26469,22 +26471,28 @@ var Chat = React.createClass({
 		ChatStore.removeChatNotCreatedListener(this.onChatNotCreated);
 		ChatStore.removeChatsUpdateAndOpenListener(this.onChatsUpdateAndOpen);
 		ChatStore.removeOnUnreadMessageCountUpdatedListener(this.onUnreadMessageCountUpdated);
+		ChatStore.removeGeneralChatErrorListener(this.onGeneralChatError);
+	},
+
+	onGeneralChatError: function () {
+		console.log("onGeneralChatError");
+		this.setState({ generalError: true });
 	},
 
 	onChatNotCreated: function () {
 		//Show a message saying that chat couldnt be created
-		//TODO
+		//TODO use the class imposibleToLoad in singleChat
 		console.log("chat could not be created");
 	},
 
 	onChatsUpdated: function () {
 		chats = ChatStore.getChats();
-		this.setState({ chats: chats });
+		this.setState({ chats: chats, generalError: false });
 	},
 
 	onChatsUpdateAndOpen: function (store, chat_id) {
 		chats = store;
-		this.setState({ chats: chats });
+		this.setState({ chats: chats, generalError: false });
 		this.openExistingChat(chat_id);
 	},
 
@@ -26630,6 +26638,7 @@ var Chat = React.createClass({
 				singleChatVisible: this.state.singleChatVisible,
 				emptyChat: this.state.emptyChat,
 				chatsReceived: this.state.chatsReceived,
+				generalError: this.state.generalError,
 				chats: chats,
 				searchingChat: this.state.searchingChat,
 				activeChat: activeChat,
@@ -26712,7 +26721,8 @@ var ChatContainer = React.createClass({
 		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
 		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
 		searchChatValue: React.PropTypes.string,
-		chatsReceived: React.PropTypes.bool
+		chatsReceived: React.PropTypes.bool,
+		generalError: React.PropTypes.bool
 	},
 
 	render: function () {
@@ -26752,7 +26762,8 @@ var ChatContainer = React.createClass({
 				searchingChat: this.props.searchingChat,
 				searchChatValue: this.props.searchChatValue,
 				onCloseButtonSearchChatFn: this.props.onCloseButtonSearchChatFn,
-				chatsReceived: this.props.chatsReceived
+				chatsReceived: this.props.chatsReceived,
+				error: this.props.generalError
 			}),
 			singleChat
 		);
@@ -26781,7 +26792,8 @@ var ChatList = React.createClass({
 		onSearchChatValueChangeFn: React.PropTypes.func.isRequired,
 		onCloseButtonSearchChatFn: React.PropTypes.func.isRequired,
 		searchChatValue: React.PropTypes.string,
-		chatsReceived: React.PropTypes.bool
+		chatsReceived: React.PropTypes.bool,
+		error: React.PropTypes.bool
 	},
 
 	onSearchChatChangeFn: function (e) {
@@ -26795,8 +26807,12 @@ var ChatList = React.createClass({
 	},
 
 	render: function () {
+		var containerClass = "container";
 		var chats = [];
-		if (this.props.chats && this.props.chats.length != null && this.props.chats.length > 0) {
+
+		if (this.props.error) {
+			containerClass += " imposibleToLoad";
+		} else if (this.props.chats && this.props.chats.length != null && this.props.chats.length > 0) {
 			this.props.chats.map(function (element) {
 				var lastMessage = "";
 				var timeString = "";
@@ -26816,11 +26832,7 @@ var ChatList = React.createClass({
 					'No hay nadie con ese nombre en tus chats :('
 				);
 			} else if (this.props.chatsReceived === false) {
-				chats = React.createElement(
-					'li',
-					null,
-					'Cargando ...'
-				);
+				containerClass += " loading";
 			} else {
 				chats = React.createElement(
 					'li',
@@ -26832,7 +26844,7 @@ var ChatList = React.createClass({
 
 		return React.createElement(
 			'div',
-			{ className: 'container' },
+			{ className: containerClass },
 			React.createElement(
 				'div',
 				{ className: 'titleContainer' },
@@ -29534,7 +29546,8 @@ var SingleChat = React.createClass({
 		closeSingleChatFn: React.PropTypes.func.isRequired,
 		sendFn: React.PropTypes.func.isRequired,
 		onKeyDownFn: React.PropTypes.func.isRequired,
-		onChangeInputChatFn: React.PropTypes.func.isRequired
+		onChangeInputChatFn: React.PropTypes.func.isRequired,
+		error: React.PropTypes.bool
 	},
 
 	render: function () {
@@ -29547,16 +29560,24 @@ var SingleChat = React.createClass({
 		}
 
 		var messages = [];
-		if (this.props.chat.messages && this.props.chat.messages.length > 0) {
-			this.props.chat.messages.map(function (element) {
-				var timeString = Functions.getTimeString(parseInt(element.createdAt));
-				messages.push(React.createElement(SingleMessage, { key: element.messageId, message: element.message, time: timeString, user: this.props.chat.user, mine: element.mine }));
-			}.bind(this));
+
+		var className = "singleChat " + visible;
+		if (this.props.error === true) {
+			className += " imposibleToLoad";
+		} else if (this.props.emptyChat) {
+			className += " showLoadingChat";
+		} else {
+			if (this.props.chat.messages && this.props.chat.messages.length > 0) {
+				this.props.chat.messages.map(function (element) {
+					var timeString = Functions.getTimeString(parseInt(element.createdAt));
+					messages.push(React.createElement(SingleMessage, { key: element.messageId, message: element.message, time: timeString, user: this.props.chat.user, mine: element.mine }));
+				}.bind(this));
+			}
 		}
 
 		return React.createElement(
 			'div',
-			{ id: 'singleChat', className: "singleChat " + visible + (this.props.emptyChat ? " showLoadingChat" : "") },
+			{ id: 'singleChat', className: className },
 			React.createElement(
 				'div',
 				{ className: 'chatLoading' },
@@ -30354,7 +30375,8 @@ var _store = {
 	user: "",
 	chats: [],
 	searchChatValue: "",
-	loaded: false
+	loaded: false,
+	generalError: false
 };
 
 var _setSearchChatValue = function (value) {
@@ -30554,46 +30576,58 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 			appId: "4094F42A-A4A3-4AB1-B71A-FCF72D92A0E3"
 		});
 
-		this.sb.connect(_store.user.id, _store.user.chat_token, function (user, error) {
+		if (navigator.onLine === true) {
+			//in order to try to get thte offline error
 
-			if (error) {
-				console.error(error);
-				return;
-			}
-			//Getting the list of group channels
-			var channelListQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
-			channelListQuery.includeEmpty = false; //must be false
+			this.sb.connect(_store.user.id, _store.user.chat_token, function (user, error) {
 
-			if (channelListQuery.hasNext) {
-				channelListQuery.next(function (channelList, error) {
-					if (error) {
-						console.error(error);
-						return;
-					}
-					channelList = this._addAttributesToChannelList(channelList);
-					_store.chats = channelList;
-					self.getUnreadMessageCount();
-				}.bind(this));
-			}
-			_store.loaded = true;
-			this.runFunctionsStored();
-		}.bind(this));
+				if (error) {
+					this.emit(Constants.eventType.generalChatError);
+					_store.generalError = true;
+					this.run();
+					console.error(error);
+					return;
+				}
+				//Getting the list of group channels
+				var channelListQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
+				channelListQuery.includeEmpty = false; //must be false
 
-		//Receiving messages		
-		var UNIQUE_CHANNEL_HANDLER = "12";
-		var ChannelHandler = new this.sb.ChannelHandler();
-		let self = this;
-		ChannelHandler.onMessageReceived = function (channel, message) {
-			let chat = _store.chats.find(element => element.id === channel.id);
-			if (!chat) {
-				chat = this._addAttributesToChannel(channel);
-				_store.chats.push(chat);
-			}
-			chat.messages.unshift(message);
-			self.emit(Constants.eventType.messageAdded);
-			self.getUnreadMessageCount();
-		}.bind(this);
-		this.sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
+				if (channelListQuery.hasNext) {
+					channelListQuery.next(function (channelList, error) {
+						if (error) {
+							console.error(error);
+							return;
+						}
+						channelList = this._addAttributesToChannelList(channelList);
+						_store.chats = channelList;
+						self.getUnreadMessageCount();
+					}.bind(this));
+				}
+				_store.loaded = true;
+				_store.generalError = false;
+				this.runFunctionsStored();
+			}.bind(this));
+
+			//Receiving messages		
+			var UNIQUE_CHANNEL_HANDLER = "12";
+			var ChannelHandler = new this.sb.ChannelHandler();
+			let self = this;
+			ChannelHandler.onMessageReceived = function (channel, message) {
+				let chat = _store.chats.find(element => element.id === channel.id);
+				if (!chat) {
+					chat = this._addAttributesToChannel(channel);
+					_store.chats.push(chat);
+				}
+				chat.messages.unshift(message);
+				self.emit(Constants.eventType.messageAdded);
+				self.getUnreadMessageCount();
+			}.bind(this);
+			this.sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
+		} else {
+			this.emit(Constants.eventType.generalChatError);
+			_store.generalError = true;
+			console.error("not online");
+		}
 	},
 
 	runFunctionsStored: function () {
@@ -30682,6 +30716,14 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	removeChatNotCreatedListener: function (callback) {
 		this.removeListener(Constants.eventType.chatNotCreated, callback);
+	},
+
+	addGeneralChatErrorListener: function (callback) {
+		this.on(Constants.eventType.generalChatError, callback);
+	},
+
+	removeGeneralChatErrorListener: function (callback) {
+		this.removeListener(Constants.eventType.generalChatError, callback);
 	},
 
 	getChats: function () {
@@ -30829,7 +30871,8 @@ const Constants = {
 		profileUpdated: 'profile_updated',
 		openExistingChat: 'open_existing_chat',
 		openNewChat: 'open_new_chat',
-		reloadIndex: 'reaload_index'
+		reloadIndex: 'reaload_index',
+		generalChatError: 'general_chat_error'
 	},
 	filter: {
 		not_used: 'not_used',

@@ -9,6 +9,7 @@ var _store = {
 	chats: [],
 	searchChatValue: "",
 	loaded: false,
+	generalError: false,
 };
 
 var _setSearchChatValue = function(value){
@@ -206,46 +207,58 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 		this.sb = new SendBird({ 
 			    appId: "4094F42A-A4A3-4AB1-B71A-FCF72D92A0E3"
 		}); 
-		this.sb.connect(_store.user.id, _store.user.chat_token, function(user, error) {	
-	
-			if(error){
-				console.error(error);
-				return;
-			}
-			//Getting the list of group channels
-			var channelListQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
-			channelListQuery.includeEmpty = false; //must be false
+		if(navigator.onLine === true){ //in order to try to get thte offline error
 
-			if (channelListQuery.hasNext) {
-					channelListQuery.next(function(channelList, error){
-							if (error) {
-									console.error(error);
-									return;
-							}
-							channelList = this._addAttributesToChannelList(channelList);
-							_store.chats = channelList;
-							self.getUnreadMessageCount();
-					}.bind(this));
-			}
-			_store.loaded = true;
-			this.runFunctionsStored();
-		}.bind(this));
+			this.sb.connect(_store.user.id, _store.user.chat_token, function(user, error) {	
 		
-		//Receiving messages		
-		var UNIQUE_CHANNEL_HANDLER = "12";
-		var ChannelHandler = new this.sb.ChannelHandler();
-		let self = this;
-		ChannelHandler.onMessageReceived = function(channel, message){	
-			let chat = _store.chats.find(element => element.id === channel.id);
-			if(!chat){
-				chat = this._addAttributesToChannel(channel);
-				_store.chats.push(chat);
-			}
-			chat.messages.unshift(message);
-			self.emit(Constants.eventType.messageAdded);
-			self.getUnreadMessageCount();	
-		}.bind(this);
-		this.sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
+				if(error){
+					this.emit(Constants.eventType.generalChatError);
+					_store.generalError = true;
+					this.run();
+					console.error(error);
+					return;
+				}
+				//Getting the list of group channels
+				var channelListQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
+				channelListQuery.includeEmpty = false; //must be false
+
+				if (channelListQuery.hasNext) {
+						channelListQuery.next(function(channelList, error){
+								if (error) {
+										console.error(error);
+										return;
+								}
+								channelList = this._addAttributesToChannelList(channelList);
+								_store.chats = channelList;
+								self.getUnreadMessageCount();
+						}.bind(this));
+				}
+				_store.loaded = true;
+				_store.generalError = false;
+				this.runFunctionsStored();
+			}.bind(this));
+			
+			//Receiving messages		
+			var UNIQUE_CHANNEL_HANDLER = "12";
+			var ChannelHandler = new this.sb.ChannelHandler();
+			let self = this;
+			ChannelHandler.onMessageReceived = function(channel, message){	
+				let chat = _store.chats.find(element => element.id === channel.id);
+				if(!chat){
+					chat = this._addAttributesToChannel(channel);
+					_store.chats.push(chat);
+				}
+				chat.messages.unshift(message);
+				self.emit(Constants.eventType.messageAdded);
+				self.getUnreadMessageCount();	
+			}.bind(this);
+			this.sb.addChannelHandler(UNIQUE_CHANNEL_HANDLER, ChannelHandler);
+
+		}else{
+			this.emit(Constants.eventType.generalChatError);
+			_store.generalError = true;
+			console.error("not online");
+		}
 
 	},
 
@@ -337,6 +350,14 @@ var ChatStore = assign({}, EventEmitter.prototype, {
 
 	removeChatNotCreatedListener: function(callback){
 		this.removeListener(Constants.eventType.chatNotCreated, callback);
+	},
+
+	addGeneralChatErrorListener: function(callback){
+		this.on(Constants.eventType.generalChatError, callback);
+	},
+
+	removeGeneralChatErrorListener: function(callback){
+		this.removeListener(Constants.eventType.generalChatError, callback);
 	},
 
 	getChats: function(){

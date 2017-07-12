@@ -15,6 +15,7 @@ var SingleChat = React.createClass({
 		sendFn: React.PropTypes.func.isRequired,
 		onKeyDownFn: React.PropTypes.func.isRequired,
 		onChangeInputChatFn: React.PropTypes.func.isRequired,
+		error: React.PropTypes.bool,
 	},
 
 	render: function(){
@@ -32,15 +33,23 @@ var SingleChat = React.createClass({
 		}
 
 		var messages = [];
-		if(this.props.chat.messages && this.props.chat.messages.length > 0){
-			this.props.chat.messages.map(function(element){
-				var timeString = Functions.getTimeString(parseInt(element.createdAt));
-				messages.push(<SingleMessage key={element.messageId} message={element.message} time={timeString} user={this.props.chat.user} mine={element.mine} />);
-			}.bind(this))
+
+		var className = "singleChat " + visible;
+		if(this.props.error === true){
+			className += " imposibleToLoad"; 
+		}else if(this.props.emptyChat){
+			className += " showLoadingChat";
+		}else{
+			if(this.props.chat.messages && this.props.chat.messages.length > 0){
+				this.props.chat.messages.map(function(element){
+					var timeString = Functions.getTimeString(parseInt(element.createdAt));
+					messages.push(<SingleMessage key={element.messageId} message={element.message} time={timeString} user={this.props.chat.user} mine={element.mine} />);
+				}.bind(this))
+			}
 		}
 
 		return(				
-			<div id="singleChat" className={"singleChat " + visible + (this.props.emptyChat ? " showLoadingChat": "")}>
+			<div id="singleChat" className={className}>
 				<div className="chatLoading">Loading...</div>
 				<div className="titleContainer">
 					<span>{this.props.emptyChat ? "" : this.props.chat.user.nickname}</span>

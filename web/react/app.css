@@ -904,17 +904,59 @@ figure.negative .isotype.negative {
 }
 .searchHeaderButtonContainer div:first-child .searchButtonSubContainer input {
   bottom: 5px;
-  display: none;
   left: 20px;
-  padding-left: 30px;
   position: absolute;
+  width: 1px;
+  display: block;
+  -webkit-transition: 300ms width, 300ms padding-left;
+  -moz-transition: 300ms width, 300ms padding-left;
+  -o-transition: 300ms width, 300ms padding-left;
+  -ms-transition: 300ms width, 300ms padding-left;
+  transition: 300ms width, 300ms padding-left;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 0px;
+}
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer input:focus {
   width: 200px;
+  padding-left: 30px;
 }
 .searchHeaderButtonContainer div:first-child .searchButtonSubContainer ul {
+  display: block;
   position: absolute;
   top: 36px;
-  width: 200px;
+  width: 1px;
   left: 20px;
+  -webkit-transition: 300ms width, 300ms height;
+  -moz-transition: 300ms width, 300ms height;
+  -o-transition: 300ms width, 300ms height;
+  -ms-transition: 300ms width, 300ms height;
+  transition: 300ms width, 300ms height;
+  height: 1px;
+  overflow: hidden;
+}
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer ul li {
+  margin-left: -50px;
+  -webkit-transition: 300ms margin-left;
+  -moz-transition: 300ms margin-left;
+  -o-transition: 300ms margin-left;
+  -ms-transition: 300ms margin-left;
+  transition: 300ms margin-left;
+  white-space: nowrap;
+}
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in input,
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in ul {
+  width: 200px;
+}
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in input {
+  padding-left: 30px;
+}
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in ul {
+  height: 87px;
+}
+.searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in ul li {
+  margin-left: 0px;
 }
 .searchHeaderButtonContainer div:nth-child(2) {
   position: absolute;

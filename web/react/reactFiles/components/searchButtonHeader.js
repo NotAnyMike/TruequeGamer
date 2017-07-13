@@ -1,22 +1,19 @@
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+		TopSearchContainer = require('./topSearchContainer.js');
 
 module.exports = React.createClass({
+
+	propTypes: {
+		changeHandlerFn: React.PropTypes.func,
+	},
 
 	render: function(){
 		return (
 			<div className="searchHeaderButtonContainer">
 				<div>
-					<div className="searchButtonSubContainer">
-						<input type="text" />
-						<ul className="suggestions">
-							<li>opción 1</li>
-							<li>opctión 2</li>
-							<li>3</li>
-						</ul>
-						<button className="searchButton"></button>
-					</div>
+					<TopSearchContainer changeHandlerFn={this.props.changeHandlerFn} />
 				</div>
 				<div></div>
 			</div>

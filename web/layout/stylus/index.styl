@@ -210,14 +210,17 @@ figure
 				top: 36px
 				width: 1px
 				left: 20px
-				transition: $time width, $time height
-				height: 1px
+				transition: $time width
+				height: auto
 				overflow: hidden
 
 				li
 					margin-left: -50px
-					transition: $time margin-left
+					transition: $time margin-left, $time height, $time padding, $time font-size
 					white-space: nowrap
+					height: 1px
+					padding: 0px
+					font-size: 1px
 	
 			&.in
 				input, ul
@@ -227,10 +230,11 @@ figure
 					padding-left: 30px
 
 				ul
-					height: 87px
-
 					li
 						margin-left: 0px
+						height: 18px
+						padding: 5px 18px
+						font-size: 15px
 				
 	div:nth-child(2)
 		position absolute

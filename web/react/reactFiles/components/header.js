@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react'),
+		AppStore = require('../stores/appStore.js'),
 		IsotypeContainer = require('./isotypeContainer.js'),
 		ProfileLink = require('./profileLink.js'),
 		SearchButtonHeader = require('./searchButtonHeader.js'),
@@ -12,20 +13,33 @@ module.exports = React.createClass({
 	
 	propTypes: {
 		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative]),
+		suggestions: React.PropTypes.array,
 	},
 
 	getInitialState: function(){
-		return ({suggestions: []});
+		return ({
+			suggestions:[],
+			clicked: false,
+			emptyResults: false,
+		});
 	},
 	
+	getDefaultProps: function(){
+		return ({version: Constants.header.versions.normal});
+	},
+
 	componentWillMount: function(){
+		AppStore.addSmallSuggestionsRefreshListener(this.updateSuggestions);
 	},
 
 	componentWillUnmount: function(){
+		AppStore.removeSmallSuggestionsRefreshListener(this.updateSuggestions);
 	},
 
-	getDefaultProps: function(){
-		return ({version: Constants.header.versions.normal});
+	updateSuggestions: function(suggestions){
+		var emptyResults = false;
+		if(suggestions.length === 0) emptyResults = true;
+		this.setState({ suggestions: suggestions, clicked: false, emptyResults: emptyResults});
 	},
 
 	goToIndex: function(){
@@ -33,20 +47,19 @@ module.exports = React.createClass({
 		browserHistory.push(Constants.routes.index);
 	},
 
-	changeHandlerForSearchInputFn: function(new_value){
-		Actions.changeSearchInput(new_value);
+	changeHandler: function(value){
+		Actions.changeSmallSearchInput(value);
 
-		var suggestionsVar = this.state.suggestions.list;
-		if(new_value.length <= 3){
-			suggestionsVar = [];
+		if(value.length <= 3){
+			var suggestionsVar = [];
+			this.setState({suggestions: suggestionsVar, clicked: false,});
 		};
-		this.setState({suggestions: {value: new_value, list: suggestionsVar, clicked: false, }});
 	},
 
 	render: function(){
 		return (
 				<header className={this.props.version}>
-					<SearchButtonHeader changeHandlerFn={this.changeHandlerForSearchInputFn} suggestions={this.state.suggestions} />
+					<SearchButtonHeader changeHandlerFn={this.changeHandler} suggestions={this.state.suggestions} />
 					<IsotypeContainer version={this.props.version} onIsotypeClickFn={this.goToIndex}/>
 					<ProfileLink user={this.props.user} version={this.props.version}/>
 				</header>

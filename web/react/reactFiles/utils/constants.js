@@ -16,6 +16,7 @@ const Constants = {
 	],
 	actionType: {
 		changeFilterState: 'change_filter_status',
+		changeSmallSearchInput: 'change_small_search_input',
 		changeSearchInput: 'change_search_input',
 		searchButtonClicked: 'change_button_clicked',
 		openCertainChat: 'open_certain_chat',
@@ -30,6 +31,7 @@ const Constants = {
 	eventType: {
 		filterRefresh: 'filter_refresh',
 		suggestionsRefresh: 'suggestions_refresh',
+		smallSuggestionsRefresh: 'small_suggestions_refresh',
 		search: 'search',
 		chatsUpdated: 'chats_updated',
 		chatsUpdatedAndOpen: 'chats_updated_and_open',

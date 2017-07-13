@@ -45,6 +45,7 @@ module.exports = React.createClass({
 				xbox: true,
 				ps:true,
 				list:[],
+				list2:[],
 				clicked: false,
 			},
 			search: {

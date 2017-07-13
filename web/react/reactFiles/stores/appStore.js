@@ -358,24 +358,26 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	onChangeSearchInput: function(text){
+	onChangeSearchInput: function(text, small){
 		//get the list from the server
 		//for now one let's just add 1 2 and 3 to the text
 		if(text.length > 3){
 			var url = '/api/suggestions/ps-xbox/suggestions.json';
 			if(process.env.NODE_ENV === "production"){
-				var consoles = '';
-				if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
-				else if (_store.search.ps) consoles = 'ps';
-				else consoles = 'xbox';
-
+				var consoles = 'ps-xbox';
 				var sell = 'both';
-				if(_store.search.to_sell && !_store.search.exchange) sell = 'sell';
-				else if(!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
-
 				var newVariable = 'both';
-				if(_store.search.not_used && !_store.search.used) newVariable = 'new';
-				else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
+				if(small === false){
+					if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
+					else if (_store.search.ps) consoles = 'ps';
+					else consoles = 'xbox';
+
+					if(_store.search.to_sell && !_store.search.exchange) sell = 'sell';
+					else if(!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+
+					if(_store.search.not_used && !_store.search.used) newVariable = 'new';
+					else if(!_store.search.not_used && _store.search.used) newVariable = 'used';
+				}
 				
 				url = '/api/suggestions/' + consoles + '/' +  newVariable + '/' + sell +'/' + text.trim() + '/';
 			}
@@ -384,7 +386,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 					response.json().then(function(json){
 						_store.suggestions.list = json;	
 						_store.suggestions.value = text;
-						AppStore.onSuggestionsRefresh();
+						AppStore.onSuggestionsRefresh(json, small);
 					});	
 				});
 			}else{
@@ -393,12 +395,21 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
+	onSuggestionsRefresh: function(list,small){
+		if(small === true) this.emit(Constants.eventType.smallSuggestionsRefresh, list);
+		else this.emit(Constants.eventType.suggestionsRefresh);
+	},
+
 	reloadIndex: function(){
 		this.emit(Constants.eventType.reloadIndex);
 	},
 
-	onSuggestionsRefresh: function(){
-		this.emit(Constants.eventType.suggestionsRefresh);
+	addSmallSuggestionsRefreshListener: function(callback){
+		this.on(Constants.eventType.smallSuggestionsRefresh, callback);
+	},
+
+	removeSmallSuggestionsRefreshListener: function(callback){
+		this.removeListener(Constants.eventType.smallSuggestionsRefresh, callback);
 	},
 
 	addSuggestionsRefreshListener: function(callback){
@@ -443,7 +454,10 @@ AppDispatcher.register(function(payload){
 			break;
 		case Constants.actionType.changeSearchInput:
 			AppStore.changeSearchInput(payload.value);
-			AppStore.onChangeSearchInput(payload.value);
+			AppStore.onChangeSearchInput(payload.value, false);
+			break;
+		case Constants.actionType.changeSmallSearchInput:
+			AppStore.onChangeSearchInput(payload.value, true);
 			break;
 		case Constants.actionType.searchButtonClicked:
 			AppStore.searchButtonClicked();

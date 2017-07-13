@@ -928,22 +928,25 @@ figure.negative .isotype.negative {
   top: 36px;
   width: 1px;
   left: 20px;
-  -webkit-transition: 300ms width, 300ms height;
-  -moz-transition: 300ms width, 300ms height;
-  -o-transition: 300ms width, 300ms height;
-  -ms-transition: 300ms width, 300ms height;
-  transition: 300ms width, 300ms height;
-  height: 1px;
+  -webkit-transition: 300ms width;
+  -moz-transition: 300ms width;
+  -o-transition: 300ms width;
+  -ms-transition: 300ms width;
+  transition: 300ms width;
+  height: auto;
   overflow: hidden;
 }
 .searchHeaderButtonContainer div:first-child .searchButtonSubContainer ul li {
   margin-left: -50px;
-  -webkit-transition: 300ms margin-left;
-  -moz-transition: 300ms margin-left;
-  -o-transition: 300ms margin-left;
-  -ms-transition: 300ms margin-left;
-  transition: 300ms margin-left;
+  -webkit-transition: 300ms margin-left, 300ms height, 300ms padding, 300ms font-size;
+  -moz-transition: 300ms margin-left, 300ms height, 300ms padding, 300ms font-size;
+  -o-transition: 300ms margin-left, 300ms height, 300ms padding, 300ms font-size;
+  -ms-transition: 300ms margin-left, 300ms height, 300ms padding, 300ms font-size;
+  transition: 300ms margin-left, 300ms height, 300ms padding, 300ms font-size;
   white-space: nowrap;
+  height: 1px;
+  padding: 0px;
+  font-size: 1px;
 }
 .searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in input,
 .searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in ul {
@@ -952,11 +955,11 @@ figure.negative .isotype.negative {
 .searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in input {
   padding-left: 30px;
 }
-.searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in ul {
-  height: 87px;
-}
 .searchHeaderButtonContainer div:first-child .searchButtonSubContainer.in ul li {
   margin-left: 0px;
+  height: 18px;
+  padding: 5px 18px;
+  font-size: 15px;
 }
 .searchHeaderButtonContainer div:nth-child(2) {
   position: absolute;

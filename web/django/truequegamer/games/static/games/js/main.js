@@ -26270,7 +26270,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../stores/appStore.js":283,"./chat.js":243,"./footer.js":257,"./header.js":259,"react":239}],241:[function(require,module,exports){
+},{"../stores/appStore.js":284,"./chat.js":243,"./footer.js":257,"./header.js":259,"react":239}],241:[function(require,module,exports){
 const React = require('react');
 
 const AvailableConsoles = React.createClass({
@@ -26420,7 +26420,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../stores/appStore.js":283,"../utils/constants.js":286,"../utils/functions.js":287,"./chat.js":243,"./footer.js":257,"./header.js":259,"react":239}],243:[function(require,module,exports){
+},{"../stores/appStore.js":284,"../utils/constants.js":287,"../utils/functions.js":288,"./chat.js":243,"./footer.js":257,"./header.js":259,"react":239}],243:[function(require,module,exports){
 var React = require('react'),
     ChatContainer = require('./chatContainer.js'),
     ChatBubble = require('./chatBubble.js'),
@@ -26661,7 +26661,7 @@ var Chat = React.createClass({
 
 module.exports = Chat;
 
-},{"../stores/chatStore.js":284,"../utils/actions.js":285,"./chatBubble.js":244,"./chatContainer.js":245,"react":239}],244:[function(require,module,exports){
+},{"../stores/chatStore.js":285,"../utils/actions.js":286,"./chatBubble.js":244,"./chatContainer.js":245,"react":239}],244:[function(require,module,exports){
 var React = require('react');
 
 var ChatBubble = React.createClass({
@@ -26879,7 +26879,7 @@ var ChatList = React.createClass({
 
 module.exports = ChatList;
 
-},{"../utils/functions.js":287,"./itemChat.js":264,"react":239}],247:[function(require,module,exports){
+},{"../utils/functions.js":288,"./itemChat.js":264,"react":239}],247:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js'),
     Actions = require('../utils/actions.js');
@@ -26916,7 +26916,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":285,"../utils/constants.js":286,"react":239}],248:[function(require,module,exports){
+},{"../utils/actions.js":286,"../utils/constants.js":287,"react":239}],248:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -26950,7 +26950,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":286,"./consoleCheckbox.js":247,"react":239}],249:[function(require,module,exports){
+},{"../utils/constants.js":287,"./consoleCheckbox.js":247,"react":239}],249:[function(require,module,exports){
 var React = require('react'),
     Link = require('react-router').Link;
 
@@ -27080,7 +27080,7 @@ const Details = React.createClass({
 
 module.exports = Details;
 
-},{"../stores/appStore.js":283,"../utils/actions.js":285,"../utils/constants.js":286,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"./warning.js":280,"react":239,"react-router":37}],251:[function(require,module,exports){
+},{"../stores/appStore.js":284,"../utils/actions.js":286,"../utils/constants.js":287,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"./warning.js":281,"react":239,"react-router":37}],251:[function(require,module,exports){
 const React = require('react'),
       Constants = require('../utils/constants.js'),
       functions = require('../utils/functions.js');
@@ -27206,7 +27206,7 @@ const DetailsGameLabel = React.createClass({
 
 module.exports = DetailsGameLabel;
 
-},{"../utils/constants.js":286,"../utils/functions.js":287,"react":239}],252:[function(require,module,exports){
+},{"../utils/constants.js":287,"../utils/functions.js":288,"react":239}],252:[function(require,module,exports){
 const React = require('react'),
       GameItem = require('./gameItem.js'),
       Constants = require('../utils/constants.js');
@@ -27348,7 +27348,7 @@ const DetailsList = React.createClass({
 
 module.exports = DetailsList;
 
-},{"../utils/constants.js":286,"./gameItem.js":258,"react":239}],253:[function(require,module,exports){
+},{"../utils/constants.js":287,"./gameItem.js":258,"react":239}],253:[function(require,module,exports){
 const React = require('react'),
       DetailsList = require('./detailsList.js'),
       DetailsGameLabel = require('./detailsGameLabel.js'),
@@ -27483,7 +27483,7 @@ const DetailsMainContainer = React.createClass({
 
 module.exports = DetailsMainContainer;
 
-},{"../utils/constants.js":286,"./detailsGameLabel.js":251,"./detailsList.js":252,"react":239}],254:[function(require,module,exports){
+},{"../utils/constants.js":287,"./detailsGameLabel.js":251,"./detailsList.js":252,"react":239}],254:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27535,7 +27535,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":285,"../utils/constants.js":286,"react":239}],255:[function(require,module,exports){
+},{"../utils/actions.js":286,"../utils/constants.js":287,"react":239}],255:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27587,7 +27587,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":286,"./extraFilterButton":254,"react":239}],256:[function(require,module,exports){
+},{"../utils/constants.js":287,"./extraFilterButton":254,"react":239}],256:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -27709,7 +27709,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":286,"./socialLink.js":277,"react":239,"react-router":37}],258:[function(require,module,exports){
+},{"../utils/constants.js":287,"./socialLink.js":277,"react":239,"react-router":37}],258:[function(require,module,exports){
 const React = require('react'),
       AvailableConsoles = require('./availableConsoles.js'),
       Constants = require('../utils/constants.js'),
@@ -28509,10 +28509,11 @@ const GameItem = React.createClass({
 
 module.exports = GameItem;
 
-},{"../utils/constants.js":286,"../utils/functions.js":287,"./availableConsoles.js":241,"./suggestions.js":279,"react":239}],259:[function(require,module,exports){
+},{"../utils/constants.js":287,"../utils/functions.js":288,"./availableConsoles.js":241,"./suggestions.js":279,"react":239}],259:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
+    AppStore = require('../stores/appStore.js'),
     IsotypeContainer = require('./isotypeContainer.js'),
     ProfileLink = require('./profileLink.js'),
     SearchButtonHeader = require('./searchButtonHeader.js'),
@@ -28525,11 +28526,34 @@ module.exports = React.createClass({
 
 
 	propTypes: {
-		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative])
+		version: React.PropTypes.oneOf([Constants.header.versions.normal, Constants.header.versions.negative]),
+		suggestions: React.PropTypes.array
+	},
+
+	getInitialState: function () {
+		return {
+			suggestions: [],
+			clicked: false,
+			emptyResults: false
+		};
 	},
 
 	getDefaultProps: function () {
 		return { version: Constants.header.versions.normal };
+	},
+
+	componentWillMount: function () {
+		AppStore.addSmallSuggestionsRefreshListener(this.updateSuggestions);
+	},
+
+	componentWillUnmount: function () {
+		AppStore.removeSmallSuggestionsRefreshListener(this.updateSuggestions);
+	},
+
+	updateSuggestions: function (suggestions) {
+		var emptyResults = false;
+		if (suggestions.length === 0) emptyResults = true;
+		this.setState({ suggestions: suggestions, clicked: false, emptyResults: emptyResults });
 	},
 
 	goToIndex: function () {
@@ -28537,11 +28561,20 @@ module.exports = React.createClass({
 		browserHistory.push(Constants.routes.index);
 	},
 
+	changeHandler: function (value) {
+		Actions.changeSmallSearchInput(value);
+
+		if (value.length <= 3) {
+			var suggestionsVar = [];
+			this.setState({ suggestions: suggestionsVar, clicked: false });
+		};
+	},
+
 	render: function () {
 		return React.createElement(
 			'header',
 			{ className: this.props.version },
-			React.createElement(SearchButtonHeader, null),
+			React.createElement(SearchButtonHeader, { changeHandlerFn: this.changeHandler, suggestions: this.state.suggestions }),
 			React.createElement(IsotypeContainer, { version: this.props.version, onIsotypeClickFn: this.goToIndex }),
 			React.createElement(ProfileLink, { user: this.props.user, version: this.props.version })
 		);
@@ -28549,7 +28582,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/actions.js":285,"../utils/constants":286,"./isotypeContainer.js":263,"./profileLink.js":267,"./searchButtonHeader.js":269,"react":239,"react-router":37}],260:[function(require,module,exports){
+},{"../stores/appStore.js":284,"../utils/actions.js":286,"../utils/constants":287,"./isotypeContainer.js":263,"./profileLink.js":267,"./searchButtonHeader.js":269,"react":239,"react-router":37}],260:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -28599,6 +28632,7 @@ module.exports = React.createClass({
 				xbox: true,
 				ps: true,
 				list: [],
+				list2: [],
 				clicked: false
 			},
 			search: {
@@ -28693,7 +28727,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../stores/appStore.js":283,"../utils/actions.js":285,"../utils/constants.js":286,"../utils/functions.js":287,"./chat.js":243,"./footer.js":257,"./header.js":259,"./mainContainer.js":265,"react":239,"react-router":37}],261:[function(require,module,exports){
+},{"../stores/appStore.js":284,"../utils/actions.js":286,"../utils/constants.js":287,"../utils/functions.js":288,"./chat.js":243,"./footer.js":257,"./header.js":259,"./mainContainer.js":265,"react":239,"react-router":37}],261:[function(require,module,exports){
 var React = require('react'),
     ReactDOM = require('react-dom');
 
@@ -28771,7 +28805,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":286,"react":239}],263:[function(require,module,exports){
+},{"../utils/constants.js":287,"react":239}],263:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -28803,7 +28837,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":286,"./isotype.js":262,"./slogan.js":276,"react":239}],264:[function(require,module,exports){
+},{"../utils/constants.js":287,"./isotype.js":262,"./slogan.js":276,"react":239}],264:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js');
 
@@ -28865,7 +28899,7 @@ var ItemChat = React.createClass({
 
 module.exports = ItemChat;
 
-},{"../utils/constants.js":286,"react":239}],265:[function(require,module,exports){
+},{"../utils/constants.js":287,"react":239}],265:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -29157,7 +29191,7 @@ const Profile = React.createClass({
 
 module.exports = Profile;
 
-},{"../stores/appStore.js":283,"../utils/actions.js":285,"../utils/constants.js":286,"../utils/functions.js":287,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"./warning.js":280,"react":239,"react-router":37}],267:[function(require,module,exports){
+},{"../stores/appStore.js":284,"../utils/actions.js":286,"../utils/constants.js":287,"../utils/functions.js":288,"./chat.js":243,"./detailsMainContainer.js":253,"./footer.js":257,"./header.js":259,"./warning.js":281,"react":239,"react-router":37}],267:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -29219,7 +29253,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":286,"react":239,"react-router":37}],268:[function(require,module,exports){
+},{"../utils/constants.js":287,"react":239,"react-router":37}],268:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -29247,14 +29281,20 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/actions.js":285,"react":239}],269:[function(require,module,exports){
+},{"../utils/actions.js":286,"react":239}],269:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+    TopSearchContainer = require('./topSearchContainer.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
 
+
+	propTypes: {
+		changeHandlerFn: React.PropTypes.func,
+		suggestions: React.PropTypes.array
+	},
 
 	render: function () {
 		return React.createElement(
@@ -29263,11 +29303,7 @@ module.exports = React.createClass({
 			React.createElement(
 				'div',
 				null,
-				React.createElement(
-					'div',
-					{ className: 'searchButtonSubContainer' },
-					React.createElement('button', { className: 'searchButton' })
-				)
+				React.createElement(TopSearchContainer, { changeHandlerFn: this.props.changeHandlerFn, suggestions: this.props.suggestions })
 			),
 			React.createElement('div', null)
 		);
@@ -29275,7 +29311,7 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],270:[function(require,module,exports){
+},{"./topSearchContainer.js":280,"react":239}],270:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -29318,7 +29354,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../utils/actions.js":285,"./suggestions.js":279,"react":239}],271:[function(require,module,exports){
+},{"../utils/actions.js":286,"./suggestions.js":279,"react":239}],271:[function(require,module,exports){
 const React = require('react'),
       SearchResultsMainContainer = require('./searchResultsMainContainer.js'),
       Header = require('./header.js'),
@@ -29419,7 +29455,7 @@ const SearchResults = React.createClass({
 
 module.exports = SearchResults;
 
-},{"../stores/appStore.js":283,"../utils/actions.js":285,"../utils/constants.js":286,"./chat.js":243,"./footer.js":257,"./header.js":259,"./searchResultsMainContainer.js":273,"react":239,"react-router":37}],272:[function(require,module,exports){
+},{"../stores/appStore.js":284,"../utils/actions.js":286,"../utils/constants.js":287,"./chat.js":243,"./footer.js":257,"./header.js":259,"./searchResultsMainContainer.js":273,"react":239,"react-router":37}],272:[function(require,module,exports){
 const React = require('react'),
       GameItem = require('./gameItem.js'),
       Constants = require('../utils/constants.js');
@@ -29497,7 +29533,7 @@ const SearchResultsList = React.createClass({
 
 module.exports = SearchResultsList;
 
-},{"../utils/constants.js":286,"./gameItem.js":258,"react":239}],273:[function(require,module,exports){
+},{"../utils/constants.js":287,"./gameItem.js":258,"react":239}],273:[function(require,module,exports){
 const React = require('react'),
       SearchResultsList = require('./searchResultsList.js'),
       Constants = require('../utils/constants.js');
@@ -29530,7 +29566,7 @@ const SearchResultsMainContainer = React.createClass({
 
 module.exports = SearchResultsMainContainer;
 
-},{"../utils/constants.js":286,"./searchResultsList.js":272,"react":239}],274:[function(require,module,exports){
+},{"../utils/constants.js":287,"./searchResultsList.js":272,"react":239}],274:[function(require,module,exports){
 var React = require('react'),
     SingleMessage = require('./singleMessage.js'),
     InputChat = require('./inputChat.js'),
@@ -29627,7 +29663,7 @@ var SingleChat = React.createClass({
 
 module.exports = SingleChat;
 
-},{"../utils/constants.js":286,"../utils/functions.js":287,"./inputChat.js":261,"./singleMessage.js":275,"react":239}],275:[function(require,module,exports){
+},{"../utils/constants.js":287,"../utils/functions.js":288,"./inputChat.js":261,"./singleMessage.js":275,"react":239}],275:[function(require,module,exports){
 var React = require('react'),
     Constants = require('../utils/constants.js');
 
@@ -29671,7 +29707,7 @@ var SingleMessage = React.createClass({
 
 module.exports = SingleMessage;
 
-},{"../utils/constants.js":286,"react":239}],276:[function(require,module,exports){
+},{"../utils/constants.js":287,"react":239}],276:[function(require,module,exports){
 'use strict';
 
 const React = require('react'),
@@ -29717,7 +29753,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../utils/constants.js":286,"react":239}],277:[function(require,module,exports){
+},{"../utils/constants.js":287,"react":239}],277:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -29814,7 +29850,7 @@ module.exports = React.createClass({
 		if (this.props.suggestionsClicked == false) {
 			listOfSuggestions = React.createElement(
 				'ul',
-				null,
+				{ 'class': 'suggestions' },
 				suggestions
 			);
 		}
@@ -29823,6 +29859,81 @@ module.exports = React.createClass({
 });
 
 },{"./suggestionItem.js":278,"react":239}],280:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	propTypes: {
+		suggestions: React.PropTypes.array,
+		changeHandlerFn: React.PropTypes.func
+	},
+
+	getInitialState: function () {
+		return {
+			display: false,
+			focusOnButton: false,
+			focusOnInput: false
+		};
+	},
+
+	_onSearchButtonClick: function (e) {
+		var newValue = !this.state.display;
+		if (newValue) this.inputElement.focus();
+		this.setState({ display: newValue });
+	},
+
+	_focusOutInputHandler: function (e) {
+		if (!e.relatedTarget || e.relatedTarget.id.indexOf("topSearchButton") === -1) {
+			this.setState({ display: false });
+		}
+	},
+
+	_onKeyDownHandler: function (e) {
+		var value = e.target.value;
+		if (e.keyCode === 13) {
+			//send
+			console.log("enter");
+		}
+	},
+
+	_changeHandler: function (e) {
+		var value = e.target.value;
+		this.props.changeHandlerFn(value);
+	},
+
+	render: function () {
+		var suggestions = [];
+		debugger;
+		suggestions = this.props.suggestions.map(element => React.createElement(
+			'li',
+			null,
+			element.name
+		));
+		var className = "searchButtonSubContainer";
+		if (this.state.display === true) className += " in";
+		return React.createElement(
+			'div',
+			{ className: className },
+			React.createElement('input', {
+				ref: item => this.inputElement = item,
+				type: 'text', onKeyDown: this._onKeyDownHandler, onChange: this._changeHandler, onBlur: this._focusOutInputHandler
+			}),
+			React.createElement(
+				'ul',
+				{ className: 'suggestions' },
+				suggestions
+			),
+			React.createElement('button', { className: 'searchButton', id: 'topSearchButton', onClick: this._onSearchButtonClick })
+		);
+	}
+
+});
+
+},{"react":239}],281:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -29866,14 +29977,14 @@ module.exports = React.createClass({
 
 });
 
-},{"react":239}],281:[function(require,module,exports){
+},{"react":239}],282:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 
 var AppDispatcher = new Dispatcher();
 
 module.exports = AppDispatcher;
 
-},{"flux":3}],282:[function(require,module,exports){
+},{"flux":3}],283:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -29916,7 +30027,7 @@ React.createElement(
 		React.createElement(Route, { path: '/test/search/xbox/(:search)', console: Constants.consoles.xbox, component: SearchResults })
 ), document.getElementById('mainContainer'));
 
-},{"./components/aboutus.js":240,"./components/bug.js":242,"./components/contactUs.js":249,"./components/details.js":250,"./components/index.js":260,"./components/profile.js":266,"./components/searchResults.js":271,"./utils/constants.js":286,"react":239,"react-dom":7,"react-router":37}],283:[function(require,module,exports){
+},{"./components/aboutus.js":240,"./components/bug.js":242,"./components/contactUs.js":249,"./components/details.js":250,"./components/index.js":260,"./components/profile.js":266,"./components/searchResults.js":271,"./utils/constants.js":287,"react":239,"react-dom":7,"react-router":37}],284:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter,
@@ -30265,20 +30376,22 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	onChangeSearchInput: function (text) {
+	onChangeSearchInput: function (text, small) {
 		//get the list from the server
 		//for now one let's just add 1 2 and 3 to the text
 		if (text.length > 3) {
 			var url = '/api/suggestions/ps-xbox/suggestions.json';
 			if ("production" === "production") {
-				var consoles = '';
-				if (_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';else if (_store.search.ps) consoles = 'ps';else consoles = 'xbox';
-
+				var consoles = 'ps-xbox';
 				var sell = 'both';
-				if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
-
 				var newVariable = 'both';
-				if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
+				if (small === false) {
+					if (_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';else if (_store.search.ps) consoles = 'ps';else consoles = 'xbox';
+
+					if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+
+					if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
+				}
 
 				url = '/api/suggestions/' + consoles + '/' + newVariable + '/' + sell + '/' + text.trim() + '/';
 			}
@@ -30287,7 +30400,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 					response.json().then(function (json) {
 						_store.suggestions.list = json;
 						_store.suggestions.value = text;
-						AppStore.onSuggestionsRefresh();
+						AppStore.onSuggestionsRefresh(json, small);
 					});
 				});
 			} else {
@@ -30296,12 +30409,20 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
+	onSuggestionsRefresh: function (list, small) {
+		if (small === true) this.emit(Constants.eventType.smallSuggestionsRefresh, list);else this.emit(Constants.eventType.suggestionsRefresh);
+	},
+
 	reloadIndex: function () {
 		this.emit(Constants.eventType.reloadIndex);
 	},
 
-	onSuggestionsRefresh: function () {
-		this.emit(Constants.eventType.suggestionsRefresh);
+	addSmallSuggestionsRefreshListener: function (callback) {
+		this.on(Constants.eventType.smallSuggestionsRefresh, callback);
+	},
+
+	removeSmallSuggestionsRefreshListener: function (callback) {
+		this.removeListener(Constants.eventType.smallSuggestionsRefresh, callback);
 	},
 
 	addSuggestionsRefreshListener: function (callback) {
@@ -30346,7 +30467,10 @@ AppDispatcher.register(function (payload) {
 			break;
 		case Constants.actionType.changeSearchInput:
 			AppStore.changeSearchInput(payload.value);
-			AppStore.onChangeSearchInput(payload.value);
+			AppStore.onChangeSearchInput(payload.value, false);
+			break;
+		case Constants.actionType.changeSmallSearchInput:
+			AppStore.onChangeSearchInput(payload.value, true);
 			break;
 		case Constants.actionType.searchButtonClicked:
 			AppStore.searchButtonClicked();
@@ -30367,7 +30491,7 @@ AppDispatcher.register(function (payload) {
 
 module.exports = AppStore;
 
-},{"../dispatcher.js":281,"../utils/constants.js":286,"./chatStore.js":284,"events":1,"object-assign":6}],284:[function(require,module,exports){
+},{"../dispatcher.js":282,"../utils/constants.js":287,"./chatStore.js":285,"events":1,"object-assign":6}],285:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
     assign = require('object-assign'),
@@ -30746,7 +30870,7 @@ AppDispatcher.register(function (payload) {
 
 module.exports = ChatStore;
 
-},{"../dispatcher.js":281,"../utils/constants.js":286,"events":1,"object-assign":6}],285:[function(require,module,exports){
+},{"../dispatcher.js":282,"../utils/constants.js":287,"events":1,"object-assign":6}],286:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher,
     Constants = require('./constants.js');
 
@@ -30765,6 +30889,13 @@ var Actions = {
 	changeSearchInput: function (text) {
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.changeSearchInput,
+			value: text
+		});
+	},
+
+	changeSmallSearchInput: function (text) {
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.changeSmallSearchInput,
 			value: text
 		});
 	},
@@ -30828,7 +30959,7 @@ var Actions = {
 
 module.exports = Actions;
 
-},{"../dispatcher.js":281,"./constants.js":286,"flux":3}],286:[function(require,module,exports){
+},{"../dispatcher.js":282,"./constants.js":287,"flux":3}],287:[function(require,module,exports){
 const consoles = {
 	xbox: 'xbox',
 	ps: 'ps',
@@ -30845,6 +30976,7 @@ const Constants = {
 	months: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
 	actionType: {
 		changeFilterState: 'change_filter_status',
+		changeSmallSearchInput: 'change_small_search_input',
 		changeSearchInput: 'change_search_input',
 		searchButtonClicked: 'change_button_clicked',
 		openCertainChat: 'open_certain_chat',
@@ -30859,6 +30991,7 @@ const Constants = {
 	eventType: {
 		filterRefresh: 'filter_refresh',
 		suggestionsRefresh: 'suggestions_refresh',
+		smallSuggestionsRefresh: 'small_suggestions_refresh',
 		search: 'search',
 		chatsUpdated: 'chats_updated',
 		chatsUpdatedAndOpen: 'chats_updated_and_open',
@@ -30930,7 +31063,7 @@ const Constants = {
 
 module.exports = Constants;
 
-},{}],287:[function(require,module,exports){
+},{}],288:[function(require,module,exports){
 'use strict';
 
 var Constants = require('./constants.js');
@@ -31035,4 +31168,4 @@ const Functions = {
 
 module.exports = Functions;
 
-},{"./constants.js":286}]},{},[282]);
+},{"./constants.js":287}]},{},[283]);

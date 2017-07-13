@@ -43,6 +43,9 @@ module.exports = React.createClass({
 	},
 
 	render: function(){
+		var suggestions = [];
+		debugger
+		suggestions = this.props.suggestions.map(element => (<li>{element.name}</li>));
 		var className = "searchButtonSubContainer";
 		if(this.state.display === true) className += " in";
 		return (
@@ -52,9 +55,7 @@ module.exports = React.createClass({
 					type="text" onKeyDown={this._onKeyDownHandler} onChange={this._changeHandler} onBlur={this._focusOutInputHandler}
 				/>
 				<ul className="suggestions">
-					<li>opción 1</li>
-					<li>opctión 2</li>
-					<li>3</li>
+					{suggestions}
 				</ul>
 				<button className="searchButton" id="topSearchButton" onClick={this._onSearchButtonClick}></button>
 			</div>

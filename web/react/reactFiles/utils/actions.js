@@ -20,6 +20,13 @@ var Actions = {
 		});
 	},
 
+	changeSmallSearchInput: function(text){
+		AppDispatcher.dispatch({
+			actionType: Constants.actionType.changeSmallSearchInput,
+			value: text
+		});
+	},
+
 	searchButtonClicked: function(){
 		AppDispatcher.dispatch({
 			actionType: Constants.actionType.searchButtonClicked

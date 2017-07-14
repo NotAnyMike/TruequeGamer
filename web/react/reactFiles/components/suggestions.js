@@ -25,7 +25,7 @@ module.exports = React.createClass({
 			suggestions.push(<li>No se encontraron resultados</li>);
 		}else{
 			this.props.suggestions.map(function(element){
-				suggestions.push(<SuggestionItem page={this.props.page} key={element.name} text={element.name} onClickHandler={this.props.onSuggestionClickFn} />);
+				suggestions.push(<SuggestionItem page={this.props.page} id={element.id} key={element.name} text={element.name} onClickHandler={this.props.onSuggestionClickFn} />);
 			}.bind(this));
 		}
 		var listOfSuggestions = null;

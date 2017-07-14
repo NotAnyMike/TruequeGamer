@@ -128,6 +128,7 @@ def DvdApi(request):
         newData2 = dict((key, re.sub(r'\s+','',str(value)) if value != None else None) for key,value in newData.items())
         newData2['comment'] = re.sub(r'(^\s+)|(\s+$)', '', str(newData['comment'])) if newData['comment'] != None else ""
         newData2['price'] = None if newData2['price'] == "" else newData2['price']
+        newData2['used'] = False if newData2['used'] == "False" else True
         data = newData2
         
         data['console'] = constants.CONSOLES['xbox']

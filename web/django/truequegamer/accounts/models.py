@@ -11,7 +11,7 @@ from games import constants as Constants
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    facebook_id = models.CharField(max_length=10, blank=False, unique=True, null=True)
+    facebook_id = models.CharField(max_length=20, blank=False, unique=True, null=True)
     facebook_location = models.CharField(max_length=30, blank=True)
     facebook_location_id = models.CharField(max_length=20, blank=True, null=True, default=None)
     facebook_about = models.TextField(max_length=500, blank=True, unique=False, null=True, default=None)

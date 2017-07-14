@@ -17,6 +17,13 @@
 * `w-react-django`
 * `react-prod`
 
+#PostgreSQL
+
+## Useful commands
+* To start shell: `psql`
+* To see databases in postgres' shell: `\l`
+* To see users in postgres's shell: `\du`
+
 ## Run postgres for the very first time
 1. Install lunchy `sudo gem install lunchy`
 1. Run `lunchy start postgres` (to stop it use `lunchy stop postgres`

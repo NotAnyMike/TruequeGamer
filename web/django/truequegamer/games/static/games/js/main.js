@@ -29413,10 +29413,8 @@ const SearchResults = React.createClass({
 	},
 
 	componentWillReceiveProps: function (nextProps) {
-		console.log("receiving");
-		if (nextProps.params.console !== this.props.params.console || nextProps.params.search !== this.props.params.search) {
-			console.log("receiving2");
-			AppStore.search(nextProps.params.console, nextProps.params.search || '');
+		if (nextProps.route.console !== this.props.route.console || nextProps.params.search !== this.props.params.search) {
+			AppStore.search(nextProps.route.console, nextProps.params.search || '');
 			var store = AppStore.getStore();
 			this.setState(store);
 		}

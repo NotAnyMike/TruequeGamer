@@ -27156,7 +27156,7 @@ const DetailsGameLabel = React.createClass({
 				React.createElement(
 					'span',
 					null,
-					this.props.numberOfGames + " videojuego" + (this.props.numberOfGames > 1 ? "s" : "")
+					this.props.numberOfGames + " videojuego" + (this.props.numberOfGames !== 1 ? "s" : "")
 				),
 				React.createElement(
 					'button',
@@ -29890,7 +29890,7 @@ module.exports = React.createClass({
 			));
 		} else {
 			this.props.suggestions.map(function (element) {
-				suggestions.push(React.createElement(SuggestionItem, { page: this.props.page, key: element.name, text: element.name, onClickHandler: this.props.onSuggestionClickFn }));
+				suggestions.push(React.createElement(SuggestionItem, { page: this.props.page, id: element.id, key: element.name, text: element.name, onClickHandler: this.props.onSuggestionClickFn }));
 			}.bind(this));
 		}
 		var listOfSuggestions = null;

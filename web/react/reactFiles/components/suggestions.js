@@ -13,6 +13,12 @@ module.exports = React.createClass({
 		emptyResults: React.PropTypes.bool,
 	},
 
+	getDefaultProps: function(){
+		return ({
+			suggestionsClicked: false
+		});
+	},
+
 	render: function(){
 		var suggestions = []
 		if(this.props.emptyResults === true){
@@ -25,7 +31,7 @@ module.exports = React.createClass({
 		var listOfSuggestions = null;
 		if(this.props.suggestionsClicked == false){
 			listOfSuggestions = (
-				<ul class="suggestions">
+				<ul className="suggestions">
 					{suggestions}
 				</ul>
 			);

@@ -28534,7 +28534,8 @@ module.exports = React.createClass({
 		return {
 			suggestions: [],
 			clicked: false,
-			emptyResults: false
+			emptyResults: false,
+			text: ''
 		};
 	},
 
@@ -28552,7 +28553,7 @@ module.exports = React.createClass({
 
 	updateSuggestions: function (suggestions) {
 		var emptyResults = false;
-		if (suggestions.length === 0) emptyResults = true;
+		if (suggestions.length === 0) emptyResults = true;else suggestions = suggestions.slice(0, 3);
 		this.setState({ suggestions: suggestions, clicked: false, emptyResults: emptyResults });
 	},
 
@@ -28564,17 +28565,44 @@ module.exports = React.createClass({
 	changeHandler: function (value) {
 		Actions.changeSmallSearchInput(value);
 
+		var suggestionsVar = this.state.suggestions;
+
 		if (value.length <= 3) {
-			var suggestionsVar = [];
-			this.setState({ suggestions: suggestionsVar, clicked: false });
+			suggestionsVar = [];
 		};
+		this.setState({ text: value, suggestions: suggestionsVar, clicked: false });
+	},
+
+	onSearch: function () {
+		this.searchWithText(this.state.text.trim());
+	},
+
+	searchWithText: function (textToSearch) {
+		var store = AppStore.getStore();
+		//console.log('title: ' + store.search.text + ' xbox: ' + store.search.xbox + ' ps: ' + store.search.ps + ' not_used: ' + store.search.not_used + ' used: ' + store.search.used + ' exchange: ' + store.search.exchange + ' to_sell: ' + store.search.to_sell + ' city: ' + store.search.city);
+		var route = "";
+		if (store.search.ps) {
+			if (store.search.xbox) {
+				route = Constants.routes.search.both;
+			} else {
+				route = Constants.routes.search.ps;
+			}
+		} else {
+			route = Constants.routes.search.xbox;
+		}
+		browserHistory.push(route + textToSearch.trim());
+	},
+
+	onSuggestionClick: function (text) {
+		this.setState({ text: text });
+		this.searchWithText(text);
 	},
 
 	render: function () {
 		return React.createElement(
 			'header',
 			{ className: this.props.version },
-			React.createElement(SearchButtonHeader, { changeHandlerFn: this.changeHandler, suggestions: this.state.suggestions }),
+			React.createElement(SearchButtonHeader, { onSuggestionClickFn: this.onSuggestionClick, emptyResults: this.state.emptyResults, changeHandlerFn: this.changeHandler, suggestions: this.state.suggestions, searchFn: this.onSearch }),
 			React.createElement(IsotypeContainer, { version: this.props.version, onIsotypeClickFn: this.goToIndex }),
 			React.createElement(ProfileLink, { user: this.props.user, version: this.props.version })
 		);
@@ -29292,8 +29320,11 @@ module.exports = React.createClass({
 
 
 	propTypes: {
-		changeHandlerFn: React.PropTypes.func,
-		suggestions: React.PropTypes.array
+		changeHandlerFn: React.PropTypes.func.isRequired,
+		suggestions: React.PropTypes.array,
+		searchFn: React.PropTypes.func.isRequired,
+		emptyResults: React.PropTypes.bool.isRequired,
+		onSuggestionClickFn: React.PropTypes.func
 	},
 
 	render: function () {
@@ -29303,7 +29334,7 @@ module.exports = React.createClass({
 			React.createElement(
 				'div',
 				null,
-				React.createElement(TopSearchContainer, { changeHandlerFn: this.props.changeHandlerFn, suggestions: this.props.suggestions })
+				React.createElement(TopSearchContainer, { changeHandlerFn: this.props.changeHandlerFn, suggestions: this.props.suggestions, searchFn: this.props.searchFn, onSuggestionClickFn: this.props.onSuggestionClickFn, emptyResults: this.props.emptyResults })
 			),
 			React.createElement('div', null)
 		);
@@ -29379,6 +29410,16 @@ const SearchResults = React.createClass({
 		var store = AppStore.getStore();
 		//check name in store
 		return store;
+	},
+
+	componentWillReceiveProps: function (nextProps) {
+		console.log("receiving");
+		if (nextProps.params.console !== this.props.params.console || nextProps.params.search !== this.props.params.search) {
+			console.log("receiving2");
+			AppStore.search(nextProps.params.console, nextProps.params.search || '');
+			var store = AppStore.getStore();
+			this.setState(store);
+		}
 	},
 
 	componentDidMount: function () {
@@ -29807,7 +29848,7 @@ const SuggestionItem = React.createClass({
 	render: function () {
 		return React.createElement(
 			'li',
-			{ onClick: this._onClickHandler },
+			{ tabIndex: '-1', onClick: this._onClickHandler },
 			this.props.text
 		);
 	}
@@ -29833,6 +29874,12 @@ module.exports = React.createClass({
 		emptyResults: React.PropTypes.bool
 	},
 
+	getDefaultProps: function () {
+		return {
+			suggestionsClicked: false
+		};
+	},
+
 	render: function () {
 		var suggestions = [];
 		if (this.props.emptyResults === true) {
@@ -29850,7 +29897,7 @@ module.exports = React.createClass({
 		if (this.props.suggestionsClicked == false) {
 			listOfSuggestions = React.createElement(
 				'ul',
-				{ 'class': 'suggestions' },
+				{ className: 'suggestions' },
 				suggestions
 			);
 		}
@@ -29861,7 +29908,8 @@ module.exports = React.createClass({
 },{"./suggestionItem.js":278,"react":239}],280:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+    Suggestions = require('./suggestions.js');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -29869,7 +29917,10 @@ module.exports = React.createClass({
 
 	propTypes: {
 		suggestions: React.PropTypes.array,
-		changeHandlerFn: React.PropTypes.func
+		changeHandlerFn: React.PropTypes.func.isRequired,
+		searchFn: React.PropTypes.func.isRequired,
+		onSuggestionClickFn: React.PropTypes.func,
+		emptyResults: React.PropTypes.bool.isRequired
 	},
 
 	getInitialState: function () {
@@ -29887,7 +29938,7 @@ module.exports = React.createClass({
 	},
 
 	_focusOutInputHandler: function (e) {
-		if (!e.relatedTarget || e.relatedTarget.id.indexOf("topSearchButton") === -1) {
+		if (!e.relatedTarget || e.relatedTarget.id.indexOf("topSearchButton") === -1 && e.relatedTarget.parentElement.parentElement.className.indexOf("searchButtonSubContainer") === -1) {
 			this.setState({ display: false });
 		}
 	},
@@ -29895,8 +29946,7 @@ module.exports = React.createClass({
 	_onKeyDownHandler: function (e) {
 		var value = e.target.value;
 		if (e.keyCode === 13) {
-			//send
-			console.log("enter");
+			this.props.searchFn();
 		}
 	},
 
@@ -29905,14 +29955,12 @@ module.exports = React.createClass({
 		this.props.changeHandlerFn(value);
 	},
 
+	onSuggestionClick: function (text) {
+		this.setState({ display: false });
+		this.props.onSuggestionClickFn(text);
+	},
+
 	render: function () {
-		var suggestions = [];
-		debugger;
-		suggestions = this.props.suggestions.map(element => React.createElement(
-			'li',
-			null,
-			element.name
-		));
 		var className = "searchButtonSubContainer";
 		if (this.state.display === true) className += " in";
 		return React.createElement(
@@ -29922,18 +29970,14 @@ module.exports = React.createClass({
 				ref: item => this.inputElement = item,
 				type: 'text', onKeyDown: this._onKeyDownHandler, onChange: this._changeHandler, onBlur: this._focusOutInputHandler
 			}),
-			React.createElement(
-				'ul',
-				{ className: 'suggestions' },
-				suggestions
-			),
+			React.createElement(Suggestions, { suggestions: this.props.suggestions, onSuggestionClickFn: this.onSuggestionClick, emptyResults: this.props.emptyResults, suggestionsClicked: false }),
 			React.createElement('button', { className: 'searchButton', id: 'topSearchButton', onClick: this._onSearchButtonClick })
 		);
 	}
 
 });
 
-},{"react":239}],281:[function(require,module,exports){
+},{"./suggestions.js":279,"react":239}],281:[function(require,module,exports){
 'use strict';
 
 var React = require('react');

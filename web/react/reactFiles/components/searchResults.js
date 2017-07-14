@@ -22,6 +22,16 @@ const SearchResults = React.createClass({
 		return store;
 	},
 
+	componentWillReceiveProps: function(nextProps){
+		console.log("receiving");
+		if(nextProps.params.console !== this.props.params.console || nextProps.params.search !== this.props.params.search){
+			console.log("receiving2");
+			AppStore.search(nextProps.params.console, nextProps.params.search || ''); 
+			var store = AppStore.getStore();
+			this.setState(store);
+		}
+	},
+
 	componentDidMount: function(){
 		AppStore.addOnResultsUpdatedListener(this.onResultsUpdated);
 		AppStore.addOnGoToDetailsListener(this.loadDetailsPage);

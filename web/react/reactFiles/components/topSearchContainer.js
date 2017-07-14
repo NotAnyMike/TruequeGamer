@@ -1,12 +1,16 @@
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+		Suggestions = require('./suggestions.js');
 
 module.exports = React.createClass({
 
 	propTypes: {
 		suggestions: React.PropTypes.array,
-		changeHandlerFn: React.PropTypes.func,
+		changeHandlerFn: React.PropTypes.func.isRequired,
+		searchFn: React.PropTypes.func.isRequired,
+		onSuggestionClickFn: React.PropTypes.func,
+		emptyResults: React.PropTypes.bool.isRequired,
 	},
 
 	getInitialState: function(){
@@ -24,7 +28,7 @@ module.exports = React.createClass({
 	},
 
 	_focusOutInputHandler: function(e){
-		if(!e.relatedTarget || e.relatedTarget.id.indexOf("topSearchButton") === -1){
+		if(!e.relatedTarget || (e.relatedTarget.id.indexOf("topSearchButton") === -1 && e.relatedTarget.parentElement.parentElement.className.indexOf("searchButtonSubContainer") === -1)){
 			this.setState({display: false});
 		}
 	},
@@ -32,8 +36,7 @@ module.exports = React.createClass({
 	_onKeyDownHandler: function(e){
 		var value = e.target.value;
 		if(e.keyCode === 13){
-			//send
-			console.log("enter");
+			this.props.searchFn();
 		}
 	},
 
@@ -42,10 +45,12 @@ module.exports = React.createClass({
 		this.props.changeHandlerFn(value);
 	},
 
+	onSuggestionClick: function(text){
+		this.setState({display: false});
+		this.props.onSuggestionClickFn(text);
+	},
+
 	render: function(){
-		var suggestions = [];
-		debugger
-		suggestions = this.props.suggestions.map(element => (<li>{element.name}</li>));
 		var className = "searchButtonSubContainer";
 		if(this.state.display === true) className += " in";
 		return (
@@ -54,9 +59,7 @@ module.exports = React.createClass({
 					ref={(item) => this.inputElement = item}
 					type="text" onKeyDown={this._onKeyDownHandler} onChange={this._changeHandler} onBlur={this._focusOutInputHandler}
 				/>
-				<ul className="suggestions">
-					{suggestions}
-				</ul>
+				<Suggestions suggestions={this.props.suggestions} onSuggestionClickFn={this.onSuggestionClick} emptyResults={this.props.emptyResults} suggestionsClicked={false} />
 				<button className="searchButton" id="topSearchButton" onClick={this._onSearchButtonClick}></button>
 			</div>
 		);

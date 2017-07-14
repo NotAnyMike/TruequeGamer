@@ -21,6 +21,7 @@ module.exports = React.createClass({
 			suggestions:[],
 			clicked: false,
 			emptyResults: false,
+			text: '',
 		});
 	},
 	
@@ -39,6 +40,7 @@ module.exports = React.createClass({
 	updateSuggestions: function(suggestions){
 		var emptyResults = false;
 		if(suggestions.length === 0) emptyResults = true;
+		else suggestions = suggestions.slice(0,3);
 		this.setState({ suggestions: suggestions, clicked: false, emptyResults: emptyResults});
 	},
 
@@ -50,16 +52,43 @@ module.exports = React.createClass({
 	changeHandler: function(value){
 		Actions.changeSmallSearchInput(value);
 
+		var suggestionsVar = this.state.suggestions;
+
 		if(value.length <= 3){
-			var suggestionsVar = [];
-			this.setState({suggestions: suggestionsVar, clicked: false,});
+			suggestionsVar = [];
 		};
+		this.setState({text: value, suggestions: suggestionsVar, clicked: false,});
+	},
+	
+	onSearch: function(){
+		this.searchWithText(this.state.text.trim());
+	},
+
+	searchWithText: function(textToSearch){
+		var store = AppStore.getStore();
+		//console.log('title: ' + store.search.text + ' xbox: ' + store.search.xbox + ' ps: ' + store.search.ps + ' not_used: ' + store.search.not_used + ' used: ' + store.search.used + ' exchange: ' + store.search.exchange + ' to_sell: ' + store.search.to_sell + ' city: ' + store.search.city);
+		var route = "";
+		if(store.search.ps){
+			if(store.search.xbox){
+				route = Constants.routes.search.both;
+			}else{
+				route = Constants.routes.search.ps;
+			}
+		}else{
+			route = Constants.routes.search.xbox;
+		}
+		browserHistory.push(route + textToSearch.trim());
+	},
+
+	onSuggestionClick: function(text){
+		this.setState({text: text});
+		this.searchWithText(text);
 	},
 
 	render: function(){
 		return (
 				<header className={this.props.version}>
-					<SearchButtonHeader changeHandlerFn={this.changeHandler} suggestions={this.state.suggestions} />
+					<SearchButtonHeader onSuggestionClickFn={this.onSuggestionClick} emptyResults={this.state.emptyResults} changeHandlerFn={this.changeHandler} suggestions={this.state.suggestions} searchFn={this.onSearch}/>
 					<IsotypeContainer version={this.props.version} onIsotypeClickFn={this.goToIndex}/>
 					<ProfileLink user={this.props.user} version={this.props.version}/>
 				</header>

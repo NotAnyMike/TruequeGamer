@@ -28,7 +28,7 @@ const SuggestionItem = React.createClass({
 	},
 
 	render: function(){
-		return <li onClick={this._onClickHandler}>{this.props.text}</li>;	
+		return <li tabIndex="-1" onClick={this._onClickHandler}>{this.props.text}</li>;	
 	}
 });
 

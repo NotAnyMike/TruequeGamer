@@ -16,6 +16,8 @@
 * `gulp w-react`
 * `w-react-django`
 * `react-prod`
+* run the db with `lunchy start postgres`
+* stop the db with `lunchy stop postgres`
 
 #PostgreSQL
 

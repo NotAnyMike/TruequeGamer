@@ -401,6 +401,21 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	},
 
 	reloadIndex: function(){
+		_store.suggestions.value = '';
+		_store.suggestions.xbox = true;
+		_store.suggestions.ps = true;
+		_store.suggestions.list = [];
+		_store.suggestions.list2 = [];
+
+		_store.search.text = '';
+		_store.search.xbox = true;
+		_store.search.ps= true;
+		_store.search.not_used = true;
+		_store.search.used = true;
+		_store.search.exchange = true;
+		_store.search.to_sell = true;
+		_store.search.city = Constants.bogota;
+
 		this.emit(Constants.eventType.reloadIndex);
 	},
 

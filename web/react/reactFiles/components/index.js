@@ -35,7 +35,6 @@ module.exports = React.createClass({
 		AppStore.removeOnUserUpdateListener(this.onUserUpdated);
 		AppStore.removeSuggestionsRefreshListener(this.onSuggestionRefresh);
 		AppStore.removeOnReloadIndexListener(this.reload);
-		this.reload();
 	},
 
 	reload: function(){

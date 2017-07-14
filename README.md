@@ -17,6 +17,20 @@
 * `w-react-django`
 * `react-prod`
 
+## Run postgres for the very first time
+1. Install lunchy `sudo gem install lunchy`
+1. Run `lunchy start postgres` (to stop it use `lunchy stop postgres`
+1. Run `psql` in shell
+2. in postgres shell run `CREATE DATABASE <myproject>;`
+3. Create the user for that db running `CREATE USER <username> WITH PASSWORD 'password';`
+4. Change roles by running `ALTER ROLE myprojectuser SET client_encoding TO 'utf8';`
+5. `ALTER ROLE myprojectuser SET default_transaction_isolation TO 'read committed';`
+6. `ALTER ROLE myprojectuser SET timezone TO 'UTC';`
+7. Grant privileges with `GRANT ALL PRIVILEGES ON DATABASE <myporject> TO <user>;`
+
+### Possible errors with postgres
+* `psql: FATAL: database <user> does not exist`: the solution is to run `createdb` in the normal shell
+
 ## How to move react to django?
 1. Run `gulp react-prod-django`
 2. Run `gulp css-prod` 

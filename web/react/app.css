@@ -4420,7 +4420,9 @@ ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
   padding-right: 20px;
   padding-top: 20px;
   text-transform: uppercase;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-break: break-all;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;

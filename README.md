@@ -18,6 +18,7 @@
 * `react-prod`
 * run the db with `lunchy start postgres`
 * stop the db with `lunchy stop postgres`
+* To allow other to use the project use `manage.py runserver 0.0.0.0:8000`
 
 #PostgreSQL
 

@@ -30,6 +30,7 @@ const Functions = {
 		}else{
 			//use xml
 			return null
+			console.log("there is no fetch");
 		}
 	},
 
@@ -48,8 +49,11 @@ const Functions = {
 					    }
 		    return "";
 	},
-	getCustomHeader: function(type='get', url, userData=null, withCredentials=false){
+	getCustomHeader: function(type, url, userData, withCredentials){
 		//data.append( "json", JSON.stringify( editing ) );
+		if(!type) type = 'get';
+		if(!userData) userData=null;
+		if(!withCredentials)withCredentials = false;
 		var init = {}
 		if(withCredentials){
 			var myCookie = Functions.getCookie("csrftoken");

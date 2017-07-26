@@ -68,6 +68,9 @@ you can use `migrate` or `makemigrations` to create the tables needed.
 
 ### Using a google storage bucket
 
+0. Make sure there is not an extra folder inside the `static` folder of each app
+1. first run `./manage.py collectstatic`
+
 ## Migrating to the new social django app
 
 Follow the next link: [here](https://github.com/omab/python-social-auth/blob/master/MIGRATING_TO_SOCIAL.md)

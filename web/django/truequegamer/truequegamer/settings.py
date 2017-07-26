@@ -89,11 +89,14 @@ DATABASES = {
         'NAME': 'tg',
         'USER': 'tg_user',
         'PASSWORD': '2P4Cz)@8kFwhzH[V',
-        'HOST': 'localhost',
-        'PORT': '',
     },
 }
 
+if os.getenv('GAE_INSTANCE'):
+    DATABASES['default']['HOST'] = '/cloudsql/truequegamer0:us-east1:tg'
+else:
+    DATABASES['default']['HOST'] = 'localhost'
+    DATABASES['default']['PORT'] = ''
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

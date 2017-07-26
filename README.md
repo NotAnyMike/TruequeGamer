@@ -43,7 +43,7 @@ Based on [this](https://www.digitalocean.com/community/tutorials/how-to-use-post
 8. After creating the empty database it is important to create a super user, see the section on how to create a super user
 
 ## How to create a super user
-you can use this in the postgres shell: `UPDATE auth_user SET is_superuser=true, is_staff=ture WHERE username='MikeWoodcock';`
+you can use this in the postgres shell (although with gae could have some preoblems, better use the django shell): `UPDATE auth_user SET is_superuser=true, is_staff=ture WHERE username='MikeWoodcock';`
 or in django, which is not the best option:
 1. run `manage.py shell`
 2. `from django.contrib.auth.models import User`
@@ -54,6 +54,20 @@ or in django, which is not the best option:
 
 ### Possible errors with postgres
 * `psql: FATAL: database <user> does not exist`: the solution is to run `createdb` in the normal shell
+
+## Google app engine
+### Proxy to connect to db
+In order to be able to connect to the google cloud sql instance (postgres) follow the next steps:
+1. run `curl -o cloud_sql_proxy https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64`
+2. and then make it executable with `chmod +x cloud_sql_proxy` 
+
+### In order to initialize the proxy
+use the following command in the same directory where you downloaded `cloud_slq_proxy`
+* `./cloud_sql_proxy -instances="[YOUR_INSTANCE_CONNECTION_NAME]"=tcp:5432`
+you can use `migrate` or `makemigrations` to create the tables needed.
+
+### Using a google storage bucket
+
 
 ## How to move react to django?
 1. Run `gulp react-prod-django`

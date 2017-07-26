@@ -56,6 +56,9 @@ or in django, which is not the best option:
 * `psql: FATAL: database <user> does not exist`: the solution is to run `createdb` in the normal shell
 
 ## Google app engine
+
+inside of the django project (at the same level of `manage.py`) use the following command to deploy `gcloud app deploy`
+
 ### Proxy to connect to db
 In order to be able to connect to the google cloud sql instance (postgres) follow the next steps:
 1. run `curl -o cloud_sql_proxy https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64`

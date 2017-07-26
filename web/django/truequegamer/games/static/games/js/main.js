@@ -30073,6 +30073,7 @@ React.createElement(
 
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
+    Functions = require('../utils/functions.js'),
     ChatStore = require('./chatStore.js'),
     assign = require('object-assign');
 
@@ -30128,27 +30129,22 @@ var _store = {
 	}
 };
 
-if (self.fetch) {
-	//do something with fetch
-	var url = '/api/user.json';
-	if ("production" === 'production') {
-		url = '/api/user/';
-	}
-	fetch(url, { credentials: 'same-origin' }).then(function (response) {
-		return response.json();
-	}).then(function (json) {
-		if (json.username === "" || json.username === null) {
-			_store.user.logged = false;
-		} else {
-			_store.user = json;
-			_store.user.logged = true;
-			ChatStore.setUser(json);
-		}
-		AppStore.userUpdated();
-	});
-} else {
-	//use the normal xhtml stuff
+var url = '/api/user.json';
+if ("production" === 'production') {
+	url = '/api/user/';
 }
+var header = Functions.getCustomHeader('get', url, null, true);
+
+Functions.fetchAdvanced(header).then(resp => resp.json()).then(json => {
+	if (json.username === "" || json.username === null) {
+		_store.user.logged = false;
+	} else {
+		_store.user = json;
+		_store.user.logged = true;
+		ChatStore.setUser(json);
+	}
+	AppStore.userUpdated();
+});
 
 var AppStore = assign({}, EventEmitter.prototype, {
 
@@ -30308,26 +30304,17 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	},
 
 	getProfile: function (username) {
-		if (self.fetch) {
-			//use fetch
-
-			var url = '';
-			if ("production" === "production") {
-				url = '/api/profile/'.concat(username, '/');
-			} else {
-				url = '/api/profile/profile.json';
-			}
-
-			fetch(url).then(function (response) {
-				response.json().then(function (json) {
-					//do something with json
-					_store.profile = json;
-					AppStore.onProfileUpdated();
-				});
-			});
+		var url = '';
+		if ("production" === "production") {
+			url = '/api/profile/'.concat(username, '/');
 		} else {
-			//use xml
+			url = '/api/profile/profile.json';
 		}
+
+		Functions.fetchAdvanced(url).then(resp => resp.json()).then(json => {
+			_store.profile = json;
+			AppStore.onProfileUpdated();
+		});
 	},
 
 	addOnProfileUpdatesListener: function (callback) {
@@ -30347,74 +30334,57 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	},
 
 	getGamesAvailable: function (gameConsole, game) {
-		//get results
-		if (self.fetch) {
-			//use fetch
-			var stringValue = game;
+		var stringValue = game;
 
-			var consoles = 'ps-xbox';
-			if (gameConsole === Constants.consoles.both || gameConsole === "ps-xbox" || gameConsole === 'xbox-ps') consoles = 'ps-xbox';else if (gameConsole === 'ps') consoles = 'ps';else consoles = 'xbox';
+		var consoles = 'ps-xbox';
+		if (gameConsole === Constants.consoles.both || gameConsole === "ps-xbox" || gameConsole === 'xbox-ps') consoles = 'ps-xbox';else if (gameConsole === 'ps') consoles = 'ps';else consoles = 'xbox';
 
-			var sell = 'both';
-			if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+		var sell = 'both';
+		if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
 
-			var newVariable = 'both';
-			if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
+		var newVariable = 'both';
+		if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
 
-			var url = "";
-			if ("production" === "production") {
-				url = '/api/game/'.concat(consoles, '/', newVariable, '/', sell, '/', stringValue, '/');
-			} else {
-				url = '/api/game_details/thewitcher.json';
-			}
-
-			fetch(url).then(function (response) {
-				response.json().then(function (json) {
-					//do something with json
-					_store.gameDetails = json;
-					AppStore.emit(Constants.eventType.availableGamesUpdate);
-				});
-			});
+		var url = "";
+		if ("production" === "production") {
+			url = '/api/game/'.concat(consoles, '/', newVariable, '/', sell, '/', stringValue, '/');
 		} else {
-			//use xml
+			url = '/api/game_details/thewitcher.json';
 		}
+
+		Functions.fetchAdvanced(url).then(resp => resp.json()).then(json => {
+			_store.gameDetails = json;
+			AppStore.emit(Constants.eventType.availableGamesUpdate);
+		});
 	},
 
 	search: function (gameConsole, game) {
-		//get results
-		if (self.fetch) {
-			//use fetch
-			//var stringValue = _store.search.text;
-			var stringValue = game;
+		//use fetch
+		//var stringValue = _store.search.text;
+		var stringValue = game;
 
-			var consoles = 'ps-xbox';
-			//if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
-			//else if (_store.search.ps) consoles = 'ps';
-			if (gameConsole === Constants.consoles.both) consoles = 'ps-xbox';else if (gameConsole === Constants.consoles.ps) consoles = 'ps';else consoles = 'xbox';
+		var consoles = 'ps-xbox';
+		//if(_store.search.ps && _store.search.xbox) consoles = 'ps-xbox';
+		//else if (_store.search.ps) consoles = 'ps';
+		if (gameConsole === Constants.consoles.both) consoles = 'ps-xbox';else if (gameConsole === Constants.consoles.ps) consoles = 'ps';else consoles = 'xbox';
 
-			var sell = 'both';
-			if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
+		var sell = 'both';
+		if (_store.search.to_sell && !_store.search.exchange) sell = 'sell';else if (!_store.search.to_sell && _store.search.exchange) sell = 'exchange';
 
-			var newVariable = 'both';
-			if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
+		var newVariable = 'both';
+		if (_store.search.not_used && !_store.search.used) newVariable = 'new';else if (!_store.search.not_used && _store.search.used) newVariable = 'used';
 
-			var url = "";
-			if ("production" === "production") {
-				url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
-			} else {
-				var url = '/api/games.json';
-			}
-
-			fetch(url).then(function (response) {
-				response.json().then(function (json) {
-					//do something with json
-					_store.searchResult.results = json;
-					AppStore.emit(Constants.eventType.resultsUpdated);
-				});
-			});
+		var url = "";
+		if ("production" === "production") {
+			url = '/api/games/' + consoles + '/' + newVariable + '/' + sell + '/' + stringValue + '/';
 		} else {
-			//use xml
+			var url = '/api/games.json';
 		}
+
+		Functions.fetchAdvanced(url).then(resp => resp.json()).then(json => {
+			_store.searchResult.results = json;
+			AppStore.emit(Constants.eventType.resultsUpdated);
+		});
 	},
 
 	onChangeSearchInput: function (text, small) {
@@ -30436,17 +30406,12 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 				url = '/api/suggestions/' + consoles + '/' + newVariable + '/' + sell + '/' + text.trim() + '/';
 			}
-			if (self.fetch) {
-				fetch(url).then(function (response) {
-					response.json().then(function (json) {
-						_store.suggestions.list = json;
-						_store.suggestions.value = text;
-						AppStore.onSuggestionsRefresh(json, small);
-					});
-				});
-			} else {
-				//do something with xml stuff
-			}
+
+			Functions.fetchAdvanced(url).then(response => response.json()).then(function (json) {
+				_store.suggestions.list = json;
+				_store.suggestions.value = text;
+				AppStore.onSuggestionsRefresh(json, small);
+			});
 		}
 	},
 
@@ -30547,7 +30512,7 @@ AppDispatcher.register(function (payload) {
 
 module.exports = AppStore;
 
-},{"../dispatcher.js":282,"../utils/constants.js":287,"./chatStore.js":285,"events":1,"object-assign":6}],285:[function(require,module,exports){
+},{"../dispatcher.js":282,"../utils/constants.js":287,"../utils/functions.js":288,"./chatStore.js":285,"events":1,"object-assign":6}],285:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter,
     Constants = require('../utils/constants.js'),
     assign = require('object-assign'),
@@ -31150,11 +31115,49 @@ const Functions = {
 	},
 
 	fetchAdvanced: function (req) {
-		if (self.fetch) {
+		if (false && self.fetch) {
 			return fetch(req);
 		} else {
 			//use xml
-			return null;
+			console.log("there is no fetch");
+			return new Promise(function (resolve, reject) {
+				var xmlReq = new XMLHttpRequest();
+
+				//know what to open
+				if (typeof req === 'string') xmlReq.open('get', req);else xmlReq.open(req.method, req.url);
+
+				//adding headers
+				if (req.headers) {
+					for (let [key, val] of req.headers.entries()) {
+						xmlReq.setRequestHeader(key, val);
+					}
+				}
+
+				xmlReq.onload = function (resp) {
+					if (resp.target.status >= 200 && resp.target.status < 300) {
+						resp.target.json = function () {
+							return new Promise(function (resolve, reject) {
+								resolve(JSON.parse(resp.target.responseText));
+							});
+						};
+						resp.target.ok = true;
+						resolve(resp.target);
+					} else {
+						reject({
+							status: resp.target.status,
+							statusText: resp.target.statusText
+						});
+					}
+				};
+				xmlReq.onerror = function (resp) {
+					reject({
+						status: resp.target.status,
+						statusText: resp.target.statusText
+					});
+				};
+
+				if (req.body) xmlReq.send(req.body);else xmlReq.send();
+			}.bind(this));
 		}
 	},
 
@@ -31173,8 +31176,12 @@ const Functions = {
 		}
 		return "";
 	},
-	getCustomHeader: function (type = 'get', url, userData = null, withCredentials = false) {
+
+	getCustomHeader: function (type, url, userData, withCredentials) {
 		//data.append( "json", JSON.stringify( editing ) );
+		if (!type) type = 'get';
+		if (!userData) userData = null;
+		if (!withCredentials) withCredentials = false;
 		var init = {};
 		if (withCredentials) {
 			var myCookie = Functions.getCookie("csrftoken");
@@ -31187,12 +31194,14 @@ const Functions = {
 				}
 			};
 		}
+		var data = null;
 		if (userData != null) {
-			var data = JSON.stringify(userData);
+			data = JSON.stringify(userData);
 			init.body = data;
 		}
 		init.method = type;
 		var req = new Request(url, init);
+		if (data) req.body = data; // in order to use body in the XMLHttpRequest
 		return req;
 	},
 

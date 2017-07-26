@@ -70,6 +70,9 @@ you can use `migrate` or `makemigrations` to create the tables needed.
 
 0. Make sure there is not an extra folder inside the `static` folder of each app
 1. first run `./manage.py collectstatic`
+2. upload the static files to the bucket with `gsutil rsync -R static/ gs://<your-gcs-bucket>/static` it sometimes will be necesary to change the `rsync` option because sometimes it will delete the cors file
+3. make them publicly available with `gsutil defacl set public-read gs://<your-gcs-bucket>`
+4. perhaps it will be necesary to change the cors settings, with `gsutil cors set cors-json.file.json gs://tg-static`
 
 ## Migrating to the new social django app
 

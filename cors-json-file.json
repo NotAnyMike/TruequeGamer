@@ -1,0 +1,14 @@
+[
+	{
+		"origin": [
+			"https://truequegamer0.appspot.com",
+			"hhtp://truequegamer0.appspot.com",
+		],
+		"responseHeader": [
+			"Content-Type",
+			"",
+		],
+		"method": ["GET"],
+		"maxAgeSeconds": 3600
+	}
+]

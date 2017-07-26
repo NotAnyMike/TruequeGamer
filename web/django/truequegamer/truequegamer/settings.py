@@ -135,7 +135,7 @@ PROJECT_DIR  = os.path.dirname(__file__)
 
 STATIC_URL = ''
 if os.getenv('GAE_INSTANCE'):
-    STATIC_URL = 'http://storage.googleapis.com/tg-static/static/'
+    STATIC_URL = 'https://storage.googleapis.com/tg-static/static/'
 else:
     STATIC_URL = '/static/'
 

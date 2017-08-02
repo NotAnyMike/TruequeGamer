@@ -27434,6 +27434,7 @@ const DetailsMainContainer = React.createClass({
 				);
 			}
 		} else {
+			var console_temp = this.props.console === Constants.consoles.ps ? "Play Station 4" : "Xbox One";
 			titleVar = React.createElement(
 				'div',
 				{ className: 'title' },
@@ -27444,9 +27445,10 @@ const DetailsMainContainer = React.createClass({
 					React.createElement(
 						'span',
 						null,
-						'The Witcher'
+						this.props.game.name
 					),
-					' para xbox one'
+					' para ',
+					console_temp
 				)
 			);
 		}

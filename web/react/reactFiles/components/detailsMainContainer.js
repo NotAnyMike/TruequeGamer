@@ -70,7 +70,8 @@ const DetailsMainContainer = React.createClass({
 					titleVar = <div className="title"><span>Bienvenido al perfil de Mike</span></div>
 				}
 		}else{
-			titleVar = <div className="title"><span>Estás en la sección de <span>The Witcher</span> para xbox one</span></div>
+			var console_temp = this.props.console === Constants.consoles.ps ? "Play Station 4" : "Xbox One";
+			titleVar = <div className="title"><span>Estás en la sección de <span>{this.props.game.name}</span> para {console_temp}</span></div>
 		}
 
 		return (

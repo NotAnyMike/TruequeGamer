@@ -163,6 +163,12 @@ const GameItem = React.createClass({
 				//TODO: show error because the gameitem is empty
 			}else{
 				this.setState({isEditing: false});
+				debugger
+				if(this.props.id){
+					//Making sure game and console is not changed
+					this.state.editing.idOfGame = null;
+					this.state.editing.ps = this.props.console == Constants.consoles.ps ? true : false;
+				}
 				this.props.onPublishGameFn(this.state.editing)
 			}
 		}
@@ -193,21 +199,23 @@ const GameItem = React.createClass({
 	},
 
 	_changeNameHandler: function(e){
-		var newValue = e.target.value;
-		this.setState({
-			editing: {
-				name: newValue,
-				price: this.state.editing.price,
-				used: this.state.editing.used,
-				exchange: this.state.editing.exchange,
-				ps: this.state.editing.ps,
-				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
-				id: this.state.editing.id,
-				suggestionsClicked: false,
-			}
-		});
-		this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps,newValue)
+		if(!this.props.id){
+			var newValue = e.target.value;
+			this.setState({
+				editing: {
+					name: newValue,
+					price: this.state.editing.price,
+					used: this.state.editing.used,
+					exchange: this.state.editing.exchange,
+					ps: this.state.editing.ps,
+					comment: this.state.editing.comment,
+					idOfGame: this.state.editing.idOfGame,
+					id: this.state.editing.id,
+					suggestionsClicked: false,
+				}
+			});
+			this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps,newValue)
+		}
 	},
 	
 	_changeExchangeHandler: function(e){
@@ -279,38 +287,43 @@ const GameItem = React.createClass({
 	},
 	
 	_changeConsoleXboxHandler: function(e){
-		var newValue = !e.target.checked;
-		this.setState({
-			editing: {
-				name: "",
-				price: this.state.editing.price,
-				used: this.state.editing.used,
-				exchange: this.state.editing.exchange,
-				ps: newValue,
-				comment: this.state.editing.comment,
-				idOfGame: null,
-				id: this.state.editing.id,
-				suggestionsClicked: false,
-			}
-		});
-		this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name)
+		if(!this.props.id){
+			var newValue = !e.target.checked;
+			this.setState({
+				editing: {
+					name: "",
+					price: this.state.editing.price,
+					used: this.state.editing.used,
+					exchange: this.state.editing.exchange,
+					ps: newValue,
+					comment: this.state.editing.comment,
+					idOfGame: null,
+					id: this.state.editing.id,
+					suggestionsClicked: false,
+				}
+			});
+			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name)
+		}
 	},
 	
 	_changeConsolePsHandler: function(e){
-		var newValue = e.target.checked;
-		this.setState({
-			editing: {
-				name: "",
-				price: this.state.editing.price,
-				used: this.state.editing.used,
-				exchange: this.state.editing.exchange,
-				ps: newValue,
-				comment: this.state.editing.comment,
-				idOfGame: null,
-				id: this.state.editing.id,
-				suggestionsClicked: false,
-			}
-		});
+		if(!this.props.id){
+			var newValue = e.target.checked;
+			this.setState({
+				editing: {
+					name: "",
+					price: this.state.editing.price,
+					used: this.state.editing.used,
+					exchange: this.state.editing.exchange,
+					ps: newValue,
+					comment: this.state.editing.comment,
+					idOfGame: null,
+					id: this.state.editing.id,
+					suggestionsClicked: false,
+				}
+			});
+			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name)
+		}
 	},
 	
 	_changePriceHandler: function(e){
@@ -405,6 +418,7 @@ const GameItem = React.createClass({
 		var usedEditing = null;
 		var exchangeEditing = null;
 		var psCheckedEditing = null;
+		var suggestions = null;
 
 		var consoleVar = this.props.console;
 		if(this.props.both && this.state.isHover && consoleVar !== null){
@@ -464,7 +478,6 @@ const GameItem = React.createClass({
 				
 			}
 
-
 			if(this.state.isEditing) {
 				className += " editing";
 			}
@@ -523,7 +536,10 @@ const GameItem = React.createClass({
 				}
 			}
 
-		
+			//show only suggestions when the game is new, if the dvd exists already then ignore it
+			if(this.props.isProfile && this.props.isOwnerOfProfile === true && !this.props.id){
+				suggestions = <Suggestions suggestions={this.props.suggestions} onSuggestionClickFn={onClickOnSuggestion} page={'profile'} suggestionsClicked={this.state.editing.suggestionsClicked} />
+			}	
 		
 		}else{
 
@@ -636,7 +652,7 @@ const GameItem = React.createClass({
 					</div>
 					<div className="videoGameSection">
 						<input type="text" placeholder="2. Selecciona el juego" value={nameEditing} onChange={changeNameHandler}/>
-						<Suggestions suggestions={this.props.suggestions} onSuggestionClickFn={onClickOnSuggestion} page={'profile'} suggestionsClicked={this.state.editing.suggestionsClicked} />
+						{suggestions}
 					</div>
 					<div><input type="text" placeholder="3. precio (en caso de venta)" value={priceEditing} onChange={changePriceHandler}/></div>
 					<span>4. ¿Nuevo o Usado?</span>

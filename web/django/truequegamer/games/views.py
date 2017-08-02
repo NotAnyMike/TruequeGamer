@@ -23,7 +23,8 @@ def index(req):
     return render(req,  template)
 
 def img(req):
-    return redirect('/static/games' + req.path)
+    url = "%s%s" % (settings.STATIC_URL, req.path.replace("/","",1))
+    return redirect(url)
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()

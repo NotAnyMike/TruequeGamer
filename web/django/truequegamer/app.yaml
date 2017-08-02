@@ -1,0 +1,17 @@
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT truequegamer.wsgi
+
+beta_settings:
+  cloud_sql_instances: truequegamer0:us-east1:tg
+
+runtime_config:
+  python_version: 2
+
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+manual_scaling:
+  instances: 1

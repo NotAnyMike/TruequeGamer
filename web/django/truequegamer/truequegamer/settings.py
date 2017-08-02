@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social.apps.django_app.default',
+    'social_django',
     'rest_framework',
     'games',
     'chat',
@@ -89,11 +89,14 @@ DATABASES = {
         'NAME': 'tg',
         'USER': 'tg_user',
         'PASSWORD': '2P4Cz)@8kFwhzH[V',
-        'HOST': 'localhost',
-        'PORT': '',
     },
 }
 
+if os.getenv('GAE_INSTANCE'):
+    DATABASES['default']['HOST'] = '/cloudsql/truequegamer0:us-east1:tg'
+else:
+    DATABASES['default']['HOST'] = 'localhost'
+    DATABASES['default']['PORT'] = ''
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -133,12 +136,16 @@ USE_TZ = True
 
 PROJECT_DIR  = os.path.dirname(__file__)
 
-STATIC_URL = '/static/'
+STATIC_URL = ''
+if os.getenv('GAE_INSTANCE'):
+    STATIC_URL = 'https://storage.googleapis.com/tg-static/static/'
+else:
+    STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.facebook.FacebookOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 

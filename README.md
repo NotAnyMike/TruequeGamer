@@ -43,7 +43,7 @@ Based on [this](https://www.digitalocean.com/community/tutorials/how-to-use-post
 8. After creating the empty database it is important to create a super user, see the section on how to create a super user
 
 ## How to create a super user
-you can use this in the postgres shell: `UPDATE auth_user SET is_superuser=true, is_staff=ture WHERE username='MikeWoodcock';`
+you can use this in the postgres shell (although with gae could have some preoblems, better use the django shell): `UPDATE auth_user SET is_superuser=true, is_staff=ture WHERE username='MikeWoodcock';`
 or in django, which is not the best option:
 1. run `manage.py shell`
 2. `from django.contrib.auth.models import User`
@@ -54,6 +54,32 @@ or in django, which is not the best option:
 
 ### Possible errors with postgres
 * `psql: FATAL: database <user> does not exist`: the solution is to run `createdb` in the normal shell
+
+## Google app engine
+
+inside of the django project (at the same level of `manage.py`) use the following command to deploy `gcloud app deploy`
+
+### Proxy to connect to db
+In order to be able to connect to the google cloud sql instance (postgres) follow the next steps:
+1. run `curl -o cloud_sql_proxy https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64`
+2. and then make it executable with `chmod +x cloud_sql_proxy` 
+
+### In order to initialize the proxy
+use the following command in the same directory where you downloaded `cloud_slq_proxy`
+* `./cloud_sql_proxy -instances="[YOUR_INSTANCE_CONNECTION_NAME]"=tcp:5432`
+you can use `migrate` or `makemigrations` to create the tables needed.
+
+### Using a google storage bucket
+
+0. Make sure there is not an extra folder inside the `static` folder of each app
+1. first run `./manage.py collectstatic`
+2. upload the static files to the bucket with `gsutil rsync -R static/ gs://<your-gcs-bucket>/static` it sometimes will be necesary to change the `rsync` option because sometimes it will delete the cors file
+3. make them publicly available with `gsutil defacl set public-read gs://<your-gcs-bucket>`
+4. perhaps it will be necesary to change the cors settings, with `gsutil cors set cors-json.file.json gs://tg-static` or look [here](https://cloud.google.com/storage/docs/xml-api/put-bucket-cors)
+
+## Migrating to the new social django app
+
+Follow the next link: [here](https://github.com/omab/python-social-auth/blob/master/MIGRATING_TO_SOCIAL.md)
 
 ## How to move react to django?
 1. Run `gulp react-prod-django`

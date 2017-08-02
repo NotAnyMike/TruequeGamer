@@ -171,14 +171,15 @@ def DvdApi(request):
                     somethingIsDifferent = idOfGameDifferent or nameOfGameDifferent or consoleOfGameDifferent
                         
                     if dvdToSave == None or somethingIsDifferent:
-                        #get game
-                        try:
-                            if 'idOfGame' in data and data['idOfGame'] != None:
-                                game = Game.objects.get(id_igdb=data['idOfGame'])
-                        except ObjectDoesNotExist:
-                            pass
+                        #get game only if it the dvd is new (i.e. user is not trying to modify the game of the dvd)
+                        if dvdToSave == None:
+                            try:
+                                if 'idOfGame' in data and data['idOfGame'] != None:
+                                    game = Game.objects.get(id_igdb=data['idOfGame'])
+                            except ObjectDoesNotExist:
+                                pass
 
-                        if game == None and idOfGameExists:
+                        if game == None and idOfGameExists and dvdToSave == None: #dvdToSave to make sure the game is changed only if dvd is a new one
                             resp = utils.get_list_from_IGDB(console=data['console'], string="", id_of_game= data['idOfGame'])
                 
                             if resp.getcode() >= 200 and resp.getcode() <300:
@@ -212,7 +213,7 @@ def DvdApi(request):
                                     )
                                 game.save()
 
-                    #if game is to create
+                    #if game (game? shouldn't it be dvd?) is to create
                     if dvdToSave is None and game is not None:
                         data['new'] = not data['used']
                         dvdToSave = Dvd(
@@ -231,14 +232,14 @@ def DvdApi(request):
                     elif dvdToSave is not None:
                         #update dvd
                         changed = False
-                        if game is not None:
+                        if False and game is not None: ##DO NOT allow to modify the game or console if the dvd is not new
                             dvdToSave.game = game
+                            changed = True
+                        if False and data['console'] != dvdToSave.console: #DO NOT allow to modify the game or console if the dvd is not new
+                            dvdToSave.console = data['console']
                             changed = True
                         if data['price'] != dvdToSave.price:
                             dvdToSave.price = data['price']
-                            changed = True
-                        if data['console'] != dvdToSave.console:
-                            dvdToSave.console = data['console']
                             changed = True
                         if data['exchange'] != str(dvdToSave.exchange):
                             dvdToSave.exchange = not dvdToSave.exchange

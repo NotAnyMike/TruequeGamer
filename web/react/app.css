@@ -3782,7 +3782,7 @@ ul.ps.gameList li.exclusive .contentContainer .alsoAvailableOn span {
   border: 0;
 }
 ul.ps.gameList li.exclusive .contentContainer .alsoAvailableOn span:before {
-  content: 'unicamente en play station 4';
+  content: 'juego exclusivo de play station 4';
   color: #fff;
 }
 ul.ps.gameList li.psNoExchange .contentContainer .exchange:before,
@@ -3985,7 +3985,7 @@ ul.xbox.gameList li.exclusive .contentContainer .alsoAvailableOn span {
   border: 0;
 }
 ul.xbox.gameList li.exclusive .contentContainer .alsoAvailableOn span:before {
-  content: 'unicamente en x-box one';
+  content: 'juego exclusivo de x-box one';
   color: #fff;
 }
 ul.xbox.gameList li.xboxNoExchange .contentContainer .exchange:before,

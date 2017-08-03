@@ -27879,7 +27879,6 @@ const GameItem = React.createClass({
 				//TODO: show error because the gameitem is empty
 			} else {
 				this.setState({ isEditing: false });
-				debugger;
 				if (this.props.id) {
 					//Making sure game and console is not changed
 					this.state.editing.idOfGame = null;
@@ -29102,7 +29101,7 @@ const Profile = React.createClass({
 
 	onExchangedButtonClick: function (id_of_game) {
 		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
-		var req = Functions.getCustomHeader('patch', url, { type: 'exchanged' }, true);
+		var req = Functions.getCustomHeader('put', url, { type: 'exchanged' }, true);
 		Functions.fetchAdvanced(req).then(function (res) {
 			this._gameDeleted(id_of_game, res);
 		}.bind(this));
@@ -29110,7 +29109,7 @@ const Profile = React.createClass({
 
 	onSoldButtonClick: function (id_of_game) {
 		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
-		var req = Functions.getCustomHeader('patch', url, { type: 'sold' }, true);
+		var req = Functions.getCustomHeader('put', url, { type: 'sold' }, true);
 		Functions.fetchAdvanced(req).then(function (res) {
 			this._gameDeleted(id_of_game, res);
 		}.bind(this));

@@ -103,13 +103,13 @@ const Profile = React.createClass({
 
 	onExchangedButtonClick: function(id_of_game){
 		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
-		var req = Functions.getCustomHeader('patch', url, {type: 'exchanged'}, true);
+		var req = Functions.getCustomHeader('put', url, {type: 'exchanged'}, true);
 		Functions.fetchAdvanced(req).then(function(res){this._gameDeleted(id_of_game, res)}.bind(this))
 	},
 
 	onSoldButtonClick: function(id_of_game){
 		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
-		var req = Functions.getCustomHeader('patch', url, {type: 'sold'}, true);
+		var req = Functions.getCustomHeader('put', url, {type: 'sold'}, true);
 		Functions.fetchAdvanced(req).then(function(res){this._gameDeleted(id_of_game, res)}.bind(this))
 	},
 

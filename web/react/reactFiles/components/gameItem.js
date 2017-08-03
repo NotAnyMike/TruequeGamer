@@ -163,7 +163,6 @@ const GameItem = React.createClass({
 				//TODO: show error because the gameitem is empty
 			}else{
 				this.setState({isEditing: false});
-				debugger
 				if(this.props.id){
 					//Making sure game and console is not changed
 					this.state.editing.idOfGame = null;

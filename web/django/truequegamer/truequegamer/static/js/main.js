@@ -27434,6 +27434,7 @@ const DetailsMainContainer = React.createClass({
 				);
 			}
 		} else {
+			var console_temp = this.props.console === Constants.consoles.ps ? "Play Station 4" : "Xbox One";
 			titleVar = React.createElement(
 				'div',
 				{ className: 'title' },
@@ -27444,9 +27445,10 @@ const DetailsMainContainer = React.createClass({
 					React.createElement(
 						'span',
 						null,
-						'The Witcher'
+						this.props.game.name
 					),
-					' para xbox one'
+					' para ',
+					console_temp
 				)
 			);
 		}
@@ -27877,6 +27879,11 @@ const GameItem = React.createClass({
 				//TODO: show error because the gameitem is empty
 			} else {
 				this.setState({ isEditing: false });
+				if (this.props.id) {
+					//Making sure game and console is not changed
+					this.state.editing.idOfGame = null;
+					this.state.editing.ps = this.props.console == Constants.consoles.ps ? true : false;
+				}
 				this.props.onPublishGameFn(this.state.editing);
 			}
 		}
@@ -27906,21 +27913,23 @@ const GameItem = React.createClass({
 	},
 
 	_changeNameHandler: function (e) {
-		var newValue = e.target.value;
-		this.setState({
-			editing: {
-				name: newValue,
-				price: this.state.editing.price,
-				used: this.state.editing.used,
-				exchange: this.state.editing.exchange,
-				ps: this.state.editing.ps,
-				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
-				id: this.state.editing.id,
-				suggestionsClicked: false
-			}
-		});
-		this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps, newValue);
+		if (!this.props.id) {
+			var newValue = e.target.value;
+			this.setState({
+				editing: {
+					name: newValue,
+					price: this.state.editing.price,
+					used: this.state.editing.used,
+					exchange: this.state.editing.exchange,
+					ps: this.state.editing.ps,
+					comment: this.state.editing.comment,
+					idOfGame: this.state.editing.idOfGame,
+					id: this.state.editing.id,
+					suggestionsClicked: false
+				}
+			});
+			this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps, newValue);
+		}
 	},
 
 	_changeExchangeHandler: function (e) {
@@ -27992,38 +28001,43 @@ const GameItem = React.createClass({
 	},
 
 	_changeConsoleXboxHandler: function (e) {
-		var newValue = !e.target.checked;
-		this.setState({
-			editing: {
-				name: "",
-				price: this.state.editing.price,
-				used: this.state.editing.used,
-				exchange: this.state.editing.exchange,
-				ps: newValue,
-				comment: this.state.editing.comment,
-				idOfGame: null,
-				id: this.state.editing.id,
-				suggestionsClicked: false
-			}
-		});
-		this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name);
+		if (!this.props.id) {
+			var newValue = !e.target.checked;
+			this.setState({
+				editing: {
+					name: "",
+					price: this.state.editing.price,
+					used: this.state.editing.used,
+					exchange: this.state.editing.exchange,
+					ps: newValue,
+					comment: this.state.editing.comment,
+					idOfGame: null,
+					id: this.state.editing.id,
+					suggestionsClicked: false
+				}
+			});
+			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name);
+		}
 	},
 
 	_changeConsolePsHandler: function (e) {
-		var newValue = e.target.checked;
-		this.setState({
-			editing: {
-				name: "",
-				price: this.state.editing.price,
-				used: this.state.editing.used,
-				exchange: this.state.editing.exchange,
-				ps: newValue,
-				comment: this.state.editing.comment,
-				idOfGame: null,
-				id: this.state.editing.id,
-				suggestionsClicked: false
-			}
-		});
+		if (!this.props.id) {
+			var newValue = e.target.checked;
+			this.setState({
+				editing: {
+					name: "",
+					price: this.state.editing.price,
+					used: this.state.editing.used,
+					exchange: this.state.editing.exchange,
+					ps: newValue,
+					comment: this.state.editing.comment,
+					idOfGame: null,
+					id: this.state.editing.id,
+					suggestionsClicked: false
+				}
+			});
+			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name);
+		}
 	},
 
 	_changePriceHandler: function (e) {
@@ -28118,6 +28132,8 @@ const GameItem = React.createClass({
 		var usedEditing = null;
 		var exchangeEditing = null;
 		var psCheckedEditing = null;
+		var suggestions = null;
+		var disableInputName = null;
 
 		var consoleVar = this.props.console;
 		if (this.props.both && this.state.isHover && consoleVar !== null) {
@@ -28227,6 +28243,13 @@ const GameItem = React.createClass({
 				if (this.state.isEditing === false) {
 					onClickComponent = this._onInfoClicked;
 				}
+			}
+
+			//show only suggestions when the game is new, if the dvd exists already then ignore it
+			if (this.props.isProfile && this.props.isOwnerOfProfile === true && !this.props.id) {
+				suggestions = React.createElement(Suggestions, { suggestions: this.props.suggestions, onSuggestionClickFn: onClickOnSuggestion, page: 'profile', suggestionsClicked: this.state.editing.suggestionsClicked });
+			} else {
+				disableInputName = 'disabled';
 			}
 		} else {
 
@@ -28399,8 +28422,8 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'videoGameSection' },
-					React.createElement('input', { type: 'text', placeholder: '2. Selecciona el juego', value: nameEditing, onChange: changeNameHandler }),
-					React.createElement(Suggestions, { suggestions: this.props.suggestions, onSuggestionClickFn: onClickOnSuggestion, page: 'profile', suggestionsClicked: this.state.editing.suggestionsClicked })
+					React.createElement('input', { type: 'text', placeholder: '2. Selecciona el juego', value: nameEditing, onChange: changeNameHandler, disabled: disableInputName }),
+					suggestions
 				),
 				React.createElement(
 					'div',
@@ -29078,7 +29101,7 @@ const Profile = React.createClass({
 
 	onExchangedButtonClick: function (id_of_game) {
 		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
-		var req = Functions.getCustomHeader('patch', url, { type: 'exchanged' }, true);
+		var req = Functions.getCustomHeader('put', url, { type: 'exchanged' }, true);
 		Functions.fetchAdvanced(req).then(function (res) {
 			this._gameDeleted(id_of_game, res);
 		}.bind(this));
@@ -29086,7 +29109,7 @@ const Profile = React.createClass({
 
 	onSoldButtonClick: function (id_of_game) {
 		var url = Constants.routes.api.delete_dvd.replace('[id_of_game]', id_of_game);
-		var req = Functions.getCustomHeader('patch', url, { type: 'sold' }, true);
+		var req = Functions.getCustomHeader('put', url, { type: 'sold' }, true);
 		Functions.fetchAdvanced(req).then(function (res) {
 			this._gameDeleted(id_of_game, res);
 		}.bind(this));

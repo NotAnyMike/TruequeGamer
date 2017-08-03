@@ -419,6 +419,7 @@ const GameItem = React.createClass({
 		var exchangeEditing = null;
 		var psCheckedEditing = null;
 		var suggestions = null;
+		var disableInputName = null;
 
 		var consoleVar = this.props.console;
 		if(this.props.both && this.state.isHover && consoleVar !== null){
@@ -539,7 +540,10 @@ const GameItem = React.createClass({
 			//show only suggestions when the game is new, if the dvd exists already then ignore it
 			if(this.props.isProfile && this.props.isOwnerOfProfile === true && !this.props.id){
 				suggestions = <Suggestions suggestions={this.props.suggestions} onSuggestionClickFn={onClickOnSuggestion} page={'profile'} suggestionsClicked={this.state.editing.suggestionsClicked} />
-			}	
+			}else{
+				disableInputName = 'disabled';
+			}
+
 		
 		}else{
 
@@ -651,7 +655,7 @@ const GameItem = React.createClass({
 						<label htmlFor={"xbox" + temp_id}></label>
 					</div>
 					<div className="videoGameSection">
-						<input type="text" placeholder="2. Selecciona el juego" value={nameEditing} onChange={changeNameHandler}/>
+						<input type="text" placeholder="2. Selecciona el juego" value={nameEditing} onChange={changeNameHandler} disabled={disableInputName}/>
 						{suggestions}
 					</div>
 					<div><input type="text" placeholder="3. precio (en caso de venta)" value={priceEditing} onChange={changePriceHandler}/></div>

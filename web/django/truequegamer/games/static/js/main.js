@@ -28134,6 +28134,7 @@ const GameItem = React.createClass({
 		var exchangeEditing = null;
 		var psCheckedEditing = null;
 		var suggestions = null;
+		var disableInputName = null;
 
 		var consoleVar = this.props.console;
 		if (this.props.both && this.state.isHover && consoleVar !== null) {
@@ -28248,6 +28249,8 @@ const GameItem = React.createClass({
 			//show only suggestions when the game is new, if the dvd exists already then ignore it
 			if (this.props.isProfile && this.props.isOwnerOfProfile === true && !this.props.id) {
 				suggestions = React.createElement(Suggestions, { suggestions: this.props.suggestions, onSuggestionClickFn: onClickOnSuggestion, page: 'profile', suggestionsClicked: this.state.editing.suggestionsClicked });
+			} else {
+				disableInputName = 'disabled';
 			}
 		} else {
 
@@ -28420,7 +28423,7 @@ const GameItem = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'videoGameSection' },
-					React.createElement('input', { type: 'text', placeholder: '2. Selecciona el juego', value: nameEditing, onChange: changeNameHandler }),
+					React.createElement('input', { type: 'text', placeholder: '2. Selecciona el juego', value: nameEditing, onChange: changeNameHandler, disabled: disableInputName }),
 					suggestions
 				),
 				React.createElement(

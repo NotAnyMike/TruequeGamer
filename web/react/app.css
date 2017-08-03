@@ -5126,6 +5126,9 @@ ul.gameList li.editing form div.videoGameSection {
 ul.gameList li.editing form div.videoGameSection input[type="text"]:focus + ul {
   display: inline-block;
 }
+ul.gameList li.editing form div.videoGameSection input[type="text"]:disabled {
+  cursor: not-allowed;
+}
 ul.gameList li.editing form div.videoGameSection ul {
   display: none;
   position: absolute;
@@ -5333,6 +5336,7 @@ ul.gameList li.editing form div.console input.xbox+label {
   height: 27px;
   width: 72px;
   padding: 0px;
+  cursor: not-allowed;
 }
 ul.gameList li.editing form div.console input.ps+label:before,
 ul.gameList li.editing form div.console input.xbox+label:before {
@@ -5340,7 +5344,7 @@ ul.gameList li.editing form div.console input.xbox+label:before {
   font-size: 20px;
   margin-top: 3px;
   display: inline-block;
-  cursor: pointer;
+  cursor: not-allowed;
 }
 ul.gameList li.editing form div.console input.ps+label:before {
   content: '\e905';
@@ -5372,6 +5376,12 @@ ul.gameList li.editing.new form {
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+}
+ul.gameList li.editing.new form div.console input[type="radio"]+label {
+  cursor: pointer;
+}
+ul.gameList li.editing.new form div.console input[type="radio"]+label:before {
+  cursor: pointer;
 }
 ul.gameList li.editing.new form .exchange {
   padding-bottom: 54px;

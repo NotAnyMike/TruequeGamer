@@ -175,8 +175,12 @@ ul
 							padding-top: 7px
 							padding-bottom: 2px
 
-							input[type="text"]:focus + ul
-								display: inline-block
+							input[type="text"]
+								&:focus + ul
+									display: inline-block
+
+								&:disabled
+									cursor: not-allowed
 						
 							ul
 								display: none
@@ -330,13 +334,14 @@ ul
 										height: 27px
 										width: 72px
 										padding: 0px
+										cursor: not-allowed
 										
 										&:before
 											font-family: TruequeGamer
 											font-size: 20px
 											margin-top: 3px
 											display: inline-block
-											cursor: pointer
+											cursor: not-allowed
 
 								&.ps
 									&+label
@@ -359,6 +364,14 @@ ul
 				&.new
 					form
 						justify-content: center
+
+						div
+							&.console
+								input[type="radio"]+label
+									cursor: pointer
+
+									&:before
+										cursor: pointer
 
 						.exchange
 							padding-bottom: 54px

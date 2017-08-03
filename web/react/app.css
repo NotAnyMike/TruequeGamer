@@ -1005,7 +1005,7 @@ figure.negative .isotype.negative {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
-  background-image: url("/img/header-background.png");
+  background-image: url("./img/header-background.png");
   background-repeat: no-repeat;
   display: -webkit-box;
   display: -moz-box;
@@ -3520,6 +3520,32 @@ ul.gameList li.xboxNoExchange.xbox .contentContainer .exchange:after {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
+ul.gameList.noResults::before,
+ul.gameList.noResults::after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  cursor: default;
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+ul.gameList.noResults::before {
+  content: 'No hay resultados';
+  height: 200px;
+  padding-top: 180px;
+  color: #e6334c;
+  font-size: 20px;
+  background: url("./img/sad.png") no-repeat center center/50px;
+}
+ul.gameList.noResults::after {
+  content: 'usa las sugerencias para ayudarte a encontrar más rápido lo que quieres';
+  height: 140px;
+  font-size: 13px;
+  color: #009992;
+  padding: 20px;
+}
 .genericMainContainer.both .title,
 .searchResultsMainContainer.both .title,
 .genericMainContainer.profile .title,
@@ -3626,32 +3652,6 @@ ul.both.gameList li:hover.xbox.xboxNoSell .contentContainer .price span:nth-chil
 }
 ul.both.gameList li:hover.xbox.xboxNoSell .contentContainer .price span:nth-child(2):before {
   color: #fff;
-}
-ul.both.gameList.noResults::before,
-ul.both.gameList.noResults::after {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  cursor: default;
-  display: block;
-  text-align: center;
-  text-transform: uppercase;
-  width: 100%;
-}
-ul.both.gameList.noResults::before {
-  content: 'No hay resultados';
-  height: 200px;
-  padding-top: 180px;
-  color: #e6334c;
-  font-size: 20px;
-  background: url("/img/sad.png") no-repeat center center/50px;
-}
-ul.both.gameList.noResults::after {
-  content: 'usa las sugerencias para ayudarte a encontrar más rápido lo que quieres';
-  height: 140px;
-  font-size: 13px;
-  color: #009992;
-  padding: 20px;
 }
 #semi_body.ps {
   background: -webkit-radial-gradient(circle, #183a68, #142033);
@@ -3848,6 +3848,13 @@ ul.ps.gameList li:hover.psNoExchange .contentContainer .exchange span:after {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
+}
+ul.ps.gameList.noResults::before {
+  color: #fff;
+  background: url("./img/sad_white.png") no-repeat center center/50px;
+}
+ul.ps.gameList.noResults::after {
+  color: #fff;
 }
 #semi_body.xbox {
   background: -webkit-linear-gradient(106deg, #1c7b33, #25632c);
@@ -4069,6 +4076,13 @@ ul.xbox.gameList li:hover.xboxNoExchange .contentContainer .exchange:after {
 }
 ul.xbox.gameList li:hover.exclusive .contentContainer .alsoAvailableOn span {
   border: 0;
+}
+ul.xbox.gameList.noResults::before {
+  color: #fff;
+  background: url("./img/sad_white.png") no-repeat center center/50px;
+}
+ul.xbox.gameList.noResults::after {
+  color: #fff;
 }
 .xboxNoExchange.ps .contentContainer .exchange span:nth-child(2):before {
   opacity: 0;

@@ -395,6 +395,30 @@ ul.gameList
 						&:before,&:after
 							opacity: 0
 
+	&.noResults
+		&::before, &::after
+			box-sizing: border-box
+			cursor: default
+			display: block
+			text-align: center
+			text-transform: uppercase
+			width: 100%
+			
+		&::before
+			content: 'No hay resultados'
+			height: 200px
+			padding-top: 180px
+			color: $red
+			font-size: 20px
+			background: url('./img/sad.png') no-repeat center center / 50px
+
+		&::after
+			content: 'usa las sugerencias para ayudarte a encontrar más rápido lo que quieres'
+			height: 140px
+			font-size: 13px
+			color: $dark_green
+			padding: 20px
+
 /***************************************************************************
 														Both section
 ***************************************************************************/
@@ -510,30 +534,6 @@ ul.both.gameList
 							&:before
 								color: white
 								
-	&.noResults
-		&::before, &::after
-			box-sizing: border-box
-			cursor: default
-			display: block
-			text-align: center
-			text-transform: uppercase
-			width: 100%
-			
-		&::before
-			content: 'No hay resultados'
-			height: 200px
-			padding-top: 180px
-			color: $red
-			font-size: 20px
-			background: url(/img/sad.png) no-repeat center center / 50px
-
-		&::after
-			content: 'usa las sugerencias para ayudarte a encontrar más rápido lo que quieres'
-			height: 140px
-			font-size: 13px
-			color: $dark_green
-			padding: 20px
-
 
 /***************************************************************************
 														PS section only
@@ -706,6 +706,14 @@ ul.ps.gameList
 							&:before,&:after
 								color: white
 								opacity: 0.5
+
+	&.noResults
+		&::before
+			color: white
+			background: url('./img/sad_white.png') no-repeat center center / 50px
+
+		&::after
+			color: white
 
 
 /***************************************************************************
@@ -907,6 +915,14 @@ ul.xbox.gameList
 					.alsoAvailableOn
 						span
 							border: 0
+
+	&.noResults
+		&::before
+			color: white
+			background: url('./img/sad_white.png') no-repeat center center / 50px
+
+		&::after
+			color: white
 
 .xboxNoExchange.ps
 	.contentContainer

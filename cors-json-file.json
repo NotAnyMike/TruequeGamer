@@ -2,7 +2,11 @@
 	{
 		"origin": [
 			"https://truequegamer0.appspot.com",
-			"hhtp://truequegamer0.appspot.com",
+			"http://truequegamer0.appspot.com",
+			"http://www.truequegamer.com",
+			"https://www.truequegamer.com",
+			"http://truequegamer.com",
+			"https://truequegamer.com"
 		],
 		"responseHeader": ["Content-Type","Access-Control-Allow-Origin"],
 		"method": ["GET"],

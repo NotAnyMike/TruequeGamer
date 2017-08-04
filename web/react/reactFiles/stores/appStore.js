@@ -8,6 +8,8 @@ var EventEmitter = require('events').EventEmitter,
 
 var AppDispatcher = require('../dispatcher.js');
 
+Functions.startAnalytics();
+
 var _store =  {
 	suggestions: {
 		value: '',

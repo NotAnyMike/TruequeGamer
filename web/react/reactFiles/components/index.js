@@ -26,7 +26,6 @@ module.exports = React.createClass({
 		AppStore.addOnUserUpdateListener(this.onUserUpdated);
 		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
 		AppStore.addOnReloadIndexListener(this.reload);
-		Functions.startAnalytics();
 	},
 
 	componentWillUnmount: function(){

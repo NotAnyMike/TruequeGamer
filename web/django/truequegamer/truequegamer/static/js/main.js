@@ -28664,7 +28664,6 @@ module.exports = React.createClass({
 		AppStore.addOnUserUpdateListener(this.onUserUpdated);
 		AppStore.addSuggestionsRefreshListener(this.onSuggestionRefresh);
 		AppStore.addOnReloadIndexListener(this.reload);
-		Functions.startAnalytics();
 	},
 
 	componentWillUnmount: function () {
@@ -30106,6 +30105,8 @@ var EventEmitter = require('events').EventEmitter,
     assign = require('object-assign');
 
 var AppDispatcher = require('../dispatcher.js');
+
+Functions.startAnalytics();
 
 var _store = {
 	suggestions: {

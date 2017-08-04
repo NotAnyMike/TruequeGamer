@@ -684,7 +684,7 @@ const GameItem = React.createClass({
 				<div className="commentContainer">
 					<div className="background"></div>
 					<div className="commentTextContainer">
-						<span className="commentTitle">{nameEditing}</span>
+						<span className="commentTitle">{name}</span>
 						<span className="commentBody">{this.props.comment}</span>
 						<textarea className="textArea" type="text" value={comment} onChange={changeCommentHandler}></textarea>
 					</div>

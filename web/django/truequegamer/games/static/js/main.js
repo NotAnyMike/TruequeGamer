@@ -28513,7 +28513,7 @@ const GameItem = React.createClass({
 					React.createElement(
 						'span',
 						{ className: 'commentTitle' },
-						nameEditing
+						name
 					),
 					React.createElement(
 						'span',
@@ -28726,7 +28726,12 @@ module.exports = React.createClass({
 
 	suggestionSelectedHandlerFn: function (value) {
 		var suggestionsList = this.state.suggestions.list;
-		this.setState({ suggestions: { value: value, list: suggestionsList, clicked: true } });
+		var searchState = this.state.search;
+		searchState.text = value;
+		this.setState({
+			suggestions: { value: value, list: suggestionsList, clicked: true },
+			search: searchState
+		});
 		Actions.changeSearchInput(value);
 	},
 
@@ -28752,7 +28757,7 @@ module.exports = React.createClass({
 
 	render: function () {
 		var chat;
-		var textStringValue = this.state.suggestions.value || this.state.search.text;
+		var textStringValue = this.state.search.text;
 		if (this.state.user.logged) {
 			chat = React.createElement(Chat, { user: this.state.user });
 		}

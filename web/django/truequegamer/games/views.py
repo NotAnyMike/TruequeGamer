@@ -16,6 +16,9 @@ from games.serializers import UserSerializer, SuggestionSerializer, GameSerializ
 from games.models import Game, Dvd, Bug
 import constants, utils
 
+def landing(req):
+    return render(req, 'games/landing.html')
+
 def index(req):
     template = 'games/base.html'
     if settings.DEBUG:

@@ -16,6 +16,9 @@ from games.serializers import UserSerializer, SuggestionSerializer, GameSerializ
 from games.models import Game, Dvd, Bug
 import constants, utils
 
+def policy(req):
+    return render(req, 'games/pp.html')
+
 def landing(req):
     return render(req, 'games/landing.html')
 

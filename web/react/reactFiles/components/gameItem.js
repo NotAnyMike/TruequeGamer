@@ -66,6 +66,8 @@ const GameItem = React.createClass({
 					idOfGame: null,
 					id: this.props.id,
 					suggestionsClicked: false,
+					errorInPrice: false,
+					errorInName: false,
 				}
 			});
 		}
@@ -74,7 +76,7 @@ const GameItem = React.createClass({
 	getInitialState: function(){
 		var name = this.props.name !== 'undefined' ? this.props.name : "";
 		var id = this.props.id;
-		if(id === 'undefined') id=null;
+		if(id === 'undefined') id = null;
 		return ({
 			isHover: false,
 			isComponentHover: false,
@@ -90,6 +92,8 @@ const GameItem = React.createClass({
 				idOfGame: null,
 				id: id,
 				suggestionsClicked: false,
+				errorInPrice: false,
+				errorInName: false,
 			},
 		});
 	},
@@ -158,10 +162,12 @@ const GameItem = React.createClass({
 		if(this.state.isShowingComment && this.state.isEditing){
 			this.setState({isShowingComment: false, isEditing: true});
 		}else{
-			//else publish
-			if(this.state.editing.name && this.state.editing.exchange === false && (!this.state.editing.price || this.state.editing.price === "" || this.state.editing.price === 0)){
-				//TODO: show error because the gameitem is empty
+			if((!this.state.editing.name || this.state.editing.name === "" || typeof this.state.editing.name === 'undefined') || (!this.props.id && !this.state.editing.idOfGame)){
+				//TODO: name is empty
+			}else if(this.state.editing.exchange === false && (!this.state.editing.price || this.state.editing.price === "" || this.state.editing.price === 0)){
+				//TODO: show error because it is only sell but no price
 			}else{
+				//else publish
 				this.setState({isEditing: false});
 				if(this.props.id){
 					//Making sure game and console is not changed
@@ -200,7 +206,10 @@ const GameItem = React.createClass({
 	_changeNameHandler: function(e){
 		if(!this.props.id){
 			var newValue = e.target.value;
-			this.setState({
+			var newState = this.state;
+			newState.suggestionsClicked = false;
+			newState.name = newValue;
+			/*this.setState({
 				editing: {
 					name: newValue,
 					price: this.state.editing.price,
@@ -213,6 +222,8 @@ const GameItem = React.createClass({
 					suggestionsClicked: false,
 				}
 			});
+			*/
+			this.setState(newState);
 			this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps,newValue)
 		}
 	},

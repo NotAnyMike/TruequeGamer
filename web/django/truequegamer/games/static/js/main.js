@@ -27782,8 +27782,8 @@ const GameItem = React.createClass({
 					idOfGame: null,
 					id: this.props.id,
 					suggestionsClicked: false,
-					errorInPrice: false,
-					errorInName: false
+					errorPrice: false,
+					errorName: false
 				}
 			});
 		}
@@ -27808,8 +27808,8 @@ const GameItem = React.createClass({
 				idOfGame: null,
 				id: id,
 				suggestionsClicked: false,
-				errorInPrice: false,
-				errorInName: false
+				errorPrice: false,
+				errorName: false
 			}
 		};
 	},
@@ -27873,15 +27873,29 @@ const GameItem = React.createClass({
 		this.setState({ isShowingComment: true });
 	},
 
+	_isNameIncorrect: function () {
+		return !this.state.editing.name || this.state.editing.name === "" || typeof this.state.editing.name === 'undefined' || !this.props.id && !this.state.editing.idOfGame;
+	},
+
+	_isPriceIncorrect: function () {
+		return this.state.editing.exchange === false && (!this.state.editing.price || this.state.editing.price === "" || this.state.editing.price === 0);
+	},
+
 	_onPublishButtonClicked: function () {
 		//if comment open save it and close
 		if (this.state.isShowingComment && this.state.isEditing) {
 			this.setState({ isShowingComment: false, isEditing: true });
 		} else {
-			if (!this.state.editing.name || this.state.editing.name === "" || typeof this.state.editing.name === 'undefined' || !this.props.id && !this.state.editing.idOfGame) {
-				//TODO: name is empty
-			} else if (this.state.editing.exchange === false && (!this.state.editing.price || this.state.editing.price === "" || this.state.editing.price === 0)) {
-				//TODO: show error because it is only sell but no price
+			if (this._isNameIncorrect()) {
+				//name is empty
+				var newState = this.state;
+				newState.editing.errorName = true;
+				this.setState(newState);
+			} else if (this._isPriceIncorrect()) {
+				//show error because it is only sell but no price
+				var newState = this.state;
+				newState.editing.errorPrice = true;
+				this.setState(newState);
 			} else {
 				//else publish
 				this.setState({ isEditing: false });
@@ -27922,22 +27936,8 @@ const GameItem = React.createClass({
 		if (!this.props.id) {
 			var newValue = e.target.value;
 			var newState = this.state;
-			newState.suggestionsClicked = false;
-			newState.name = newValue;
-			/*this.setState({
-   	editing: {
-   		name: newValue,
-   		price: this.state.editing.price,
-   		used: this.state.editing.used,
-   		exchange: this.state.editing.exchange,
-   		ps: this.state.editing.ps,
-   		comment: this.state.editing.comment,
-   		idOfGame: this.state.editing.idOfGame,
-   		id: this.state.editing.id,
-   		suggestionsClicked: false,
-   	}
-   });
-   */
+			newState.editing.suggestionsClicked = false;
+			newState.editing.name = newValue;
 			this.setState(newState);
 			this.props.changeHandlerForSearchInputFn(this.props.temp_id, this.state.editing.ps, newValue);
 		}
@@ -27945,88 +27945,47 @@ const GameItem = React.createClass({
 
 	_changeExchangeHandler: function (e) {
 		var newValue = e.target.checked;
-		this.setState({
-			editing: {
-				name: this.state.editing.name,
-				price: this.state.editing.price,
-				used: this.state.editing.used,
-				exchange: newValue,
-				ps: this.state.editing.ps,
-				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
-				id: this.state.editing.id,
-				suggestionsClicked: false
-			}
-		});
+		var newState = this.state;
+		newState.editing.exchange = newValue;
+		newState.editing.suggestionsClicked = false;
+		if (this._isPriceIncorrect() === false) newState.editing.errorPrice = false;
+		this.setState(newState);
 	},
 
 	_changeNoExchangeHandler: function (e) {
 		var newValue = !e.target.checked;
-		this.setState({
-			editing: {
-				name: this.state.editing.name,
-				price: this.state.editing.price,
-				used: this.state.editing.used,
-				exchange: newValue,
-				ps: this.state.editing.ps,
-				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
-				id: this.state.editing.id,
-				suggestionsClicked: false
-			}
-		});
+		var newState = this.state;
+		newState.editing.exchange = newValue;
+		newState.editing.suggestionsClicked = false;
+		if (this._isPriceIncorrect() === false) newState.editing.errorPrice = false;
+		this.setState(newState);
 	},
 
 	_changeNewHandler: function (e) {
 		var newValue = !e.target.checked;
-		this.setState({
-			editing: {
-				name: this.state.editing.name,
-				price: this.state.editing.price,
-				used: newValue,
-				exchange: this.state.editing.exchange,
-				ps: this.state.editing.ps,
-				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
-				id: this.state.editing.id,
-				suggestionsClicked: false
-			}
-		});
+		var newState = this.state;
+		newState.editing.used = newValue;
+		newState.editing.suggestionsClicked = false;
+		this.setState(newState);
 	},
 
 	_changeUsedHandler: function (e) {
 		var newValue = e.target.checked;
-		this.setState({
-			editing: {
-				name: this.state.editing.name,
-				price: this.state.editing.price,
-				used: newValue,
-				exchange: this.state.editing.exchange,
-				ps: this.state.editing.ps,
-				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
-				id: this.state.editing.id,
-				suggestionsClicked: false
-			}
-		});
+		var newState = this.state;
+		newState.editing.used = newValue;
+		newState.suggestionsClicked = false;
+		this.setState(newState);
 	},
 
 	_changeConsoleXboxHandler: function (e) {
 		if (!this.props.id) {
 			var newValue = !e.target.checked;
-			this.setState({
-				editing: {
-					name: "",
-					price: this.state.editing.price,
-					used: this.state.editing.used,
-					exchange: this.state.editing.exchange,
-					ps: newValue,
-					comment: this.state.editing.comment,
-					idOfGame: null,
-					id: this.state.editing.id,
-					suggestionsClicked: false
-				}
-			});
+			var newState = this.state;
+			newState.editing.name = "";
+			newState.editing.ps = newValue;
+			newState.editing.ifOfGame = null;
+			newState.editing.suggestionsClicked = false;
+			this.setState(newState);
 			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name);
 		}
 	},
@@ -28034,54 +27993,32 @@ const GameItem = React.createClass({
 	_changeConsolePsHandler: function (e) {
 		if (!this.props.id) {
 			var newValue = e.target.checked;
-			this.setState({
-				editing: {
-					name: "",
-					price: this.state.editing.price,
-					used: this.state.editing.used,
-					exchange: this.state.editing.exchange,
-					ps: newValue,
-					comment: this.state.editing.comment,
-					idOfGame: null,
-					id: this.state.editing.id,
-					suggestionsClicked: false
-				}
-			});
+			var newState = this.state;
+			newState.editing.name = "";
+			newState.editing.ps = newValue;
+			newState.editign.idOfGame = null;
+			newState.editing.suggestionsCliked = false;
+			this.setState(newState);
 			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name);
 		}
 	},
 
 	_changePriceHandler: function (e) {
 		var newValue = e.target.value.replace(/[^0-9]/g, '');
-		this.setState({
-			editing: {
-				name: this.state.editing.name,
-				price: newValue,
-				used: this.state.editing.used,
-				exchange: this.state.editing.exchange,
-				ps: this.state.editing.ps,
-				comment: this.state.editing.comment,
-				idOfGame: this.state.editing.idOfGame,
-				id: this.state.editing.id,
-				suggestionsClicked: false
-			}
-		});
+		var newState = this.state;
+		newState.editing.price = newValue;
+		newState.editing.suggestionsClicked = false;
+		if (this._isPriceIncorrect() === false) newState.editing.errorPrice = false;
+		this.setState(newState);
 	},
 
 	_clickSuggestionHandler: function (id, string) {
-		this.setState({
-			editing: {
-				name: string,
-				price: this.state.editing.price,
-				used: this.state.editing.used,
-				exchange: this.state.editing.exchange,
-				ps: this.state.editing.ps,
-				comment: this.state.editing.comment,
-				idOfGame: id,
-				id: this.state.editing.id,
-				suggestionsClicked: true
-			}
-		});
+		var newState = this.state;
+		newState.editing.name = string;
+		newState.editing.idOfGame = id;
+		newState.editing.suggestionsClicked = true;
+		if (this._isNameIncorrect() === false) newState.editing.errorName = false;
+		this.setState(newState);
 	},
 
 	_clickDeleteButtonHandler: function () {
@@ -28102,7 +28039,6 @@ const GameItem = React.createClass({
 	},
 
 	render: function () {
-
 		var temp_id = 0; //Only to controll the readio buttons on  the new from in profile page
 		var onClickComponent = null;
 		var cover = null;
@@ -28209,6 +28145,9 @@ const GameItem = React.createClass({
 			} else {
 				className += " commentContainerOut";
 			}
+
+			if (this.state.editing.errorName) className += " errorName";
+			if (this.state.editing.errorPrice) className += " errorPrice";
 
 			onClickComponent = this._goToPage;
 			cover = this.props.cover;
@@ -28438,7 +28377,7 @@ const GameItem = React.createClass({
 				),
 				React.createElement(
 					'div',
-					null,
+					{ className: 'price' },
 					React.createElement('input', { type: 'text', placeholder: '3. precio (en caso de venta)', value: priceEditing, onChange: changePriceHandler })
 				),
 				React.createElement(
@@ -28464,7 +28403,7 @@ const GameItem = React.createClass({
 				),
 				React.createElement(
 					'span',
-					null,
+					{ className: 'exchangeSpan' },
 					'5. ¿Trueque?'
 				),
 				React.createElement(

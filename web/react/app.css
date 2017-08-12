@@ -5455,6 +5455,17 @@ ul.gameList li.editing.showComment .commentContainer .commentTextContainer .comm
 ul.gameList li.editing.showComment .commentContainer .commentTextContainer .textArea {
   display: inline-block !important;
 }
+ul.gameList li.editing.errorName form .videoGameSection input {
+  border: 2px solid #e6334c;
+  color: #793131;
+}
+ul.gameList li.editing.errorPrice form .price input {
+  border: 2px solid #e6334c;
+  color: #793131;
+}
+ul.gameList li.editing.errorPrice form .exchangeSpan {
+  color: #793131;
+}
 ul.gameList li.showInfo figure .info {
   display: inline-block;
 }

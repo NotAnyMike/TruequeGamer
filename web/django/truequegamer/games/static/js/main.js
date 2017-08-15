@@ -27978,6 +27978,7 @@ const GameItem = React.createClass({
 	},
 
 	_changeConsoleXboxHandler: function (e) {
+		debugger;
 		if (!this.props.id) {
 			var newValue = !e.target.checked;
 			var newState = this.state;
@@ -27986,20 +27987,21 @@ const GameItem = React.createClass({
 			newState.editing.ifOfGame = null;
 			newState.editing.suggestionsClicked = false;
 			this.setState(newState);
-			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name);
+			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, newState.editing.name);
 		}
 	},
 
 	_changeConsolePsHandler: function (e) {
+		debugger;
 		if (!this.props.id) {
 			var newValue = e.target.checked;
 			var newState = this.state;
 			newState.editing.name = "";
 			newState.editing.ps = newValue;
-			newState.editign.idOfGame = null;
+			newState.editing.idOfGame = null;
 			newState.editing.suggestionsCliked = false;
 			this.setState(newState);
-			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, this.state.editing.name);
+			this.props.changeHandlerForSearchInputFn(this.props.temp_id, newValue, newState.editing.name);
 		}
 	},
 

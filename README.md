@@ -71,6 +71,8 @@ you can use `migrate` or `makemigrations` to create the tables needed.
 
 ### Using a google storage bucket
 
+first make sure you are logged in into the correct account with `gcloud config configurations activate <name>`, to know which configs are use `gcloud config configurations list`
+
 0. Make sure there is not an extra folder inside the `static` folder of each app
 1. first run `./manage.py collectstatic`
 2. upload the static files to the bucket with `gsutil rsync -R static/ gs://<your-gcs-bucket>/static` it sometimes will be necesary to change the `rsync` option because sometimes it will delete the cors file
